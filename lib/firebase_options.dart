@@ -63,8 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '587872278204',
     projectId: 'journal-j-dev',
     storageBucket: 'journal-j-dev.appspot.com',
-    iosClientId:
-        '587872278204-8jqcrtd1ifuha5nhcstmsa1bifkj44c8.apps.googleusercontent.com',
+    iosClientId: '587872278204-8jqcrtd1ifuha5nhcstmsa1bifkj44c8.apps.googleusercontent.com',
     iosBundleId: 'com.example.journalFlutter',
   );
 }

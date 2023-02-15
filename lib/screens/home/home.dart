@@ -7,6 +7,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ExerciseDay();
+    return const ExerciseDay(name: 'Push 1');
   }
 }

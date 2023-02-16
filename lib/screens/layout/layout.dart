@@ -10,6 +10,7 @@ class Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Journal',
       theme: theme,
       home: Scaffold(
@@ -29,7 +30,10 @@ class Layout extends StatelessWidget {
             ),
           ],
         ),
-        body: child,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: child,
+        ),
       ),
     );
   }

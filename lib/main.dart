@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/screens/home/home.dart';
-import 'package:journal_flutter/screens/layout/layout.dart';
+import 'package:journal_flutter/screens/auth/sign_in.dart';
 
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -18,8 +19,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Layout(
-      child: Home(),
-    );
+    return const SignIn();
   }
 }

@@ -39,6 +39,8 @@ dependencies:
   firebase_core: ^2.7.0
   cloud_firestore: ^4.4.3
   firebase_auth: ^4.2.9
+  freezed: ^2.3.2
+  go_router: ^6.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,19 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
+part 'exercise_type.freezed.dart';
+
+part 'exercise_type.g.dart';
+
+@freezed
+class ExerciseType with _$ExerciseType {
+  const factory ExerciseType({
+    required String id,
+    required String userId,
+    required String name,
+    required String unit,
+  }) = _ExerciseType;
+
+  factory ExerciseType.fromJson(Map<String, Object?> json) =>
+      _$ExerciseTypeFromJson(json);
+}

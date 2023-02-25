@@ -23,7 +23,7 @@ mixin _$TrainingBlock {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  Map<String, String> get exerciseDayOrdering =>
+  Map<String, int> get exerciseDayOrdering =>
       throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $TrainingBlockCopyWith<$Res> {
       {String id,
       String userId,
       String name,
-      Map<String, String> exerciseDayOrdering});
+      Map<String, int> exerciseDayOrdering});
 }
 
 /// @nodoc
@@ -79,7 +79,7 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
       exerciseDayOrdering: null == exerciseDayOrdering
           ? _value.exerciseDayOrdering
           : exerciseDayOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, int>,
     ) as $Val);
   }
 }
@@ -96,7 +96,7 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
       {String id,
       String userId,
       String name,
-      Map<String, String> exerciseDayOrdering});
+      Map<String, int> exerciseDayOrdering});
 }
 
 /// @nodoc
@@ -131,7 +131,7 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
       exerciseDayOrdering: null == exerciseDayOrdering
           ? _value._exerciseDayOrdering
           : exerciseDayOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, int>,
     ));
   }
 }
@@ -143,7 +143,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
       {required this.id,
       required this.userId,
       required this.name,
-      final Map<String, String> exerciseDayOrdering = const {}})
+      final Map<String, int> exerciseDayOrdering = const {}})
       : _exerciseDayOrdering = exerciseDayOrdering;
 
   factory _$_TrainingBlock.fromJson(Map<String, dynamic> json) =>
@@ -155,10 +155,10 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   final String userId;
   @override
   final String name;
-  final Map<String, String> _exerciseDayOrdering;
+  final Map<String, int> _exerciseDayOrdering;
   @override
   @JsonKey()
-  Map<String, String> get exerciseDayOrdering {
+  Map<String, int> get exerciseDayOrdering {
     if (_exerciseDayOrdering is EqualUnmodifiableMapView)
       return _exerciseDayOrdering;
     // ignore: implicit_dynamic_type
@@ -217,7 +217,7 @@ abstract class _TrainingBlock implements TrainingBlock {
       {required final String id,
       required final String userId,
       required final String name,
-      final Map<String, String> exerciseDayOrdering}) = _$_TrainingBlock;
+      final Map<String, int> exerciseDayOrdering}) = _$_TrainingBlock;
 
   factory _TrainingBlock.fromJson(Map<String, dynamic> json) =
       _$_TrainingBlock.fromJson;
@@ -229,7 +229,7 @@ abstract class _TrainingBlock implements TrainingBlock {
   @override
   String get name;
   @override
-  Map<String, String> get exerciseDayOrdering;
+  Map<String, int> get exerciseDayOrdering;
   @override
   @JsonKey(ignore: true)
   _$$_TrainingBlockCopyWith<_$_TrainingBlock> get copyWith =>

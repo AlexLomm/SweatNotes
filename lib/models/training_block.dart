@@ -11,7 +11,7 @@ class TrainingBlock with _$TrainingBlock {
     required String id,
     required String userId,
     required String name,
-    @Default({}) Map<String, String> exerciseDayOrdering,
+    @Default({}) Map<String, int> exerciseDayOrdering,
   }) = _TrainingBlock;
 
   factory TrainingBlock.fromJson(Map<String, Object?> json) =>

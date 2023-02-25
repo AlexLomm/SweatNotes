@@ -13,7 +13,7 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       exerciseDayOrdering:
           (json['exerciseDayOrdering'] as Map<String, dynamic>?)?.map(
-                (k, e) => MapEntry(k, e as String),
+                (k, e) => MapEntry(k, e as int),
               ) ??
               const {},
     );

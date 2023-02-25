@@ -1,0 +1,23 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "exercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "exerciseDayId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "placement",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -1,18 +1,19 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-class ExerciseSetClient extends Equatable {
-  final bool isFiller;
-  final int progressFactor;
-  final String reps;
-  final String load;
+part 'exercise_set_client.freezed.dart';
 
-  const ExerciseSetClient({
-    this.isFiller = false,
-    this.progressFactor = 0,
-    required this.reps,
-    required this.load,
-  });
+part 'exercise_set_client.g.dart';
 
-  @override
-  List<Object?> get props => [isFiller, progressFactor, reps, load];
+@freezed
+class ExerciseSetClient with _$ExerciseSetClient {
+  const factory ExerciseSetClient({
+    @Default(false) bool isFiller,
+    @Default(0) int progressFactor,
+    required String reps,
+    required String load,
+  }) = _ExerciseSetClient;
+
+  factory ExerciseSetClient.fromJson(Map<String, Object?> json) =>
+      _$ExerciseSetClientFromJson(json);
 }

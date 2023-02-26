@@ -1,22 +1,20 @@
-import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'exercise_type_client.dart';
 
-class ExerciseDayClient extends Equatable {
-  final String id;
-  final String name;
-  final List<ExerciseTypeClient> exerciseTypes;
+part 'exercise_day_client.freezed.dart';
 
-  const ExerciseDayClient({
-    required this.id,
-    required this.name,
-    this.exerciseTypes = const [],
-  });
+part 'exercise_day_client.g.dart';
 
-  @override
-  List<Object?> get props => [
-        id,
-        name,
-        exerciseTypes,
-      ];
+@freezed
+class ExerciseDayClient with _$ExerciseDayClient {
+  const factory ExerciseDayClient({
+    required String id,
+    required String name,
+    @Default([]) List<ExerciseTypeClient> exerciseTypes,
+  }) = _ExerciseDayClient;
+
+  factory ExerciseDayClient.fromJson(Map<String, Object?> json) =>
+      _$ExerciseDayClientFromJson(json);
 }

@@ -129,14 +129,14 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExerciseSetClient
-    with DiagnosticableTreeMixin
-    implements _ExerciseSetClient {
+class _$_ExerciseSetClient extends _ExerciseSetClient
+    with DiagnosticableTreeMixin {
   const _$_ExerciseSetClient(
       {this.isFiller = false,
       this.progressFactor = 0,
       required this.reps,
-      required this.load});
+      required this.load})
+      : super._();
 
   factory _$_ExerciseSetClient.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseSetClientFromJson(json);
@@ -201,12 +201,13 @@ class _$_ExerciseSetClient
   }
 }
 
-abstract class _ExerciseSetClient implements ExerciseSetClient {
+abstract class _ExerciseSetClient extends ExerciseSetClient {
   const factory _ExerciseSetClient(
       {final bool isFiller,
       final int progressFactor,
       required final String reps,
       required final String load}) = _$_ExerciseSetClient;
+  const _ExerciseSetClient._() : super._();
 
   factory _ExerciseSetClient.fromJson(Map<String, dynamic> json) =
       _$_ExerciseSetClient.fromJson;

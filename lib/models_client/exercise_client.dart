@@ -2,12 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:journal_flutter/models_client/exercise_set_client.dart';
 
+import '../utils/generate_hash.dart';
+
 part 'exercise_client.freezed.dart';
 
 part 'exercise_client.g.dart';
 
 @freezed
 class ExerciseClient with _$ExerciseClient {
+  const ExerciseClient._();
+
   const factory ExerciseClient({
     required String id,
     required String exerciseDayId,
@@ -18,4 +22,14 @@ class ExerciseClient with _$ExerciseClient {
 
   factory ExerciseClient.fromJson(Map<String, Object?> json) =>
       _$ExerciseClientFromJson(json);
+
+  factory ExerciseClient.empty() {
+    return ExerciseClient(
+      id: generateHash(),
+      exerciseDayId: generateHash(),
+      isFiller: true,
+      placement: -1,
+      exerciseSets: [],
+    );
+  }
 }

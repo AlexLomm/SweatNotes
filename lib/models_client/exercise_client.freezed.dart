@@ -151,16 +151,15 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExerciseClient
-    with DiagnosticableTreeMixin
-    implements _ExerciseClient {
+class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   const _$_ExerciseClient(
       {required this.id,
       required this.exerciseDayId,
       this.isFiller = false,
       this.placement = -1,
       final List<ExerciseSetClient> exerciseSets = const []})
-      : _exerciseSets = exerciseSets;
+      : _exerciseSets = exerciseSets,
+        super._();
 
   factory _$_ExerciseClient.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseClientFromJson(json);
@@ -236,13 +235,14 @@ class _$_ExerciseClient
   }
 }
 
-abstract class _ExerciseClient implements ExerciseClient {
+abstract class _ExerciseClient extends ExerciseClient {
   const factory _ExerciseClient(
       {required final String id,
       required final String exerciseDayId,
       final bool isFiller,
       final int placement,
       final List<ExerciseSetClient> exerciseSets}) = _$_ExerciseClient;
+  const _ExerciseClient._() : super._();
 
   factory _ExerciseClient.fromJson(Map<String, dynamic> json) =
       _$_ExerciseClient.fromJson;

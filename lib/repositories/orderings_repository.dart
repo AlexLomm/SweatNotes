@@ -9,7 +9,10 @@ class OrderingsRepository {
   }) {
     return ids.map(
       (id) {
-        return FirebaseFirestore.instance.doc('orderings/$id').withConverter(
+        return FirebaseFirestore.instance
+            .collection('orderings')
+            .doc(id)
+            .withConverter(
               fromFirestore: (doc, _) {
                 final dataWithoutId = doc.data();
 
@@ -31,13 +34,19 @@ class OrderingsRepository {
     ).toList();
   }
 
-  Future<List<Ordering?>> fetchOrderingsByIds({
+  Future<List<Ordering>> fetchOrderingsByIds({
     required List<String> ids,
   }) async {
+    final orderingRefs = getOrderingRefsByIds(ids: ids);
+
+    if (orderingRefs.isEmpty) {
+      return [];
+    }
+
     final snapshots = await Future.wait(
-      getOrderingRefsByIds(ids: ids).map((ordering) => ordering.get()),
+      orderingRefs.map((ordering) => ordering.get()),
     );
 
-    return snapshots.map((snapshot) => snapshot.data()).toList();
+    return snapshots.map((snapshot) => snapshot.data()!).toList();
   }
 }

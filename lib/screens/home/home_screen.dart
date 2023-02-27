@@ -35,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: StreamBuilder<List<TrainingBlock>>(
         stream: trainingBlocksState.trainingBlocks,
         builder: (context, snapshot) {
+          final data = snapshot.data;
+
+          if (data == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
           return SizedBox(
             height: mq.size.height,
             width: mq.size.width,

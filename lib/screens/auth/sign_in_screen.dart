@@ -1,27 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/screens/home/home.dart';
+import 'package:go_router/go_router.dart';
 
-import '../layout/layout.dart';
+import '../../services/auth_service.dart';
+import '../../widgets/layout.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  // TODO: DI with Riverpod
+  final AuthService authService;
+
+  const SignInScreen({Key? key, required this.authService}) : super(key: key);
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInScreenState extends State<SignInScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Layout(
+      isScrollable: false,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
-                decoration: InputDecoration(
+                autofocus: true,
+                controller: emailController,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                   hintText: 'Enter valid email id as abc@gmail.com',
@@ -61,11 +78,20 @@ class _SignInState extends State<SignIn> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const Home()),
+                onPressed: () async {
+                  final ctxGo = context.go;
+                  final messenger = ScaffoldMessenger.of(context);
+
+                  final error = await widget.authService.logIn(
+                    email: emailController.text,
+                    password: passwordController.text,
                   );
+
+                  if (error.isNotEmpty) {
+                    messenger.showSnackBar(SnackBar(content: Text(error)));
+                  } else {
+                    ctxGo('/');
+                  }
                 },
                 child: const Text(
                   'Login',

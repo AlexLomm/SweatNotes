@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'exercise_type.dart';
+import '../models/exercise_type.dart';
+import 'exercise_type_widget.dart';
 
-class ExerciseDay extends StatelessWidget {
+class ExerciseDayWidget extends StatelessWidget {
   static const width = 144.0;
 
   final String name;
+  final List<ExerciseType> exerciseTypes;
 
-  const ExerciseDay({Key? key, required this.name}) : super(key: key);
+  const ExerciseDayWidget({
+    Key? key,
+    required this.name,
+    required this.exerciseTypes,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +53,15 @@ class ExerciseDay extends StatelessWidget {
                 ),
               ),
             ),
-            Transform.translate(
-              offset: const Offset(16, 0),
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: const ExerciseType(name: 'Bench Press'),
+            for (final exerciseType in exerciseTypes)
+              _LeftTranslate(
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: ExerciseTypeWidget(
+                    name: exerciseType.name,
+                  ),
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -71,6 +79,23 @@ class _LeftPadding extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: 16),
       child: child,
+    );
+  }
+}
+
+class _LeftTranslate extends StatelessWidget {
+  final Widget child;
+
+  const _LeftTranslate({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: const Offset(16, 0),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        child: child,
+      ),
     );
   }
 }

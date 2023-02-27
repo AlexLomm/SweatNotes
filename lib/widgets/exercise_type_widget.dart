@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ExerciseType extends StatelessWidget {
+class ExerciseTypeWidget extends StatelessWidget {
   static const width = 144.0;
   static const height = 80.0;
 
   final String name;
 
-  const ExerciseType({
+  const ExerciseTypeWidget({
     Key? key,
     required this.name,
   }) : super(key: key);
@@ -47,6 +47,7 @@ class ExerciseType extends StatelessWidget {
                 ),
                 Text(
                   name,
+                  softWrap: true,
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
               ],

@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/services/normalize_data_service.dart';
 import 'package:journal_flutter/widgets/layout.dart';
 
-import '../../services/training_block_state.dart';
+import '../../utils/print_json.dart';
 
 class TrainingBlockScreen extends StatefulWidget {
   final String trainingBlockId;
@@ -18,22 +18,17 @@ class TrainingBlockScreen extends StatefulWidget {
 }
 
 class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
-  late TrainingBlockState trainingBlockState;
-  late NormalizeDataService normalizeDataState;
-
   @override
   void initState() {
     super.initState();
-    // trainingBlockState = TrainingBlockState(
-    //   trainingBlockId: widget.trainingBlockId,
-    // );
-    // normalizeDataState = NormalizeData(
-    //   trainingBlockId: widget.trainingBlockId,
-    // )..normalizeData.listen((event) {
-    //     print(event);
-    //   });
 
-    NormalizeDataService().getNormalizedData(trainingBlockId: widget.trainingBlockId);
+    NormalizeDataService()
+        .getNormalizedData(trainingBlockId: widget.trainingBlockId)
+        .then((value) {
+      for (final exerciseDay in value) {
+        printJson(exerciseDay.toJson());
+      }
+    });
   }
 
   @override

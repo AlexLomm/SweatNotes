@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:journal_flutter/models_client/exercise_type_client.dart';
 
 class ExerciseTypeWidget extends StatelessWidget {
   static const width = 144.0;
   static const height = 80.0;
 
-  final String name;
+  final ExerciseTypeClient exerciseType;
 
   const ExerciseTypeWidget({
     Key? key,
-    required this.name,
+    required this.exerciseType,
   }) : super(key: key);
 
   @override
@@ -17,6 +18,7 @@ class ExerciseTypeWidget extends StatelessWidget {
       width: width,
       height: height,
       decoration: const BoxDecoration(
+        // TODO: extract
         color: Color.fromRGBO(231, 224, 236, 1),
         boxShadow: [
           BoxShadow(
@@ -46,7 +48,7 @@ class ExerciseTypeWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  name,
+                  exerciseType.name,
                   softWrap: true,
                   style: Theme.of(context).textTheme.labelSmall,
                 ),

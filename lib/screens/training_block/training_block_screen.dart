@@ -46,7 +46,7 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
           SelectableText('Training Block: ${widget.trainingBlockId}'),
           ElevatedButton(
             onPressed: () => GoRouter.of(context).go('/'),
-            child: const Text('Go back'),
+            child: const Text('Home'),
           ),
           FutureBuilder(
             future: normalizedData,

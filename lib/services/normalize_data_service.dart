@@ -22,7 +22,9 @@ class NormalizeDataService {
   final _exerciseTypesRepository = ExerciseTypesRepository();
   final _orderingsRepository = OrderingsRepository();
 
-  getNormalizedData({required String trainingBlockId}) async {
+  Future<List<ExerciseDayClient>> getNormalizedData({
+    required String trainingBlockId,
+  }) async {
     final trainingBlockFuture = _trainingBlockRepository.fetchTrainingBlock(
       id: trainingBlockId,
     );

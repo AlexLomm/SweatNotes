@@ -243,11 +243,34 @@ Map<String, Map<String, ExerciseTypeClient>>
       map[exerciseDayId] = {};
     }
 
+    final exerciseTypeIdExercisesMap = map[exerciseDayId]!;
+
     final exerciseTypeId = exercise.exerciseTypeId;
 
-    if (!map[exerciseDayId]!.containsKey(exerciseTypeId)) {
-      map[exerciseDayId]![exerciseTypeId] = exerciseTypesMap[exerciseTypeId]!;
+    if (!exerciseTypeIdExercisesMap.containsKey(exerciseTypeId)) {
+      exerciseTypeIdExercisesMap[exerciseTypeId] =
+          exerciseTypesMap[exerciseTypeId]!;
     }
+
+    final exerciseType = map[exerciseDayId]![exerciseTypeId]!;
+
+    map[exerciseDayId]![exerciseTypeId] = exerciseType.copyWith(
+      exercises: [
+        ...exerciseType.exercises,
+        ExerciseClient(
+          id: exercise.id,
+          exerciseDayId: exercise.exerciseDayId,
+          placement: exercise.placement,
+          exerciseSets: exercise.sets.map((set) {
+            return ExerciseSetClient(
+              isFiller: false,
+              reps: set.reps,
+              load: set.load,
+            );
+          }).toList(),
+        )
+      ],
+    );
   }
 
   return map;

@@ -43,7 +43,7 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Training Block: ${widget.trainingBlockId}'),
+          SelectableText('Training Block: ${widget.trainingBlockId}'),
           ElevatedButton(
             onPressed: () => GoRouter.of(context).go('/'),
             child: const Text('Go back'),

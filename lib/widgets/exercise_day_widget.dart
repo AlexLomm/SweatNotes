@@ -23,6 +23,39 @@ class ExerciseDayWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              margin: const EdgeInsets.only(
+                left: ExerciseTypeWidget.width + 16.0,
+                top: titleHeight,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (final exerciseType in exerciseTypes)
+                    Container(
+                      margin: const EdgeInsets.only(
+                        bottom: spacingBetweenExerciseTypes,
+                      ),
+                      child: Row(
+                        children: [
+                          for (final exercise in exerciseType.exercises)
+                            Container(
+                              key: Key(exercise.id),
+                              margin: const EdgeInsets.only(right: 16),
+                              child: ExerciseWidget(exercise: exercise),
+                            )
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
           child: Container(
             padding: const EdgeInsets.only(top: 18, right: 16, left: 16),
             width: ExerciseTypeWidget.width - 24,
@@ -71,36 +104,6 @@ class ExerciseDayWidget extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-            margin: const EdgeInsets.only(
-              left: ExerciseTypeWidget.width + 16.0,
-              top: titleHeight,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final exerciseType in exerciseTypes)
-                  Container(
-                    margin: const EdgeInsets.only(
-                      bottom: spacingBetweenExerciseTypes,
-                    ),
-                    child: Row(
-                      children: [
-                        for (final exercise in exerciseType.exercises)
-                          Container(
-                            key: Key(exercise.id),
-                            margin: const EdgeInsets.only(right: 16),
-                            child: ExerciseWidget(exercise: exercise),
-                          )
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        )
       ],
     );
   }

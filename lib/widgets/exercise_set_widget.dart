@@ -14,7 +14,10 @@ class ExerciseSetWidget extends StatelessWidget {
   final ExerciseSetClient exerciseSet;
 
   get _borderTopCell {
-    return const Border(right: borderSide, bottom: borderSide);
+    return Border(
+      right: isSingle || isRightmost ? BorderSide.none : borderSide,
+      bottom: borderSide,
+    );
   }
 
   get _borderBottomCell {

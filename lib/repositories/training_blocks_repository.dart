@@ -32,9 +32,6 @@ class TrainingBlocksRepository {
   }
 
   DocumentReference<TrainingBlock> getTrainingBlock({required String id}) {
-    print('----------------------------============');
-    print(id);
-
     return FirebaseFirestore.instance
         .collection('training-blocks')
         .doc(id)

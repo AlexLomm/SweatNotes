@@ -4,6 +4,9 @@ import 'package:journal_flutter/models_client/exercise_type_client.dart';
 class ExerciseTypeWidget extends StatelessWidget {
   static const width = 144.0;
   static const height = 80.0;
+  static const dragHandleWidth = 24.0;
+  static const dragHandleAndLabelSpacing = 8.0;
+  static const labelWidth = width - dragHandleWidth - dragHandleAndLabelSpacing;
 
   final ExerciseTypeClient exerciseType;
 
@@ -35,24 +38,20 @@ class ExerciseTypeWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(right: 8),
-                  child: const Icon(
-                    Icons.drag_indicator,
-                    color: Color.fromRGBO(103, 80, 164, 1),
-                  ),
-                ),
-                Text(
-                  exerciseType.name,
-                  softWrap: true,
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-              ],
+          Container(
+            width: dragHandleWidth,
+            margin: const EdgeInsets.only(right: dragHandleAndLabelSpacing),
+            child: const Icon(
+              Icons.drag_indicator,
+              color: Color.fromRGBO(103, 80, 164, 1),
+            ),
+          ),
+          SizedBox(
+            width: labelWidth,
+            child: Text(
+              exerciseType.name,
+              softWrap: true,
+              style: Theme.of(context).textTheme.labelSmall,
             ),
           ),
         ],

@@ -8,25 +8,23 @@ import '../services/auth_service.dart';
 final _authService = AuthService();
 
 final router = GoRouter(
-  // TODO: fix
-  // redirect: (context, routerState) async =>
-  //     authService.user == null ? '/login' : null,
+  redirect: (context, routerState) =>
+      _authService.user == null ? '/login' : null,
   routes: [
     GoRoute(
       path: '/',
       builder: (context, routerState) => const HomeScreen(),
     ),
     GoRoute(
-      path: '/:trainingBlockId',
-      builder: (context, routerState) => TrainingBlockScreen(
-        trainingBlockId:
-            routerState.params['trainingBlockId'] ?? '',
-      ),
-    ),
-    GoRoute(
       path: '/login',
       builder: (context, routerState) => SignInScreen(
         authService: _authService,
+      ),
+    ),
+    GoRoute(
+      path: '/:trainingBlockId',
+      builder: (context, routerState) => TrainingBlockScreen(
+        trainingBlockId: routerState.params['trainingBlockId'] ?? '',
       ),
     ),
   ],

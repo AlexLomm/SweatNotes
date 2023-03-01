@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
 import '../screens/auth/sign_in_screen.dart';
@@ -9,7 +10,8 @@ final _authService = AuthService();
 
 final router = GoRouter(
   redirect: (context, routerState) =>
-      _authService.user == null ? '/login' : null,
+      // TODO: DI with Riverpod
+      FirebaseAuth.instance.currentUser == null ? '/login' : null,
   routes: [
     GoRoute(
       path: '/',

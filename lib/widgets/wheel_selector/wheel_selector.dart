@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:journal_flutter/widgets/wheel_selector/wheel_selector_wheel.dart';
 
 import 'fade_gradient.dart';
@@ -36,11 +39,27 @@ class WheelSelector<T> extends StatefulWidget {
 class _WheelSelectorState<T> extends State<WheelSelector<T>> {
   late final FixedExtentScrollController _controller;
 
+  late final StreamController<T> _streamController;
+
   @override
   void initState() {
     super.initState();
 
-    _controller = FixedExtentScrollController();
+    _streamController = StreamController<T>.broadcast();
+
+    _streamController.stream
+        .distinct()
+        .listen((value) => HapticFeedback.lightImpact());
+
+    _controller = FixedExtentScrollController()
+      ..addListener(() => _streamController.sink
+          .add(widget.convertIndexToValue(_controller.selectedItem).value));
+  }
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
   }
 
   @override

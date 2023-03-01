@@ -31,4 +31,7 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
+    <!--  Custom code  -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 </manifest>

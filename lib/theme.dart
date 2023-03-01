@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(
-  colorSchemeSeed: Colors.purple,
+  colorSchemeSeed: const Color.fromRGBO(103, 80, 164, 1),
   textTheme: TextTheme(
     titleLarge: GoogleFonts.robotoTextTheme().bodyLarge!.copyWith(
           fontSize: 22,

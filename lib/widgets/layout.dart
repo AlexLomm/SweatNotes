@@ -46,6 +46,7 @@ class Layout extends StatelessWidget {
         ],
       ),
       body: SafeArea(
+        bottom: false,
         child: Container(
           padding: const EdgeInsets.only(top: 16.0),
           child: isScrollable ? SingleChildScrollView(child: child) : child,

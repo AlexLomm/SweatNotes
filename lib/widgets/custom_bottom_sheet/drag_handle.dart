@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+class DragHandle extends StatelessWidget {
+  const DragHandle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 32,
+      height: 6,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.outline.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+}

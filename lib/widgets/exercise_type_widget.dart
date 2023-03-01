@@ -46,7 +46,8 @@ class ExerciseTypeWidget extends StatelessWidget {
               color: Color.fromRGBO(103, 80, 164, 1),
             ),
           ),
-          SizedBox(
+          Container(
+            padding: const EdgeInsets.only(right: 8.0),
             width: labelWidth,
             child: Text(
               exerciseType.name,

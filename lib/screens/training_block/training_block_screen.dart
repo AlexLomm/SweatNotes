@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/models_client/exercise_day_client.dart';
-import 'package:journal_flutter/services/normalize_data_service.dart';
-import 'package:journal_flutter/widgets/exercise_day_widget.dart';
-import 'package:journal_flutter/widgets/layout.dart';
 
+import '../../models_client/exercise_day_client.dart';
+import '../../services/normalize_data_service.dart';
+import '../../widgets/custom_bottom_sheet.dart';
+import '../../widgets/exercise_day_widget.dart';
+import '../../widgets/layout.dart';
 import '../../utils/print_json.dart';
+import '../../widgets/wheel_selector/models/wheel_selector_value.dart';
+import '../../widgets/wheel_selector/wheel_selector.dart';
 
 class TrainingBlockScreen extends StatefulWidget {
   final String trainingBlockId;
@@ -40,6 +43,23 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
   @override
   Widget build(BuildContext context) {
     return Layout(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => CustomBottomSheet(
+          child: SizedBox(
+            height: 300,
+            child: WheelSelector(
+              convertIndexToValue: (index) {
+                final value = index / 4;
+
+                return WheelSelectorValue(label: '$value lb', value: value);
+              },
+              onValueChanged: (value) => print(value),
+              childCount: 16,
+            ),
+          ),
+        ).show(context),
+        child: const Icon(Icons.home),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

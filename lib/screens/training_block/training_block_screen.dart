@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../models_client/exercise_day_client.dart';
 import '../../services/normalize_data_service.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/exercise_day_widget.dart';
 import '../../widgets/layout.dart';
-import '../../utils/print_json.dart';
 import '../../widgets/wheel_selector/models/wheel_selector_value.dart';
 import '../../widgets/wheel_selector/wheel_selector.dart';
 
@@ -30,14 +28,7 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
     super.initState();
 
     normalizedData = NormalizeDataService()
-        .getNormalizedData(trainingBlockId: widget.trainingBlockId)
-        .then((value) {
-      for (final exerciseDay in value) {
-        printJson(exerciseDay.toJson());
-      }
-
-      return value;
-    });
+        .getNormalizedData(trainingBlockId: widget.trainingBlockId);
   }
 
   @override
@@ -61,11 +52,6 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SelectableText('Training Block: ${widget.trainingBlockId}'),
-          ElevatedButton(
-            onPressed: () => GoRouter.of(context).go('/'),
-            child: const Text('Home'),
-          ),
           FutureBuilder(
             future: normalizedData,
             builder: (context, snapshot) {

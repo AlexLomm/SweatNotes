@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Layout extends StatelessWidget {
-  final bool isScrollable;
   final Widget child;
+  final Widget? floatingActionButton;
+  final bool isScrollable;
 
   const Layout({
     Key? key,
     required this.child,
+    this.floatingActionButton,
     this.isScrollable = true,
   }) : super(key: key);
 
@@ -52,6 +54,7 @@ class Layout extends StatelessWidget {
           child: isScrollable ? SingleChildScrollView(child: child) : child,
         ),
       ),
+      floatingActionButton: floatingActionButton,
     );
   }
 }

@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthRepository {
-  AuthRepository(this._auth);
-
   final FirebaseAuth _auth;
 
-  Stream<User?> authStateChanges() => _auth.authStateChanges();
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   User? get currentUser => _auth.currentUser;
+
+  AuthRepository(this._auth);
 
   signInAnonymously() {
     return _auth.signInAnonymously();
@@ -45,5 +45,5 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 });
 
 final authStateChangesProvider = StreamProvider<User?>((ref) {
-  return ref.watch(authRepositoryProvider).authStateChanges();
+  return ref.watch(authRepositoryProvider).authStateChanges;
 });

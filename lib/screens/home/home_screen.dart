@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/models/training_block.dart';
-import 'package:journal_flutter/widgets/layout.dart';
 
+import '../../widgets/layout.dart';
+import '../../models/training_block.dart';
 import '../../services/training_blocks_state.dart';
 
 class HomeScreen extends StatefulWidget {

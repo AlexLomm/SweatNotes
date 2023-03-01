@@ -9,9 +9,15 @@ import '../services/auth_service.dart';
 final _authService = AuthService();
 
 final router = GoRouter(
-  redirect: (context, routerState) =>
-      // TODO: DI with Riverpod
-      FirebaseAuth.instance.currentUser == null ? '/login' : null,
+  redirect: (context, routerState) {
+    // Always check state.subloc before returning a non-null route
+    // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/redirection.dart#L78
+    if (routerState.subloc != '/login') {
+      return FirebaseAuth.instance.currentUser == null ? '/login' : null;
+    }
+
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/',

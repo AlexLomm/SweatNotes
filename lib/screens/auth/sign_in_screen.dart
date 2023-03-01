@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../services/auth_service.dart';
 import '../../widgets/layout.dart';
 
-class SignInScreen extends StatefulWidget {
-  // TODO: DI with Riverpod
-  final AuthService authService;
-
-  const SignInScreen({Key? key, required this.authService}) : super(key: key);
+class SignInScreen extends ConsumerStatefulWidget {
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  SignInScreenState createState() => SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class SignInScreenState extends ConsumerState<SignInScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -27,6 +25,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = ref.watch(authServiceProvider);
+
     return Layout(
       isScrollable: false,
       child: Padding(
@@ -79,10 +79,10 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               child: ElevatedButton(
                 onPressed: () async {
-                  final ctxGo = context.go;
+                  final go = context.go;
                   final messenger = ScaffoldMessenger.of(context);
 
-                  final error = await widget.authService.logIn(
+                  final error = await authService.signIn(
                     email: emailController.text,
                     password: passwordController.text,
                   );
@@ -90,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   if (error.isNotEmpty) {
                     messenger.showSnackBar(SnackBar(content: Text(error)));
                   } else {
-                    ctxGo('/');
+                    go('/');
                   }
                 },
                 child: const Text(

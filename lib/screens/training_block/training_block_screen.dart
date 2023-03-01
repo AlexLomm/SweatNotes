@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../models_client/exercise_day_client.dart';
 import '../../services/normalize_data_service.dart';
-import '../../widgets/custom_bottom_sheet.dart';
+import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/exercise_day_widget.dart';
 import '../../widgets/layout.dart';
 import '../../utils/print_json.dart';
@@ -45,20 +45,18 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
     return Layout(
       floatingActionButton: FloatingActionButton(
         onPressed: () => CustomBottomSheet(
-          child: SizedBox(
-            height: 300,
-            child: WheelSelector(
-              convertIndexToValue: (index) {
-                final value = index / 4;
+          height: 322.0,
+          child: WheelSelector(
+            convertIndexToValue: (index) {
+              final value = index / 4;
 
-                return WheelSelectorValue(label: '$value lb', value: value);
-              },
-              onValueChanged: (value) => print(value),
-              childCount: 16,
-            ),
+              return WheelSelectorValue(label: '$value lb', value: value);
+            },
+            onValueChanged: (value) => print(value),
+            childCount: 16,
           ),
         ).show(context),
-        child: const Icon(Icons.home),
+        child: const Icon(Icons.abc),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

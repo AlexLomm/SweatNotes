@@ -1,19 +1,11 @@
-import 'dart:math';
-
-import '../../models/exercise.dart';
-import '../../models/exercise_day.dart';
-import '../../models/exercise_type.dart';
-import '../../models/ordering.dart';
-import '../../models_client/exercise_client.dart';
 import '../../models_client/exercise_day_client.dart';
-import '../../models_client/exercise_set_client.dart';
-import '../../models_client/exercise_type_client.dart';
 import '../../repositories/exercise_days_repository.dart';
 import '../../repositories/exercise_types_repository.dart';
 import '../../repositories/exercises_repository.dart';
 import '../../repositories/orderings_repository.dart';
 import '../../repositories/training_blocks_repository.dart';
 import 'exercise_days.dart';
+import 'exercise_days_types_map.dart';
 import 'orderings_map.dart';
 
 class NormalizeDataService {
@@ -52,13 +44,13 @@ class NormalizeDataService {
     final orderingsMap = OrderingsMap(orderings);
     final exerciseDaysMap = ExerciseDaysMap(exerciseDays);
 
-    final exerciseDaysTypesDictionary = getExerciseDaysTypesDictionary(
+    final exerciseDaysTypesMap = getExerciseDaysTypesDictionary(
       exercises,
       exerciseTypes,
     );
 
     final exerciseDaysWithSortedExerciseTypes =
-        exerciseDaysTypesDictionary.entries.map((entry) {
+        exerciseDaysTypesMap.map.entries.map((entry) {
       final exerciseDayId = entry.key;
       final exerciseTypes = entry.value.values.toList();
 
@@ -103,157 +95,4 @@ class NormalizeDataService {
 
     return exerciseDaysWithSortedExerciseTypes;
   }
-}
-
-// TODO: refactor
-Map<String, Map<String, ExerciseTypeClient>> getExerciseDaysTypesDictionary(
-  List<Exercise> exercises,
-  List<ExerciseType> exerciseTypes,
-) {
-  final maxExerciseSetsCount = _getMaxExerciseSetsCount(exercises);
-  final maxExercisePlacement = _getMaxExercisePlacement(exercises);
-
-  final map = _generateExerciseDaysExerciseTypesMap(exercises, exerciseTypes);
-
-  for (final exerciseDayId in map.keys) {
-    final exerciseTypesMap = map[exerciseDayId]!;
-
-    for (final exerciseTypeId in exerciseTypesMap.keys) {
-      final exerciseType = exerciseTypesMap[exerciseTypeId]!;
-
-      final exercisesWithFillerSets = exerciseType.exercises.map((exercise) {
-        final exerciseWithFillerSets = exercise.copyWith(exerciseSets: [
-          ...exercise.exerciseSets,
-          ...List.generate(
-            // we want 1 more exercise set than the max for
-            // users to always have a blank set to fill in
-            maxExerciseSetsCount + 1 - exercise.exerciseSets.length,
-            (index) => ExerciseSetClient.empty(),
-          )
-        ]);
-
-        return exerciseWithFillerSets;
-      }).toList();
-
-      final exercisesByPlacementMap = _generateExerciseByPlacementMap(
-        exercisesWithFillerSets,
-      );
-
-      map[exerciseDayId]![exerciseTypeId] =
-          map[exerciseDayId]![exerciseTypeId]!.copyWith(exercises: []);
-
-      var exercises = [...map[exerciseDayId]![exerciseTypeId]!.exercises];
-
-      for (var i = 0; i < maxExercisePlacement + 1; i++) {
-        final exercise = exercisesByPlacementMap[i];
-
-        if (exercise == null) {
-          exercises.add(ExerciseClient.empty().copyWith(
-            exerciseDayId: exerciseDayId,
-            placement: i,
-            exerciseSets: List.generate(
-              maxExerciseSetsCount + 1,
-              (index) => ExerciseSetClient.empty(),
-            ),
-          ));
-        } else {
-          exercises.add(exercise);
-        }
-      }
-
-      map[exerciseDayId]![exerciseTypeId] =
-          map[exerciseDayId]![exerciseTypeId]!.copyWith(exercises: exercises);
-    }
-  }
-
-  return map;
-}
-
-_getMaxExerciseSetsCount(List<Exercise> exercises) {
-  if (exercises.isEmpty) return 0;
-
-  return exercises.map((exercise) => exercise.sets.length).reduce(max);
-}
-
-_getMaxExercisePlacement(List<Exercise> exercises) {
-  if (exercises.isEmpty) return 0;
-
-  return exercises.map((exercise) => exercise.placement).reduce(max);
-}
-
-Map<int, ExerciseClient> _generateExerciseByPlacementMap(
-  List<ExerciseClient> exercises,
-) {
-  final exerciseByPlacementMap = <int, ExerciseClient>{};
-
-  for (final exercise in exercises) {
-    exerciseByPlacementMap[exercise.placement] = exercise;
-  }
-
-  return exerciseByPlacementMap;
-}
-
-Map<String, Map<String, ExerciseTypeClient>>
-    _generateExerciseDaysExerciseTypesMap(
-  List<Exercise> exercises,
-  List<ExerciseType> exerciseTypes,
-) {
-  final Map<String, Map<String, ExerciseTypeClient>> map = {};
-
-  final exerciseTypesMap = _generateExerciseTypesMap(exerciseTypes);
-
-  for (final exercise in exercises) {
-    final exerciseDayId = exercise.exerciseDayId;
-
-    if (!map.containsKey(exerciseDayId)) {
-      map[exerciseDayId] = {};
-    }
-
-    final exerciseTypeIdExercisesMap = map[exerciseDayId]!;
-
-    final exerciseTypeId = exercise.exerciseTypeId;
-
-    if (!exerciseTypeIdExercisesMap.containsKey(exerciseTypeId)) {
-      exerciseTypeIdExercisesMap[exerciseTypeId] =
-          exerciseTypesMap[exerciseTypeId]!;
-    }
-
-    final exerciseType = map[exerciseDayId]![exerciseTypeId]!;
-
-    map[exerciseDayId]![exerciseTypeId] = exerciseType.copyWith(
-      exercises: [
-        ...exerciseType.exercises,
-        ExerciseClient(
-          id: exercise.id,
-          exerciseDayId: exercise.exerciseDayId,
-          placement: exercise.placement,
-          exerciseSets: exercise.sets.map((set) {
-            return ExerciseSetClient(
-              isFiller: false,
-              reps: set.reps,
-              load: set.load,
-            );
-          }).toList(),
-        )
-      ],
-    );
-  }
-
-  return map;
-}
-
-Map<String, ExerciseTypeClient> _generateExerciseTypesMap(
-  List<ExerciseType> exerciseTypes,
-) {
-  final exerciseTypesMap = <String, ExerciseTypeClient>{};
-
-  for (final exerciseType in exerciseTypes) {
-    exerciseTypesMap[exerciseType.id] = ExerciseTypeClient(
-      id: exerciseType.id,
-      name: exerciseType.name,
-      unit: exerciseType.unit,
-    );
-  }
-
-  return exerciseTypesMap;
 }

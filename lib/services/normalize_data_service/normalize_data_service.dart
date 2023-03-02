@@ -1,21 +1,23 @@
 import 'dart:math';
 
-import '../models/exercise.dart';
-import '../models/exercise_day.dart';
-import '../models/exercise_type.dart';
-import '../models/ordering.dart';
-import '../models_client/exercise_client.dart';
-import '../models_client/exercise_day_client.dart';
-import '../models_client/exercise_set_client.dart';
-import '../models_client/exercise_type_client.dart';
-import '../repositories/exercise_days_repository.dart';
-import '../repositories/exercise_types_repository.dart';
-import '../repositories/exercises_repository.dart';
-import '../repositories/orderings_repository.dart';
-import '../repositories/training_blocks_repository.dart';
+import '../../models/exercise.dart';
+import '../../models/exercise_day.dart';
+import '../../models/exercise_type.dart';
+import '../../models/ordering.dart';
+import '../../models_client/exercise_client.dart';
+import '../../models_client/exercise_day_client.dart';
+import '../../models_client/exercise_set_client.dart';
+import '../../models_client/exercise_type_client.dart';
+import '../../repositories/exercise_days_repository.dart';
+import '../../repositories/exercise_types_repository.dart';
+import '../../repositories/exercises_repository.dart';
+import '../../repositories/orderings_repository.dart';
+import '../../repositories/training_blocks_repository.dart';
+import 'exercise_days.dart';
+import 'orderings_map.dart';
 
 class NormalizeDataService {
-  final _trainingBlockRepository = TrainingBlocksRepository();
+  final _trainingBlocksRepository = TrainingBlocksRepository();
   final _exerciseDaysRepository = ExerciseDaysRepository();
   final _exercisesRepository = ExercisesRepository();
   final _exerciseTypesRepository = ExerciseTypesRepository();
@@ -24,7 +26,7 @@ class NormalizeDataService {
   Future<List<ExerciseDayClient>> getNormalizedData({
     required String trainingBlockId,
   }) async {
-    final trainingBlockFuture = _trainingBlockRepository.fetchTrainingBlock(
+    final trainingBlockFuture = _trainingBlocksRepository.fetchTrainingBlock(
       id: trainingBlockId,
     );
     final exerciseTypesFuture = _exerciseTypesRepository.fetchExerciseTypes();
@@ -47,9 +49,9 @@ class NormalizeDataService {
     final exercises = await exercisesFuture;
     final orderings = await orderingsFuture;
 
-    final exerciseDayExerciseTypeOrderings = generateOrderingsMap(orderings);
+    final orderingsMap = OrderingsMap(orderings);
+    final exerciseDaysMap = ExerciseDaysMap(exerciseDays);
 
-    final exerciseDaysMap = generateExerciseDayMap(exerciseDays);
     final exerciseDaysTypesDictionary = getExerciseDaysTypesDictionary(
       exercises,
       exerciseTypes,
@@ -61,35 +63,30 @@ class NormalizeDataService {
       final exerciseTypes = entry.value.values.toList();
 
       exerciseTypes.sort((a, b) {
-        final orderingA =
-            exerciseDayExerciseTypeOrderings[exerciseDayId]?.ordering[a.id] ??
-                double.infinity;
+        final orderingA = orderingsMap.get(exerciseDayId, a.id);
+        final orderingB = orderingsMap.get(exerciseDayId, b.id);
 
-        final orderingB =
-            exerciseDayExerciseTypeOrderings[exerciseDayId]?.ordering[b.id] ??
-                double.infinity;
-
-        return orderingA.toInt() - orderingB.toInt();
+        return orderingA - orderingB;
       });
 
-      return exerciseDaysMap[entry.key]!.copyWith(
-        id: exerciseDaysMap[entry.key]!.id,
-        name: exerciseDaysMap[entry.key]!.name,
+      final exerciseDay = exerciseDaysMap.get(entry.key);
+
+      return exerciseDay.copyWith(
+        id: exerciseDay.id,
+        name: exerciseDay.name,
         exerciseTypes: exerciseTypes,
       );
     }).toList();
 
-    final emptyExerciseDayIds = Set.of(exerciseDaysMap.keys).difference(
-      Set.of(exerciseDaysWithSortedExerciseTypes.map(
-        (exerciseDay) => exerciseDay.id,
-      )),
+    final emptyExerciseDayIds = exerciseDaysMap.getEmptyExerciseDayIds(
+      exerciseDaysWithSortedExerciseTypes,
     );
 
     for (final emptyExerciseDayId in emptyExerciseDayIds) {
       exerciseDaysWithSortedExerciseTypes.add(
         ExerciseDayClient(
           id: emptyExerciseDayId,
-          name: exerciseDaysMap[emptyExerciseDayId]!.name,
+          name: exerciseDaysMap.get(emptyExerciseDayId).name,
           exerciseTypes: [],
         ),
       );
@@ -106,36 +103,6 @@ class NormalizeDataService {
 
     return exerciseDaysWithSortedExerciseTypes;
   }
-}
-
-Map<String, Ordering> generateOrderingsMap(
-  List<Ordering> orderings,
-) {
-  final orderingsMap = <String, Ordering>{};
-
-  for (final ordering in orderings) {
-    orderingsMap[ordering.id] = ordering;
-  }
-
-  return orderingsMap;
-}
-
-// TODO: convert to a collection class
-Map<String, ExerciseDayClient> generateExerciseDayMap(
-  List<ExerciseDay> exerciseDays,
-) {
-  final exerciseDayMap = <String, ExerciseDayClient>{};
-
-  for (final exerciseDay in exerciseDays) {
-    // TODO: add "from" constructor
-    exerciseDayMap[exerciseDay.id] = ExerciseDayClient(
-      id: exerciseDay.id,
-      name: exerciseDay.name,
-      exerciseTypes: [],
-    );
-  }
-
-  return exerciseDayMap;
 }
 
 // TODO: refactor

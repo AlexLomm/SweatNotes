@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models_client/exercise_day_client.dart';
-import '../../services/normalize_data_service.dart';
+import '../../services/normalize_data_service/normalize_data_service.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/wheel_selector/models/wheel_selector_value.dart';

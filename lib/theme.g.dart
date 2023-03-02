@@ -6,11 +6,11 @@ part of 'theme.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeHash() => r'c02a30f56163ac531976badd846970d1f7746444';
+String _$themeHash() => r'226e236fee85837b9ce939d70660d7177ed9f674';
 
 /// See also [theme].
 @ProviderFor(theme)
-final themeProvider = AutoDisposeFutureProvider<ThemeData>.internal(
+final themeProvider = AutoDisposeProvider<ThemeData>.internal(
   theme,
   name: r'themeProvider',
   debugGetCreateSourceHash:
@@ -19,5 +19,5 @@ final themeProvider = AutoDisposeFutureProvider<ThemeData>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef ThemeRef = AutoDisposeFutureProviderRef<ThemeData>;
+typedef ThemeRef = AutoDisposeProviderRef<ThemeData>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

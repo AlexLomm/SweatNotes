@@ -10,18 +10,13 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
-    final themeFuture = ref.watch(themeProvider.future);
+    final theme = ref.watch(themeProvider);
 
-    return FutureBuilder(
-      future: themeFuture,
-      builder: (context, snapshot) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Journal',
-          theme: snapshot.data,
-          routerConfig: goRouter,
-        );
-      },
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: 'Journal',
+      theme: theme,
+      routerConfig: goRouter,
     );
   }
 }

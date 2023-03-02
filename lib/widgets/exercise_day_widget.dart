@@ -79,8 +79,8 @@ class ExerciseDayWidget extends StatelessWidget {
             child: Text(
               name,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
           ),
         ),

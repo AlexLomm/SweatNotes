@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../firebase.dart';
+
 part 'auth_repository.g.dart';
 
 class AuthRepository {
@@ -36,11 +38,6 @@ class AuthRepository {
   Future<void> signOut() {
     return _auth.signOut();
   }
-}
-
-@riverpod
-FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
-  return FirebaseAuth.instance;
 }
 
 @riverpod

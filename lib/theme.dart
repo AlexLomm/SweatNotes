@@ -121,8 +121,8 @@ final textTheme = TextTheme(
 );
 
 @riverpod
-Future<ThemeData> theme(ThemeRef ref) async {
-  final themeMode = await ref.watch(themeSwitcherProvider.future);
+ThemeData theme(ThemeRef ref) {
+  final themeMode = ref.watch(themeSwitcherProvider);
 
   final isLight = themeMode == ThemeMode.light;
 

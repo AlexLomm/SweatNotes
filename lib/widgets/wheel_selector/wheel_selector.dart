@@ -70,19 +70,19 @@ class _WheelSelectorState<T> extends State<WheelSelector<T>> {
         children: [
           Align(
             alignment: Alignment.center,
+            child: WheelSelectorHighlight(
+              width: widget.width,
+              height: WheelSelectorChild.height,
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
             child: WheelSelectorWheel(
               controller: _controller,
               childCount: widget.childCount,
               width: widget.width,
               convertIndexToValue: widget.convertIndexToValue,
               onValueChanged: widget.onValueChanged,
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: WheelSelectorHighlight(
-              width: widget.width,
-              height: WheelSelectorChild.height,
             ),
           ),
           Align(

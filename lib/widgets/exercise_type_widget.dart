@@ -21,17 +21,16 @@ class ExerciseTypeWidget extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      decoration: const BoxDecoration(
-        // TODO: extract
-        color: Color.fromRGBO(231, 224, 236, 1),
-        boxShadow: [
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceVariant,
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 16,
             offset: Offset(0, 4),
           ),
         ],
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topRight: Radius.circular(8),
           bottomRight: Radius.circular(8),
         ),
@@ -42,9 +41,9 @@ class ExerciseTypeWidget extends StatelessWidget {
           Container(
             width: dragHandleWidth,
             margin: const EdgeInsets.only(right: dragHandleAndLabelSpacing),
-            child: const Icon(
+            child: Icon(
               Icons.drag_indicator,
-              color: Color.fromRGBO(103, 80, 164, 1),
+              color: Theme.of(context).colorScheme.outline,
             ),
           ),
           Container(
@@ -53,7 +52,9 @@ class ExerciseTypeWidget extends StatelessWidget {
             child: Text(
               exerciseType.name,
               softWrap: true,
-              style: Theme.of(context).textTheme.labelSmall,
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
             ),
           ),
         ],

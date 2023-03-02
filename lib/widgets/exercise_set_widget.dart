@@ -6,25 +6,11 @@ import 'exercise_type_widget.dart';
 class ExerciseSetWidget extends StatelessWidget {
   static const width = 75.0;
   static const borderRadius = Radius.circular(8);
-  static const borderSide = BorderSide(color: Colors.black12, width: 1);
 
   final bool isSingle;
   final bool isLeftmost;
   final bool isRightmost;
   final ExerciseSetClient exerciseSet;
-
-  get _borderTopCell {
-    return Border(
-      right: isSingle || isRightmost ? BorderSide.none : borderSide,
-      bottom: borderSide,
-    );
-  }
-
-  get _borderBottomCell {
-    final rightSide = isSingle || isRightmost ? BorderSide.none : borderSide;
-
-    return Border(right: rightSide);
-  }
 
   const ExerciseSetWidget({
     Key? key,
@@ -36,7 +22,21 @@ class ExerciseSetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundColor = Color.fromRGBO(231, 224, 236, 1);
+    final backgroundColor = Theme.of(context).colorScheme.surfaceVariant;
+
+    final borderSide = BorderSide(
+      color: Theme.of(context).colorScheme.outlineVariant,
+      width: 1,
+    );
+
+    final borderTopCell = Border(
+      right: isSingle || isRightmost ? BorderSide.none : borderSide,
+      bottom: borderSide,
+    );
+
+    final borderBottomCell = Border(
+      right: isSingle || isRightmost ? BorderSide.none : borderSide,
+    );
 
     return SizedBox(
       width: width,
@@ -46,26 +46,30 @@ class ExerciseSetWidget extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: backgroundColor,
-              border: _borderTopCell,
+              border: borderTopCell,
             ),
             height: ExerciseTypeWidget.height / 2,
             child: Center(
               child: Text(
                 exerciseSet.reps,
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
               ),
             ),
           ),
           Container(
             decoration: BoxDecoration(
               color: backgroundColor,
-              border: _borderBottomCell,
+              border: borderBottomCell,
             ),
             height: ExerciseTypeWidget.height / 2,
             child: Center(
               child: Text(
                 exerciseSet.load,
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
               ),
             ),
           ),

@@ -38,43 +38,42 @@ class Layout extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            // TODO: extract color
-            icon: const Icon(
+            icon: Icon(
               Icons.wb_sunny_outlined,
-              color: Color.fromRGBO(28, 27, 31, 1),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             tooltip: 'Switch theme',
             splashRadius: 20,
             onPressed: () => themeSwitcher.toggle(),
           ),
           IconButton(
-            // TODO: extract color
-            icon: const Icon(Icons.home, color: Color.fromRGBO(28, 27, 31, 1)),
+            icon: Icon(
+              Icons.home,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             tooltip: 'Go home',
             splashRadius: 20,
             onPressed: () => context.go('/'),
           ),
           IconButton(
-            // TODO: extract color
-            icon: const Icon(
+            icon: Icon(
               Icons.logout_outlined,
-              color: Color.fromRGBO(28, 27, 31, 1),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             tooltip: 'Sign out',
             splashRadius: 20,
             onPressed: () => authService.signOut(),
           ),
           // IconButton(
-          //   // TODO: extract color
-          //   icon: const Icon(Icons.add, color: Color.fromRGBO(28, 27, 31, 1)),
+          //   icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
           //   tooltip: 'Add new entry',
           //   splashRadius: 20,
           //   onPressed: () {},
           // ),
           // IconButton(
-          //   icon: const Icon(
+          //   icon: Icon(
           //     Icons.settings_outlined,
-          //     color: Color.fromRGBO(28, 27, 31, 1),
+          //     color: Theme.of(context).colorScheme.onSurface,
           //   ),
           //   tooltip: 'View entries',
           //   splashRadius: 20,

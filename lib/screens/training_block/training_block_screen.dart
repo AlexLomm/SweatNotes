@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../../models_client/exercise_day_client.dart';
 import '../../services/normalize_data_service.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
-import '../../widgets/exercise_day_widget.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/wheel_selector/models/wheel_selector_value.dart';
 import '../../widgets/wheel_selector/wheel_selector.dart';
+import 'exercise_matrix_labels.dart';
+import 'exercise_matrix.dart';
 
 class TrainingBlockScreen extends StatefulWidget {
   final String trainingBlockId;
@@ -63,18 +64,19 @@ class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
                 );
               }
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return Stack(
                 children: [
-                  for (final exerciseDay in exerciseDays)
-                    Container(
-                      key: Key(exerciseDay.id),
-                      margin: const EdgeInsets.only(bottom: 24.0),
-                      child: ExerciseDayWidget(
-                        name: exerciseDay.name,
-                        exerciseTypes: exerciseDay.exerciseTypes,
-                      ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: ExerciseMatrix(exerciseDays: exerciseDays),
                     ),
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: ExerciseMatrixLabels(exerciseDays: exerciseDays),
+                  ),
                 ],
               );
             },

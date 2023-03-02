@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../models_client/exercise_type_client.dart';
 import 'exercise_type_widget.dart';
-import 'exercise_widget.dart';
 
 class ExerciseDayWidget extends StatelessWidget {
+  static const insetSize = 24.0;
+  static const width = ExerciseTypeWidget.width - insetSize;
   static const titleHeight = 56.0;
-  static const spacingBetweenExerciseTypes = 8.0;
+  static const spacingBetweenItems = 8.0;
+  static const borderRadius = 8.0;
 
   final String name;
   final List<ExerciseTypeClient> exerciseTypes;
+
+  get height =>
+      exerciseTypes.length * (ExerciseTypeWidget.height + spacingBetweenItems) +
+      titleHeight;
 
   const ExerciseDayWidget({
     Key? key,
@@ -23,51 +29,16 @@ class ExerciseDayWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              margin: const EdgeInsets.only(
-                left: ExerciseTypeWidget.width + 16.0,
-                top: titleHeight,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (final exerciseType in exerciseTypes)
-                    Container(
-                      margin: const EdgeInsets.only(
-                        bottom: spacingBetweenExerciseTypes,
-                      ),
-                      child: Row(
-                        children: [
-                          for (final exercise in exerciseType.exercises)
-                            Container(
-                              key: Key(exercise.id),
-                              margin: const EdgeInsets.only(right: 16),
-                              child: ExerciseWidget(exercise: exercise),
-                            )
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topLeft,
           child: Container(
             padding: const EdgeInsets.only(top: 18, right: 16, left: 16),
-            width: ExerciseTypeWidget.width - 24,
-            height: exerciseTypes.length *
-                    (ExerciseTypeWidget.height + spacingBetweenExerciseTypes) +
-                titleHeight,
+            width: width,
+            height: height,
             decoration: const BoxDecoration(
               // TODO: use theme color
               color: Color.fromRGBO(103, 80, 164, 0.08),
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(8),
-                bottomRight: Radius.circular(8),
+                topRight: Radius.circular(borderRadius),
+                bottomRight: Radius.circular(borderRadius),
               ),
             ),
             child: Text(
@@ -81,20 +52,14 @@ class ExerciseDayWidget extends StatelessWidget {
         Align(
           alignment: Alignment.topLeft,
           child: Container(
-            margin: const EdgeInsets.only(
-              top: titleHeight,
-              bottom: spacingBetweenExerciseTypes,
-            ),
+            margin: const EdgeInsets.only(top: titleHeight),
             child: Column(
               children: [
                 for (final exerciseType in exerciseTypes)
                   Container(
                     key: Key(exerciseType.id),
-                    margin: const EdgeInsets.only(right: 16),
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ExerciseTypeWidget(exerciseType: exerciseType),
-                    ),
+                    margin: const EdgeInsets.only(bottom: spacingBetweenItems),
+                    child: ExerciseTypeWidget(exerciseType: exerciseType),
                   )
               ],
             ),

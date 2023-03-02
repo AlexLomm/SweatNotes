@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/router/router.dart';
-import 'package:journal_flutter/theme.dart';
+
+import './router/router.dart';
+import './theme.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -9,12 +10,18 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
+    final themeFuture = ref.watch(themeProvider.future);
 
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Journal',
-      theme: theme,
-      routerConfig: goRouter,
+    return FutureBuilder(
+      future: themeFuture,
+      builder: (context, snapshot) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Journal',
+          theme: snapshot.data,
+          routerConfig: goRouter,
+        );
+      },
     );
   }
 }

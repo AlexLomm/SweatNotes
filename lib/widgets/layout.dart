@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/auth_service.dart';
+import '../theme_switcher.dart';
 
 class Layout extends ConsumerWidget {
   final Widget child;
@@ -20,6 +21,7 @@ class Layout extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authService = ref.watch(authServiceProvider);
+    final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +45,7 @@ class Layout extends ConsumerWidget {
             ),
             tooltip: 'Switch theme',
             splashRadius: 20,
-            onPressed: () => context.go('/'),
+            onPressed: () => themeSwitcher.toggle(),
           ),
           IconButton(
             // TODO: extract color

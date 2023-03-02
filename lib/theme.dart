@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:journal_flutter/theme_switcher.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final colorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromRGBO(103, 80, 164, 1),
+const seedColor = Color.fromRGBO(103, 80, 164, 1);
+
+final colorSchemeLight = ColorScheme.fromSeed(
+  brightness: Brightness.light,
+  seedColor: seedColor,
+);
+
+final ColorScheme colorSchemeDark = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
+  seedColor: seedColor,
 );
 
 final textTheme = TextTheme(
@@ -106,7 +118,17 @@ final textTheme = TextTheme(
       ),
 );
 
-final theme = ThemeData(
-  colorScheme: colorScheme,
-  textTheme: textTheme,
-);
+final themeProvider = FutureProvider.autoDispose<ThemeData>((ref) async {
+  final themeMode = await ref.watch(themeSwitcherProvider.future);
+
+  final isLight = themeMode == ThemeMode.light;
+
+  return ThemeData(
+    colorScheme: isLight ? colorSchemeLight : colorSchemeDark,
+    appBarTheme: AppBarTheme(
+      systemOverlayStyle:
+          isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+    ),
+    textTheme: textTheme,
+  );
+});

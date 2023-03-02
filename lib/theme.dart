@@ -125,13 +125,16 @@ ThemeData theme(ThemeRef ref) {
   final themeMode = ref.watch(themeSwitcherProvider);
 
   final isLight = themeMode == ThemeMode.light;
+  final colorScheme = isLight ? colorSchemeLight : colorSchemeDark;
+  final systemOverlayStyle =
+      isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
 
   return ThemeData(
-    colorScheme: isLight ? colorSchemeLight : colorSchemeDark,
-    appBarTheme: AppBarTheme(
-      systemOverlayStyle:
-          isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
-    ),
+    useMaterial3: true,
     textTheme: textTheme,
+    colorScheme: colorScheme,
+    appBarTheme: AppBarTheme(
+      systemOverlayStyle: systemOverlayStyle,
+    ),
   );
 }

@@ -29,23 +29,25 @@ class ExerciseDayWidget extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Container(
-            padding: const EdgeInsets.only(top: 18, right: 16, left: 16),
-            width: width,
-            height: height,
-            decoration: const BoxDecoration(
-              // TODO: use theme color
-              color: Color.fromRGBO(103, 80, 164, 0.08),
+          child: Material(
+            elevation: 2,
+            surfaceTintColor: Theme.of(context).colorScheme.primary,
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(borderRadius),
                 bottomRight: Radius.circular(borderRadius),
               ),
             ),
-            child: Text(
-              name,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+            child: Container(
+              padding: const EdgeInsets.only(top: 18, right: 16, left: 16),
+              width: width,
+              height: height,
+              child: Text(
+                name,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
             ),
           ),
         ),

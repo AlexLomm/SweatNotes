@@ -6,8 +6,8 @@ import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/wheel_selector/models/wheel_selector_value.dart';
 import '../../widgets/wheel_selector/wheel_selector.dart';
-import 'exercise_matrix_labels.dart';
 import 'exercise_matrix.dart';
+import 'exercise_matrix_labels.dart';
 
 class TrainingBlockScreen extends StatefulWidget {
   final String trainingBlockId;

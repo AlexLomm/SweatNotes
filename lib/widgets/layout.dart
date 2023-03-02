@@ -7,6 +7,8 @@ import '../services/auth_service.dart';
 import '../theme_switcher.dart';
 
 class Layout extends ConsumerWidget {
+  static const spacingTop = 16.0;
+
   final Widget child;
   final Widget? floatingActionButton;
   final bool isScrollable;
@@ -84,7 +86,7 @@ class Layout extends ConsumerWidget {
       body: SafeArea(
         bottom: false,
         child: Container(
-          padding: const EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.only(top: spacingTop),
           child: isScrollable ? SingleChildScrollView(child: child) : child,
         ),
       ),

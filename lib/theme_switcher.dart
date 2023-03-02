@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../shared_preferences.dart';
 
 part 'theme_switcher.g.dart';
 

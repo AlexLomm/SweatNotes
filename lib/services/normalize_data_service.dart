@@ -1,18 +1,17 @@
 import 'dart:math';
 
-import 'package:journal_flutter/models/ordering.dart';
-import 'package:journal_flutter/models_client/exercise_set_client.dart';
-import 'package:journal_flutter/repositories/exercise_days_repository.dart';
-import 'package:journal_flutter/repositories/orderings_repository.dart';
-
 import '../models/exercise.dart';
 import '../models/exercise_day.dart';
 import '../models/exercise_type.dart';
+import '../models/ordering.dart';
 import '../models_client/exercise_client.dart';
 import '../models_client/exercise_day_client.dart';
+import '../models_client/exercise_set_client.dart';
 import '../models_client/exercise_type_client.dart';
+import '../repositories/exercise_days_repository.dart';
 import '../repositories/exercise_types_repository.dart';
 import '../repositories/exercises_repository.dart';
+import '../repositories/orderings_repository.dart';
 import '../repositories/training_blocks_repository.dart';
 
 class NormalizeDataService {

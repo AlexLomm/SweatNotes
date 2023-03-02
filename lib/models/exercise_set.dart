@@ -1,8 +1,7 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'exercise_set.freezed.dart';
-
 part 'exercise_set.g.dart';
 
 @freezed

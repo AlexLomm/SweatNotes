@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/models_client/exercise_type_client.dart';
 
+import '../models_client/exercise_type_client.dart';
 import 'exercise_type_widget.dart';
 import 'exercise_widget.dart';
 

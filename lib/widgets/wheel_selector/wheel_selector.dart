@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:journal_flutter/widgets/wheel_selector/wheel_selector_wheel.dart';
 
 import 'fade_gradient.dart';
-import 'wheel_selector_highlight.dart';
-import 'wheel_selector_child.dart';
 import 'models/wheel_selector_value.dart';
+import 'wheel_selector_child.dart';
+import 'wheel_selector_highlight.dart';
+import 'wheel_selector_wheel.dart';
 
 class WheelSelector<T> extends StatefulWidget {
   static double height = 128.0;

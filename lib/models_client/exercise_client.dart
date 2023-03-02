@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:journal_flutter/models_client/exercise_set_client.dart';
 
+import '../models_client/exercise_set_client.dart';
 import '../utils/generate_hash.dart';
 
 part 'exercise_client.freezed.dart';
-
 part 'exercise_client.g.dart';
 
 @freezed

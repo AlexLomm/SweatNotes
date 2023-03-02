@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/repositories/auth_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../repositories/auth_repository.dart';
 import '../router/router.dart';
+
+part 'auth_service.g.dart';
 
 // TODO: Check sign_in_screen_controller https://github.com/bizz84/starter_architecture_flutter_firebase/blob/master/lib/src/features/authentication/presentation/sign_in/sign_in_screen_controller.dart
 class AuthService {
@@ -50,9 +52,10 @@ class AuthService {
   }
 }
 
-final authServiceProvider = Provider<AuthService>((ref) {
+@riverpod
+AuthService authService(AuthServiceRef ref) {
   return AuthService(
     ref.watch(authRepositoryProvider),
     ref.watch(goRouterProvider),
   );
-});
+}

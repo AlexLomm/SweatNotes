@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:journal_flutter/models/exercise.dart';
+
+import '../models/exercise.dart';
 
 class ExercisesRepository {
   Query<Exercise> getExercisesByExerciseDayIdQuery({

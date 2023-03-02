@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:journal_flutter/theme_switcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import 'theme_switcher.dart';
+
+part 'theme.g.dart';
 
 const seedColor = Color.fromRGBO(103, 80, 164, 1);
 
@@ -118,7 +120,8 @@ final textTheme = TextTheme(
       ),
 );
 
-final themeProvider = FutureProvider.autoDispose<ThemeData>((ref) async {
+@riverpod
+Future<ThemeData> theme(ThemeRef ref) async {
   final themeMode = await ref.watch(themeSwitcherProvider.future);
 
   final isLight = themeMode == ThemeMode.light;
@@ -131,4 +134,4 @@ final themeProvider = FutureProvider.autoDispose<ThemeData>((ref) async {
     ),
     textTheme: textTheme,
   );
-});
+}

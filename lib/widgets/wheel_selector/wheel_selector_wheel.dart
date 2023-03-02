@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:journal_flutter/widgets/wheel_selector/wheel_selector_child.dart';
 
 import 'custom_fixed_extent_scroll_physics.dart';
 import 'models/wheel_selector_value.dart';
+import 'wheel_selector_child.dart';
 
 class WheelSelectorWheel<T> extends StatelessWidget {
   final double width;

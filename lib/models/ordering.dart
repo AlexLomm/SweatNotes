@@ -1,8 +1,7 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'ordering.freezed.dart';
-
 part 'ordering.g.dart';
 
 @freezed

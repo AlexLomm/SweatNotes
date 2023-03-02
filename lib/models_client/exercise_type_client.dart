@@ -1,10 +1,9 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'exercise_client.dart';
 
 part 'exercise_type_client.freezed.dart';
-
 part 'exercise_type_client.g.dart';
 
 @freezed

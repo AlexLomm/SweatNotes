@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/models_client/exercise_client.dart';
-import 'package:journal_flutter/widgets/exercise_set_widget.dart';
+
+import '../models_client/exercise_client.dart';
+import '../widgets/exercise_set_widget.dart';
 
 class ExerciseWidget extends StatelessWidget {
   static const borderRadius = Radius.circular(8);

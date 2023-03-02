@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../widgets/layout.dart';
 import '../../models/training_block.dart';
 import '../../services/training_blocks_state.dart';
+import '../../widgets/layout.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

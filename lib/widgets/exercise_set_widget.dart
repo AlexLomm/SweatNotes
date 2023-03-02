@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/models_client/exercise_set_client.dart';
 
+import '../models_client/exercise_set_client.dart';
 import 'exercise_type_widget.dart';
 
 class ExerciseSetWidget extends StatelessWidget {

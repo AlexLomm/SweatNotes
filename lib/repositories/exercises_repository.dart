@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/exercise.dart';
+
+part 'exercises_repository.g.dart';
 
 class ExercisesRepository {
   Query<Exercise> getExercisesByExerciseDayIdQuery({
@@ -54,4 +57,9 @@ class ExercisesRepository {
 
     return exercisesListList.expand((exercisesList) => exercisesList).toList();
   }
+}
+
+@riverpod
+ExercisesRepository exercisesRepository(ExercisesRepositoryRef ref) {
+  return ExercisesRepository();
 }

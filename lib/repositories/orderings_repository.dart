@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/ordering.dart';
+
+part 'orderings_repository.g.dart';
 
 class OrderingsRepository {
   List<DocumentReference<Ordering>> getOrderingRefsByIds({
@@ -49,4 +52,9 @@ class OrderingsRepository {
 
     return snapshots.map((snapshot) => snapshot.data()!).toList();
   }
+}
+
+@riverpod
+OrderingsRepository orderingsRepository(OrderingsRepositoryRef ref) {
+  return OrderingsRepository();
 }

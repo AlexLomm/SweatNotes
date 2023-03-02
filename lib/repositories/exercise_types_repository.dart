@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/exercise_type.dart';
+
+part 'exercise_types_repository.g.dart';
 
 class ExerciseTypesRepository {
   Query<ExerciseType> getExerciseTypesQuery() {
@@ -29,4 +32,9 @@ class ExerciseTypesRepository {
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
+}
+
+@riverpod
+ExerciseTypesRepository exerciseTypesRepository(ExerciseTypesRepositoryRef ref) {
+  return ExerciseTypesRepository();
 }

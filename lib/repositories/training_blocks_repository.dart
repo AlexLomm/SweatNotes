@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/training_block.dart';
+
+part 'training_blocks_repository.g.dart';
 
 class TrainingBlocksRepository {
   Query<TrainingBlock> getTrainingBlocks() {
@@ -57,4 +60,9 @@ class TrainingBlocksRepository {
 
     return snapshot.data();
   }
+}
+
+@riverpod
+TrainingBlocksRepository trainingBlocksRepository(TrainingBlocksRepositoryRef ref) {
+  return TrainingBlocksRepository();
 }

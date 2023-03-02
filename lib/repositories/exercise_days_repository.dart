@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../models/exercise_day.dart';
 
+part 'exercise_days_repository.g.dart';
+
 class ExerciseDaysRepository {
-  Query<ExerciseDay> getExerciseDaysQuery({required String trainingBlockId}) {
+  Query<ExerciseDay> getExerciseDaysQuery({
+    required String trainingBlockId,
+  }) {
     return FirebaseFirestore.instance
         .collection('exercise-days')
         .where('trainingBlockId', isEqualTo: trainingBlockId)
@@ -34,4 +39,9 @@ class ExerciseDaysRepository {
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
+}
+
+@riverpod
+ExerciseDaysRepository exerciseDaysRepository(ExerciseDaysRepositoryRef ref) {
+  return ExerciseDaysRepository();
 }

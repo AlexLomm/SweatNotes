@@ -125,6 +125,7 @@ ThemeData theme(ThemeRef ref) {
   final themeMode = ref.watch(themeSwitcherProvider);
 
   final isLight = themeMode == ThemeMode.light;
+
   final colorScheme = isLight ? colorSchemeLight : colorSchemeDark;
   final systemOverlayStyle =
       isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
@@ -135,6 +136,9 @@ ThemeData theme(ThemeRef ref) {
     colorScheme: colorScheme,
     appBarTheme: AppBarTheme(
       systemOverlayStyle: systemOverlayStyle,
+      // gets rid of the AppBar changing color when scrolling
+      // @see https://stackoverflow.com/a/72773421/4241959
+      scrolledUnderElevation: 0.0,
     ),
   );
 }

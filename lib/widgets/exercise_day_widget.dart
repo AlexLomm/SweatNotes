@@ -63,18 +63,12 @@ class ExerciseDayWidget extends StatelessWidget {
                     (ExerciseTypeWidget.height + spacingBetweenExerciseTypes) +
                 titleHeight,
             decoration: const BoxDecoration(
+              // TODO: use theme color
               color: Color.fromRGBO(103, 80, 164, 0.08),
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(8),
                 bottomRight: Radius.circular(8),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 16,
-                  offset: Offset(0, 4),
-                ),
-              ],
             ),
             child: Text(
               name,

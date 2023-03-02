@@ -25,7 +25,7 @@ class ExerciseSetWidget extends StatelessWidget {
     final backgroundColor = Theme.of(context).colorScheme.surfaceVariant;
 
     final borderSide = BorderSide(
-      color: Theme.of(context).colorScheme.outlineVariant,
+      color: Theme.of(context).colorScheme.outline.withOpacity(0.32),
       width: 1,
     );
 

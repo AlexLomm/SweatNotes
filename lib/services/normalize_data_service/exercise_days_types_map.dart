@@ -20,7 +20,42 @@ ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
   // as well as we want 1 more exercise
   final maxExercisePlacement = exercisesCollection.maxExercisePlacement + 1;
 
-  final map = ExerciseDaysExerciseTypesMap(exercises, exerciseTypes);
+  final map = ExerciseDaysExerciseTypesMap();
+
+  final exerciseTypesMap = ExerciseTypesMap(exerciseTypes);
+
+  for (final exercise in exercises) {
+    map.setExerciseTypeSafely(
+      exerciseDayId: exercise.exerciseDayId,
+      exerciseTypeId: exercise.exerciseTypeId,
+      exerciseType: exerciseTypesMap.get(exercise.exerciseTypeId),
+    );
+
+    final exerciseType = map.getExerciseType(
+      exerciseDayId: exercise.exerciseDayId,
+      exerciseTypeId: exercise.exerciseTypeId,
+    );
+
+    map.setExerciseTypeExercises(
+      exerciseDayId: exercise.exerciseDayId,
+      exerciseTypeId: exercise.exerciseTypeId,
+      exercises: [
+        ...exerciseType.exercises,
+        ExerciseClient(
+          id: exercise.id,
+          exerciseDayId: exercise.exerciseDayId,
+          placement: exercise.placement,
+          exerciseSets: exercise.sets.map((set) {
+            return ExerciseSetClient(
+              isFiller: false,
+              reps: set.reps,
+              load: set.load,
+            );
+          }).toList(),
+        )
+      ],
+    );
+  }
 
   for (final exerciseDayId in map.exerciseDayIds) {
     for (final exerciseTypeId in map.getExerciseTypeIds(exerciseDayId)) {
@@ -52,64 +87,12 @@ ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
   return map;
 }
 
+// TODO: refactor
 class ExerciseDaysExerciseTypesMap {
-  final List<Exercise> exercises;
-  final List<ExerciseType> exerciseTypes;
-
-  Map<String, Map<String, ExerciseTypeClient>> _map = {};
+  final Map<String, Map<String, ExerciseTypeClient>> _map = {};
 
   // TODO: remove
   Map<String, Map<String, ExerciseTypeClient>> get map => _map;
-
-  ExerciseDaysExerciseTypesMap(this.exercises, this.exerciseTypes) {
-    _map = _generateExerciseDaysExerciseTypesMap();
-  }
-
-  Map<String, Map<String, ExerciseTypeClient>>
-      _generateExerciseDaysExerciseTypesMap() {
-    final Map<String, Map<String, ExerciseTypeClient>> map = {};
-
-    final exerciseTypesMap = ExerciseTypesMap(exerciseTypes);
-
-    for (final exercise in exercises) {
-      final exerciseDayId = exercise.exerciseDayId;
-
-      if (!map.containsKey(exerciseDayId)) {
-        map[exerciseDayId] = {};
-      }
-
-      final exerciseTypeIdExercisesMap = map[exerciseDayId]!;
-
-      final exerciseTypeId = exercise.exerciseTypeId;
-
-      if (!exerciseTypeIdExercisesMap.containsKey(exerciseTypeId)) {
-        exerciseTypeIdExercisesMap[exerciseTypeId] =
-            exerciseTypesMap.get(exerciseTypeId);
-      }
-
-      final exerciseType = map[exerciseDayId]![exerciseTypeId]!;
-
-      map[exerciseDayId]![exerciseTypeId] = exerciseType.copyWith(
-        exercises: [
-          ...exerciseType.exercises,
-          ExerciseClient(
-            id: exercise.id,
-            exerciseDayId: exercise.exerciseDayId,
-            placement: exercise.placement,
-            exerciseSets: exercise.sets.map((set) {
-              return ExerciseSetClient(
-                isFiller: false,
-                reps: set.reps,
-                load: set.load,
-              );
-            }).toList(),
-          )
-        ],
-      );
-    }
-
-    return map;
-  }
 
   List<String> get exerciseDayIds => _map.keys.toList();
 
@@ -132,5 +115,22 @@ class ExerciseDaysExerciseTypesMap {
     _map[exerciseDayId]![exerciseTypeId] = exerciseType.copyWith(
       exercises: exercises,
     );
+  }
+
+  // TODO: remove
+  void setExerciseTypeSafely({
+    required String exerciseDayId,
+    required String exerciseTypeId,
+    required ExerciseTypeClient exerciseType,
+  }) {
+    if (!_map.containsKey(exerciseDayId)) {
+      _map[exerciseDayId] = {};
+    }
+
+    final exerciseTypeIdExercisesMap = map[exerciseDayId]!;
+
+    if (!exerciseTypeIdExercisesMap.containsKey(exerciseTypeId)) {
+      exerciseTypeIdExercisesMap[exerciseTypeId] = exerciseType;
+    }
   }
 }

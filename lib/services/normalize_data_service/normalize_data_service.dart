@@ -6,9 +6,9 @@ import '../../repositories/exercise_types_repository.dart';
 import '../../repositories/exercises_repository.dart';
 import '../../repositories/orderings_repository.dart';
 import '../../repositories/training_blocks_repository.dart';
-import 'exercise_days.dart';
-import 'exercise_days_types_map.dart';
-import 'orderings_map.dart';
+import 'exercise_days_by_ids_map.dart';
+import 'exercise_days_by_ids_exercise_types_by_ids_map.dart';
+import 'orderings_by_ids_map.dart';
 
 part 'normalize_data_service.g.dart';
 
@@ -54,10 +54,10 @@ class NormalizeDataService {
     final exercises = await exercisesFuture;
     final orderings = await orderingsFuture;
 
-    final orderingsMap = OrderingsMap(orderings);
-    final exerciseDaysMap = ExerciseDaysMap(exerciseDays);
+    final orderingsMap = OrderingsByIdsMap(orderings);
+    final exerciseDaysMap = ExerciseDaysByIdsMap(exerciseDays);
 
-    final exerciseDaysTypesMap = ExerciseDaysTypesDictionary(
+    final exerciseDaysTypesMap = ExerciseDaysByIdsExerciseTypesByIdsMap(
       exercises,
       exerciseTypes,
     );

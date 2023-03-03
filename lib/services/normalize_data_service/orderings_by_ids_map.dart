@@ -1,12 +1,11 @@
 import '../../models/ordering.dart';
 
-class OrderingsMap {
+class OrderingsByIdsMap {
   final List<Ordering> orderings;
 
   Map<String, Ordering> _map = {};
 
-  OrderingsMap(this.orderings) {
-    // TODO: remove this from constructor?
+  OrderingsByIdsMap(this.orderings) {
     _map = _generateOrderingsMap();
   }
 
@@ -20,7 +19,7 @@ class OrderingsMap {
     return orderingsMap;
   }
 
-  int get(String idA, idB) {
+  int get(String idA, String idB) {
     final num orderingOrInfinity = _map[idA]?.ordering[idB] ?? double.infinity;
 
     return orderingOrInfinity.toInt();

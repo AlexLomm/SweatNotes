@@ -1,5 +1,5 @@
-import '../../../models/exercise_type.dart';
-import '../../../models_client/exercise_type_client.dart';
+import '../../models/exercise_type.dart';
+import '../../models_client/exercise_type_client.dart';
 
 class ExerciseTypesMap {
   final List<ExerciseType> exerciseTypes;

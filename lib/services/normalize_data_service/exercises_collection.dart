@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../../../models/exercise.dart';
+import '../../models/exercise.dart';
 
 class ExercisesCollection {
   final List<Exercise> exercises;

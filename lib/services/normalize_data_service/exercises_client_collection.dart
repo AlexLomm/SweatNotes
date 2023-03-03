@@ -1,5 +1,5 @@
-import '../../../models_client/exercise_client.dart';
-import '../../../models_client/exercise_set_client.dart';
+import '../../models_client/exercise_client.dart';
+import '../../models_client/exercise_set_client.dart';
 
 class ExercisesClientCollection {
   List<ExerciseClient> _exercises;

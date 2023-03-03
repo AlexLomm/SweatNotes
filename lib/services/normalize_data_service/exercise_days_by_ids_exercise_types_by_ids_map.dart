@@ -3,21 +3,20 @@ import '../../models/exercise_type.dart';
 import '../../models_client/exercise_client.dart';
 import '../../models_client/exercise_set_client.dart';
 import '../../models_client/exercise_type_client.dart';
-import 'data/exercise_types_map.dart';
-import 'data/exercises_client_collection.dart';
-import 'data/exercises_collection.dart';
+import 'exercise_types_map.dart';
+import 'exercises_client_collection.dart';
+import 'exercises_collection.dart';
 
-// TODO: rename
-class ExerciseDaysTypesDictionary {
+class ExerciseDaysByIdsExerciseTypesByIdsMap {
   final List<Exercise> exercises;
   final List<ExerciseType> exerciseTypes;
 
-  final _map = _ExerciseDaysExerciseTypesMap();
+  final _map = _ExerciseDaysExerciseTypesHelperMap();
 
   Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
       _map.entries;
 
-  ExerciseDaysTypesDictionary(this.exercises, this.exerciseTypes) {
+  ExerciseDaysByIdsExerciseTypesByIdsMap(this.exercises, this.exerciseTypes) {
     _init();
   }
 
@@ -95,7 +94,7 @@ class ExerciseDaysTypesDictionary {
   }
 }
 
-class _ExerciseDaysExerciseTypesMap {
+class _ExerciseDaysExerciseTypesHelperMap {
   final Map<String, Map<String, ExerciseTypeClient>> _map = {};
 
   Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>

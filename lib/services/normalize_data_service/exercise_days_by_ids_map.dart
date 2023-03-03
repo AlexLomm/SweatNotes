@@ -1,13 +1,12 @@
 import '../../models/exercise_day.dart';
 import '../../models_client/exercise_day_client.dart';
 
-class ExerciseDaysMap {
+class ExerciseDaysByIdsMap {
   final List<ExerciseDay> exerciseDays;
 
   Map<String, ExerciseDayClient> _map = {};
 
-  ExerciseDaysMap(this.exerciseDays) {
-    // TODO: remove this from constructor?
+  ExerciseDaysByIdsMap(this.exerciseDays) {
     _map = _generateExerciseDaysMap();
   }
 
@@ -15,7 +14,6 @@ class ExerciseDaysMap {
     final exerciseDayMap = <String, ExerciseDayClient>{};
 
     for (final exerciseDay in exerciseDays) {
-      // TODO: add "from" constructor
       exerciseDayMap[exerciseDay.id] = ExerciseDayClient(
         id: exerciseDay.id,
         name: exerciseDay.name,

@@ -5,6 +5,7 @@ import '../../models/exercise_type.dart';
 import '../../models_client/exercise_client.dart';
 import '../../models_client/exercise_set_client.dart';
 import '../../models_client/exercise_type_client.dart';
+import 'data/exercises_client_collection.dart';
 
 ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
   List<Exercise> exercises,
@@ -22,54 +23,27 @@ ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
         exerciseTypeId: exerciseTypeId,
       );
 
-      final exercisesWithFillerSets = exerciseType.exercises.map((exercise) {
-        final exerciseWithFillerSets = exercise.copyWith(exerciseSets: [
-          ...exercise.exerciseSets,
-          ...List.generate(
-            // we want 1 more exercise set than the max for
-            // users to always have a blank set to fill in
-            maxExerciseSetsCount + 1 - exercise.exerciseSets.length,
-            (index) => ExerciseSetClient.empty(),
-          )
-        ]);
-
-        return exerciseWithFillerSets;
-      }).toList();
-
-      final exercisesByPlacementMap = ExerciseByPlacementMap(
-        exercisesWithFillerSets,
-      );
-
-      map.setExerciseTypeExercises(
-        exerciseDayId: exerciseDayId,
-        exerciseTypeId: exerciseTypeId,
-        exercises: [],
-      );
-
-      // TODO: ??
-      List<ExerciseClient> exercises = [];
-
-      for (var i = 0; i < maxExercisePlacement + 1; i++) {
-        final exercise = exercisesByPlacementMap.get(i);
-
-        if (exercise == null) {
-          exercises.add(ExerciseClient.empty().copyWith(
-            exerciseDayId: exerciseDayId,
-            placement: i,
-            exerciseSets: List.generate(
-              maxExerciseSetsCount + 1,
-              (index) => ExerciseSetClient.empty(),
-            ),
-          ));
-        } else {
-          exercises.add(exercise);
-        }
-      }
+      final exercisesCollection = ExercisesClientCollection(
+        exerciseType.exercises,
+      )
+        ..addFillerSets(
+          // we want 1 more exercise set than the max for
+          // users to always have a blank set to fill in
+          fillUntil: maxExerciseSetsCount + 1,
+        )
+        ..addFillerExercises(
+          // we want 1 more exercise set than the max for
+          // users to always have a blank set to fill in
+          maxSets: maxExerciseSetsCount + 1,
+          // as well as we want 1 more exercise
+          maxPlacement: maxExercisePlacement + 1,
+          exerciseDayId: exerciseDayId,
+        );
 
       map.setExerciseTypeExercises(
         exerciseDayId: exerciseDayId,
         exerciseTypeId: exerciseTypeId,
-        exercises: exercises,
+        exercises: exercisesCollection.exercises,
       );
     }
   }
@@ -144,6 +118,7 @@ class ExerciseDaysExerciseTypesMap {
 
   Map<String, Map<String, ExerciseTypeClient>> _map = {};
 
+  // TODO: remove
   Map<String, Map<String, ExerciseTypeClient>> get map => _map;
 
   ExerciseDaysExerciseTypesMap(this.exercises, this.exerciseTypes) {

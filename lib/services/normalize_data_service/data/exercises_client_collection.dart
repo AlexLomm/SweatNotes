@@ -35,6 +35,7 @@ class ExercisesClientCollection {
   }) {
     List<ExerciseClient> exercises = [];
 
+    // maxPlacement + 1 because placements start from 0
     for (var i = 0; i < maxPlacement + 1; i++) {
       final exercise = getByPlacement(i);
 

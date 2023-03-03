@@ -57,10 +57,10 @@ class NormalizeDataService {
     final orderingsMap = OrderingsMap(orderings);
     final exerciseDaysMap = ExerciseDaysMap(exerciseDays);
 
-    final exerciseDaysTypesMap = getExerciseDaysTypesDictionary(
+    final exerciseDaysTypesMap = ExerciseDaysTypesDictionary(
       exercises,
       exerciseTypes,
-    );
+    ).map;
 
     final exerciseDaysWithSortedExerciseTypes =
         exerciseDaysTypesMap.map.entries.map((entry) {

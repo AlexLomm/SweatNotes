@@ -1,3 +1,5 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../models_client/exercise_day_client.dart';
 import '../../repositories/exercise_days_repository.dart';
 import '../../repositories/exercise_types_repository.dart';
@@ -8,33 +10,44 @@ import 'exercise_days.dart';
 import 'exercise_days_types_map.dart';
 import 'orderings_map.dart';
 
+part 'normalize_data_service.g.dart';
+
+// TODO: rename
 class NormalizeDataService {
-  final _trainingBlocksRepository = TrainingBlocksRepository();
-  final _exerciseDaysRepository = ExerciseDaysRepository();
-  final _exercisesRepository = ExercisesRepository();
-  final _exerciseTypesRepository = ExerciseTypesRepository();
-  final _orderingsRepository = OrderingsRepository();
+  final TrainingBlocksRepository trainingBlocksRepository;
+  final ExerciseDaysRepository exerciseDaysRepository;
+  final ExercisesRepository exercisesRepository;
+  final ExerciseTypesRepository exerciseTypesRepository;
+  final OrderingsRepository orderingsRepository;
+
+  NormalizeDataService({
+    required this.trainingBlocksRepository,
+    required this.exerciseDaysRepository,
+    required this.exercisesRepository,
+    required this.exerciseTypesRepository,
+    required this.orderingsRepository,
+  });
 
   Future<List<ExerciseDayClient>> getNormalizedData({
     required String trainingBlockId,
   }) async {
-    final trainingBlockFuture = _trainingBlocksRepository.fetchTrainingBlock(
+    final trainingBlockFuture = trainingBlocksRepository.fetchTrainingBlock(
       id: trainingBlockId,
     );
-    final exerciseTypesFuture = _exerciseTypesRepository.fetchExerciseTypes();
+    final exerciseTypesFuture = exerciseTypesRepository.fetchExerciseTypes();
 
-    final exerciseDays = await _exerciseDaysRepository.fetchExerciseDays(
+    final exerciseDays = await exerciseDaysRepository.fetchExerciseDays(
       trainingBlockId: trainingBlockId,
     );
 
     final exerciseDayIds =
         exerciseDays.map((exerciseDay) => exerciseDay.id).toList();
 
-    final exercisesFuture = _exercisesRepository
+    final exercisesFuture = exercisesRepository
         .fetchExercisesByMultipleExerciseDayIds(exerciseDayIds: exerciseDayIds);
 
     final orderingsFuture =
-        _orderingsRepository.fetchOrderingsByIds(ids: exerciseDayIds);
+        orderingsRepository.fetchOrderingsByIds(ids: exerciseDayIds);
 
     final trainingBlock = await trainingBlockFuture;
     final exerciseTypes = await exerciseTypesFuture;
@@ -95,4 +108,21 @@ class NormalizeDataService {
 
     return exerciseDaysWithSortedExerciseTypes;
   }
+}
+
+@riverpod
+NormalizeDataService normalizeDataService(NormalizeDataServiceRef ref) {
+  final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
+  final exerciseDaysRepository = ref.watch(exerciseDaysRepositoryProvider);
+  final exercisesRepository = ref.watch(exercisesRepositoryProvider);
+  final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
+  final orderingsRepository = ref.watch(orderingsRepositoryProvider);
+
+  return NormalizeDataService(
+    trainingBlocksRepository: trainingBlocksRepository,
+    exerciseDaysRepository: exerciseDaysRepository,
+    exercisesRepository: exercisesRepository,
+    exerciseTypesRepository: exerciseTypesRepository,
+    orderingsRepository: orderingsRepository,
+  );
 }

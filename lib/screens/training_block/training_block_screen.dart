@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models_client/exercise_day_client.dart';
 import '../../services/normalize_data_service/normalize_data_service.dart';
@@ -9,7 +10,7 @@ import '../../widgets/wheel_selector/wheel_selector.dart';
 import 'exercise_matrix.dart';
 import 'exercise_matrix_labels.dart';
 
-class TrainingBlockScreen extends StatefulWidget {
+class TrainingBlockScreen extends ConsumerStatefulWidget {
   final String trainingBlockId;
 
   const TrainingBlockScreen({
@@ -18,18 +19,21 @@ class TrainingBlockScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TrainingBlockScreen> createState() => _TrainingBlockScreenState();
+  TrainingBlockScreenState createState() => TrainingBlockScreenState();
 }
 
-class _TrainingBlockScreenState extends State<TrainingBlockScreen> {
+class TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
   late final Future<List<ExerciseDayClient>> normalizedData;
 
   @override
   void initState() {
     super.initState();
 
-    normalizedData = NormalizeDataService()
-        .getNormalizedData(trainingBlockId: widget.trainingBlockId);
+    final normalizeDataService = ref.read(normalizeDataServiceProvider);
+
+    normalizedData = normalizeDataService.getNormalizedData(
+      trainingBlockId: widget.trainingBlockId,
+    );
   }
 
   @override

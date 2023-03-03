@@ -12,7 +12,10 @@ class ExerciseDaysTypesDictionary {
   final List<Exercise> exercises;
   final List<ExerciseType> exerciseTypes;
 
-  final map = ExerciseDaysExerciseTypesMap();
+  final _map = _ExerciseDaysExerciseTypesMap();
+
+  Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
+      _map.entries;
 
   ExerciseDaysTypesDictionary(this.exercises, this.exerciseTypes) {
     _init();
@@ -31,18 +34,18 @@ class ExerciseDaysTypesDictionary {
     final exerciseTypesMap = ExerciseTypesMap(exerciseTypes);
 
     for (final exercise in exercises) {
-      map.setExerciseType(
+      _map.setExerciseType(
         exerciseDayId: exercise.exerciseDayId,
         exerciseTypeId: exercise.exerciseTypeId,
         exerciseType: exerciseTypesMap.get(exercise.exerciseTypeId),
       );
 
-      final exerciseType = map.getExerciseType(
+      final exerciseType = _map.getExerciseType(
         exerciseDayId: exercise.exerciseDayId,
         exerciseTypeId: exercise.exerciseTypeId,
       );
 
-      map.setExerciseTypeExercises(
+      _map.setExerciseTypeExercises(
         exerciseDayId: exercise.exerciseDayId,
         exerciseTypeId: exercise.exerciseTypeId,
         exercises: [
@@ -63,9 +66,9 @@ class ExerciseDaysTypesDictionary {
       );
     }
 
-    for (final exerciseDayId in map.exerciseDayIds) {
-      for (final exerciseTypeId in map.getExerciseTypeIds(exerciseDayId)) {
-        final exerciseType = map.getExerciseType(
+    for (final exerciseDayId in _map.exerciseDayIds) {
+      for (final exerciseTypeId in _map.getExerciseTypeIds(exerciseDayId)) {
+        final exerciseType = _map.getExerciseType(
           exerciseDayId: exerciseDayId,
           exerciseTypeId: exerciseTypeId,
         );
@@ -82,7 +85,7 @@ class ExerciseDaysTypesDictionary {
             exerciseDayId: exerciseDayId,
           );
 
-        map.setExerciseTypeExercises(
+        _map.setExerciseTypeExercises(
           exerciseDayId: exerciseDayId,
           exerciseTypeId: exerciseTypeId,
           exercises: exercisesCollection.exercises,
@@ -92,12 +95,11 @@ class ExerciseDaysTypesDictionary {
   }
 }
 
-// TODO: refactor
-class ExerciseDaysExerciseTypesMap {
+class _ExerciseDaysExerciseTypesMap {
   final Map<String, Map<String, ExerciseTypeClient>> _map = {};
 
-  // TODO: remove
-  Map<String, Map<String, ExerciseTypeClient>> get map => _map;
+  Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
+      _map.entries;
 
   List<String> get exerciseDayIds => _map.keys.toList();
 
@@ -134,7 +136,7 @@ class ExerciseDaysExerciseTypesMap {
       _map[exerciseDayId] = {};
     }
 
-    final exerciseTypeIdExercisesMap = map[exerciseDayId]!;
+    final exerciseTypeIdExercisesMap = _map[exerciseDayId]!;
 
     if (!exerciseTypeIdExercisesMap.containsKey(exerciseTypeId)) {
       exerciseTypeIdExercisesMap[exerciseTypeId] = exerciseType;

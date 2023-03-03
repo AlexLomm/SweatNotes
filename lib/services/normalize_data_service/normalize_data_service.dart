@@ -60,10 +60,10 @@ class NormalizeDataService {
     final exerciseDaysTypesMap = ExerciseDaysTypesDictionary(
       exercises,
       exerciseTypes,
-    ).map;
+    );
 
     final exerciseDaysWithSortedExerciseTypes =
-        exerciseDaysTypesMap.map.entries.map((entry) {
+        exerciseDaysTypesMap.entries.map((entry) {
       final exerciseDayId = entry.key;
       final exerciseTypes = entry.value.values.toList();
 

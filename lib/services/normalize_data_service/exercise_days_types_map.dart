@@ -1,18 +1,24 @@
-import 'dart:math';
-
 import '../../models/exercise.dart';
 import '../../models/exercise_type.dart';
 import '../../models_client/exercise_client.dart';
 import '../../models_client/exercise_set_client.dart';
 import '../../models_client/exercise_type_client.dart';
+import 'data/exercise_types_map.dart';
 import 'data/exercises_client_collection.dart';
+import 'data/exercises_collection.dart';
 
 ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
   List<Exercise> exercises,
   List<ExerciseType> exerciseTypes,
 ) {
-  final maxExerciseSetsCount = _getMaxExerciseSetsCount(exercises);
-  final maxExercisePlacement = _getMaxExercisePlacement(exercises);
+  final exercisesCollection = ExercisesCollection(exercises);
+
+  // we want 1 more exercise set than the max for
+  // users to always have a blank set to fill in
+  final maxExerciseSetsCount = exercisesCollection.maxExerciseSetsCount + 1;
+
+  // as well as we want 1 more exercise
+  final maxExercisePlacement = exercisesCollection.maxExercisePlacement + 1;
 
   final map = ExerciseDaysExerciseTypesMap(exercises, exerciseTypes);
 
@@ -27,16 +33,11 @@ ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
         exerciseType.exercises,
       )
         ..addFillerSets(
-          // we want 1 more exercise set than the max for
-          // users to always have a blank set to fill in
-          fillUntil: maxExerciseSetsCount + 1,
+          fillUntil: maxExerciseSetsCount,
         )
         ..addFillerExercises(
-          // we want 1 more exercise set than the max for
-          // users to always have a blank set to fill in
-          maxSets: maxExerciseSetsCount + 1,
-          // as well as we want 1 more exercise
-          maxPlacement: maxExercisePlacement + 1,
+          maxSets: maxExerciseSetsCount,
+          maxPlacement: maxExercisePlacement,
           exerciseDayId: exerciseDayId,
         );
 
@@ -49,67 +50,6 @@ ExerciseDaysExerciseTypesMap getExerciseDaysTypesDictionary(
   }
 
   return map;
-}
-
-_getMaxExercisePlacement(List<Exercise> exercises) {
-  if (exercises.isEmpty) return 0;
-
-  return exercises.map((exercise) => exercise.placement).reduce(max);
-}
-
-_getMaxExerciseSetsCount(List<Exercise> exercises) {
-  if (exercises.isEmpty) return 0;
-
-  return exercises.map((exercise) => exercise.sets.length).reduce(max);
-}
-
-// ---------------------------------------------------------------------------
-class ExerciseTypesMap {
-  final List<ExerciseType> exerciseTypes;
-
-  Map<String, ExerciseTypeClient> _map = {};
-
-  ExerciseTypesMap(this.exerciseTypes) {
-    _map = _generateExerciseTypesMap();
-  }
-
-  Map<String, ExerciseTypeClient> _generateExerciseTypesMap() {
-    final exerciseTypesMap = <String, ExerciseTypeClient>{};
-
-    for (final exerciseType in exerciseTypes) {
-      exerciseTypesMap[exerciseType.id] = ExerciseTypeClient(
-        id: exerciseType.id,
-        name: exerciseType.name,
-        unit: exerciseType.unit,
-      );
-    }
-
-    return exerciseTypesMap;
-  }
-
-  ExerciseTypeClient get(String id) => _map[id]!;
-}
-
-class ExerciseByPlacementMap {
-  final List<ExerciseClient> exercises;
-
-  Map<int, ExerciseClient> _map = {};
-
-  ExerciseByPlacementMap(this.exercises) {
-    _map = _generateExerciseByPlacementMap();
-  }
-
-  Map<int, ExerciseClient> _generateExerciseByPlacementMap() {
-    final exerciseByPlacementMap = <int, ExerciseClient>{};
-
-    for (final exercise in exercises) {
-      exerciseByPlacementMap[exercise.placement] = exercise;
-    }
-
-    return exerciseByPlacementMap;
-  }
-
-  ExerciseClient? get(int id) => _map[id];
 }
 
 class ExerciseDaysExerciseTypesMap {

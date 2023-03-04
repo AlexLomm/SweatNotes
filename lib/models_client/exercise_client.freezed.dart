@@ -14,20 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ExerciseClient _$ExerciseClientFromJson(Map<String, dynamic> json) {
-  return _ExerciseClient.fromJson(json);
-}
-
 /// @nodoc
 mixin _$ExerciseClient {
   String get id => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   String get exerciseDayId => throw _privateConstructorUsedError;
+  String get exerciseTypeId => throw _privateConstructorUsedError;
   bool get isFiller => throw _privateConstructorUsedError;
   int get placement => throw _privateConstructorUsedError;
   List<ExerciseSetClient> get exerciseSets =>
       throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ExerciseClientCopyWith<ExerciseClient> get copyWith =>
       throw _privateConstructorUsedError;
@@ -41,7 +38,9 @@ abstract class $ExerciseClientCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String userId,
       String exerciseDayId,
+      String exerciseTypeId,
       bool isFiller,
       int placement,
       List<ExerciseSetClient> exerciseSets});
@@ -61,7 +60,9 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
   @override
   $Res call({
     Object? id = null,
+    Object? userId = null,
     Object? exerciseDayId = null,
+    Object? exerciseTypeId = null,
     Object? isFiller = null,
     Object? placement = null,
     Object? exerciseSets = null,
@@ -71,9 +72,17 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       exerciseDayId: null == exerciseDayId
           ? _value.exerciseDayId
           : exerciseDayId // ignore: cast_nullable_to_non_nullable
+              as String,
+      exerciseTypeId: null == exerciseTypeId
+          ? _value.exerciseTypeId
+          : exerciseTypeId // ignore: cast_nullable_to_non_nullable
               as String,
       isFiller: null == isFiller
           ? _value.isFiller
@@ -101,7 +110,9 @@ abstract class _$$_ExerciseClientCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String userId,
       String exerciseDayId,
+      String exerciseTypeId,
       bool isFiller,
       int placement,
       List<ExerciseSetClient> exerciseSets});
@@ -119,7 +130,9 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? userId = null,
     Object? exerciseDayId = null,
+    Object? exerciseTypeId = null,
     Object? isFiller = null,
     Object? placement = null,
     Object? exerciseSets = null,
@@ -129,9 +142,17 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
       exerciseDayId: null == exerciseDayId
           ? _value.exerciseDayId
           : exerciseDayId // ignore: cast_nullable_to_non_nullable
+              as String,
+      exerciseTypeId: null == exerciseTypeId
+          ? _value.exerciseTypeId
+          : exerciseTypeId // ignore: cast_nullable_to_non_nullable
               as String,
       isFiller: null == isFiller
           ? _value.isFiller
@@ -150,24 +171,27 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   const _$_ExerciseClient(
       {required this.id,
+      required this.userId,
       required this.exerciseDayId,
+      required this.exerciseTypeId,
       this.isFiller = false,
       this.placement = -1,
       final List<ExerciseSetClient> exerciseSets = const []})
       : _exerciseSets = exerciseSets,
         super._();
 
-  factory _$_ExerciseClient.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseClientFromJson(json);
-
   @override
   final String id;
   @override
+  final String userId;
+  @override
   final String exerciseDayId;
+  @override
+  final String exerciseTypeId;
   @override
   @JsonKey()
   final bool isFiller;
@@ -185,7 +209,7 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseClient(id: $id, exerciseDayId: $exerciseDayId, isFiller: $isFiller, placement: $placement, exerciseSets: $exerciseSets)';
+    return 'ExerciseClient(id: $id, userId: $userId, exerciseDayId: $exerciseDayId, exerciseTypeId: $exerciseTypeId, isFiller: $isFiller, placement: $placement, exerciseSets: $exerciseSets)';
   }
 
   @override
@@ -194,7 +218,9 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseClient'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('exerciseDayId', exerciseDayId))
+      ..add(DiagnosticsProperty('exerciseTypeId', exerciseTypeId))
       ..add(DiagnosticsProperty('isFiller', isFiller))
       ..add(DiagnosticsProperty('placement', placement))
       ..add(DiagnosticsProperty('exerciseSets', exerciseSets));
@@ -206,8 +232,11 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseClient &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.exerciseDayId, exerciseDayId) ||
                 other.exerciseDayId == exerciseDayId) &&
+            (identical(other.exerciseTypeId, exerciseTypeId) ||
+                other.exerciseTypeId == exerciseTypeId) &&
             (identical(other.isFiller, isFiller) ||
                 other.isFiller == isFiller) &&
             (identical(other.placement, placement) ||
@@ -216,41 +245,43 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
                 .equals(other._exerciseSets, _exerciseSets));
   }
 
-  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, exerciseDayId, isFiller,
-      placement, const DeepCollectionEquality().hash(_exerciseSets));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userId,
+      exerciseDayId,
+      exerciseTypeId,
+      isFiller,
+      placement,
+      const DeepCollectionEquality().hash(_exerciseSets));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$_ExerciseClientCopyWith<_$_ExerciseClient> get copyWith =>
       __$$_ExerciseClientCopyWithImpl<_$_ExerciseClient>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ExerciseClientToJson(
-      this,
-    );
-  }
 }
 
 abstract class _ExerciseClient extends ExerciseClient {
   const factory _ExerciseClient(
       {required final String id,
+      required final String userId,
       required final String exerciseDayId,
+      required final String exerciseTypeId,
       final bool isFiller,
       final int placement,
       final List<ExerciseSetClient> exerciseSets}) = _$_ExerciseClient;
   const _ExerciseClient._() : super._();
 
-  factory _ExerciseClient.fromJson(Map<String, dynamic> json) =
-      _$_ExerciseClient.fromJson;
-
   @override
   String get id;
   @override
+  String get userId;
+  @override
   String get exerciseDayId;
+  @override
+  String get exerciseTypeId;
   @override
   bool get isFiller;
   @override

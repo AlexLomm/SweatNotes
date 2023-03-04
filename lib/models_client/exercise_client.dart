@@ -5,7 +5,6 @@ import '../models_client/exercise_set_client.dart';
 import '../utils/generate_hash.dart';
 
 part 'exercise_client.freezed.dart';
-part 'exercise_client.g.dart';
 
 @freezed
 class ExerciseClient with _$ExerciseClient {

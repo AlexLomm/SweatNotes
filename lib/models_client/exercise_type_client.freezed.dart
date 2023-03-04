@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ExerciseTypeClient _$ExerciseTypeClientFromJson(Map<String, dynamic> json) {
-  return _ExerciseTypeClient.fromJson(json);
-}
-
 /// @nodoc
 mixin _$ExerciseTypeClient {
   String get id => throw _privateConstructorUsedError;
@@ -25,7 +21,6 @@ mixin _$ExerciseTypeClient {
   String get unit => throw _privateConstructorUsedError;
   List<ExerciseClient> get exercises => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ExerciseTypeClientCopyWith<ExerciseTypeClient> get copyWith =>
       throw _privateConstructorUsedError;
@@ -130,7 +125,7 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_ExerciseTypeClient
     with DiagnosticableTreeMixin
     implements _ExerciseTypeClient {
@@ -140,9 +135,6 @@ class _$_ExerciseTypeClient
       required this.unit,
       final List<ExerciseClient> exercises = const []})
       : _exercises = exercises;
-
-  factory _$_ExerciseTypeClient.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseTypeClientFromJson(json);
 
   @override
   final String id;
@@ -187,7 +179,6 @@ class _$_ExerciseTypeClient
                 .equals(other._exercises, _exercises));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, unit,
       const DeepCollectionEquality().hash(_exercises));
@@ -198,13 +189,6 @@ class _$_ExerciseTypeClient
   _$$_ExerciseTypeClientCopyWith<_$_ExerciseTypeClient> get copyWith =>
       __$$_ExerciseTypeClientCopyWithImpl<_$_ExerciseTypeClient>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ExerciseTypeClientToJson(
-      this,
-    );
-  }
 }
 
 abstract class _ExerciseTypeClient implements ExerciseTypeClient {
@@ -213,9 +197,6 @@ abstract class _ExerciseTypeClient implements ExerciseTypeClient {
       required final String name,
       required final String unit,
       final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
-
-  factory _ExerciseTypeClient.fromJson(Map<String, dynamic> json) =
-      _$_ExerciseTypeClient.fromJson;
 
   @override
   String get id;

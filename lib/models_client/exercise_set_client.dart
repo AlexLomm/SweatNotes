@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../models/exercise_set.dart';
+
 part 'exercise_set_client.freezed.dart';
-part 'exercise_set_client.g.dart';
 
 @freezed
 class ExerciseSetClient with _$ExerciseSetClient {
@@ -17,9 +18,6 @@ class ExerciseSetClient with _$ExerciseSetClient {
     required String load,
   }) = _ExerciseSetClient;
 
-  factory ExerciseSetClient.fromJson(Map<String, Object?> json) =>
-      _$ExerciseSetClientFromJson(json);
-
   factory ExerciseSetClient.empty() {
     return const ExerciseSetClient(
       isFiller: true,
@@ -27,5 +25,9 @@ class ExerciseSetClient with _$ExerciseSetClient {
       reps: '',
       load: '',
     );
+  }
+
+  ExerciseSet toExerciseSet() {
+    return ExerciseSet(reps: reps, load: load);
   }
 }

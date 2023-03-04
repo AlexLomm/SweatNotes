@@ -14,18 +14,15 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ExerciseSetClient _$ExerciseSetClientFromJson(Map<String, dynamic> json) {
-  return _ExerciseSetClient.fromJson(json);
-}
-
 /// @nodoc
 mixin _$ExerciseSetClient {
   bool get isFiller => throw _privateConstructorUsedError;
-  int get progressFactor => throw _privateConstructorUsedError;
-  String get reps => throw _privateConstructorUsedError;
+  int get progressFactor =>
+      throw _privateConstructorUsedError; // TODO: change to int
+  String get reps =>
+      throw _privateConstructorUsedError; // TODO: change to double
   String get load => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ExerciseSetClientCopyWith<ExerciseSetClient> get copyWith =>
       throw _privateConstructorUsedError;
@@ -128,7 +125,7 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$_ExerciseSetClient extends _ExerciseSetClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseSetClient(
@@ -138,17 +135,16 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       required this.load})
       : super._();
 
-  factory _$_ExerciseSetClient.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseSetClientFromJson(json);
-
   @override
   @JsonKey()
   final bool isFiller;
   @override
   @JsonKey()
   final int progressFactor;
+// TODO: change to int
   @override
   final String reps;
+// TODO: change to double
   @override
   final String load;
 
@@ -181,7 +177,6 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
             (identical(other.load, load) || other.load == load));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, isFiller, progressFactor, reps, load);
@@ -192,13 +187,6 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   _$$_ExerciseSetClientCopyWith<_$_ExerciseSetClient> get copyWith =>
       __$$_ExerciseSetClientCopyWithImpl<_$_ExerciseSetClient>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ExerciseSetClientToJson(
-      this,
-    );
-  }
 }
 
 abstract class _ExerciseSetClient extends ExerciseSetClient {
@@ -209,16 +197,13 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
       required final String load}) = _$_ExerciseSetClient;
   const _ExerciseSetClient._() : super._();
 
-  factory _ExerciseSetClient.fromJson(Map<String, dynamic> json) =
-      _$_ExerciseSetClient.fromJson;
-
   @override
   bool get isFiller;
   @override
   int get progressFactor;
-  @override
+  @override // TODO: change to int
   String get reps;
-  @override
+  @override // TODO: change to double
   String get load;
   @override
   @JsonKey(ignore: true)

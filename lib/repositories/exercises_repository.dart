@@ -33,15 +33,26 @@ class ExercisesRepository {
   Future<void> setExercise(ExerciseClient exerciseClient) {
     final collection = firestore.collection('exercises');
 
-    final json = exerciseClient.toExercise().toJson();
+    final exercise = exerciseClient.toExercise();
 
     // if the exercise doesn't exist, create it
     if (exerciseClient.isFiller) {
-      return collection.add(json);
+      return collection
+          .withConverter(
+            fromFirestore: _fromFirestoreConverter,
+            toFirestore: _toFirestoreConverter,
+          )
+          .add(exercise);
     }
 
     // otherwise, update it
-    return collection.doc(exerciseClient.id).set(json, SetOptions(merge: true));
+    return collection
+        .withConverter(
+          fromFirestore: _fromFirestoreConverter,
+          toFirestore: _toFirestoreConverter,
+        )
+        .doc(exerciseClient.id)
+        .set(exercise, SetOptions(merge: true));
   }
 
   Future<List<Exercise>> fetchExercisesByExerciseDayId({

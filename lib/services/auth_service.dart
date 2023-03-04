@@ -25,8 +25,8 @@ class AuthService {
   }) async {
     try {
       final credential = await authRepository.signInWithEmailAndPassword(
-        email: 'alex.lomia@gmail.com',
-        password: 'Password#1',
+        email: email,
+        password: password,
       );
 
       if (credential.user == null) {

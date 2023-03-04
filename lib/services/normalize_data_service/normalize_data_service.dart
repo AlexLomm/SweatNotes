@@ -6,13 +6,14 @@ import '../../repositories/exercise_types_repository.dart';
 import '../../repositories/exercises_repository.dart';
 import '../../repositories/orderings_repository.dart';
 import '../../repositories/training_blocks_repository.dart';
-import 'exercise_days_by_ids_map.dart';
 import 'exercise_days_by_ids_exercise_types_by_ids_map.dart';
+import 'exercise_days_by_ids_map.dart';
 import 'orderings_by_ids_map.dart';
 
 part 'normalize_data_service.g.dart';
 
-// TODO: rename
+// TODO: rename service
+/// @throws Exception if training block is not found
 class NormalizeDataService {
   final TrainingBlocksRepository trainingBlocksRepository;
   final ExerciseDaysRepository exerciseDaysRepository;
@@ -50,6 +51,9 @@ class NormalizeDataService {
         orderingsRepository.fetchOrderingsByIds(ids: exerciseDayIds);
 
     final trainingBlock = await trainingBlockFuture;
+
+    if (trainingBlock == null) throw Exception('Training block not found');
+
     final exerciseTypes = await exerciseTypesFuture;
     final exercises = await exercisesFuture;
     final orderings = await orderingsFuture;
@@ -58,6 +62,7 @@ class NormalizeDataService {
     final exerciseDaysMap = ExerciseDaysByIdsMap(exerciseDays);
 
     final exerciseDaysTypesMap = ExerciseDaysByIdsExerciseTypesByIdsMap(
+      trainingBlock.userId,
       exercises,
       exerciseTypes,
     );
@@ -99,9 +104,9 @@ class NormalizeDataService {
 
     exerciseDaysWithSortedExerciseTypes.sort((a, b) {
       final orderingA =
-          trainingBlock?.exerciseDayOrdering[a.id] ?? double.infinity;
+          trainingBlock.exerciseDayOrdering[a.id] ?? double.infinity;
       final orderingB =
-          trainingBlock?.exerciseDayOrdering[b.id] ?? double.infinity;
+          trainingBlock.exerciseDayOrdering[b.id] ?? double.infinity;
 
       return orderingA.toInt() - orderingB.toInt();
     });

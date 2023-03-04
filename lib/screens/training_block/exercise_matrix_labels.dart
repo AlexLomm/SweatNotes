@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models_client/exercise_day_client.dart';
-import '../../widgets/exercise_day_widget.dart';
+import 'exercise_day_widget.dart';
 
 class ExerciseMatrixLabels extends StatelessWidget {
   static const spacingBetweenItems = 24.0;

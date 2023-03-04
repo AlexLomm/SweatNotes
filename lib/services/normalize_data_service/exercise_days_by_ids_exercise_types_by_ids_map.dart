@@ -8,6 +8,7 @@ import 'exercises_client_collection.dart';
 import 'exercises_collection.dart';
 
 class ExerciseDaysByIdsExerciseTypesByIdsMap {
+  final String userId;
   final List<Exercise> exercises;
   final List<ExerciseType> exerciseTypes;
 
@@ -16,7 +17,11 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
   Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
       _map.entries;
 
-  ExerciseDaysByIdsExerciseTypesByIdsMap(this.exercises, this.exerciseTypes) {
+  ExerciseDaysByIdsExerciseTypesByIdsMap(
+    this.userId,
+    this.exercises,
+    this.exerciseTypes,
+  ) {
     _init();
   }
 
@@ -49,8 +54,11 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
         exerciseTypeId: exercise.exerciseTypeId,
         exercises: [
           ...exerciseType.exercises,
+          // TODO: add toExerciseClient method to Exercise
           ExerciseClient(
             id: exercise.id,
+            userId: exercise.userId,
+            exerciseTypeId: exercise.exerciseTypeId,
             exerciseDayId: exercise.exerciseDayId,
             placement: exercise.placement,
             exerciseSets: exercise.sets.map((set) {
@@ -79,9 +87,11 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
             fillUntil: maxExerciseSetsCount,
           )
           ..addFillerExercises(
+            userId: userId,
+            exerciseTypeId: exerciseTypeId,
+            exerciseDayId: exerciseDayId,
             maxSets: maxExerciseSetsCount,
             maxPlacement: maxExercisePlacement,
-            exerciseDayId: exerciseDayId,
           );
 
         _map.setExerciseTypeExercises(

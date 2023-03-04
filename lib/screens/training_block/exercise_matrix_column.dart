@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models_client/exercise_type_client.dart';
-import '../../widgets/exercise_day_widget.dart';
+import 'exercise_day_widget.dart';
 import 'exercise_matrix_labels.dart';
 import 'exercise_matrix_row.dart';
 

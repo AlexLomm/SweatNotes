@@ -29,6 +29,8 @@ class ExercisesClientCollection {
   /// [maxPlacement] is the max placement throughout all exercises
   /// [maxSets] is the max sets throughout all exercises
   void addFillerExercises({
+    required String userId,
+    required String exerciseTypeId,
     required String exerciseDayId,
     required int maxPlacement,
     required int maxSets,
@@ -40,8 +42,11 @@ class ExercisesClientCollection {
       final exercise = getByPlacement(i);
 
       if (exercise == null) {
-        exercises.add(ExerciseClient.empty().copyWith(
+        exercises.add(ExerciseClient.empty(
+          userId: userId,
+          exerciseTypeId: exerciseTypeId,
           exerciseDayId: exerciseDayId,
+        ).copyWith(
           placement: i,
           exerciseSets: List.generate(
             maxSets,

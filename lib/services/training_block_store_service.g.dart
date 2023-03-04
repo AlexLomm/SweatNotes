@@ -7,7 +7,7 @@ part of 'training_block_store_service.dart';
 // **************************************************************************
 
 String _$trainingBlockStoreServiceHash() =>
-    r'a1bfec9653875aaf193ff1172382a36e52b6ee64';
+    r'1439d4b91730fac95fa074da025eebe6f0486aa4';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -87,6 +87,7 @@ class Layout extends ConsumerWidget {
         bottom: false,
         child: Container(
           padding: const EdgeInsets.only(top: spacingTop),
+          // TODO: replace with ListView.builder https://www.youtube.com/watch?v=YY-_yrZdjGc&t=6s
           child: isScrollable ? SingleChildScrollView(child: child) : child,
         ),
       ),

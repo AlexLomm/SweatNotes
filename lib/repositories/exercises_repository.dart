@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../firebase.dart';
 import '../models/exercise.dart';
+import '../models_client/exercise_client.dart';
 
 part 'exercises_repository.g.dart';
 
 class ExercisesRepository {
+  final FirebaseFirestore firestore;
+
+  ExercisesRepository(this.firestore);
+
   Query<Exercise> getExercisesByExerciseDayIdQuery({
     required String exerciseDayId,
   }) {
-    return FirebaseFirestore.instance
+    return firestore
         .collection('exercises')
         .where('exerciseDayId', isEqualTo: exerciseDayId)
         .where(
@@ -19,19 +25,23 @@ class ExercisesRepository {
         )
         .orderBy('placement')
         .withConverter(
-          fromFirestore: (doc, _) {
-            final dataWithoutId = doc.data();
-
-            if (dataWithoutId == null) {
-              return Exercise.fromJson({});
-            }
-
-            final data = {'id': doc.id, ...dataWithoutId};
-
-            return Exercise.fromJson(data);
-          },
-          toFirestore: (exercise, _) => exercise.toJson(),
+          fromFirestore: _fromFirestoreConverter,
+          toFirestore: _toFirestoreConverter,
         );
+  }
+
+  Future<void> setExercise(ExerciseClient exerciseClient) {
+    final collection = firestore.collection('exercises');
+
+    final json = exerciseClient.toExercise().toJson();
+
+    // if the exercise doesn't exist, create it
+    if (exerciseClient.isFiller) {
+      return collection.add(json);
+    }
+
+    // otherwise, update it
+    return collection.doc(exerciseClient.id).set(json, SetOptions(merge: true));
   }
 
   Future<List<Exercise>> fetchExercisesByExerciseDayId({
@@ -57,9 +67,30 @@ class ExercisesRepository {
 
     return exercisesListList.expand((exercisesList) => exercisesList).toList();
   }
+
+  Exercise _fromFirestoreConverter(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+    SnapshotOptions? _,
+  ) {
+    final dataWithoutId = doc.data();
+
+    if (dataWithoutId == null) {
+      return Exercise.fromJson({});
+    }
+
+    return Exercise.fromJson({'id': doc.id, ...dataWithoutId});
+  }
+
+  Map<String, dynamic> _toFirestoreConverter(
+    Exercise exercise,
+    SetOptions? _,
+  ) =>
+      exercise.toJson();
 }
 
 @riverpod
 ExercisesRepository exercisesRepository(ExercisesRepositoryRef ref) {
-  return ExercisesRepository();
+  final firestore = ref.read(firestoreProvider);
+
+  return ExercisesRepository(firestore);
 }

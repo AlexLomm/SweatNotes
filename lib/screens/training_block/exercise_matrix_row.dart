@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models_client/exercise_client.dart';
-import '../../widgets/exercise_widget.dart';
+import 'exercise_widget.dart';
 
 class ExercisesMatrixRow extends StatelessWidget {
   static const marginRight = 16.0;

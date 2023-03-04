@@ -7,7 +7,7 @@ part of 'exercises_repository.dart';
 // **************************************************************************
 
 String _$exercisesRepositoryHash() =>
-    r'7ce70d59e9fb35cb730b6d4c0275cf276dd28bd3';
+    r'752427cdcf4eb45c55839fdc2c556bfa23b7eaa2';
 
 /// See also [exercisesRepository].
 @ProviderFor(exercisesRepository)

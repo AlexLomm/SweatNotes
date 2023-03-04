@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../models_client/exercise_day_client.dart';
-import '../../widgets/exercise_day_widget.dart';
-import '../../widgets/exercise_type_widget.dart';
+import 'exercise_day_widget.dart';
 import 'exercise_matrix_column.dart';
+import 'exercise_type_widget.dart';
 
 class ExerciseMatrix extends StatelessWidget {
   final List<ExerciseDayClient> exerciseDays;

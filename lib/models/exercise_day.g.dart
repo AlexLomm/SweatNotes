@@ -16,7 +16,6 @@ _$_ExerciseDay _$$_ExerciseDayFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_ExerciseDayToJson(_$_ExerciseDay instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'userId': instance.userId,
       'trainingBlockId': instance.trainingBlockId,
       'name': instance.name,

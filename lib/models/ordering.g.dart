@@ -17,7 +17,6 @@ _$_Ordering _$$_OrderingFromJson(Map<String, dynamic> json) => _$_Ordering(
 
 Map<String, dynamic> _$$_OrderingToJson(_$_Ordering instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'userId': instance.userId,
       'ordering': instance.ordering,
     };

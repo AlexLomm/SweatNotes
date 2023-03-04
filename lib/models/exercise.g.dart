@@ -20,7 +20,6 @@ _$_Exercise _$$_ExerciseFromJson(Map<String, dynamic> json) => _$_Exercise(
 
 Map<String, dynamic> _$$_ExerciseToJson(_$_Exercise instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'userId': instance.userId,
       'exerciseDayId': instance.exerciseDayId,
       'exerciseTypeId': instance.exerciseTypeId,

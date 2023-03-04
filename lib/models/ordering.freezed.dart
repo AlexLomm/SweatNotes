@@ -20,6 +20,7 @@ Ordering _$OrderingFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Ordering {
+  @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   Map<String, int> get ordering => throw _privateConstructorUsedError;
@@ -35,7 +36,10 @@ abstract class $OrderingCopyWith<$Res> {
   factory $OrderingCopyWith(Ordering value, $Res Function(Ordering) then) =
       _$OrderingCopyWithImpl<$Res, Ordering>;
   @useResult
-  $Res call({String id, String userId, Map<String, int> ordering});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String userId,
+      Map<String, int> ordering});
 }
 
 /// @nodoc
@@ -79,7 +83,10 @@ abstract class _$$_OrderingCopyWith<$Res> implements $OrderingCopyWith<$Res> {
       __$$_OrderingCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String userId, Map<String, int> ordering});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String userId,
+      Map<String, int> ordering});
 }
 
 /// @nodoc
@@ -118,7 +125,7 @@ class __$$_OrderingCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Ordering with DiagnosticableTreeMixin implements _Ordering {
   const _$_Ordering(
-      {required this.id,
+      {@JsonKey(includeToJson: false) required this.id,
       required this.userId,
       final Map<String, int> ordering = const {}})
       : _ordering = ordering;
@@ -127,6 +134,7 @@ class _$_Ordering with DiagnosticableTreeMixin implements _Ordering {
       _$$_OrderingFromJson(json);
 
   @override
+  @JsonKey(includeToJson: false)
   final String id;
   @override
   final String userId;
@@ -185,13 +193,14 @@ class _$_Ordering with DiagnosticableTreeMixin implements _Ordering {
 
 abstract class _Ordering implements Ordering {
   const factory _Ordering(
-      {required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       required final String userId,
       final Map<String, int> ordering}) = _$_Ordering;
 
   factory _Ordering.fromJson(Map<String, dynamic> json) = _$_Ordering.fromJson;
 
   @override
+  @JsonKey(includeToJson: false)
   String get id;
   @override
   String get userId;

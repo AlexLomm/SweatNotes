@@ -16,7 +16,6 @@ _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_ExerciseTypeToJson(_$_ExerciseType instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'userId': instance.userId,
       'name': instance.name,
       'unit': instance.unit,

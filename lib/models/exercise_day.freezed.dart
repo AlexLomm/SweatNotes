@@ -20,6 +20,7 @@ ExerciseDay _$ExerciseDayFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExerciseDay {
+  @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get trainingBlockId => throw _privateConstructorUsedError;
@@ -37,7 +38,11 @@ abstract class $ExerciseDayCopyWith<$Res> {
           ExerciseDay value, $Res Function(ExerciseDay) then) =
       _$ExerciseDayCopyWithImpl<$Res, ExerciseDay>;
   @useResult
-  $Res call({String id, String userId, String trainingBlockId, String name});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String userId,
+      String trainingBlockId,
+      String name});
 }
 
 /// @nodoc
@@ -87,7 +92,11 @@ abstract class _$$_ExerciseDayCopyWith<$Res>
       __$$_ExerciseDayCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String userId, String trainingBlockId, String name});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String userId,
+      String trainingBlockId,
+      String name});
 }
 
 /// @nodoc
@@ -131,7 +140,7 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
   const _$_ExerciseDay(
-      {required this.id,
+      {@JsonKey(includeToJson: false) required this.id,
       required this.userId,
       required this.trainingBlockId,
       required this.name});
@@ -140,6 +149,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
       _$$_ExerciseDayFromJson(json);
 
   @override
+  @JsonKey(includeToJson: false)
   final String id;
   @override
   final String userId;
@@ -197,7 +207,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
 
 abstract class _ExerciseDay implements ExerciseDay {
   const factory _ExerciseDay(
-      {required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       required final String userId,
       required final String trainingBlockId,
       required final String name}) = _$_ExerciseDay;
@@ -206,6 +216,7 @@ abstract class _ExerciseDay implements ExerciseDay {
       _$_ExerciseDay.fromJson;
 
   @override
+  @JsonKey(includeToJson: false)
   String get id;
   @override
   String get userId;

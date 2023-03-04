@@ -20,6 +20,7 @@ Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Exercise {
+  @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get exerciseDayId => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $ExerciseCopyWith<$Res> {
       _$ExerciseCopyWithImpl<$Res, Exercise>;
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(includeToJson: false) String id,
       String userId,
       String exerciseDayId,
       String exerciseTypeId,
@@ -104,7 +105,7 @@ abstract class _$$_ExerciseCopyWith<$Res> implements $ExerciseCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(includeToJson: false) String id,
       String userId,
       String exerciseDayId,
       String exerciseTypeId,
@@ -163,7 +164,7 @@ class __$$_ExerciseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
   const _$_Exercise(
-      {required this.id,
+      {@JsonKey(includeToJson: false) required this.id,
       required this.userId,
       required this.exerciseDayId,
       required this.exerciseTypeId,
@@ -175,6 +176,7 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
       _$$_ExerciseFromJson(json);
 
   @override
+  @JsonKey(includeToJson: false)
   final String id;
   @override
   final String userId;
@@ -249,7 +251,7 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
 
 abstract class _Exercise implements Exercise {
   const factory _Exercise(
-      {required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       required final String userId,
       required final String exerciseDayId,
       required final String exerciseTypeId,
@@ -259,6 +261,7 @@ abstract class _Exercise implements Exercise {
   factory _Exercise.fromJson(Map<String, dynamic> json) = _$_Exercise.fromJson;
 
   @override
+  @JsonKey(includeToJson: false)
   String get id;
   @override
   String get userId;

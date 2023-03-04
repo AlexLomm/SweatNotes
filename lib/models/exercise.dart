@@ -10,7 +10,7 @@ part 'exercise.g.dart';
 @freezed
 class Exercise with _$Exercise {
   const factory Exercise({
-    required String id,
+    @JsonKey(includeToJson: false) required String id,
     required String userId,
     required String exerciseDayId,
     required String exerciseTypeId,

@@ -8,7 +8,7 @@ part 'ordering.g.dart';
 @freezed
 class Ordering with _$Ordering {
   const factory Ordering({
-    required String id,
+    @JsonKey(includeToJson: false) required String id,
     required String userId,
     @Default({}) Map<String, int> ordering,
   }) = _Ordering;

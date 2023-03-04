@@ -15,7 +15,6 @@ _$_UserMetadata _$$_UserMetadataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_UserMetadataToJson(_$_UserMetadata instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
     };

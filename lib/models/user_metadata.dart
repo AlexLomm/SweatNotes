@@ -9,7 +9,7 @@ part 'user_metadata.g.dart';
 class UserMetadata with _$UserMetadata {
   const factory UserMetadata({
     /// id of the auth user that this metadata belongs to
-    required String id,
+    @JsonKey(includeToJson: false) required String id,
     @Default('') String firstName,
     @Default('') String lastName,
   }) = _UserMetadata;

@@ -20,6 +20,7 @@ TrainingBlock _$TrainingBlockFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TrainingBlock {
+  @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $TrainingBlockCopyWith<$Res> {
       _$TrainingBlockCopyWithImpl<$Res, TrainingBlock>;
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(includeToJson: false) String id,
       String userId,
       String name,
       Map<String, int> exerciseDayOrdering});
@@ -93,7 +94,7 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(includeToJson: false) String id,
       String userId,
       String name,
       Map<String, int> exerciseDayOrdering});
@@ -140,7 +141,7 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   const _$_TrainingBlock(
-      {required this.id,
+      {@JsonKey(includeToJson: false) required this.id,
       required this.userId,
       required this.name,
       final Map<String, int> exerciseDayOrdering = const {}})
@@ -150,6 +151,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
       _$$_TrainingBlockFromJson(json);
 
   @override
+  @JsonKey(includeToJson: false)
   final String id;
   @override
   final String userId;
@@ -214,7 +216,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
 
 abstract class _TrainingBlock implements TrainingBlock {
   const factory _TrainingBlock(
-      {required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       required final String userId,
       required final String name,
       final Map<String, int> exerciseDayOrdering}) = _$_TrainingBlock;
@@ -223,6 +225,7 @@ abstract class _TrainingBlock implements TrainingBlock {
       _$_TrainingBlock.fromJson;
 
   @override
+  @JsonKey(includeToJson: false)
   String get id;
   @override
   String get userId;

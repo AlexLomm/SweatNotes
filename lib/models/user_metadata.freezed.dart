@@ -21,6 +21,7 @@ UserMetadata _$UserMetadataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserMetadata {
   /// id of the auth user that this metadata belongs to
+  @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
@@ -37,7 +38,10 @@ abstract class $UserMetadataCopyWith<$Res> {
           UserMetadata value, $Res Function(UserMetadata) then) =
       _$UserMetadataCopyWithImpl<$Res, UserMetadata>;
   @useResult
-  $Res call({String id, String firstName, String lastName});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String firstName,
+      String lastName});
 }
 
 /// @nodoc
@@ -82,7 +86,10 @@ abstract class _$$_UserMetadataCopyWith<$Res>
       __$$_UserMetadataCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String firstName, String lastName});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String firstName,
+      String lastName});
 }
 
 /// @nodoc
@@ -121,13 +128,16 @@ class __$$_UserMetadataCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserMetadata with DiagnosticableTreeMixin implements _UserMetadata {
   const _$_UserMetadata(
-      {required this.id, this.firstName = '', this.lastName = ''});
+      {@JsonKey(includeToJson: false) required this.id,
+      this.firstName = '',
+      this.lastName = ''});
 
   factory _$_UserMetadata.fromJson(Map<String, dynamic> json) =>
       _$$_UserMetadataFromJson(json);
 
   /// id of the auth user that this metadata belongs to
   @override
+  @JsonKey(includeToJson: false)
   final String id;
   @override
   @JsonKey()
@@ -183,7 +193,7 @@ class _$_UserMetadata with DiagnosticableTreeMixin implements _UserMetadata {
 
 abstract class _UserMetadata implements UserMetadata {
   const factory _UserMetadata(
-      {required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       final String firstName,
       final String lastName}) = _$_UserMetadata;
 
@@ -193,6 +203,7 @@ abstract class _UserMetadata implements UserMetadata {
   @override
 
   /// id of the auth user that this metadata belongs to
+  @JsonKey(includeToJson: false)
   String get id;
   @override
   String get firstName;

@@ -20,6 +20,7 @@ ExerciseType _$ExerciseTypeFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExerciseType {
+  @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -37,7 +38,11 @@ abstract class $ExerciseTypeCopyWith<$Res> {
           ExerciseType value, $Res Function(ExerciseType) then) =
       _$ExerciseTypeCopyWithImpl<$Res, ExerciseType>;
   @useResult
-  $Res call({String id, String userId, String name, String unit});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String userId,
+      String name,
+      String unit});
 }
 
 /// @nodoc
@@ -87,7 +92,11 @@ abstract class _$$_ExerciseTypeCopyWith<$Res>
       __$$_ExerciseTypeCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String userId, String name, String unit});
+  $Res call(
+      {@JsonKey(includeToJson: false) String id,
+      String userId,
+      String name,
+      String unit});
 }
 
 /// @nodoc
@@ -131,7 +140,7 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   const _$_ExerciseType(
-      {required this.id,
+      {@JsonKey(includeToJson: false) required this.id,
       required this.userId,
       required this.name,
       required this.unit});
@@ -140,6 +149,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
       _$$_ExerciseTypeFromJson(json);
 
   @override
+  @JsonKey(includeToJson: false)
   final String id;
   @override
   final String userId;
@@ -195,7 +205,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
 
 abstract class _ExerciseType implements ExerciseType {
   const factory _ExerciseType(
-      {required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       required final String userId,
       required final String name,
       required final String unit}) = _$_ExerciseType;
@@ -204,6 +214,7 @@ abstract class _ExerciseType implements ExerciseType {
       _$_ExerciseType.fromJson;
 
   @override
+  @JsonKey(includeToJson: false)
   String get id;
   @override
   String get userId;

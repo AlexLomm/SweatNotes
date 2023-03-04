@@ -8,7 +8,7 @@ part 'training_block.g.dart';
 @freezed
 class TrainingBlock with _$TrainingBlock {
   const factory TrainingBlock({
-    required String id,
+    @JsonKey(includeToJson: false) required String id,
     required String userId,
     required String name,
     @Default({}) Map<String, int> exerciseDayOrdering,

@@ -20,7 +20,8 @@ ExerciseSet _$ExerciseSetFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExerciseSet {
-  String get load => throw _privateConstructorUsedError;
+// TODO: change to double
+  String get load => throw _privateConstructorUsedError; // TODO: change to int
   String get reps => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -113,9 +114,11 @@ class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
   factory _$_ExerciseSet.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseSetFromJson(json);
 
+// TODO: change to double
   @override
   @JsonKey()
   final String load;
+// TODO: change to int
   @override
   @JsonKey()
   final String reps;
@@ -168,9 +171,9 @@ abstract class _ExerciseSet implements ExerciseSet {
   factory _ExerciseSet.fromJson(Map<String, dynamic> json) =
       _$_ExerciseSet.fromJson;
 
-  @override
+  @override // TODO: change to double
   String get load;
-  @override
+  @override // TODO: change to int
   String get reps;
   @override
   @JsonKey(ignore: true)

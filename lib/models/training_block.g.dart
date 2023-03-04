@@ -20,7 +20,6 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_TrainingBlockToJson(_$_TrainingBlock instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'userId': instance.userId,
       'name': instance.name,
       'exerciseDayOrdering': instance.exerciseDayOrdering,

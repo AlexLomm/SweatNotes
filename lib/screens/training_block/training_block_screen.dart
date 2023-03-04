@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models_client/exercise_day_client.dart';
 import '../../services/normalize_data_service/normalize_data_service.dart';
+import '../../services/training_block_store_service.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/wheel_selector/models/wheel_selector_value.dart';
@@ -10,7 +11,7 @@ import '../../widgets/wheel_selector/wheel_selector.dart';
 import 'exercise_matrix.dart';
 import 'exercise_matrix_labels.dart';
 
-class TrainingBlockScreen extends ConsumerStatefulWidget {
+class TrainingBlockScreen extends ConsumerWidget {
   final String trainingBlockId;
 
   const TrainingBlockScreen({
@@ -19,73 +20,66 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  TrainingBlockScreenState createState() => TrainingBlockScreenState();
-}
-
-class TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
-  late final Future<List<ExerciseDayClient>> normalizedData;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final normalizeDataService = ref.read(normalizeDataServiceProvider);
-
-    normalizedData = normalizeDataService.getNormalizedData(
-      trainingBlockId: widget.trainingBlockId,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trainingBlockStoreService = trainingBlockStoreServiceProvider(
+      trainingBlockId,
     );
-  }
 
-  @override
-  Widget build(BuildContext context) {
+    final exerciseDaysAsyncValue = ref.watch(trainingBlockStoreService);
+
     return Layout(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => CustomBottomSheet(
-          height: 322.0,
-          child: WheelSelector(
-            convertIndexToValue: (index) {
-              final value = index / 4;
-
-              return WheelSelectorValue(label: '$value lb', value: value);
-            },
-            onValueChanged: (value) => print(value),
-            childCount: 16,
-          ),
-        ).show(context),
+        onPressed: () => ref.read(trainingBlockStoreService.notifier).clear(),
         child: const Icon(Icons.abc),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          FutureBuilder(
-            future: normalizedData,
-            builder: (context, snapshot) {
-              final exerciseDays = snapshot.data;
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => CustomBottomSheet(
+      //     height: 322.0,
+      //     child: WheelSelector(
+      //       convertIndexToValue: (index) {
+      //         final value = index / 4;
+      //
+      //         return WheelSelectorValue(label: '$value lb', value: value);
+      //       },
+      //       onValueChanged: (value) => print(value),
+      //       childCount: 16,
+      //     ),
+      //   ).show(context),
+      //   child: const Icon(Icons.abc),
+      // ),
+      child: exerciseDaysAsyncValue.when(
+        data: (data) {
+          return Stack(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: ExerciseMatrix(exerciseDays: data),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: ExerciseMatrixLabels(exerciseDays: data),
+              ),
+            ],
+          );
+        },
+        error: (err, stack) {
+          print('ERROR');
+          print(err);
 
-              if (exerciseDays == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+        loading: () {
+          print('LOADING');
 
-              return Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: ExerciseMatrix(exerciseDays: exerciseDays),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: ExerciseMatrixLabels(exerciseDays: exerciseDays),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }

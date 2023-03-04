@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # this forces the nested freezed objects to also be converted to json
+          # @see https://github.com/rrousselGit/freezed/issues/86#issuecomment-593936459
+          explicit_to_json: true

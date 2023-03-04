@@ -24,5 +24,5 @@ Map<String, dynamic> _$$_ExerciseToJson(_$_Exercise instance) =>
       'exerciseDayId': instance.exerciseDayId,
       'exerciseTypeId': instance.exerciseTypeId,
       'placement': instance.placement,
-      'sets': instance.sets,
+      'sets': instance.sets.map((e) => e.toJson()).toList(),
     };

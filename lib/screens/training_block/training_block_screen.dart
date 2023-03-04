@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/screens/training_block/exercise_set_editor/exercise_set_editor.dart';
 
-import '../../models_client/exercise_day_client.dart';
-import '../../services/normalize_data_service/normalize_data_service.dart';
 import '../../services/training_block_store_service.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
-import '../../widgets/wheel_selector/models/wheel_selector_value.dart';
-import '../../widgets/wheel_selector/wheel_selector.dart';
 import 'exercise_matrix.dart';
 import 'exercise_matrix_labels.dart';
 
@@ -28,25 +25,24 @@ class TrainingBlockScreen extends ConsumerWidget {
     final exerciseDaysAsyncValue = ref.watch(trainingBlockStoreService);
 
     return Layout(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(trainingBlockStoreService.notifier).clear(),
-        child: const Icon(Icons.abc),
-      ),
       // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => CustomBottomSheet(
-      //     height: 322.0,
-      //     child: WheelSelector(
-      //       convertIndexToValue: (index) {
-      //         final value = index / 4;
-      //
-      //         return WheelSelectorValue(label: '$value lb', value: value);
-      //       },
-      //       onValueChanged: (value) => print(value),
-      //       childCount: 16,
-      //     ),
-      //   ).show(context),
+      //   onPressed: () => ref.read(trainingBlockStoreService.notifier).clear(),
       //   child: const Icon(Icons.abc),
       // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => CustomBottomSheet(
+          height: 322.0,
+          child: ExerciseSetEditor(
+            reps: 10,
+            load: 102.25,
+            onChange: ({required reps, required load}) {
+              print('-------------------------------------');
+              print('reps: $reps, load: $load');
+            },
+          ),
+        ).show(context),
+        child: const Icon(Icons.abc),
+      ),
       child: exerciseDaysAsyncValue.when(
         data: (data) {
           return Stack(
@@ -65,21 +61,8 @@ class TrainingBlockScreen extends ConsumerWidget {
             ],
           );
         },
-        error: (err, stack) {
-          print('ERROR');
-          print(err);
-
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        loading: () {
-          print('LOADING');
-
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+        error: (e, _) => Center(child: Text('Uh oh! Something went wrong: $e')),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'fade_gradient.dart';
+import '../fade_gradient.dart';
 import 'models/wheel_selector_value.dart';
 import 'wheel_selector_child.dart';
 import 'wheel_selector_highlight.dart';
@@ -15,6 +15,9 @@ class WheelSelector<T> extends StatefulWidget {
   final double width;
   final int? childCount;
 
+  /// Initially selected value of the wheel.
+  final int? selectedItemIndex;
+
   /// Determines the logic of how an item with an index of "i" is
   /// appearing on the wheel. Example:
   ///
@@ -22,12 +25,14 @@ class WheelSelector<T> extends StatefulWidget {
   /// convertIndexToValue(0) // could return '0.25', or 'Foo', etc.
   /// ```
   final WheelSelectorValue<T> Function(int index) convertIndexToValue;
+
   final void Function(T value) onValueChanged;
 
   const WheelSelector({
     super.key,
     this.width = 80.0,
     this.childCount,
+    this.selectedItemIndex,
     required this.convertIndexToValue,
     required this.onValueChanged,
   });
@@ -54,6 +59,13 @@ class _WheelSelectorState<T> extends State<WheelSelector<T>> {
     _controller = FixedExtentScrollController()
       ..addListener(() => _streamController.sink
           .add(widget.convertIndexToValue(_controller.selectedItem).value));
+
+    // if the selectedItemIndex is set, jump to it after the first frame
+    if (widget.selectedItemIndex != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller.jumpToItem(widget.selectedItemIndex!);
+      });
+    }
   }
 
   @override

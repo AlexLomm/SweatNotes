@@ -21,7 +21,7 @@ class WheelSelectorHighlight extends StatelessWidget {
           height: width,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondaryContainer,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(8.0),
           ),
         ),
       ),

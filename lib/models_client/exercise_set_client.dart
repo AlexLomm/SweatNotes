@@ -11,7 +11,9 @@ class ExerciseSetClient with _$ExerciseSetClient {
   const factory ExerciseSetClient({
     @Default(false) bool isFiller,
     @Default(0) int progressFactor,
+    // TODO: change to int
     required String reps,
+    // TODO: change to double
     required String load,
   }) = _ExerciseSetClient;
 

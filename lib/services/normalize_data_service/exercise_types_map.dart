@@ -16,6 +16,7 @@ class ExerciseTypesMap {
     for (final exerciseType in exerciseTypes) {
       exerciseTypesMap[exerciseType.id] = ExerciseTypeClient(
         id: exerciseType.id,
+        userId: exerciseType.userId,
         name: exerciseType.name,
         unit: exerciseType.unit,
         exercises: [],

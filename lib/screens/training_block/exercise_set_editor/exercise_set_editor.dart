@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../exercise_set_editor/save_button.dart';
+import '../../../widgets/button.dart';
+import '../../../widgets/wheel_selector/wheel_selector.dart';
 import 'load_selector.dart';
 import 'reps_selector.dart';
+import 'vertical_divider.dart';
 
 class ExerciseSetEditor extends StatefulWidget {
   static const height = 252.0;
@@ -31,7 +33,7 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
     return Container(
       height: ExerciseSetEditor.height,
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -45,7 +47,12 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
                 step: 1,
                 stepsCount: 100,
               ),
-              const VerticalDivider(),
+              Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: VerticalDividerWithGradient(
+                  height: WheelSelector.height,
+                ),
+              ),
               LoadSelector(
                 value: widget.load,
                 onChange: (value) => setState(() => _load = value),
@@ -58,9 +65,13 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
             ],
           ),
           const SizedBox(height: 24),
-          SaveButton(onPressed: () {
-            widget.onChange(reps: _reps.toString(), load: _load.toString());
-          }),
+          Button(
+            label: 'Save',
+            onPressed: () => widget.onChange(
+              reps: _reps.toString(),
+              load: _load.toString(),
+            ),
+          ),
         ],
       ),
     );

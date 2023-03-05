@@ -43,22 +43,19 @@ class ExerciseWidget extends ConsumerWidget {
           return ExerciseSetWidget(
             key: UniqueKey(),
             onTap: () => CustomBottomSheet(
-              height: 322.0,
-              child: SingleChildScrollView(
-                child: ExerciseSetEditor(
-                  reps: repsNum,
-                  load: loadNum,
-                  onChange: ({required reps, required load}) {
-                    exercisesService.setExerciseSet(
-                      exercise: exercise,
-                      reps: reps,
-                      load: load,
-                      index: entry.key,
-                    );
+              child: ExerciseSetEditor(
+                reps: repsNum,
+                load: loadNum,
+                onChange: ({required reps, required load}) {
+                  exercisesService.setExerciseSet(
+                    exercise: exercise,
+                    reps: reps,
+                    load: load,
+                    index: entry.key,
+                  );
 
-                    Navigator.of(context).pop();
-                  },
-                ),
+                  Navigator.of(context).pop();
+                },
               ),
             ).show(context),
             exerciseSet: entry.value,

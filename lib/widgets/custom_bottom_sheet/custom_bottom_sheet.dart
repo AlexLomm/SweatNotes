@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'backdrop.dart';
 import 'drag_handle.dart';
 
 class CustomBottomSheet extends StatefulWidget {
-  final double? height;
   final Widget child;
 
-  const CustomBottomSheet({
-    super.key,
-    this.height,
-    required this.child,
-  });
+  const CustomBottomSheet({super.key, required this.child});
 
   @override
   State<CustomBottomSheet> createState() => _CustomBottomSheetState();
@@ -42,25 +36,32 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      const Positioned.fill(child: Backdrop()),
-      Container(
-        height: widget.height,
-        margin: EdgeInsets.only(top: 80 + MediaQuery.of(context).padding.top),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+    return Material(
+      elevation: 3,
+      color: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: Container(
+        // account for keyboard height when it's open
+        // see: https://stackoverflow.com/a/57515977/4241959
+        padding: EdgeInsets.only(bottom: keyboardHeight),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+              padding: EdgeInsets.symmetric(vertical: 16.0),
               child: DragHandle(),
             ),
-            Expanded(child: widget.child),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 34),
+              child: widget.child,
+            ),
           ],
         ),
       ),
-    ]);
+    );
   }
 }

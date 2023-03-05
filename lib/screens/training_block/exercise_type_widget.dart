@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/widgets/text_editor.dart';
 
 import '../../models_client/exercise_type_client.dart';
+import '../../services/exercises_types_service.dart';
+import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 
-class ExerciseTypeWidget extends StatelessWidget {
+class ExerciseTypeWidget extends ConsumerWidget {
   static const width = 144.0;
   static const height = 80.0;
   static const dragHandleWidth = 24.0;
@@ -17,7 +21,9 @@ class ExerciseTypeWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exercisesService = ref.watch(exerciseTypesServiceProvider);
+
     return Material(
       elevation: 2,
       shape: const RoundedRectangleBorder(
@@ -41,15 +47,35 @@ class ExerciseTypeWidget extends StatelessWidget {
                 color: Theme.of(context).colorScheme.outline,
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(right: 8.0),
-              width: labelWidth,
-              child: Text(
-                exerciseType.name,
-                softWrap: true,
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+            GestureDetector(
+              onTap: () => CustomBottomSheet(
+                child: TextEditor(
+                  value: exerciseType.name,
+                  onSubmitted: (String text) {
+                    // TODO: review api
+                    exercisesService.setExerciseType(
+                      exerciseTypeClient: exerciseType,
+                      name: text,
+                    );
+
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ).show(context),
+              child: Container(
+                padding: const EdgeInsets.only(right: 8.0),
+                width: labelWidth,
+                height: double.infinity,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    exerciseType.name,
+                    softWrap: true,
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                ),
               ),
             ),
           ],

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'fade_gradient.dart';
 
 class VerticalGradient extends StatelessWidget {
-  final double height;
-  final Widget child;
+  final double? height;
+  final Widget? child;
 
   const VerticalGradient({
     Key? key,
-    required this.height,
-    required this.child,
+    this.height,
+    this.child,
   }) : super(key: key);
 
   @override

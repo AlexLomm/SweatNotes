@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ExerciseTypeClient {
   String get id => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
   List<ExerciseClient> get exercises => throw _privateConstructorUsedError;
@@ -33,7 +34,11 @@ abstract class $ExerciseTypeClientCopyWith<$Res> {
       _$ExerciseTypeClientCopyWithImpl<$Res, ExerciseTypeClient>;
   @useResult
   $Res call(
-      {String id, String name, String unit, List<ExerciseClient> exercises});
+      {String id,
+      String userId,
+      String name,
+      String unit,
+      List<ExerciseClient> exercises});
 }
 
 /// @nodoc
@@ -50,6 +55,7 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
   @override
   $Res call({
     Object? id = null,
+    Object? userId = null,
     Object? name = null,
     Object? unit = null,
     Object? exercises = null,
@@ -58,6 +64,10 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -84,7 +94,11 @@ abstract class _$$_ExerciseTypeClientCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id, String name, String unit, List<ExerciseClient> exercises});
+      {String id,
+      String userId,
+      String name,
+      String unit,
+      List<ExerciseClient> exercises});
 }
 
 /// @nodoc
@@ -99,6 +113,7 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? userId = null,
     Object? name = null,
     Object? unit = null,
     Object? exercises = null,
@@ -107,6 +122,10 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -126,18 +145,21 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExerciseTypeClient
-    with DiagnosticableTreeMixin
-    implements _ExerciseTypeClient {
+class _$_ExerciseTypeClient extends _ExerciseTypeClient
+    with DiagnosticableTreeMixin {
   const _$_ExerciseTypeClient(
       {required this.id,
+      required this.userId,
       required this.name,
       required this.unit,
       required final List<ExerciseClient> exercises})
-      : _exercises = exercises;
+      : _exercises = exercises,
+        super._();
 
   @override
   final String id;
+  @override
+  final String userId;
   @override
   final String name;
   @override
@@ -152,7 +174,7 @@ class _$_ExerciseTypeClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseTypeClient(id: $id, name: $name, unit: $unit, exercises: $exercises)';
+    return 'ExerciseTypeClient(id: $id, userId: $userId, name: $name, unit: $unit, exercises: $exercises)';
   }
 
   @override
@@ -161,6 +183,7 @@ class _$_ExerciseTypeClient
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseTypeClient'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('unit', unit))
       ..add(DiagnosticsProperty('exercises', exercises));
@@ -172,6 +195,7 @@ class _$_ExerciseTypeClient
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseTypeClient &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.unit, unit) || other.unit == unit) &&
             const DeepCollectionEquality()
@@ -179,7 +203,7 @@ class _$_ExerciseTypeClient
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, unit,
+  int get hashCode => Object.hash(runtimeType, id, userId, name, unit,
       const DeepCollectionEquality().hash(_exercises));
 
   @JsonKey(ignore: true)
@@ -190,15 +214,19 @@ class _$_ExerciseTypeClient
           this, _$identity);
 }
 
-abstract class _ExerciseTypeClient implements ExerciseTypeClient {
+abstract class _ExerciseTypeClient extends ExerciseTypeClient {
   const factory _ExerciseTypeClient(
       {required final String id,
+      required final String userId,
       required final String name,
       required final String unit,
       required final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
+  const _ExerciseTypeClient._() : super._();
 
   @override
   String get id;
+  @override
+  String get userId;
   @override
   String get name;
   @override

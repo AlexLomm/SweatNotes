@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SaveButton extends StatelessWidget {
-  final void Function() onPressed;
+class Button extends StatelessWidget {
+  final String label;
+  final void Function()? onPressed;
 
-  const SaveButton({Key? key, required this.onPressed}) : super(key: key);
+  const Button({
+    Key? key,
+    required this.label,
+    this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class SaveButton extends StatelessWidget {
         ),
       ),
       child: Text(
-        'Save',
+        label,
         style: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),

@@ -5,7 +5,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../firebase.dart';
 import '../models/exercise.dart';
 import '../models_client/exercise_client.dart';
-import '../services/auth_service.dart';
 
 part 'exercises_repository.g.dart';
 

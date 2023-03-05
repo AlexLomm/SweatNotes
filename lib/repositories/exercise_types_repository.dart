@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../firebase.dart';
 import '../models/exercise_type.dart';
 
 part 'exercise_types_repository.g.dart';
 
 class ExerciseTypesRepository {
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
+
+  ExerciseTypesRepository(this.firestore, this.firebaseAuth);
+
   Query<ExerciseType> getExerciseTypesQuery() {
-    return FirebaseFirestore.instance
+    return firestore
         .collection('exercise-types')
-        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
         .withConverter(
           fromFirestore: (doc, _) {
             final dataWithoutId = doc.data();
@@ -35,6 +41,10 @@ class ExerciseTypesRepository {
 }
 
 @riverpod
-ExerciseTypesRepository exerciseTypesRepository(ExerciseTypesRepositoryRef ref) {
-  return ExerciseTypesRepository();
+ExerciseTypesRepository exerciseTypesRepository(
+    ExerciseTypesRepositoryRef ref) {
+  final firestore = ref.read(firestoreProvider);
+  final firebaseAuth = ref.read(firebaseAuthProvider);
+
+  return ExerciseTypesRepository(firestore, firebaseAuth);
 }

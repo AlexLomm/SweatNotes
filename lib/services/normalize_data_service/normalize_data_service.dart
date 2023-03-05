@@ -31,6 +31,39 @@ class NormalizeDataService {
     required this.exerciseTypesRepository,
   });
 
+  TrainingBlock? trainingBlock;
+  List<ExerciseDay>? exerciseDays;
+  List<ExerciseType>? exerciseTypes;
+  List<Exercise>? exercises;
+
+  // TODO: dispose?
+  // void init() {
+  //   // TODO: remove hardcoding
+  //   trainingBlocksRepository
+  //       .getTrainingBlockQuery(id: 'Ls8H9PRXTgdtuL0YrycQ')
+  //       .snapshots()
+  //       .listen((event) => trainingBlock = event.data());
+  //
+  //   exerciseDaysRepository
+  //       .getExerciseDaysQuery(trainingBlockId: 'Ls8H9PRXTgdtuL0YrycQ')
+  //       .snapshots()
+  //       .listen(
+  //         (event) => exerciseDays = event.docs.map((e) => e.data()).toList(),
+  //       );
+  //
+  //   // TODO: review
+  //   exercisesRepository
+  //       .getExercisesByExerciseDayIdQuery(exerciseDayId: '')
+  //       .snapshots()
+  //       .listen(
+  //         (event) => exercises = event.docs.map((e) => e.data()).toList(),
+  //       );
+  //
+  //   exerciseTypesRepository.getExerciseTypesQuery().snapshots().listen(
+  //         (event) => exerciseTypes = event.docs.map((e) => e.data()).toList(),
+  //       );
+  // }
+
   Future<List<ExerciseDayClient>> getNormalizedData({
     required String trainingBlockId,
   }) async {

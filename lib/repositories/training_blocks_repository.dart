@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../firebase.dart';
 import '../models/training_block.dart';
 
 part 'training_blocks_repository.g.dart';
 
 class TrainingBlocksRepository {
+  final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
+
+  TrainingBlocksRepository(this.firestore, this.firebaseAuth);
+
   Query<TrainingBlock> getTrainingBlocks() {
-    return FirebaseFirestore.instance
+    return firestore
         .collection('training-blocks')
-        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
         .withConverter(
           fromFirestore: (doc, _) {
             final dataWithoutId = doc.data();
@@ -63,6 +69,11 @@ class TrainingBlocksRepository {
 }
 
 @riverpod
-TrainingBlocksRepository trainingBlocksRepository(TrainingBlocksRepositoryRef ref) {
-  return TrainingBlocksRepository();
+TrainingBlocksRepository trainingBlocksRepository(
+  TrainingBlocksRepositoryRef ref,
+) {
+  final firestore = ref.read(firestoreProvider);
+  final firebaseAuth = ref.read(firebaseAuthProvider);
+
+  return TrainingBlocksRepository(firestore, firebaseAuth);
 }

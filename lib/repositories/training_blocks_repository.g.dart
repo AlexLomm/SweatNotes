@@ -7,7 +7,7 @@ part of 'training_blocks_repository.dart';
 // **************************************************************************
 
 String _$trainingBlocksRepositoryHash() =>
-    r'b8d66728525c4d9b1bc00b28f44ac8b243612ee7';
+    r'1d7b6402b7e0b1266c3e2403d9d6aae0ae6984d3';
 
 /// See also [trainingBlocksRepository].
 @ProviderFor(trainingBlocksRepository)

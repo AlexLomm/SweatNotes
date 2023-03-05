@@ -17,20 +17,23 @@ class ExerciseClient with _$ExerciseClient {
     required String userId,
     required String exerciseDayId,
     required String exerciseTypeId,
+    required String trainingBlockId,
     @Default(false) bool isFiller,
     @Default(-1) int placement,
-    @Default([]) List<ExerciseSetClient> exerciseSets,
+    required List<ExerciseSetClient> exerciseSets,
   }) = _ExerciseClient;
 
   factory ExerciseClient.empty({
     required String userId,
     required String exerciseDayId,
     required String exerciseTypeId,
+    required String trainingBlockId,
   }) {
     return ExerciseClient(
       id: generateHash(),
       userId: userId,
       exerciseDayId: exerciseDayId,
+      trainingBlockId: trainingBlockId,
       isFiller: true,
       placement: -1,
       exerciseSets: [],
@@ -44,6 +47,7 @@ class ExerciseClient with _$ExerciseClient {
       userId: userId,
       exerciseDayId: exerciseDayId,
       exerciseTypeId: exerciseTypeId,
+      trainingBlockId: trainingBlockId,
       placement: placement,
       sets: _setsWithNoTrailingFillers
           .map<ExerciseSet>(

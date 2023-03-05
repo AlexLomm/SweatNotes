@@ -17,6 +17,7 @@ class ExerciseDaysByIdsMap {
       exerciseDayMap[exerciseDay.id] = ExerciseDayClient(
         id: exerciseDay.id,
         name: exerciseDay.name,
+        exerciseTypesOrdering: exerciseDay.exerciseTypesOrdering,
         exerciseTypes: [],
       );
     }

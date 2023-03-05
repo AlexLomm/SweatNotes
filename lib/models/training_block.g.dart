@@ -11,8 +11,8 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       userId: json['userId'] as String,
       name: json['name'] as String,
-      exerciseDayOrdering:
-          (json['exerciseDayOrdering'] as Map<String, dynamic>?)?.map(
+      exerciseDaysOrdering:
+          (json['exerciseDaysOrdering'] as Map<String, dynamic>?)?.map(
                 (k, e) => MapEntry(k, e as int),
               ) ??
               const {},
@@ -22,5 +22,5 @@ Map<String, dynamic> _$$_TrainingBlockToJson(_$_TrainingBlock instance) =>
     <String, dynamic>{
       'userId': instance.userId,
       'name': instance.name,
-      'exerciseDayOrdering': instance.exerciseDayOrdering,
+      'exerciseDaysOrdering': instance.exerciseDaysOrdering,
     };

@@ -10,6 +10,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
   const factory ExerciseDayClient({
     required String id,
     required String name,
-    @Default([]) List<ExerciseTypeClient> exerciseTypes,
+    required Map<String, int> exerciseTypesOrdering,
+    required List<ExerciseTypeClient> exerciseTypes,
   }) = _ExerciseDayClient;
 }

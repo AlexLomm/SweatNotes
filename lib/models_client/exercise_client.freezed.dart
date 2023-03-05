@@ -20,6 +20,7 @@ mixin _$ExerciseClient {
   String get userId => throw _privateConstructorUsedError;
   String get exerciseDayId => throw _privateConstructorUsedError;
   String get exerciseTypeId => throw _privateConstructorUsedError;
+  String get trainingBlockId => throw _privateConstructorUsedError;
   bool get isFiller => throw _privateConstructorUsedError;
   int get placement => throw _privateConstructorUsedError;
   List<ExerciseSetClient> get exerciseSets =>
@@ -41,6 +42,7 @@ abstract class $ExerciseClientCopyWith<$Res> {
       String userId,
       String exerciseDayId,
       String exerciseTypeId,
+      String trainingBlockId,
       bool isFiller,
       int placement,
       List<ExerciseSetClient> exerciseSets});
@@ -63,6 +65,7 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
     Object? userId = null,
     Object? exerciseDayId = null,
     Object? exerciseTypeId = null,
+    Object? trainingBlockId = null,
     Object? isFiller = null,
     Object? placement = null,
     Object? exerciseSets = null,
@@ -83,6 +86,10 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
       exerciseTypeId: null == exerciseTypeId
           ? _value.exerciseTypeId
           : exerciseTypeId // ignore: cast_nullable_to_non_nullable
+              as String,
+      trainingBlockId: null == trainingBlockId
+          ? _value.trainingBlockId
+          : trainingBlockId // ignore: cast_nullable_to_non_nullable
               as String,
       isFiller: null == isFiller
           ? _value.isFiller
@@ -113,6 +120,7 @@ abstract class _$$_ExerciseClientCopyWith<$Res>
       String userId,
       String exerciseDayId,
       String exerciseTypeId,
+      String trainingBlockId,
       bool isFiller,
       int placement,
       List<ExerciseSetClient> exerciseSets});
@@ -133,6 +141,7 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
     Object? userId = null,
     Object? exerciseDayId = null,
     Object? exerciseTypeId = null,
+    Object? trainingBlockId = null,
     Object? isFiller = null,
     Object? placement = null,
     Object? exerciseSets = null,
@@ -153,6 +162,10 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
       exerciseTypeId: null == exerciseTypeId
           ? _value.exerciseTypeId
           : exerciseTypeId // ignore: cast_nullable_to_non_nullable
+              as String,
+      trainingBlockId: null == trainingBlockId
+          ? _value.trainingBlockId
+          : trainingBlockId // ignore: cast_nullable_to_non_nullable
               as String,
       isFiller: null == isFiller
           ? _value.isFiller
@@ -178,9 +191,10 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
       required this.userId,
       required this.exerciseDayId,
       required this.exerciseTypeId,
+      required this.trainingBlockId,
       this.isFiller = false,
       this.placement = -1,
-      final List<ExerciseSetClient> exerciseSets = const []})
+      required final List<ExerciseSetClient> exerciseSets})
       : _exerciseSets = exerciseSets,
         super._();
 
@@ -193,6 +207,8 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   @override
   final String exerciseTypeId;
   @override
+  final String trainingBlockId;
+  @override
   @JsonKey()
   final bool isFiller;
   @override
@@ -200,7 +216,6 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   final int placement;
   final List<ExerciseSetClient> _exerciseSets;
   @override
-  @JsonKey()
   List<ExerciseSetClient> get exerciseSets {
     if (_exerciseSets is EqualUnmodifiableListView) return _exerciseSets;
     // ignore: implicit_dynamic_type
@@ -209,7 +224,7 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseClient(id: $id, userId: $userId, exerciseDayId: $exerciseDayId, exerciseTypeId: $exerciseTypeId, isFiller: $isFiller, placement: $placement, exerciseSets: $exerciseSets)';
+    return 'ExerciseClient(id: $id, userId: $userId, exerciseDayId: $exerciseDayId, exerciseTypeId: $exerciseTypeId, trainingBlockId: $trainingBlockId, isFiller: $isFiller, placement: $placement, exerciseSets: $exerciseSets)';
   }
 
   @override
@@ -221,6 +236,7 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('exerciseDayId', exerciseDayId))
       ..add(DiagnosticsProperty('exerciseTypeId', exerciseTypeId))
+      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
       ..add(DiagnosticsProperty('isFiller', isFiller))
       ..add(DiagnosticsProperty('placement', placement))
       ..add(DiagnosticsProperty('exerciseSets', exerciseSets));
@@ -237,6 +253,8 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
                 other.exerciseDayId == exerciseDayId) &&
             (identical(other.exerciseTypeId, exerciseTypeId) ||
                 other.exerciseTypeId == exerciseTypeId) &&
+            (identical(other.trainingBlockId, trainingBlockId) ||
+                other.trainingBlockId == trainingBlockId) &&
             (identical(other.isFiller, isFiller) ||
                 other.isFiller == isFiller) &&
             (identical(other.placement, placement) ||
@@ -252,6 +270,7 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
       userId,
       exerciseDayId,
       exerciseTypeId,
+      trainingBlockId,
       isFiller,
       placement,
       const DeepCollectionEquality().hash(_exerciseSets));
@@ -269,9 +288,10 @@ abstract class _ExerciseClient extends ExerciseClient {
       required final String userId,
       required final String exerciseDayId,
       required final String exerciseTypeId,
+      required final String trainingBlockId,
       final bool isFiller,
       final int placement,
-      final List<ExerciseSetClient> exerciseSets}) = _$_ExerciseClient;
+      required final List<ExerciseSetClient> exerciseSets}) = _$_ExerciseClient;
   const _ExerciseClient._() : super._();
 
   @override
@@ -282,6 +302,8 @@ abstract class _ExerciseClient extends ExerciseClient {
   String get exerciseDayId;
   @override
   String get exerciseTypeId;
+  @override
+  String get trainingBlockId;
   @override
   bool get isFiller;
   @override

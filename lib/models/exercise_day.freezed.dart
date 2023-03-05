@@ -22,6 +22,8 @@ ExerciseDay _$ExerciseDayFromJson(Map<String, dynamic> json) {
 mixin _$ExerciseDay {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
+  Map<String, int> get exerciseTypesOrdering =>
+      throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get trainingBlockId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -40,6 +42,7 @@ abstract class $ExerciseDayCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String id,
+      Map<String, int> exerciseTypesOrdering,
       String userId,
       String trainingBlockId,
       String name});
@@ -59,6 +62,7 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
   @override
   $Res call({
     Object? id = null,
+    Object? exerciseTypesOrdering = null,
     Object? userId = null,
     Object? trainingBlockId = null,
     Object? name = null,
@@ -68,6 +72,10 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      exerciseTypesOrdering: null == exerciseTypesOrdering
+          ? _value.exerciseTypesOrdering
+          : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -94,6 +102,7 @@ abstract class _$$_ExerciseDayCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String id,
+      Map<String, int> exerciseTypesOrdering,
       String userId,
       String trainingBlockId,
       String name});
@@ -111,6 +120,7 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? exerciseTypesOrdering = null,
     Object? userId = null,
     Object? trainingBlockId = null,
     Object? name = null,
@@ -120,6 +130,10 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      exerciseTypesOrdering: null == exerciseTypesOrdering
+          ? _value._exerciseTypesOrdering
+          : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -141,9 +155,11 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
 class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
   const _$_ExerciseDay(
       {@JsonKey(includeToJson: false) required this.id,
+      final Map<String, int> exerciseTypesOrdering = const {},
       required this.userId,
       required this.trainingBlockId,
-      required this.name});
+      required this.name})
+      : _exerciseTypesOrdering = exerciseTypesOrdering;
 
   factory _$_ExerciseDay.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseDayFromJson(json);
@@ -151,6 +167,16 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
   @override
   @JsonKey(includeToJson: false)
   final String id;
+  final Map<String, int> _exerciseTypesOrdering;
+  @override
+  @JsonKey()
+  Map<String, int> get exerciseTypesOrdering {
+    if (_exerciseTypesOrdering is EqualUnmodifiableMapView)
+      return _exerciseTypesOrdering;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_exerciseTypesOrdering);
+  }
+
   @override
   final String userId;
   @override
@@ -160,7 +186,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDay(id: $id, userId: $userId, trainingBlockId: $trainingBlockId, name: $name)';
+    return 'ExerciseDay(id: $id, exerciseTypesOrdering: $exerciseTypesOrdering, userId: $userId, trainingBlockId: $trainingBlockId, name: $name)';
   }
 
   @override
@@ -169,6 +195,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDay'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
       ..add(DiagnosticsProperty('name', name));
@@ -180,6 +207,8 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseDay &&
             (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality()
+                .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.trainingBlockId, trainingBlockId) ||
                 other.trainingBlockId == trainingBlockId) &&
@@ -188,8 +217,13 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, userId, trainingBlockId, name);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      const DeepCollectionEquality().hash(_exerciseTypesOrdering),
+      userId,
+      trainingBlockId,
+      name);
 
   @JsonKey(ignore: true)
   @override
@@ -208,6 +242,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
 abstract class _ExerciseDay implements ExerciseDay {
   const factory _ExerciseDay(
       {@JsonKey(includeToJson: false) required final String id,
+      final Map<String, int> exerciseTypesOrdering,
       required final String userId,
       required final String trainingBlockId,
       required final String name}) = _$_ExerciseDay;
@@ -218,6 +253,8 @@ abstract class _ExerciseDay implements ExerciseDay {
   @override
   @JsonKey(includeToJson: false)
   String get id;
+  @override
+  Map<String, int> get exerciseTypesOrdering;
   @override
   String get userId;
   @override

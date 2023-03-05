@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ExerciseDayClient {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  Map<String, int> get exerciseTypesOrdering =>
+      throw _privateConstructorUsedError;
   List<ExerciseTypeClient> get exerciseTypes =>
       throw _privateConstructorUsedError;
 
@@ -32,7 +34,11 @@ abstract class $ExerciseDayClientCopyWith<$Res> {
           ExerciseDayClient value, $Res Function(ExerciseDayClient) then) =
       _$ExerciseDayClientCopyWithImpl<$Res, ExerciseDayClient>;
   @useResult
-  $Res call({String id, String name, List<ExerciseTypeClient> exerciseTypes});
+  $Res call(
+      {String id,
+      String name,
+      Map<String, int> exerciseTypesOrdering,
+      List<ExerciseTypeClient> exerciseTypes});
 }
 
 /// @nodoc
@@ -50,6 +56,7 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? exerciseTypesOrdering = null,
     Object? exerciseTypes = null,
   }) {
     return _then(_value.copyWith(
@@ -61,6 +68,10 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      exerciseTypesOrdering: null == exerciseTypesOrdering
+          ? _value.exerciseTypesOrdering
+          : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       exerciseTypes: null == exerciseTypes
           ? _value.exerciseTypes
           : exerciseTypes // ignore: cast_nullable_to_non_nullable
@@ -77,7 +88,11 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
       __$$_ExerciseDayClientCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, List<ExerciseTypeClient> exerciseTypes});
+  $Res call(
+      {String id,
+      String name,
+      Map<String, int> exerciseTypesOrdering,
+      List<ExerciseTypeClient> exerciseTypes});
 }
 
 /// @nodoc
@@ -93,6 +108,7 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? exerciseTypesOrdering = null,
     Object? exerciseTypes = null,
   }) {
     return _then(_$_ExerciseDayClient(
@@ -104,6 +120,10 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      exerciseTypesOrdering: null == exerciseTypesOrdering
+          ? _value._exerciseTypesOrdering
+          : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       exerciseTypes: null == exerciseTypes
           ? _value._exerciseTypes
           : exerciseTypes // ignore: cast_nullable_to_non_nullable
@@ -120,16 +140,26 @@ class _$_ExerciseDayClient
   const _$_ExerciseDayClient(
       {required this.id,
       required this.name,
-      final List<ExerciseTypeClient> exerciseTypes = const []})
-      : _exerciseTypes = exerciseTypes;
+      required final Map<String, int> exerciseTypesOrdering,
+      required final List<ExerciseTypeClient> exerciseTypes})
+      : _exerciseTypesOrdering = exerciseTypesOrdering,
+        _exerciseTypes = exerciseTypes;
 
   @override
   final String id;
   @override
   final String name;
+  final Map<String, int> _exerciseTypesOrdering;
+  @override
+  Map<String, int> get exerciseTypesOrdering {
+    if (_exerciseTypesOrdering is EqualUnmodifiableMapView)
+      return _exerciseTypesOrdering;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_exerciseTypesOrdering);
+  }
+
   final List<ExerciseTypeClient> _exerciseTypes;
   @override
-  @JsonKey()
   List<ExerciseTypeClient> get exerciseTypes {
     if (_exerciseTypes is EqualUnmodifiableListView) return _exerciseTypes;
     // ignore: implicit_dynamic_type
@@ -138,7 +168,7 @@ class _$_ExerciseDayClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDayClient(id: $id, name: $name, exerciseTypes: $exerciseTypes)';
+    return 'ExerciseDayClient(id: $id, name: $name, exerciseTypesOrdering: $exerciseTypesOrdering, exerciseTypes: $exerciseTypes)';
   }
 
   @override
@@ -148,6 +178,7 @@ class _$_ExerciseDayClient
       ..add(DiagnosticsProperty('type', 'ExerciseDayClient'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering))
       ..add(DiagnosticsProperty('exerciseTypes', exerciseTypes));
   }
 
@@ -159,11 +190,17 @@ class _$_ExerciseDayClient
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
+                .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering) &&
+            const DeepCollectionEquality()
                 .equals(other._exerciseTypes, _exerciseTypes));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name,
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      const DeepCollectionEquality().hash(_exerciseTypesOrdering),
       const DeepCollectionEquality().hash(_exerciseTypes));
 
   @JsonKey(ignore: true)
@@ -176,14 +213,18 @@ class _$_ExerciseDayClient
 
 abstract class _ExerciseDayClient implements ExerciseDayClient {
   const factory _ExerciseDayClient(
-      {required final String id,
-      required final String name,
-      final List<ExerciseTypeClient> exerciseTypes}) = _$_ExerciseDayClient;
+          {required final String id,
+          required final String name,
+          required final Map<String, int> exerciseTypesOrdering,
+          required final List<ExerciseTypeClient> exerciseTypes}) =
+      _$_ExerciseDayClient;
 
   @override
   String get id;
   @override
   String get name;
+  @override
+  Map<String, int> get exerciseTypesOrdering;
   @override
   List<ExerciseTypeClient> get exerciseTypes;
   @override

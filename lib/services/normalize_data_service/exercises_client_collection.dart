@@ -32,6 +32,7 @@ class ExercisesClientCollection {
     required String userId,
     required String exerciseTypeId,
     required String exerciseDayId,
+    required String trainingBlockId,
     required int maxPlacement,
     required int maxSets,
   }) {
@@ -46,6 +47,7 @@ class ExercisesClientCollection {
           userId: userId,
           exerciseTypeId: exerciseTypeId,
           exerciseDayId: exerciseDayId,
+          trainingBlockId: trainingBlockId,
         ).copyWith(
           placement: i,
           exerciseSets: List.generate(

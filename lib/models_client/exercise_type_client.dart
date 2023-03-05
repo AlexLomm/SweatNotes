@@ -11,6 +11,6 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     required String id,
     required String name,
     required String unit,
-    @Default([]) List<ExerciseClient> exercises,
+    required List<ExerciseClient> exercises,
   }) = _ExerciseTypeClient;
 }

@@ -48,5 +48,7 @@ class TrainingBlockStoreService extends _$TrainingBlockStoreService {
     ]);
 
     repository.setExercise(modifiedExercise);
+
+    // TODO: add state update
   }
 }

@@ -133,7 +133,7 @@ class _$_ExerciseTypeClient
       {required this.id,
       required this.name,
       required this.unit,
-      final List<ExerciseClient> exercises = const []})
+      required final List<ExerciseClient> exercises})
       : _exercises = exercises;
 
   @override
@@ -144,7 +144,6 @@ class _$_ExerciseTypeClient
   final String unit;
   final List<ExerciseClient> _exercises;
   @override
-  @JsonKey()
   List<ExerciseClient> get exercises {
     if (_exercises is EqualUnmodifiableListView) return _exercises;
     // ignore: implicit_dynamic_type
@@ -196,7 +195,7 @@ abstract class _ExerciseTypeClient implements ExerciseTypeClient {
       {required final String id,
       required final String name,
       required final String unit,
-      final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
+      required final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
 
   @override
   String get id;

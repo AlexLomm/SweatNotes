@@ -11,6 +11,7 @@ _$_Exercise _$$_ExerciseFromJson(Map<String, dynamic> json) => _$_Exercise(
       userId: json['userId'] as String,
       exerciseDayId: json['exerciseDayId'] as String,
       exerciseTypeId: json['exerciseTypeId'] as String,
+      trainingBlockId: json['trainingBlockId'] as String,
       placement: json['placement'] as int? ?? -1,
       sets: (json['sets'] as List<dynamic>?)
               ?.map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$_ExerciseToJson(_$_Exercise instance) =>
       'userId': instance.userId,
       'exerciseDayId': instance.exerciseDayId,
       'exerciseTypeId': instance.exerciseTypeId,
+      'trainingBlockId': instance.trainingBlockId,
       'placement': instance.placement,
       'sets': instance.sets.map((e) => e.toJson()).toList(),
     };

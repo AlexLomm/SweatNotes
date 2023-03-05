@@ -9,6 +9,7 @@ import 'exercises_collection.dart';
 
 class ExerciseDaysByIdsExerciseTypesByIdsMap {
   final String userId;
+  final String trainingBlockId;
   final List<Exercise> exercises;
   final List<ExerciseType> exerciseTypes;
 
@@ -17,11 +18,12 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
   Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
       _map.entries;
 
-  ExerciseDaysByIdsExerciseTypesByIdsMap(
-    this.userId,
-    this.exercises,
-    this.exerciseTypes,
-  ) {
+  ExerciseDaysByIdsExerciseTypesByIdsMap({
+    required this.userId,
+    required this.trainingBlockId,
+    required this.exercises,
+    required this.exerciseTypes,
+  }) {
     _init();
   }
 
@@ -60,6 +62,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
             userId: exercise.userId,
             exerciseTypeId: exercise.exerciseTypeId,
             exerciseDayId: exercise.exerciseDayId,
+            trainingBlockId: exercise.trainingBlockId,
             placement: exercise.placement,
             exerciseSets: exercise.sets.map((set) {
               return ExerciseSetClient(
@@ -90,6 +93,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
             userId: userId,
             exerciseTypeId: exerciseTypeId,
             exerciseDayId: exerciseDayId,
+            trainingBlockId: trainingBlockId,
             maxSets: maxExerciseSetsCount,
             maxPlacement: maxExercisePlacement,
           );

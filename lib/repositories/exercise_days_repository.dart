@@ -10,6 +10,7 @@ class ExerciseDaysRepository {
   Query<ExerciseDay> getExerciseDaysQuery({
     required String trainingBlockId,
   }) {
+    // TODO: add provider
     return FirebaseFirestore.instance
         .collection('exercise-days')
         .where('trainingBlockId', isEqualTo: trainingBlockId)

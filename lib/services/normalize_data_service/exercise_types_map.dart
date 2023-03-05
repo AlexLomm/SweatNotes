@@ -18,6 +18,7 @@ class ExerciseTypesMap {
         id: exerciseType.id,
         name: exerciseType.name,
         unit: exerciseType.unit,
+        exercises: [],
       );
     }
 

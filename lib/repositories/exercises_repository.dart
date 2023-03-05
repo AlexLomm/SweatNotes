@@ -39,10 +39,8 @@ class ExercisesRepository {
         .set(exercise, SetOptions(merge: true));
   }
 
-  Future<List<Exercise>> fetchExercisesByTrainingBlockId(
-    String trainingBlockId,
-  ) async {
-    final snapshot = await firestore
+  Query<Exercise> getExercisesByTrainingBlockIdQuery(String trainingBlockId) {
+    return firestore
         .collection('exercises')
         .withConverter(
           fromFirestore: _fromFirestoreConverter,
@@ -50,8 +48,14 @@ class ExercisesRepository {
         )
         .where('trainingBlockId', isEqualTo: trainingBlockId)
         .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
-        .orderBy('placement')
-        .get();
+        .orderBy('placement');
+  }
+
+  Future<List<Exercise>> fetchExercisesByTrainingBlockId(
+    String trainingBlockId,
+  ) async {
+    final snapshot =
+        await getExercisesByTrainingBlockIdQuery(trainingBlockId).get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }

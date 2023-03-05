@@ -40,7 +40,7 @@ class TrainingBlocksRepository {
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
 
-  DocumentReference<TrainingBlock> getTrainingBlockQuery({required String id}) {
+  DocumentReference<TrainingBlock> getTrainingBlockQuery(String id) {
     return FirebaseFirestore.instance
         .collection('training-blocks')
         .doc(id)
@@ -62,7 +62,7 @@ class TrainingBlocksRepository {
   }
 
   Future<TrainingBlock?> fetchTrainingBlock({required String id}) async {
-    final snapshot = await getTrainingBlockQuery(id: id).get();
+    final snapshot = await getTrainingBlockQuery(id).get();
 
     return snapshot.data();
   }

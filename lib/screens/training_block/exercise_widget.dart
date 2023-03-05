@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../services/exercises_service.dart';
 import '../../models_client/exercise_client.dart';
-import '../../services/training_block_store_service.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import 'exercise_set_editor/exercise_set_editor.dart';
 import 'exercise_set_widget.dart';
@@ -25,9 +25,7 @@ class ExerciseWidget extends ConsumerWidget {
 
     assert(trainingBlockId.isNotEmpty);
 
-    final trainingBlockStore = ref.watch(
-      trainingBlockStoreServiceProvider(trainingBlockId).notifier,
-    );
+    final exercisesService = ref.watch(exercisesServiceProvider);
 
     return Container(
       decoration: const BoxDecoration(
@@ -51,7 +49,7 @@ class ExerciseWidget extends ConsumerWidget {
                   reps: repsNum,
                   load: loadNum,
                   onChange: ({required reps, required load}) {
-                    trainingBlockStore.setExerciseSet(
+                    exercisesService.setExerciseSet(
                       exercise: exercise,
                       reps: reps,
                       load: load,

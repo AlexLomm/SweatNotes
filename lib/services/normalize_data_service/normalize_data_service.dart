@@ -17,75 +17,86 @@ import 'exercise_days_by_ids_map.dart';
 part 'normalize_data_service.g.dart';
 
 // TODO: rename service
-/// @throws Exception if training block is not found
 class NormalizeDataService {
+  final String trainingBlockId;
   final TrainingBlocksRepository trainingBlocksRepository;
   final ExerciseDaysRepository exerciseDaysRepository;
-  final ExercisesRepository exercisesRepository;
   final ExerciseTypesRepository exerciseTypesRepository;
+  final ExercisesRepository exercisesRepository;
+
+  TrainingBlock? _trainingBlock;
+  List<ExerciseDay>? _exerciseDays;
+  List<ExerciseType>? _exerciseTypes;
+  List<Exercise>? _exercises;
+
+  // TODO: rename and include training block
+  Stream<List<ExerciseDayClient>> get exerciseDays =>
+      _exerciseDaysClientController.stream;
+  late final StreamController<List<ExerciseDayClient>>
+      _exerciseDaysClientController;
 
   NormalizeDataService({
+    required this.trainingBlockId,
     required this.trainingBlocksRepository,
     required this.exerciseDaysRepository,
-    required this.exercisesRepository,
     required this.exerciseTypesRepository,
-  });
-
-  TrainingBlock? trainingBlock;
-  List<ExerciseDay>? exerciseDays;
-  List<ExerciseType>? exerciseTypes;
-  List<Exercise>? exercises;
-
-  // TODO: dispose?
-  // void init() {
-  //   // TODO: remove hardcoding
-  //   trainingBlocksRepository
-  //       .getTrainingBlockQuery(id: 'Ls8H9PRXTgdtuL0YrycQ')
-  //       .snapshots()
-  //       .listen((event) => trainingBlock = event.data());
-  //
-  //   exerciseDaysRepository
-  //       .getExerciseDaysQuery(trainingBlockId: 'Ls8H9PRXTgdtuL0YrycQ')
-  //       .snapshots()
-  //       .listen(
-  //         (event) => exerciseDays = event.docs.map((e) => e.data()).toList(),
-  //       );
-  //
-  //   // TODO: review
-  //   exercisesRepository
-  //       .getExercisesByExerciseDayIdQuery(exerciseDayId: '')
-  //       .snapshots()
-  //       .listen(
-  //         (event) => exercises = event.docs.map((e) => e.data()).toList(),
-  //       );
-  //
-  //   exerciseTypesRepository.getExerciseTypesQuery().snapshots().listen(
-  //         (event) => exerciseTypes = event.docs.map((e) => e.data()).toList(),
-  //       );
-  // }
-
-  Future<List<ExerciseDayClient>> getNormalizedData({
-    required String trainingBlockId,
-  }) async {
-    final trainingBlockFuture = trainingBlocksRepository.fetchTrainingBlock(
-      id: trainingBlockId,
-    );
-    final exerciseTypesFuture = exerciseTypesRepository.fetchExerciseTypes();
-
-    final exerciseDays = await exerciseDaysRepository.fetchExerciseDays(
-      trainingBlockId: trainingBlockId,
+    required this.exercisesRepository,
+  }) {
+    _exerciseDaysClientController = StreamController<List<ExerciseDayClient>>(
+      onListen: _recalculateState,
+      onCancel: () => _exerciseDaysClientController.close(),
     );
 
-    final exercisesFuture = exercisesRepository.fetchExercisesByTrainingBlockId(
-      trainingBlockId,
+    trainingBlocksRepository
+        .getTrainingBlockQuery(trainingBlockId)
+        .snapshots()
+        .listen((event) {
+      _trainingBlock = event.data();
+
+      _recalculateState();
+    });
+
+    exerciseDaysRepository
+        .getExerciseDaysQuery(trainingBlockId)
+        .snapshots()
+        .listen((event) {
+      _exerciseDays = event.docs.map((e) => e.data()).toList();
+
+      _recalculateState();
+    });
+
+    exerciseTypesRepository.getExerciseTypesQuery().snapshots().listen((event) {
+      _exerciseTypes = event.docs.map((e) => e.data()).toList();
+
+      _recalculateState();
+    });
+
+    exercisesRepository
+        .getExercisesByTrainingBlockIdQuery(trainingBlockId)
+        .snapshots()
+        .listen(
+      (event) {
+        _exercises = event.docs.map((e) => e.data()).toList();
+
+        _recalculateState();
+      },
     );
+  }
 
-    final trainingBlock = await trainingBlockFuture;
+  _recalculateState() {
+    _exerciseDaysClientController.add(getNormalizedData(trainingBlockId));
+  }
 
-    if (trainingBlock == null) throw Exception('Training block not found');
+  List<ExerciseDayClient> getNormalizedData(String trainingBlockId) {
+    final trainingBlock = _trainingBlock;
+    final exerciseDays = _exerciseDays;
+    final exerciseTypes = _exerciseTypes;
+    final exercises = _exercises;
 
-    final exerciseTypes = await exerciseTypesFuture;
-    final exercises = await exercisesFuture;
+    if (trainingBlock == null ||
+        exerciseDays == null ||
+        exerciseTypes == null ||
+        exercises == null) return [];
 
     final exerciseDaysMap = ExerciseDaysByIdsMap(exerciseDays);
 
@@ -149,13 +160,15 @@ class NormalizeDataService {
 }
 
 @riverpod
-NormalizeDataService normalizeDataService(NormalizeDataServiceRef ref) {
+NormalizeDataService normalizeDataService(
+    NormalizeDataServiceRef ref, String trainingBlockId) {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
   final exerciseDaysRepository = ref.watch(exerciseDaysRepositoryProvider);
   final exercisesRepository = ref.watch(exercisesRepositoryProvider);
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
 
   return NormalizeDataService(
+    trainingBlockId: trainingBlockId,
     trainingBlocksRepository: trainingBlocksRepository,
     exerciseDaysRepository: exerciseDaysRepository,
     exercisesRepository: exercisesRepository,

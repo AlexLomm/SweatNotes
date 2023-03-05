@@ -13,9 +13,7 @@ class ExerciseDaysRepository {
 
   ExerciseDaysRepository(this.firestore, this.firebaseAuth);
 
-  Query<ExerciseDay> getExerciseDaysQuery({
-    required String trainingBlockId,
-  }) {
+  Query<ExerciseDay> getExerciseDaysQuery(String trainingBlockId) {
     return firestore
         .collection('exercise-days')
         .where('trainingBlockId', isEqualTo: trainingBlockId)
@@ -39,9 +37,7 @@ class ExerciseDaysRepository {
   Future<List<ExerciseDay>> fetchExerciseDays({
     required String trainingBlockId,
   }) async {
-    final snapshot = await getExerciseDaysQuery(
-      trainingBlockId: trainingBlockId,
-    ).get();
+    final snapshot = await getExerciseDaysQuery(trainingBlockId).get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }

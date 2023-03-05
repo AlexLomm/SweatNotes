@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
+import 'package:journal_flutter/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../repositories/auth_repository.dart';
 import '../screens/auth/sign_in_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/training_block/training_block_screen.dart';
@@ -10,12 +10,12 @@ part 'router.g.dart';
 
 @riverpod
 GoRouter goRouter(GoRouterRef ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
 
   return GoRouter(
     initialLocation: '/auth/log-in',
     redirect: (context, state) {
-      final isLoggedIn = authRepository.currentUser != null;
+      final isLoggedIn = firebaseAuth.currentUser != null;
 
       // Always check state.subloc before returning a non-null route
       // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/redirection.dart#L78

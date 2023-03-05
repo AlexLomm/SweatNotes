@@ -23,8 +23,7 @@ mixin _$TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  String get name =>
-      throw _privateConstructorUsedError; // TODO: rename to exerciseDaysOrdering
+  String get name => throw _privateConstructorUsedError;
   Map<String, int> get exerciseDaysOrdering =>
       throw _privateConstructorUsedError;
 
@@ -158,9 +157,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   final String userId;
   @override
   final String name;
-// TODO: rename to exerciseDaysOrdering
   final Map<String, int> _exerciseDaysOrdering;
-// TODO: rename to exerciseDaysOrdering
   @override
   @JsonKey()
   Map<String, int> get exerciseDaysOrdering {
@@ -234,7 +231,7 @@ abstract class _TrainingBlock implements TrainingBlock {
   String get userId;
   @override
   String get name;
-  @override // TODO: rename to exerciseDaysOrdering
+  @override
   Map<String, int> get exerciseDaysOrdering;
   @override
   @JsonKey(ignore: true)

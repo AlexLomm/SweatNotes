@@ -43,11 +43,9 @@ class NormalizeDataService {
       trainingBlockId: trainingBlockId,
     );
 
-    final exerciseDayIds =
-        exerciseDays.map((exerciseDay) => exerciseDay.id).toList();
-
-    final exercisesFuture = exercisesRepository
-        .fetchExercisesByMultipleExerciseDayIds(exerciseDayIds: exerciseDayIds);
+    final exercisesFuture = exercisesRepository.fetchExercisesByTrainingBlockId(
+      trainingBlockId,
+    );
 
     final trainingBlock = await trainingBlockFuture;
 

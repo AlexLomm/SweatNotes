@@ -12,8 +12,6 @@ part 'auth_service.g.dart';
 
 // TODO: Check sign_in_screen_controller https://github.com/bizz84/starter_architecture_flutter_firebase/blob/master/lib/src/features/authentication/presentation/sign_in/sign_in_screen_controller.dart
 class AuthService {
-  User? user;
-
   final AuthRepository authRepository;
   final GoRouter goRouter;
 
@@ -31,8 +29,6 @@ class AuthService {
 
       if (credential.user == null) {
         return 'No user!';
-      } else {
-        user = credential.user;
       }
     } on FirebaseAuthException catch (e) {
       return e.message ?? '';

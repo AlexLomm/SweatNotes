@@ -5,30 +5,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../firebase.dart';
 import '../models/exercise.dart';
 import '../models_client/exercise_client.dart';
+import '../services/auth_service.dart';
 
 part 'exercises_repository.g.dart';
 
 class ExercisesRepository {
   final FirebaseFirestore firestore;
+  final FirebaseAuth firebaseAuth;
 
-  ExercisesRepository(this.firestore);
-
-  Query<Exercise> getExercisesByExerciseDayIdQuery({
-    required String exerciseDayId,
-  }) {
-    return firestore
-        .collection('exercises')
-        .where('exerciseDayId', isEqualTo: exerciseDayId)
-        .where(
-          'userId',
-          isEqualTo: FirebaseAuth.instance.currentUser?.uid,
-        )
-        .orderBy('placement')
-        .withConverter(
-          fromFirestore: _fromFirestoreConverter,
-          toFirestore: _toFirestoreConverter,
-        );
-  }
+  ExercisesRepository(this.firestore, this.firebaseAuth);
 
   Future<void> setExercise(ExerciseClient exerciseClient) {
     final collection = firestore.collection('exercises');
@@ -55,28 +40,21 @@ class ExercisesRepository {
         .set(exercise, SetOptions(merge: true));
   }
 
-  Future<List<Exercise>> fetchExercisesByExerciseDayId({
-    required String exerciseDayId,
-  }) async {
-    final snapshot = await getExercisesByExerciseDayIdQuery(
-      exerciseDayId: exerciseDayId,
-    ).get();
+  Future<List<Exercise>> fetchExercisesByTrainingBlockId(
+    String trainingBlockId,
+  ) async {
+    final snapshot = await firestore
+        .collection('exercises')
+        .withConverter(
+          fromFirestore: _fromFirestoreConverter,
+          toFirestore: _toFirestoreConverter,
+        )
+        .where('trainingBlockId', isEqualTo: trainingBlockId)
+        .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
+        .orderBy('placement')
+        .get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
-  }
-
-  Future<List<Exercise>> fetchExercisesByMultipleExerciseDayIds({
-    required List<String> exerciseDayIds,
-  }) async {
-    final exercises = exerciseDayIds.map(
-      (exerciseDayId) => fetchExercisesByExerciseDayId(
-        exerciseDayId: exerciseDayId,
-      ),
-    );
-
-    final exercisesListList = await Future.wait(exercises);
-
-    return exercisesListList.expand((exercisesList) => exercisesList).toList();
   }
 
   Exercise _fromFirestoreConverter(
@@ -102,6 +80,7 @@ class ExercisesRepository {
 @riverpod
 ExercisesRepository exercisesRepository(ExercisesRepositoryRef ref) {
   final firestore = ref.read(firestoreProvider);
+  final firebaseAuth = ref.read(firebaseAuthProvider);
 
-  return ExercisesRepository(firestore);
+  return ExercisesRepository(firestore, firebaseAuth);
 }

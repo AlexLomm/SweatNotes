@@ -45,8 +45,8 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                 left: 16.0,
                 right: 16.0,
                 top: 16.0,
@@ -54,7 +54,8 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
               ),
               child: TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                controller: passwordController,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                   hintText: 'Enter secure password',

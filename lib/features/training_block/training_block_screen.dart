@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/layout.dart';
+import 'data/models_client/exercise_day_client.dart';
 import 'exercise_matrix.dart';
 import 'exercise_matrix_labels.dart';
 import 'services/normalize_data_service/normalize_data_service.dart';
 
-class TrainingBlockScreen extends ConsumerWidget {
+class TrainingBlockScreen extends ConsumerStatefulWidget {
   final String trainingBlockId;
 
   const TrainingBlockScreen({
@@ -15,14 +16,28 @@ class TrainingBlockScreen extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final normalizeDataService = ref.watch(normalizeDataServiceProvider(
-      trainingBlockId,
+  ConsumerState createState() => _TrainingBlockScreenState();
+}
+
+class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
+  late final Stream<List<ExerciseDayClient>> exerciseDaysStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final normalizeDataService = ref.read(normalizeDataServiceProvider(
+      widget.trainingBlockId,
     ));
 
+    exerciseDaysStream = normalizeDataService.exerciseDays;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Layout(
       child: StreamBuilder(
-        stream: normalizeDataService.exerciseDays,
+        stream: exerciseDaysStream,
         builder: (context, snapshot) {
           final exerciseDays = snapshot.data;
 

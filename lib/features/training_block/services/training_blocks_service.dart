@@ -11,7 +11,7 @@ class TrainingBlocksService {
   TrainingBlocksService(this.trainingBlocksRepository);
 
   Stream<List<TrainingBlock>> get trainingBlocks => trainingBlocksRepository
-      .getTrainingBlocks()
+      .getTrainingBlocksQuery()
       .snapshots()
       .map<List<TrainingBlock>>(
         (event) => event.docs.map((doc) => doc.data()).toList(),

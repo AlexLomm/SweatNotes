@@ -13,7 +13,7 @@ class TrainingBlocksRepository {
 
   TrainingBlocksRepository(this.firestore, this.firebaseAuth);
 
-  Query<TrainingBlock> getTrainingBlocks() {
+  Query<TrainingBlock> getTrainingBlocksQuery() {
     return firestore
         .collection('training-blocks')
         .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
@@ -35,7 +35,7 @@ class TrainingBlocksRepository {
   }
 
   Future<List<TrainingBlock>> fetchTrainingBlocks() async {
-    final snapshot = await getTrainingBlocks().get();
+    final snapshot = await getTrainingBlocksQuery().get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }

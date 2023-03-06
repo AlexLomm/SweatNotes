@@ -1,39 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../training_block/data/models/training_block.dart';
-import '../training_block/services/training_blocks_state.dart';
 import '../../widgets/layout.dart';
+import '../training_block/data/models/training_block.dart';
+import '../training_block/services/training_blocks_service.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
 
-class _HomeScreenState extends State<HomeScreen> {
-  late TrainingBlocksState trainingBlocksState;
-
-  @override
-  void initState() {
-    super.initState();
-    trainingBlocksState = TrainingBlocksState();
-  }
-
-  @override
-  void dispose() {
-    trainingBlocksState.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
 
     return Layout(
       child: StreamBuilder<List<TrainingBlock>>(
-        stream: trainingBlocksState.trainingBlocks,
+        // TODO: dispose stream
+        stream: trainingBlocksService.trainingBlocks,
         builder: (context, snapshot) {
           final data = snapshot.data;
 

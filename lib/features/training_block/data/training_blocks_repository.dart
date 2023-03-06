@@ -66,6 +66,10 @@ class TrainingBlocksRepository {
 
     return snapshot.data();
   }
+
+  addTrainingBlock(TrainingBlock trainingBlock) {
+    firestore.collection('training-blocks').add(trainingBlock.toJson());
+  }
 }
 
 @riverpod

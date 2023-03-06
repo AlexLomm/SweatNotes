@@ -43,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
                 // TODO: add dark mode
                 ? const RiveAnimation.asset(
                     alignment: Alignment.center,
-                    'empty-state-home-light.riv',
+                    'assets/rive/empty-state-home-light.riv',
                   )
                 : ListView(children: [
                     for (final trainingBlock in data)

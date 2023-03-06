@@ -2,9 +2,9 @@ import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../screens/auth/sign_in_screen.dart';
-import '../screens/home/home_screen.dart';
-import '../screens/training_block/training_block_screen.dart';
+import '../features/auth/sign_in_screen.dart';
+import '../features/home/home_screen.dart';
+import '../features/training_block/training_block_screen.dart';
 
 part 'router.g.dart';
 

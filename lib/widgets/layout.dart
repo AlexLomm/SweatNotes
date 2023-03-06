@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../services/auth_service.dart';
+import '../features/auth/services/auth_service.dart';
 import '../theme_switcher.dart';
 
 class Layout extends ConsumerWidget {

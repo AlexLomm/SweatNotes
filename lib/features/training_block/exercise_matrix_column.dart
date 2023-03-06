@@ -17,8 +17,9 @@ class ExerciseMatrixColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     const marginBottomRegular = ExerciseDayWidget.spacingBetweenItems;
 
-    const marginBottomLast = ExerciseDayWidget.spacingBetweenItems +
+    const marginBottomLast = marginBottomRegular +
         ExerciseDayWidget.titleHeight +
+        ExerciseDayWidget.additionalBottomSpaceHeight +
         ExerciseMatrixLabels.spacingBetweenItems;
 
     return Column(

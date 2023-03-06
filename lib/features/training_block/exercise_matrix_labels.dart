@@ -4,7 +4,7 @@ import 'data/models_client/exercise_day_client.dart';
 import 'exercise_day_widget.dart';
 
 class ExerciseMatrixLabels extends StatelessWidget {
-  static const spacingBetweenItems = 24.0;
+  static const spacingBetweenItems = 44.0;
 
   final List<ExerciseDayClient> exerciseDays;
 

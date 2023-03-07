@@ -54,5 +54,7 @@
 		<key>UISceneConfigurations</key>
 		<dict/>
 	</dict>
+	<key>FLTEnableImpeller</key>
+	<true/>
 </dict>
 </plist>

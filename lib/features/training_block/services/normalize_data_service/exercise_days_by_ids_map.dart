@@ -35,5 +35,13 @@ class ExerciseDaysByIdsMap {
     );
   }
 
-  ExerciseDayClient get(String id) => _map[id]!;
+  ExerciseDayClient get(String id) {
+    final exerciseDayClient = _map[id];
+
+    if (exerciseDayClient == null) {
+      throw Exception('Exercise day with id $id does not exist');
+    }
+
+    return exerciseDayClient;
+  }
 }

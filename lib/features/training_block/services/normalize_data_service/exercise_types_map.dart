@@ -26,5 +26,17 @@ class ExerciseTypesMap {
     return exerciseTypesMap;
   }
 
-  ExerciseTypeClient get(String id) => _map[id]!;
+  /// @throws Exception if the exercise type with the given id does not exist
+  ExerciseTypeClient get(String id) {
+    final exerciseType = _map[id];
+
+    // this can happen if the list of exercises is fetched
+    // before the list of exercise types is fetched. i.e race
+    // a race condition happens
+    if (exerciseType == null) {
+      throw Exception('Exercise type with id $id does not exist');
+    }
+
+    return exerciseType;
+  }
 }

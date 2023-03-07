@@ -43,6 +43,9 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
       _map.setExerciseType(
         exerciseDayId: exercise.exerciseDayId,
         exerciseTypeId: exercise.exerciseTypeId,
+        // this can throw if the exercise type ids referenced in the exercises
+        // do not appear in the map. This can happen because of race conditions
+        // when the exercises are added before the exercise types are added.
         exerciseType: exerciseTypesMap.get(exercise.exerciseTypeId),
       );
 
@@ -56,7 +59,6 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
         exerciseTypeId: exercise.exerciseTypeId,
         exercises: [
           ...exerciseType.exercises,
-          // TODO: add toExerciseClient method to Exercise
           ExerciseClient(
             id: exercise.id,
             userId: exercise.userId,
@@ -116,14 +118,34 @@ class _ExerciseDaysExerciseTypesHelperMap {
 
   List<String> get exerciseDayIds => _map.keys.toList();
 
-  List<String> getExerciseTypeIds(String exerciseDayId) =>
-      _map[exerciseDayId]!.keys.toList();
+  List<String> getExerciseTypeIds(String exerciseDayId) {
+    final exerciseDayMap = _map[exerciseDayId];
+
+    if (exerciseDayMap == null) {
+      throw Exception('Exercise day id not found: $exerciseDayId');
+    }
+
+    return exerciseDayMap.keys.toList();
+  }
 
   ExerciseTypeClient getExerciseType({
     required String exerciseDayId,
     required String exerciseTypeId,
-  }) =>
-      _map[exerciseDayId]![exerciseTypeId]!;
+  }) {
+    final exerciseDayMap = _map[exerciseDayId];
+
+    if (exerciseDayMap == null) {
+      throw Exception('Exercise day id not found: $exerciseDayId');
+    }
+
+    final exerciseType = exerciseDayMap[exerciseTypeId];
+
+    if (exerciseType == null) {
+      throw Exception('Exercise type id not found: $exerciseTypeId');
+    }
+
+    return exerciseType;
+  }
 
   void setExerciseTypeExercises({
     required String exerciseDayId,
@@ -135,7 +157,13 @@ class _ExerciseDaysExerciseTypesHelperMap {
       exerciseTypeId: exerciseTypeId,
     );
 
-    _map[exerciseDayId]![exerciseTypeId] = exerciseType.copyWith(
+    final exerciseTypesByIdMap = _map[exerciseDayId];
+
+    if (exerciseTypesByIdMap == null) {
+      throw Exception('Exercise day id not found: $exerciseDayId');
+    }
+
+    exerciseTypesByIdMap[exerciseTypeId] = exerciseType.copyWith(
       exercises: exercises,
     );
   }
@@ -149,7 +177,13 @@ class _ExerciseDaysExerciseTypesHelperMap {
       _map[exerciseDayId] = {};
     }
 
-    final exerciseTypeIdExercisesMap = _map[exerciseDayId]!;
+    final exerciseDay = _map[exerciseDayId];
+
+    if (exerciseDay == null) {
+      throw Exception('Exercise day id not found: $exerciseDayId');
+    }
+
+    final exerciseTypeIdExercisesMap = exerciseDay;
 
     if (!exerciseTypeIdExercisesMap.containsKey(exerciseTypeId)) {
       exerciseTypeIdExercisesMap[exerciseTypeId] = exerciseType;

@@ -63,10 +63,10 @@ class ExercisesClientCollection {
     _exercises = exercises;
   }
 
-  getByPlacement(int placement) {
+  ExerciseClient? getByPlacement(int placement) {
     _exerciseByPlacementMap ??= _ExercisesByPlacementMap(_exercises);
 
-    return _exerciseByPlacementMap!.get(placement);
+    return _exerciseByPlacementMap?.get(placement);
   }
 }
 

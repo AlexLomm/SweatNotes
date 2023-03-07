@@ -44,11 +44,11 @@ class NormalizeDataService {
   }) {
     _exerciseDaysClientController = StreamController<List<ExerciseDayClient>>(
       onListen: _recalculateState,
-      onCancel: () => _exerciseDaysClientController.close(),
+      // onCancel: () => _exerciseDaysClientController.close(),
     );
 
     trainingBlocksRepository
-        .getTrainingBlockQuery(trainingBlockId)
+        .getTrainingBlockDocumentRef(trainingBlockId)
         .snapshots()
         .listen((event) {
       _trainingBlock = event.data();
@@ -65,7 +65,11 @@ class NormalizeDataService {
       _recalculateState();
     });
 
-    exerciseTypesRepository.getExerciseTypesQuery().snapshots().listen((event) {
+    exerciseTypesRepository
+        //
+        .getQuery()
+        .snapshots()
+        .listen((event) {
       _exerciseTypes = event.docs.map((e) => e.data()).toList();
 
       _recalculateState();
@@ -84,7 +88,11 @@ class NormalizeDataService {
   }
 
   _recalculateState() {
-    _exerciseDaysClientController.add(getNormalizedData(trainingBlockId));
+    try {
+      _exerciseDaysClientController.add(getNormalizedData(trainingBlockId));
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   List<ExerciseDayClient> getNormalizedData(String trainingBlockId) {
@@ -151,8 +159,8 @@ class NormalizeDataService {
 
     // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap
     exerciseDaysWithSortedExerciseTypes.sort((a, b) {
-      final o1 = trainingBlock.exerciseDaysOrdering[a.id] ?? double.infinity;
-      final o2 = trainingBlock.exerciseDaysOrdering[b.id] ?? double.infinity;
+      final o1 = trainingBlock.exerciseDaysOrdering[a.id] ?? double.maxFinite;
+      final o2 = trainingBlock.exerciseDaysOrdering[b.id] ?? double.maxFinite;
 
       return o1.toInt() - o2.toInt();
     });
@@ -163,7 +171,9 @@ class NormalizeDataService {
 
 @riverpod
 NormalizeDataService normalizeDataService(
-    NormalizeDataServiceRef ref, String trainingBlockId) {
+  NormalizeDataServiceRef ref,
+  String trainingBlockId,
+) {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
   final exerciseDaysRepository = ref.watch(exerciseDaysRepositoryProvider);
   final exercisesRepository = ref.watch(exercisesRepositoryProvider);

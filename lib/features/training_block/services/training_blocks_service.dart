@@ -14,7 +14,7 @@ class TrainingBlocksService {
   TrainingBlocksService(this.trainingBlocksRepository, this.firebaseAuth);
 
   Stream<List<TrainingBlock>> get trainingBlocks => trainingBlocksRepository
-      .getTrainingBlocksQuery()
+      .getQuery()
       .snapshots()
       .map<List<TrainingBlock>>(
         (event) => event.docs.map((doc) => doc.data()).toList(),

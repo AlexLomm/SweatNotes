@@ -15,7 +15,7 @@ class Exercise with _$Exercise {
     required String exerciseDayId,
     required String exerciseTypeId,
     required String trainingBlockId,
-    @Default(-1) int placement,
+    @Default(0) int placement,
     @Default([]) List<ExerciseSet> sets,
   }) = _Exercise;
 

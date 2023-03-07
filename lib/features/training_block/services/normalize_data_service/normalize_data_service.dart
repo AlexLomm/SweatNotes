@@ -48,7 +48,7 @@ class NormalizeDataService {
     );
 
     trainingBlocksRepository
-        .getTrainingBlockDocumentRef(trainingBlockId)
+        .getDocumentRefById(trainingBlockId)
         .snapshots()
         .listen((event) {
       _trainingBlock = event.data();
@@ -76,7 +76,7 @@ class NormalizeDataService {
     });
 
     exercisesRepository
-        .getExercisesByTrainingBlockIdQuery(trainingBlockId)
+        .getQueryByTrainingBlockId(trainingBlockId)
         .snapshots()
         .listen(
       (event) {

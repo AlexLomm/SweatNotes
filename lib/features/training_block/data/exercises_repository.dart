@@ -14,53 +14,36 @@ class ExercisesRepository {
 
   ExercisesRepository(this.firestore, this.firebaseAuth);
 
-  Future<void> setExercise(ExerciseClient exerciseClient) {
-    final collection = firestore.collection('exercises');
+  CollectionReference<Exercise> get collectionRef => firestore
+      //
+      .collection('exercises')
+      .withConverter(
+        fromFirestore: _fromFirestore,
+        toFirestore: _toFirestore,
+      );
 
+  Future<void> setExercise(ExerciseClient exerciseClient) {
     final exercise = exerciseClient.toExercise();
 
     // if the exercise doesn't exist, create it
     if (exerciseClient.isFiller) {
-      return collection
-          .withConverter(
-            fromFirestore: _fromFirestoreConverter,
-            toFirestore: _toFirestoreConverter,
-          )
-          .add(exercise);
+      return collectionRef.add(exercise);
     }
 
     // otherwise, update it
-    return collection
-        .withConverter(
-          fromFirestore: _fromFirestoreConverter,
-          toFirestore: _toFirestoreConverter,
-        )
+    return collectionRef
         .doc(exerciseClient.id)
         .set(exercise, SetOptions(merge: true));
   }
 
-  Query<Exercise> getExercisesByTrainingBlockIdQuery(String trainingBlockId) {
-    return firestore
-        .collection('exercises')
-        .withConverter(
-          fromFirestore: _fromFirestoreConverter,
-          toFirestore: _toFirestoreConverter,
-        )
+  Query<Exercise> getQueryByTrainingBlockId(String trainingBlockId) {
+    return collectionRef
         .where('trainingBlockId', isEqualTo: trainingBlockId)
         .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
         .orderBy('placement');
   }
 
-  Future<List<Exercise>> fetchExercisesByTrainingBlockId(
-    String trainingBlockId,
-  ) async {
-    final snapshot =
-        await getExercisesByTrainingBlockIdQuery(trainingBlockId).get();
-
-    return snapshot.docs.map((doc) => doc.data()).toList();
-  }
-
-  Exercise _fromFirestoreConverter(
+  Exercise _fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> doc,
     SnapshotOptions? _,
   ) {
@@ -73,7 +56,7 @@ class ExercisesRepository {
     return Exercise.fromJson({'id': doc.id, ...dataWithoutId});
   }
 
-  Map<String, dynamic> _toFirestoreConverter(
+  Map<String, dynamic> _toFirestore(
     Exercise exercise,
     SetOptions? _,
   ) =>

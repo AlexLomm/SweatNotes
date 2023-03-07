@@ -10,8 +10,9 @@ import 'wheel_selector_highlight.dart';
 import 'wheel_selector_wheel.dart';
 
 class WheelSelector<T> extends StatefulWidget {
-  static double height = 128.0;
+  static const double defaultHeight = 128.0;
 
+  final double height;
   final double width;
   final int? childCount;
 
@@ -30,6 +31,7 @@ class WheelSelector<T> extends StatefulWidget {
 
   const WheelSelector({
     super.key,
+    this.height = WheelSelector.defaultHeight,
     this.width = 80.0,
     this.childCount,
     this.selectedItemIndex,
@@ -77,7 +79,7 @@ class _WheelSelectorState<T> extends State<WheelSelector<T>> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: WheelSelector.height,
+      height: widget.height,
       child: Stack(
         children: [
           Align(
@@ -100,7 +102,7 @@ class _WheelSelectorState<T> extends State<WheelSelector<T>> {
           Align(
             alignment: Alignment.topCenter,
             child: FadeGradient(
-              height: 46.0,
+              height: widget.height * 0.36,
               width: widget.width,
               direction: FadeGradientDirection.toBottom,
             ),
@@ -108,7 +110,7 @@ class _WheelSelectorState<T> extends State<WheelSelector<T>> {
           Align(
             alignment: Alignment.bottomCenter,
             child: FadeGradient(
-              height: 46.0,
+              height: widget.height * 0.36,
               width: widget.width,
               direction: FadeGradientDirection.toTop,
             ),

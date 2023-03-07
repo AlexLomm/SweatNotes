@@ -13,40 +13,27 @@ class TrainingBlocksRepository {
 
   TrainingBlocksRepository(this.firestore, this.firebaseAuth);
 
-  Query<TrainingBlock> getTrainingBlocksQuery() {
-    return firestore
-        .collection('training-blocks')
-        .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
-        .withConverter(
-          fromFirestore: _fromFirestore,
-          toFirestore: _toFirestore,
-        );
+  get collectionRef => firestore
+      //
+      .collection('training-blocks')
+      .withConverter(
+        fromFirestore: _fromFirestore,
+        toFirestore: _toFirestore,
+      );
+
+  Query<TrainingBlock> getQuery() {
+    return collectionRef.where(
+      'userId',
+      isEqualTo: firebaseAuth.currentUser?.uid,
+    );
   }
 
-  Future<List<TrainingBlock>> fetchTrainingBlocks() async {
-    final snapshot = await getTrainingBlocksQuery().get();
-
-    return snapshot.docs.map((doc) => doc.data()).toList();
+  DocumentReference<TrainingBlock> getDocumentRefById(String id) {
+    return collectionRef.doc(id);
   }
 
-  DocumentReference<TrainingBlock> getTrainingBlockQuery(String id) {
-    return FirebaseFirestore.instance
-        .collection('training-blocks')
-        .doc(id)
-        .withConverter(
-          fromFirestore: _fromFirestore,
-          toFirestore: _toFirestore,
-        );
-  }
-
-  Future<TrainingBlock?> fetchTrainingBlock({required String id}) async {
-    final snapshot = await getTrainingBlockQuery(id).get();
-
-    return snapshot.data();
-  }
-
-  addTrainingBlock(TrainingBlock trainingBlock) {
-    firestore.collection('training-blocks').add(trainingBlock.toJson());
+  Future<void> addTrainingBlock(TrainingBlock trainingBlock) {
+    return collectionRef.add(trainingBlock.toJson());
   }
 
   TrainingBlock _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {

@@ -13,24 +13,23 @@ class ExerciseTypesRepository {
 
   ExerciseTypesRepository(this.firestore, this.firebaseAuth);
 
-  DocumentReference<ExerciseType> getExerciseTypeByIdDocumentRef(String id) {
-    return FirebaseFirestore.instance
-        .collection('exercise-types')
-        .doc(id)
-        .withConverter(
-          fromFirestore: _fromFirestore,
-          toFirestore: _toFirestore,
-        );
+  CollectionReference<ExerciseType> get collectionRef => firestore
+      //
+      .collection('exercise-types')
+      .withConverter(
+        fromFirestore: _fromFirestore,
+        toFirestore: _toFirestore,
+      );
+
+  DocumentReference<ExerciseType> getDocumentRefById(String id) {
+    return collectionRef.doc(id);
   }
 
-  Query<ExerciseType> getExerciseTypesQuery() {
-    return firestore
-        .collection('exercise-types')
-        .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
-        .withConverter(
-          fromFirestore: _fromFirestore,
-          toFirestore: _toFirestore,
-        );
+  Query<ExerciseType> getQuery() {
+    return collectionRef.where(
+      'userId',
+      isEqualTo: firebaseAuth.currentUser?.uid,
+    );
   }
 
   ExerciseType _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
@@ -47,17 +46,12 @@ class ExerciseTypesRepository {
 
   Map<String, dynamic> _toFirestore(ExerciseType exerciseType, _) =>
       exerciseType.toJson();
-
-  Future<List<ExerciseType>> fetchExerciseTypes() async {
-    final snapshot = await getExerciseTypesQuery().get();
-
-    return snapshot.docs.map((doc) => doc.data()).toList();
-  }
 }
 
 @riverpod
 ExerciseTypesRepository exerciseTypesRepository(
-    ExerciseTypesRepositoryRef ref) {
+  ExerciseTypesRepositoryRef ref,
+) {
   final firestore = ref.read(firestoreProvider);
   final firebaseAuth = ref.read(firebaseAuthProvider);
 

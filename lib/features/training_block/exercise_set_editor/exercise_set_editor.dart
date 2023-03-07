@@ -47,10 +47,10 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
                   step: 1,
                   stepsCount: 100,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
+                const Padding(
+                  padding: EdgeInsets.only(top: 32.0),
                   child: VerticalDividerWithGradient(
-                    height: WheelSelector.height,
+                    height: WheelSelector.defaultHeight,
                   ),
                 ),
                 LoadSelector(

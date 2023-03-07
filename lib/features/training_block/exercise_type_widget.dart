@@ -54,7 +54,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   value: exerciseType.name,
                   onSubmitted: (String text) {
                     // TODO: review api
-                    exercisesService.setExerciseType(
+                    exercisesService.setName(
                       exerciseTypeClient: exerciseType,
                       name: text,
                     );

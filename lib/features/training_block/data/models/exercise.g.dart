@@ -12,7 +12,7 @@ _$_Exercise _$$_ExerciseFromJson(Map<String, dynamic> json) => _$_Exercise(
       exerciseDayId: json['exerciseDayId'] as String,
       exerciseTypeId: json['exerciseTypeId'] as String,
       trainingBlockId: json['trainingBlockId'] as String,
-      placement: json['placement'] as int? ?? -1,
+      placement: json['placement'] as int? ?? 0,
       sets: (json['sets'] as List<dynamic>?)
               ?.map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
               .toList() ??

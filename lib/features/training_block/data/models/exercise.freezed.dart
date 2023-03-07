@@ -182,7 +182,7 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
       required this.exerciseDayId,
       required this.exerciseTypeId,
       required this.trainingBlockId,
-      this.placement = -1,
+      this.placement = 0,
       final List<ExerciseSet> sets = const []})
       : _sets = sets;
 

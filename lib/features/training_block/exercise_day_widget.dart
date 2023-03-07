@@ -2,20 +2,24 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
-import 'package:journal_flutter/widgets/text_editor_single_line.dart';
 
+import '../training_block/data/models_client/exercise_day_client.dart';
+import '../../features/training_block/services/exercise_types_service.dart';
+import '../../widgets/text_editor_single_line.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../widgets/rounded_icon_button.dart';
+import '../../widgets/text_editor_single_line_and_wheel.dart';
 import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
-class ExerciseDayWidget extends ConsumerWidget {
+class ExerciseDayWidget extends StatelessWidget {
   static const borderRadius = 8.0;
   static const rightInsetSize = 24.0;
   static const width = ExerciseTypeWidget.width - rightInsetSize;
   static const titleHeight = 56.0;
   static const spacingBetweenItems = 8.0;
   static const additionalBottomSpaceHeight = 28.0 - spacingBetweenItems;
+  static const addExerciseTypeButtonSize = 40.0;
 
   final ExerciseDayClient exerciseDay;
 
@@ -35,100 +39,203 @@ class ExerciseDayWidget extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
-
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Material(
-            elevation: 2,
-            surfaceTintColor: Theme.of(context).colorScheme.primary,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(borderRadius),
-                bottomRight: Radius.circular(borderRadius),
-              ),
-            ),
-            child: Container(
-              padding: const EdgeInsets.only(top: 18, right: 16, left: 16),
-              width: width,
-              height: height,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
+          child: SizedBox(
+            width: width,
+            // add enough space for the add exercise type button's half size to fit
+            height: height + addExerciseTypeButtonSize / 2,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: _Background(
+                    width: width,
+                    height: height,
+                    borderRadius: borderRadius,
                     child: GestureDetector(
                       onTap: () => CustomBottomSheet(
                         height: CustomBottomSheet.allSpacing +
                             TextEditorSingleLine.height,
                         title: 'Edit exercise day',
-                        child: TextEditorSingleLine(
-                          value: exerciseDay.name,
-                          onSubmitted: (String text) {
-                            // TODO: review api
-                            exerciseDaysService.setName(
-                              exerciseDay: exerciseDay,
-                              name: text,
-                            );
-
-                            Navigator.of(context).pop();
-                          },
+                        child: _TextEditorSingleLineWrapper(
+                          exerciseDay: exerciseDay,
                         ),
                       ).show(context),
-                      child: Text(
-                        exerciseDay.name,
-                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
-                            ),
+                      child: _ExerciseDayTitle(
+                        name: exerciseDay.name,
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Transform.translate(
-                      offset: const Offset(0, 20),
-                      child: SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: Material(
-                          elevation: 2,
-                          shape: const CircleBorder(),
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          child: IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {},
-                          ),
-                        ),
+                ),
+                // the rounded button can't be Transform.translate()'d,
+                // because the button won't register taps
+                // @see https://stackoverflow.com/a/62500610/4241959
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: RoundedIconButton(
+                    size: addExerciseTypeButtonSize,
+                    onPressed: () => CustomBottomSheet(
+                      height: CustomBottomSheet.allSpacing +
+                          TextEditorSingleLineAndWheel.height,
+                      title: 'Add exercise type',
+                      child: _TextEditorSingleLineAndWheelWrapper(
+                        exerciseDay: exerciseDay,
                       ),
-                    ),
+                    ).show(context),
                   ),
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: Container(
-            margin: const EdgeInsets.only(top: titleHeight),
-            child: Column(
-              children: [
-                for (final exerciseType in exerciseDay.exerciseTypes)
-                  Container(
-                    key: Key(exerciseType.id),
-                    margin: const EdgeInsets.only(bottom: spacingBetweenItems),
-                    child: ExerciseTypeWidget(exerciseType: exerciseType),
-                  )
-              ],
-            ),
-          ),
+          child: _ExerciseTypesList(exerciseDay: exerciseDay),
         ),
       ],
+    );
+  }
+}
+
+class _Background extends StatelessWidget {
+  final double height;
+  final double width;
+  final Widget child;
+  final double borderRadius;
+
+  const _Background({
+    Key? key,
+    required this.height,
+    required this.width,
+    required this.child,
+    required this.borderRadius,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: Material(
+        elevation: 2,
+        surfaceTintColor: Theme.of(context).colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(borderRadius),
+            bottomRight: Radius.circular(borderRadius),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 18,
+            right: 16,
+            left: 16,
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+class _ExerciseDayTitle extends StatelessWidget {
+  final String name;
+
+  const _ExerciseDayTitle({Key? key, required this.name}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      name,
+      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+    );
+  }
+}
+
+class _TextEditorSingleLineWrapper extends ConsumerWidget {
+  final ExerciseDayClient exerciseDay;
+
+  const _TextEditorSingleLineWrapper({
+    Key? key,
+    required this.exerciseDay,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+
+    return TextEditorSingleLine(
+      value: exerciseDay.name,
+      onSubmitted: (String text) {
+        exerciseDaysService.setName(
+          exerciseDay: exerciseDay,
+          name: text,
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
+class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
+  final ExerciseDayClient exerciseDay;
+
+  const _TextEditorSingleLineAndWheelWrapper({
+    Key? key,
+    required this.exerciseDay,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exerciseTypesService = ref.watch(exerciseTypesServiceProvider);
+
+    return TextEditorSingleLineAndWheel(
+      value: '',
+      buttonLabel: 'Add',
+      hintText: 'Enter name',
+      options: const ['lb', 'kg'],
+      onSubmitted: (String name, String unit) {
+        exerciseTypesService.create(
+          exerciseDay: exerciseDay,
+          name: name,
+          unit: unit,
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
+class _ExerciseTypesList extends StatelessWidget {
+  final ExerciseDayClient exerciseDay;
+
+  const _ExerciseTypesList({Key? key, required this.exerciseDay})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: ExerciseDayWidget.titleHeight),
+      child: Column(
+        children: [
+          for (final exerciseType in exerciseDay.exerciseTypes)
+            Container(
+              key: Key(exerciseType.id),
+              margin: const EdgeInsets.only(
+                bottom: ExerciseDayWidget.spacingBetweenItems,
+              ),
+              child: ExerciseTypeWidget(exerciseType: exerciseType),
+            )
+        ],
+      ),
     );
   }
 }

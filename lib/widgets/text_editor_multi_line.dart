@@ -32,11 +32,11 @@ class _TextEditorMultiLineState extends State<TextEditorMultiLine> {
     super.initState();
     _controller.text = widget.value;
 
-    setState(() => _isEmpty = _controller.text.isEmpty);
-    _controller.addListener(
-      () => setState(() => _isEmpty = _controller.text.isEmpty),
-    );
+    _updateIsEmpty();
+    _controller.addListener(_updateIsEmpty);
   }
+
+  _updateIsEmpty() => setState(() => _isEmpty = _controller.text.isEmpty);
 
   @override
   void dispose() {

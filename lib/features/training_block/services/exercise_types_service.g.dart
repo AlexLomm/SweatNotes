@@ -7,7 +7,7 @@ part of 'exercise_types_service.dart';
 // **************************************************************************
 
 String _$exerciseTypesServiceHash() =>
-    r'529b0d67d43989ab8e9b76ee5d39831ad992286f';
+    r'1b0ec662da2a1ebe051df68172c1223d25b2ac8d';
 
 /// See also [exerciseTypesService].
 @ProviderFor(exerciseTypesService)

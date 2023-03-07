@@ -49,6 +49,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
               ),
             ),
             GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () => CustomBottomSheet(
                 title: 'Edit exercise type',
                 child: TextEditorMultiLine(

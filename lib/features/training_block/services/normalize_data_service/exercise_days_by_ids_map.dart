@@ -17,6 +17,8 @@ class ExerciseDaysByIdsMap {
       exerciseDayMap[exerciseDay.id] = ExerciseDayClient(
         id: exerciseDay.id,
         name: exerciseDay.name,
+        userId: exerciseDay.userId,
+        trainingBlockId: exerciseDay.trainingBlockId,
         exerciseTypesOrdering: exerciseDay.exerciseTypesOrdering,
         exerciseTypes: [],
       );

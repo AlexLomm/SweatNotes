@@ -3,7 +3,7 @@ import 'package:journal_flutter/widgets/text_area.dart';
 
 import 'button.dart';
 
-class TextEditor extends StatefulWidget {
+class TextEditorMultiLine extends StatefulWidget {
   static const height = 268.0;
 
   final Function(String) onSubmitted;
@@ -11,7 +11,7 @@ class TextEditor extends StatefulWidget {
   final int? maxLength;
   final String hintText;
 
-  const TextEditor({
+  const TextEditorMultiLine({
     Key? key,
     this.maxLength,
     required this.value,
@@ -20,10 +20,10 @@ class TextEditor extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TextEditor> createState() => _TextEditorState();
+  State<TextEditorMultiLine> createState() => _TextEditorMultiLineState();
 }
 
-class _TextEditorState extends State<TextEditor> {
+class _TextEditorMultiLineState extends State<TextEditorMultiLine> {
   final _controller = TextEditingController();
 
   @override
@@ -41,9 +41,8 @@ class _TextEditorState extends State<TextEditor> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        height: TextEditor.height,
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+      child: SizedBox(
+        height: TextEditorMultiLine.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

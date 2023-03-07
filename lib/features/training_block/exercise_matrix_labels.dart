@@ -22,10 +22,7 @@ class ExerciseMatrixLabels extends StatelessWidget {
           Container(
             key: Key(exerciseDay.id),
             margin: const EdgeInsets.only(bottom: spacingBetweenItems),
-            child: ExerciseDayWidget(
-              name: exerciseDay.name,
-              exerciseTypes: exerciseDay.exerciseTypes,
-            ),
+            child: ExerciseDayWidget(exerciseDay: exerciseDay),
           ),
       ],
     );

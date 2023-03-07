@@ -11,17 +11,22 @@ class Layout extends ConsumerWidget {
 
   final Widget child;
   final Widget? floatingActionButton;
+  final List<Widget>? actions;
   final bool isScrollable;
+  final bool isGoBackButtonVisible;
 
   const Layout({
     super.key,
     required this.child,
     this.floatingActionButton,
+    this.actions,
     this.isScrollable = true,
+    this.isGoBackButtonVisible = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO: move to drawer
     final authService = ref.watch(authServiceProvider);
     final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
 
@@ -34,54 +39,53 @@ class Layout extends ConsumerWidget {
           height: 48,
           'assets/logo.svg',
         ),
-        leading: Image.asset(
-          height: 36,
-          'assets/profile-image-placeholder.png',
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.wb_sunny_outlined,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            tooltip: 'Switch theme',
-            splashRadius: 20,
-            onPressed: () => themeSwitcher.toggle(),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.home,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            tooltip: 'Go home',
-            splashRadius: 20,
-            onPressed: () => context.go('/'),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            tooltip: 'Sign out',
-            splashRadius: 20,
-            onPressed: () => authService.signOut(),
-          ),
-          // IconButton(
-          //   icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
-          //   tooltip: 'Add new entry',
-          //   splashRadius: 20,
-          //   onPressed: () {},
-          // ),
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.settings_outlined,
-          //     color: Theme.of(context).colorScheme.onSurface,
-          //   ),
-          //   tooltip: 'View entries',
-          //   splashRadius: 20,
-          //   onPressed: () {},
-          // ),
-        ],
+        leading: isGoBackButtonVisible
+            ? IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                tooltip: 'Navigate to home screen',
+                splashRadius: 20,
+                onPressed: () => context.go('/'),
+              )
+            : null,
+        actions: actions,
+        // actions: [
+        //   // IconButton(
+        //   //   icon: Icon(
+        //   //     Icons.wb_sunny_outlined,
+        //   //     color: Theme.of(context).colorScheme.onSurface,
+        //   //   ),
+        //   //   tooltip: 'Switch theme',
+        //   //   splashRadius: 20,
+        //   //   onPressed: () => themeSwitcher.toggle(),
+        //   // ),
+        //   IconButton(
+        //     icon: Icon(
+        //       Icons.logout_outlined,
+        //       color: Theme.of(context).colorScheme.onSurface,
+        //     ),
+        //     tooltip: 'Sign out',
+        //     splashRadius: 20,
+        //     onPressed: () => authService.signOut(),
+        //   ),
+        //   // IconButton(
+        //   //   icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
+        //   //   tooltip: 'Add new entry',
+        //   //   splashRadius: 20,
+        //   //   onPressed: () {},
+        //   // ),
+        //   // IconButton(
+        //   //   icon: Icon(
+        //   //     Icons.settings_outlined,
+        //   //     color: Theme.of(context).colorScheme.onSurface,
+        //   //   ),
+        //   //   tooltip: 'View entries',
+        //   //   splashRadius: 20,
+        //   //   onPressed: () {},
+        //   // ),
+        // ],
       ),
       body: SafeArea(
         bottom: false,

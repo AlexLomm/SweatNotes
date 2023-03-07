@@ -141,6 +141,8 @@ class NormalizeDataService {
     for (final emptyExerciseDayId in emptyExerciseDayIds) {
       exerciseDaysWithSortedExerciseTypes.add(ExerciseDayClient(
         id: emptyExerciseDayId,
+        userId: trainingBlock.userId,
+        trainingBlockId: trainingBlockId,
         name: exerciseDaysMap.get(emptyExerciseDayId).name,
         exerciseTypesOrdering: {},
         exerciseTypes: [],

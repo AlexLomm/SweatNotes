@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
+import 'package:journal_flutter/widgets/text_editor_single_line.dart';
 
+import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../widgets/text_editor_multi_line.dart';
 import 'data/models_client/exercise_type_client.dart';
 import 'exercise_type_widget.dart';
+import 'services/exercise_days_service.dart';
 
-class ExerciseDayWidget extends StatelessWidget {
+class ExerciseDayWidget extends ConsumerWidget {
   static const borderRadius = 8.0;
   static const rightInsetSize = 24.0;
   static const width = ExerciseTypeWidget.width - rightInsetSize;
@@ -11,22 +17,23 @@ class ExerciseDayWidget extends StatelessWidget {
   static const spacingBetweenItems = 8.0;
   static const additionalBottomSpaceHeight = 28.0 - spacingBetweenItems;
 
-  final String name;
-  final List<ExerciseTypeClient> exerciseTypes;
+  final ExerciseDayClient exerciseDay;
 
   get height =>
       titleHeight +
-      exerciseTypes.length * (ExerciseTypeWidget.height + spacingBetweenItems) +
+      exerciseDay.exerciseTypes.length *
+          (ExerciseTypeWidget.height + spacingBetweenItems) +
       additionalBottomSpaceHeight;
 
   const ExerciseDayWidget({
     Key? key,
-    required this.name,
-    required this.exerciseTypes,
+    required this.exerciseDay,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+
     return Stack(
       children: [
         Align(
@@ -48,12 +55,32 @@ class ExerciseDayWidget extends StatelessWidget {
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
-                      name,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
+                    child: GestureDetector(
+                      onTap: () => CustomBottomSheet(
+                        height: CustomBottomSheet.allSpacing +
+                            TextEditorSingleLine.height,
+                        title: 'Edit exercise day',
+                        child: TextEditorSingleLine(
+                          value: exerciseDay.name,
+                          onSubmitted: (String text) {
+                            // TODO: review api
+                            exerciseDaysService.setName(
+                              exerciseDay: exerciseDay,
+                              name: text,
+                            );
+
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ).show(context),
+                      child: Text(
+                        exerciseDay.name,
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
+                      ),
                     ),
                   ),
                   Align(
@@ -87,7 +114,7 @@ class ExerciseDayWidget extends StatelessWidget {
             margin: const EdgeInsets.only(top: titleHeight),
             child: Column(
               children: [
-                for (final exerciseType in exerciseTypes)
+                for (final exerciseType in exerciseDay.exerciseTypes)
                   Container(
                     key: Key(exerciseType.id),
                     margin: const EdgeInsets.only(bottom: spacingBetweenItems),

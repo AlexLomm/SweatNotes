@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../data/exercise_types_repository.dart';
 import '../data/models_client/exercise_type_client.dart';
 
-part 'exercises_types_service.g.dart';
+part 'exercise_types_service.g.dart';
 
 class ExerciseTypesService {
   ExerciseTypesRepository exerciseTypesRepository;

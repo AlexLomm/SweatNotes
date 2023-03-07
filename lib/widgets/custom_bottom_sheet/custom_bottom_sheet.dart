@@ -3,9 +3,20 @@ import 'package:flutter/material.dart';
 import 'drag_handle.dart';
 
 class CustomBottomSheet extends StatefulWidget {
-  final Widget child;
+  static const double headerHeight = 56.0;
+  static const double bottomPadding = 34.0;
+  static const double allSpacing = headerHeight + bottomPadding;
 
-  const CustomBottomSheet({super.key, required this.child});
+  final String title;
+  final Widget child;
+  final double height;
+
+  const CustomBottomSheet({
+    super.key,
+    required this.child,
+    this.height = 326.0,
+    this.title = '',
+  });
 
   @override
   State<CustomBottomSheet> createState() => _CustomBottomSheetState();
@@ -45,19 +56,43 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Container(
+        height: widget.height + keyboardHeight,
         // account for keyboard height when it's open
         // see: https://stackoverflow.com/a/57515977/4241959
         padding: EdgeInsets.only(bottom: keyboardHeight),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: DragHandle(),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Transform.translate(
+                offset: const Offset(0, -20.0),
+                child: const DragHandle(),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 34),
-              child: widget.child,
+            Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: CustomBottomSheet.headerHeight,
+                    child: Center(
+                      child: Text(
+                        widget.title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: widget.child,
+                  )
+                ],
+              ),
             ),
           ],
         ),

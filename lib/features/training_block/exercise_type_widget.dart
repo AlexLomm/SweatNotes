@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/training_block/services/exercises_types_service.dart';
-import 'package:journal_flutter/widgets/text_editor.dart';
+import 'package:journal_flutter/features/training_block/services/exercise_types_service.dart';
+import 'package:journal_flutter/widgets/text_editor_multi_line.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import 'data/models_client/exercise_type_client.dart';
@@ -49,7 +49,8 @@ class ExerciseTypeWidget extends ConsumerWidget {
             ),
             GestureDetector(
               onTap: () => CustomBottomSheet(
-                child: TextEditor(
+                title: 'Edit exercise type',
+                child: TextEditorMultiLine(
                   value: exerciseType.name,
                   onSubmitted: (String text) {
                     // TODO: review api

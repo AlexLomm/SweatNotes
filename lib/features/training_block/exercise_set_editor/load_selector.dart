@@ -7,7 +7,7 @@ class LoadSelector extends StatefulWidget {
   final double value;
   final void Function(double) onChange;
 
-  final double stepFirst;
+  final int stepFirst;
   final int stepsCountFirst;
 
   final double stepSecond;
@@ -28,7 +28,7 @@ class LoadSelector extends StatefulWidget {
 }
 
 class _LoadSelectorState extends State<LoadSelector> {
-  double firstValue = 0;
+  int firstValue = 0;
   double secondValue = 0;
 
   double get combinedValue => firstValue + secondValue;
@@ -49,7 +49,7 @@ class _LoadSelectorState extends State<LoadSelector> {
             childCount: widget.stepsCountFirst,
             selectedItemIndex: _convertFirstValueToIndex(widget.value),
             convertIndexToValue: _convertFirstIndexToValue,
-            onValueChanged: (double value) {
+            onValueChanged: (int value) {
               setState(() => firstValue = value);
               widget.onChange(combinedValue);
             },
@@ -69,7 +69,7 @@ class _LoadSelectorState extends State<LoadSelector> {
     ]);
   }
 
-  WheelSelectorValue<double> _convertFirstIndexToValue(int i) {
+  WheelSelectorValue<int> _convertFirstIndexToValue(int i) {
     final value = i * widget.stepFirst;
 
     return WheelSelectorValue(label: '$value', value: value);

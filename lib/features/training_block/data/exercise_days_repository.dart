@@ -34,13 +34,35 @@ class ExerciseDaysRepository {
         );
   }
 
-  Future<List<ExerciseDay>> fetchExerciseDays({
-    required String trainingBlockId,
-  }) async {
+  DocumentReference<ExerciseDay> getExerciseDayByIdDocumentRef(String id) {
+    return firestore.collection('exercise-days').doc(id).withConverter(
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
+        );
+  }
+
+  Future<List<ExerciseDay>> fetchExerciseDaysByTrainingBlockId(
+    String trainingBlockId,
+  ) async {
     final snapshot = await getExerciseDaysQuery(trainingBlockId).get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  ExerciseDay _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
+    final dataWithoutId = doc.data();
+
+    if (dataWithoutId == null) {
+      return ExerciseDay.fromJson({});
+    }
+
+    final data = {'id': doc.id, ...dataWithoutId};
+
+    return ExerciseDay.fromJson(data);
+  }
+
+  Map<String, dynamic> _toFirestore(ExerciseDay exerciseDay, _) =>
+      exerciseDay.toJson();
 }
 
 @riverpod

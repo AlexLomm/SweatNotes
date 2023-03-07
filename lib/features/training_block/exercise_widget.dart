@@ -43,6 +43,7 @@ class ExerciseWidget extends ConsumerWidget {
           return ExerciseSetWidget(
             key: UniqueKey(),
             onTap: () => CustomBottomSheet(
+              title: 'Edit exercise set',
               child: ExerciseSetEditor(
                 reps: repsNum,
                 load: loadNum,

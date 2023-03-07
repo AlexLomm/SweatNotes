@@ -7,7 +7,7 @@ class DragHandle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 32,
-      height: 6,
+      height: 4,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.outline.withOpacity(0.4),
         borderRadius: BorderRadius.circular(8),

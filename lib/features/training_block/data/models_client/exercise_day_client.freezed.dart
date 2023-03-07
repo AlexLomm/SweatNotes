@@ -18,6 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ExerciseDayClient {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  String get trainingBlockId => throw _privateConstructorUsedError;
   Map<String, int> get exerciseTypesOrdering =>
       throw _privateConstructorUsedError;
   List<ExerciseTypeClient> get exerciseTypes =>
@@ -37,6 +39,8 @@ abstract class $ExerciseDayClientCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
+      String userId,
+      String trainingBlockId,
       Map<String, int> exerciseTypesOrdering,
       List<ExerciseTypeClient> exerciseTypes});
 }
@@ -56,6 +60,8 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? userId = null,
+    Object? trainingBlockId = null,
     Object? exerciseTypesOrdering = null,
     Object? exerciseTypes = null,
   }) {
@@ -67,6 +73,14 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      trainingBlockId: null == trainingBlockId
+          ? _value.trainingBlockId
+          : trainingBlockId // ignore: cast_nullable_to_non_nullable
               as String,
       exerciseTypesOrdering: null == exerciseTypesOrdering
           ? _value.exerciseTypesOrdering
@@ -91,6 +105,8 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
   $Res call(
       {String id,
       String name,
+      String userId,
+      String trainingBlockId,
       Map<String, int> exerciseTypesOrdering,
       List<ExerciseTypeClient> exerciseTypes});
 }
@@ -108,6 +124,8 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? userId = null,
+    Object? trainingBlockId = null,
     Object? exerciseTypesOrdering = null,
     Object? exerciseTypes = null,
   }) {
@@ -119,6 +137,14 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      trainingBlockId: null == trainingBlockId
+          ? _value.trainingBlockId
+          : trainingBlockId // ignore: cast_nullable_to_non_nullable
               as String,
       exerciseTypesOrdering: null == exerciseTypesOrdering
           ? _value._exerciseTypesOrdering
@@ -134,21 +160,27 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExerciseDayClient
-    with DiagnosticableTreeMixin
-    implements _ExerciseDayClient {
+class _$_ExerciseDayClient extends _ExerciseDayClient
+    with DiagnosticableTreeMixin {
   const _$_ExerciseDayClient(
       {required this.id,
       required this.name,
+      required this.userId,
+      required this.trainingBlockId,
       required final Map<String, int> exerciseTypesOrdering,
       required final List<ExerciseTypeClient> exerciseTypes})
       : _exerciseTypesOrdering = exerciseTypesOrdering,
-        _exerciseTypes = exerciseTypes;
+        _exerciseTypes = exerciseTypes,
+        super._();
 
   @override
   final String id;
   @override
   final String name;
+  @override
+  final String userId;
+  @override
+  final String trainingBlockId;
   final Map<String, int> _exerciseTypesOrdering;
   @override
   Map<String, int> get exerciseTypesOrdering {
@@ -168,7 +200,7 @@ class _$_ExerciseDayClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDayClient(id: $id, name: $name, exerciseTypesOrdering: $exerciseTypesOrdering, exerciseTypes: $exerciseTypes)';
+    return 'ExerciseDayClient(id: $id, name: $name, userId: $userId, trainingBlockId: $trainingBlockId, exerciseTypesOrdering: $exerciseTypesOrdering, exerciseTypes: $exerciseTypes)';
   }
 
   @override
@@ -178,6 +210,8 @@ class _$_ExerciseDayClient
       ..add(DiagnosticsProperty('type', 'ExerciseDayClient'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
       ..add(DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering))
       ..add(DiagnosticsProperty('exerciseTypes', exerciseTypes));
   }
@@ -189,6 +223,9 @@ class _$_ExerciseDayClient
             other is _$_ExerciseDayClient &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.trainingBlockId, trainingBlockId) ||
+                other.trainingBlockId == trainingBlockId) &&
             const DeepCollectionEquality()
                 .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering) &&
             const DeepCollectionEquality()
@@ -200,6 +237,8 @@ class _$_ExerciseDayClient
       runtimeType,
       id,
       name,
+      userId,
+      trainingBlockId,
       const DeepCollectionEquality().hash(_exerciseTypesOrdering),
       const DeepCollectionEquality().hash(_exerciseTypes));
 
@@ -211,18 +250,25 @@ class _$_ExerciseDayClient
           this, _$identity);
 }
 
-abstract class _ExerciseDayClient implements ExerciseDayClient {
+abstract class _ExerciseDayClient extends ExerciseDayClient {
   const factory _ExerciseDayClient(
           {required final String id,
           required final String name,
+          required final String userId,
+          required final String trainingBlockId,
           required final Map<String, int> exerciseTypesOrdering,
           required final List<ExerciseTypeClient> exerciseTypes}) =
       _$_ExerciseDayClient;
+  const _ExerciseDayClient._() : super._();
 
   @override
   String get id;
   @override
   String get name;
+  @override
+  String get userId;
+  @override
+  String get trainingBlockId;
   @override
   Map<String, int> get exerciseTypesOrdering;
   @override

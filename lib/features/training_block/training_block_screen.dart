@@ -36,6 +36,27 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
   @override
   Widget build(BuildContext context) {
     return Layout(
+      isGoBackButtonVisible: true,
+      actions: [
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          tooltip: 'Add new entry',
+          splashRadius: 20,
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.edit_outlined,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          tooltip: 'Turn on edit mode',
+          splashRadius: 20,
+          onPressed: () {},
+        ),
+      ],
       child: StreamBuilder(
         stream: exerciseDaysStream,
         builder: (context, snapshot) {

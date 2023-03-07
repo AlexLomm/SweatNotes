@@ -30,49 +30,50 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: ExerciseSetEditor.height,
-      width: double.infinity,
-      padding: const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RepsSelector(
-                value: widget.reps,
-                onChange: (value) => setState(() => _reps = value),
-                // TODO: pass these from outside
-                step: 1,
-                stepsCount: 100,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 32.0),
-                child: VerticalDividerWithGradient(
-                  height: WheelSelector.height,
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: ExerciseSetEditor.height,
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RepsSelector(
+                  value: widget.reps,
+                  onChange: (value) => setState(() => _reps = value),
+                  // TODO: pass these from outside
+                  step: 1,
+                  stepsCount: 100,
                 ),
-              ),
-              LoadSelector(
-                value: widget.load,
-                onChange: (value) => setState(() => _load = value),
-                // TODO: pass these from outside
-                stepFirst: 5,
-                stepsCountFirst: 100,
-                stepSecond: 0.25,
-                stepsCountSecond: 20,
-              )
-            ],
-          ),
-          const SizedBox(height: 24),
-          Button(
-            label: 'Save',
-            onPressed: () => widget.onChange(
-              reps: _reps.toString(),
-              load: _load.toString(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 32.0),
+                  child: VerticalDividerWithGradient(
+                    height: WheelSelector.height,
+                  ),
+                ),
+                LoadSelector(
+                  value: widget.load,
+                  onChange: (value) => setState(() => _load = value),
+                  // TODO: pass these from outside
+                  stepFirst: 5,
+                  stepsCountFirst: 100,
+                  stepSecond: 0.25,
+                  stepsCountSecond: 20,
+                )
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 24),
+            Button(
+              label: 'Save',
+              onPressed: () => widget.onChange(
+                reps: _reps.toString(),
+                load: _load.toString(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

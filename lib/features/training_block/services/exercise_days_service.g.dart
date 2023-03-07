@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'exercises_types_service.dart';
+part of 'exercise_days_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$exerciseTypesServiceHash() =>
-    r'529b0d67d43989ab8e9b76ee5d39831ad992286f';
+String _$exerciseDaysServiceHash() =>
+    r'ffad432f81d8c8fbb940b1df2dd323d6d8c7291f';
 
-/// See also [exerciseTypesService].
-@ProviderFor(exerciseTypesService)
-final exerciseTypesServiceProvider =
-    AutoDisposeProvider<ExerciseTypesService>.internal(
-  exerciseTypesService,
-  name: r'exerciseTypesServiceProvider',
+/// See also [exerciseDaysService].
+@ProviderFor(exerciseDaysService)
+final exerciseDaysServiceProvider =
+    AutoDisposeProvider<ExerciseDaysService>.internal(
+  exerciseDaysService,
+  name: r'exerciseDaysServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$exerciseTypesServiceHash,
+      : _$exerciseDaysServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef ExerciseTypesServiceRef = AutoDisposeProviderRef<ExerciseTypesService>;
+typedef ExerciseDaysServiceRef = AutoDisposeProviderRef<ExerciseDaysService>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

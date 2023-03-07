@@ -33,6 +33,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final mq = MediaQuery.of(context);
 
     return Layout(
+      actions: [
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          tooltip: 'Add new training block',
+          splashRadius: 20,
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.settings_outlined,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          tooltip: 'Open settings',
+          splashRadius: 20,
+          onPressed: () {},
+        ),
+      ],
       child: StreamBuilder<List<TrainingBlock>>(
         stream: trainingBlocksStream,
         builder: (context, snapshot) {
@@ -57,52 +77,70 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     alignment: Alignment.center,
                     'assets/rive/empty-state-home-light.riv',
                   )
-                : ListView(children: [
-                    for (final trainingBlock in data)
-                      Container(
-                        key: Key(trainingBlock.id),
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        margin: const EdgeInsets.only(bottom: 8.0),
-                        child: Button(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primaryContainer,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16.0,
-                            horizontal: 24.0,
-                          ),
-                          borderRadius: 12,
-                          label: trainingBlock.name,
-                          onPressed: () => context.go('/${trainingBlock.id}'),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                trainingBlock.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
-                                    ),
-                              ),
-                              Transform.rotate(
-                                angle: pi,
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimaryContainer,
-                                ),
-                              )
-                            ],
-                          ),
+                // TODO: convert to ListView.builder
+                : ListView(
+                    children: [
+                      for (final trainingBlock in data)
+                        _TrainingBlockButton(
+                          key: Key(trainingBlock.id),
+                          trainingBlock: trainingBlock,
                         ),
-                      ),
-                  ]),
+                    ],
+                  ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _TrainingBlockButton extends StatelessWidget {
+  final TrainingBlock trainingBlock;
+
+  const _TrainingBlockButton({Key? key, required this.trainingBlock})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      margin: const EdgeInsets.only(bottom: 8.0),
+      child: Button(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        padding: const EdgeInsets.symmetric(
+          vertical: 16.0,
+          horizontal: 24.0,
+        ),
+        borderRadius: 12,
+        label: trainingBlock.name,
+        onPressed: () => context.go('/${trainingBlock.id}'),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              trainingBlock.name,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+            ),
+            const _ArrowRightIcon(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ArrowRightIcon extends StatelessWidget {
+  const _ArrowRightIcon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: pi,
+      child: Icon(
+        Icons.arrow_back,
+        color: Theme.of(context).colorScheme.onPrimaryContainer,
       ),
     );
   }

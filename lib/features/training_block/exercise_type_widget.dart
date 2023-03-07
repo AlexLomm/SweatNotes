@@ -1,9 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/training_block/services/exercise_types_service.dart';
-import 'package:journal_flutter/widgets/text_editor_multi_line.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../widgets/text_editor_multi_line.dart';
+import '../training_block/services/exercise_types_service.dart';
 import 'data/models_client/exercise_type_client.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
@@ -69,19 +70,32 @@ class ExerciseTypeWidget extends ConsumerWidget {
                 height: double.infinity,
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    exerciseType.name,
-                    softWrap: true,
-                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                  ),
+                  child: _ExerciseTypeName(name: exerciseType.name),
                 ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ExerciseTypeName extends StatelessWidget {
+  final String name;
+
+  const _ExerciseTypeName({Key? key, required this.name}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AutoSizeText(
+      name,
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
+      minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
+      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
     );
   }
 }

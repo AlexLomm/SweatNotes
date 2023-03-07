@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -65,7 +66,7 @@ class ExerciseDayWidget extends StatelessWidget {
                           exerciseDay: exerciseDay,
                         ),
                       ).show(context),
-                      child: _ExerciseDayTitle(
+                      child: _ExerciseDayName(
                         name: exerciseDay.name,
                       ),
                     ),
@@ -142,15 +143,18 @@ class _Background extends StatelessWidget {
   }
 }
 
-class _ExerciseDayTitle extends StatelessWidget {
+class _ExerciseDayName extends StatelessWidget {
   final String name;
 
-  const _ExerciseDayTitle({Key? key, required this.name}) : super(key: key);
+  const _ExerciseDayName({Key? key, required this.name}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       name,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      minFontSize: Theme.of(context).textTheme.titleSmall!.fontSize!,
       style: Theme.of(context).textTheme.titleLarge!.copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),

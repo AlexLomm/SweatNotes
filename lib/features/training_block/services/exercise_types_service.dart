@@ -30,13 +30,17 @@ class ExerciseTypesService {
     this.firestore,
   );
 
-  Future<void> setName({
+  Future<void> update({
     required ExerciseTypeClient exerciseTypeClient,
     required String name,
+    required String unit,
   }) async {
-    exerciseTypesRepository
+    return exerciseTypesRepository
+        //
         .getDocumentRefById(exerciseTypeClient.id)
-        .set(exerciseTypeClient.copyWith(name: name).toExerciseType());
+        .set(exerciseTypeClient
+            .copyWith(name: name, unit: unit)
+            .toExerciseType());
   }
 
   Future<void> create({

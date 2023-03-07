@@ -202,6 +202,8 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
 
     return TextEditorSingleLineAndWheel(
       value: '',
+      // TODO: replace with user's preferred value
+      unit: 'lb',
       buttonLabel: 'Add',
       hintText: 'Enter name',
       options: const ['lb', 'kg'],

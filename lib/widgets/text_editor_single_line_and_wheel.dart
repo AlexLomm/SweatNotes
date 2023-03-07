@@ -9,6 +9,7 @@ class TextEditorSingleLineAndWheel extends StatefulWidget {
 
   final void Function(String name, String unit) onSubmitted;
   final String value;
+  final String unit;
   final int? maxLength;
   final String hintText;
   final List<String> options;
@@ -18,6 +19,7 @@ class TextEditorSingleLineAndWheel extends StatefulWidget {
     Key? key,
     this.maxLength,
     required this.value,
+    required this.unit,
     this.hintText = 'Enter text',
     required this.onSubmitted,
     required this.options,
@@ -41,7 +43,7 @@ class _TextEditorSingleLineAndWheelState
     super.initState();
     _controller.text = widget.value;
 
-    setState(() => _unit = widget.options.first);
+    setState(() => _unit = widget.unit);
 
     _updateIsEmpty();
     _controller.addListener(_updateIsEmpty);
@@ -84,6 +86,7 @@ class _TextEditorSingleLineAndWheelState
               const SizedBox(width: 24),
               WheelSelector(
                 height: 80,
+                selectedItemIndex: widget.options.indexOf(_unit),
                 childCount: widget.options.length,
                 onValueChanged: (unit) => setState(() => _unit = unit),
                 convertIndexToValue: (index) => WheelSelectorValue(

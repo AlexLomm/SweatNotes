@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
-import '../../widgets/text_editor_multi_line.dart';
+import '../../widgets/text_editor_single_line_and_wheel.dart';
 import '../training_block/services/exercise_types_service.dart';
 import 'data/models_client/exercise_type_client.dart';
 
-class ExerciseTypeWidget extends ConsumerWidget {
+class ExerciseTypeWidget extends StatelessWidget {
   static const width = 144.0;
   static const height = 80.0;
   static const dragHandleWidth = 24.0;
@@ -22,9 +22,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final exercisesService = ref.watch(exerciseTypesServiceProvider);
-
+  Widget build(BuildContext context) {
     return Material(
       elevation: 2,
       shape: const RoundedRectangleBorder(
@@ -40,39 +38,21 @@ class ExerciseTypeWidget extends ConsumerWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            const _DragHandle(
               width: dragHandleWidth,
-              margin: const EdgeInsets.only(right: dragHandleAndLabelSpacing),
-              child: Icon(
-                Icons.drag_indicator,
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              marginRight: dragHandleAndLabelSpacing,
             ),
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => CustomBottomSheet(
                 title: 'Edit exercise type',
-                child: TextEditorMultiLine(
-                  value: exerciseType.name,
-                  onSubmitted: (String text) {
-                    // TODO: review api
-                    exercisesService.setName(
-                      exerciseTypeClient: exerciseType,
-                      name: text,
-                    );
-
-                    Navigator.of(context).pop();
-                  },
+                child: _TextEditorSingleLineAndWheelWrapper(
+                  exerciseType: exerciseType,
                 ),
               ).show(context),
-              child: Container(
-                padding: const EdgeInsets.only(right: 8.0),
+              child: _ExerciseTypeName(
                 width: labelWidth,
-                height: double.infinity,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: _ExerciseTypeName(name: exerciseType.name),
-                ),
+                name: exerciseType.name,
               ),
             ),
           ],
@@ -82,21 +62,88 @@ class ExerciseTypeWidget extends ConsumerWidget {
   }
 }
 
-class _ExerciseTypeName extends StatelessWidget {
-  final String name;
+class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
+  final ExerciseTypeClient exerciseType;
 
-  const _ExerciseTypeName({Key? key, required this.name}) : super(key: key);
+  const _TextEditorSingleLineAndWheelWrapper({
+    Key? key,
+    required this.exerciseType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exerciseTypesService = ref.watch(exerciseTypesServiceProvider);
+
+    return TextEditorSingleLineAndWheel(
+      value: exerciseType.name,
+      unit: exerciseType.unit,
+      buttonLabel: 'Update',
+      hintText: 'Enter name',
+      options: const ['lb', 'kg'],
+      onSubmitted: (String name, String unit) {
+        exerciseTypesService.update(
+          exerciseTypeClient: exerciseType,
+          name: name,
+          unit: unit,
+        );
+
+        Navigator.of(context).pop();
+      },
+    );
+  }
+}
+
+class _DragHandle extends StatelessWidget {
+  final double width;
+  final double marginRight;
+
+  const _DragHandle({
+    Key? key,
+    required this.width,
+    required this.marginRight,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AutoSizeText(
-      name,
-      maxLines: 3,
-      overflow: TextOverflow.ellipsis,
-      minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
-      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+    return Container(
+      width: width,
+      margin: EdgeInsets.only(right: marginRight),
+      child: Icon(
+        Icons.drag_indicator,
+        color: Theme.of(context).colorScheme.outline,
+      ),
+    );
+  }
+}
+
+class _ExerciseTypeName extends StatelessWidget {
+  final double width;
+  final String name;
+
+  const _ExerciseTypeName({
+    Key? key,
+    required this.width,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(right: 8.0),
+      width: width,
+      height: double.infinity,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: AutoSizeText(
+          name,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
+          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
+      ),
     );
   }
 }

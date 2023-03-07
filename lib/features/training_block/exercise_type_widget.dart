@@ -45,6 +45,8 @@ class ExerciseTypeWidget extends StatelessWidget {
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => CustomBottomSheet(
+                height: CustomBottomSheet.allSpacing +
+                    TextEditorSingleLineAndWheel.height,
                 title: 'Edit exercise type',
                 child: _TextEditorSingleLineAndWheelWrapper(
                   exerciseType: exerciseType,

@@ -13,40 +13,41 @@ class ExerciseDaysRepository {
 
   ExerciseDaysRepository(this.firestore, this.firebaseAuth);
 
-  Query<ExerciseDay> getExerciseDaysQuery(String trainingBlockId) {
+  Query<ExerciseDay> getQueryByTrainingBlockId(String trainingBlockId) {
     return firestore
         .collection('exercise-days')
         .where('trainingBlockId', isEqualTo: trainingBlockId)
         .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
         .withConverter(
-          fromFirestore: (doc, _) {
-            final dataWithoutId = doc.data();
-
-            if (dataWithoutId == null) {
-              return ExerciseDay.fromJson({});
-            }
-
-            final data = {'id': doc.id, ...dataWithoutId};
-
-            return ExerciseDay.fromJson(data);
-          },
-          toFirestore: (exerciseDay, _) => exerciseDay.toJson(),
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
         );
   }
 
-  DocumentReference<ExerciseDay> getExerciseDayByIdDocumentRef(String id) {
+  DocumentReference<ExerciseDay> getDocumentRefById(String id) {
     return firestore.collection('exercise-days').doc(id).withConverter(
           fromFirestore: _fromFirestore,
           toFirestore: _toFirestore,
         );
   }
 
-  Future<List<ExerciseDay>> fetchExerciseDaysByTrainingBlockId(
+  Future<List<ExerciseDay>> fetchTrainingBlockId(
     String trainingBlockId,
   ) async {
-    final snapshot = await getExerciseDaysQuery(trainingBlockId).get();
+    final snapshot = await getQueryByTrainingBlockId(trainingBlockId).get();
 
     return snapshot.docs.map((doc) => doc.data()).toList();
+  }
+
+  Future<DocumentReference<ExerciseDay>> addExerciseDay(
+      ExerciseDay exerciseDay) {
+    return firestore
+        .collection('exercise-days')
+        .withConverter(
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
+        )
+        .add(exerciseDay);
   }
 
   ExerciseDay _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {

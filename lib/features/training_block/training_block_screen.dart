@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/features/training_block/services/exercise_days_service.dart';
 
+import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
+import '../../widgets/text_editor_single_line.dart';
 import 'data/models_client/exercise_day_client.dart';
 import 'exercise_matrix.dart';
 import 'exercise_matrix_labels.dart';
@@ -35,6 +38,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+
     return Layout(
       actions: [
         IconButton(
@@ -44,7 +49,21 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
           ),
           tooltip: 'Add new entry',
           splashRadius: 20,
-          onPressed: () {},
+          onPressed: () => CustomBottomSheet(
+            height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+            title: 'Add exercise day',
+            child: TextEditorSingleLine(
+              value: '',
+              onSubmitted: (String text) {
+                exerciseDaysService.create(
+                  trainingBlockId: widget.trainingBlockId,
+                  name: text,
+                );
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ).show(context),
         ),
         IconButton(
           icon: Icon(

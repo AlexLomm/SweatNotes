@@ -57,7 +57,7 @@ class NormalizeDataService {
     });
 
     exerciseDaysRepository
-        .getExerciseDaysQuery(trainingBlockId)
+        .getQueryByTrainingBlockId(trainingBlockId)
         .snapshots()
         .listen((event) {
       _exerciseDays = event.docs.map((e) => e.data()).toList();

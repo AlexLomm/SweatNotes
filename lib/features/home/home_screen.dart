@@ -8,6 +8,7 @@ import 'package:rive/rive.dart';
 import '../../theme_switcher.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';
@@ -112,25 +113,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (data.isEmpty) {
+            return const Center(child: EmptyPagePlaceholder());
+          }
+
           return SizedBox(
             height: safeAreaHeight,
             width: mq.size.width,
-            child: data.isEmpty
-                // TODO: add dark mode
-                ? const RiveAnimation.asset(
-                    alignment: Alignment.center,
-                    'assets/rive/empty-state-home-light.riv',
-                  )
-                // TODO: convert to ListView.builder
-                : ListView(
-                    children: [
-                      for (final trainingBlock in data)
-                        _TrainingBlockButton(
-                          key: Key(trainingBlock.id),
-                          trainingBlock: trainingBlock,
-                        ),
-                    ],
+            child: ListView(
+              children: [
+                for (final trainingBlock in data)
+                  _TrainingBlockButton(
+                    key: Key(trainingBlock.id),
+                    trainingBlock: trainingBlock,
                   ),
+              ],
+            ),
           );
         },
       ),

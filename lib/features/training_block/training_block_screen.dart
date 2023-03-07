@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/features/training_block/services/exercise_days_service.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import 'data/models_client/exercise_day_client.dart';
@@ -82,6 +83,10 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
 
           if (exerciseDays == null) {
             return const Center(child: CircularProgressIndicator());
+          }
+
+          if (exerciseDays.isEmpty) {
+            return const Center(child: EmptyPagePlaceholder());
           }
 
           return Stack(

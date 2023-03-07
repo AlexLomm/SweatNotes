@@ -7,7 +7,9 @@ import 'package:rive/rive.dart';
 
 import '../../theme_switcher.dart';
 import '../../widgets/button.dart';
+import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
+import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';
 import '../training_block/data/models/training_block.dart';
 import '../training_block/services/training_blocks_service.dart';
@@ -36,6 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final authService = ref.watch(authServiceProvider);
     final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
+    final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
 
     return Layout(
       leading: IconButton(
@@ -67,7 +70,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           tooltip: 'Add new training block',
           splashRadius: 20,
-          onPressed: () {},
+          onPressed: () => CustomBottomSheet(
+            height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+            title: 'Add training block',
+            child: TextEditorSingleLine(
+              value: '',
+              onSubmitted: (String text) {
+                trainingBlocksService.create(name: text);
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ).show(context),
         ),
         // builder is needed in order for the
         // Scaffold.of(context).openDrawer() to work

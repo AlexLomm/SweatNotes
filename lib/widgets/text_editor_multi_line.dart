@@ -24,12 +24,18 @@ class TextEditorMultiLine extends StatefulWidget {
 }
 
 class _TextEditorMultiLineState extends State<TextEditorMultiLine> {
+  bool _isEmpty = false;
   final _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _controller.text = widget.value;
+
+    setState(() => _isEmpty = _controller.text.isEmpty);
+    _controller.addListener(
+      () => setState(() => _isEmpty = _controller.text.isEmpty),
+    );
   }
 
   @override
@@ -55,9 +61,8 @@ class _TextEditorMultiLineState extends State<TextEditorMultiLine> {
             const SizedBox(height: 24),
             Button(
               label: 'Done',
-              onPressed: _controller.text.isEmpty
-                  ? null
-                  : () => widget.onSubmitted(_controller.text),
+              onPressed:
+                  _isEmpty ? null : () => widget.onSubmitted(_controller.text),
             ),
           ],
         ),

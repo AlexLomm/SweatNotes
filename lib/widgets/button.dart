@@ -41,7 +41,15 @@ class Button extends StatelessWidget {
           (_) => labelLarge?.copyWith(color: onPrimaryColor),
         ),
         backgroundColor: MaterialStateProperty.resolveWith(
-          (_) => backgroundColor ?? primaryColor,
+          (state) {
+            final color = backgroundColor ?? primaryColor;
+
+            if (state.contains(MaterialState.disabled)) {
+              return color.withOpacity(0.32);
+            }
+
+            return color;
+          },
         ),
       ),
       child: child ??

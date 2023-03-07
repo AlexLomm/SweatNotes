@@ -18,19 +18,8 @@ class TrainingBlocksRepository {
         .collection('training-blocks')
         .where('userId', isEqualTo: firebaseAuth.currentUser?.uid)
         .withConverter(
-          fromFirestore: (doc, _) {
-            final dataWithoutId = doc.data();
-
-            if (dataWithoutId == null) {
-              // TODO: add proper empty object
-              return TrainingBlock.fromJson({});
-            }
-
-            final data = {'id': doc.id, ...dataWithoutId};
-
-            return TrainingBlock.fromJson(data);
-          },
-          toFirestore: (trainingBlock, _) => trainingBlock.toJson(),
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
         );
   }
 
@@ -45,19 +34,8 @@ class TrainingBlocksRepository {
         .collection('training-blocks')
         .doc(id)
         .withConverter(
-          fromFirestore: (doc, _) {
-            final dataWithoutId = doc.data();
-
-            if (dataWithoutId == null) {
-              // TODO: add proper empty object
-              return TrainingBlock.fromJson({});
-            }
-
-            final data = {'id': doc.id, ...dataWithoutId};
-
-            return TrainingBlock.fromJson(data);
-          },
-          toFirestore: (trainingBlock, _) => trainingBlock.toJson(),
+          fromFirestore: _fromFirestore,
+          toFirestore: _toFirestore,
         );
   }
 
@@ -70,6 +48,21 @@ class TrainingBlocksRepository {
   addTrainingBlock(TrainingBlock trainingBlock) {
     firestore.collection('training-blocks').add(trainingBlock.toJson());
   }
+
+  TrainingBlock _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
+    final dataWithoutId = doc.data();
+
+    if (dataWithoutId == null) {
+      return TrainingBlock.fromJson({});
+    }
+
+    final data = {'id': doc.id, ...dataWithoutId};
+
+    return TrainingBlock.fromJson(data);
+  }
+
+  Map<String, dynamic> _toFirestore(TrainingBlock trainingBlock, _) =>
+      trainingBlock.toJson();
 }
 
 @riverpod

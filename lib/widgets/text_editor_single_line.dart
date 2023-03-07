@@ -23,12 +23,18 @@ class TextEditorSingleLine extends StatefulWidget {
 }
 
 class _TextEditorSingleLineState extends State<TextEditorSingleLine> {
+  bool _isEmpty = false;
   final _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _controller.text = widget.value;
+
+    setState(() => _isEmpty = _controller.text.isEmpty);
+    _controller.addListener(
+      () => setState(() => _isEmpty = _controller.text.isEmpty),
+    );
   }
 
   @override
@@ -50,6 +56,7 @@ class _TextEditorSingleLineState extends State<TextEditorSingleLine> {
                 autofocus: true,
                 controller: _controller,
                 maxLength: widget.maxLength,
+                keyboardType: TextInputType.text,
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge
@@ -65,9 +72,8 @@ class _TextEditorSingleLineState extends State<TextEditorSingleLine> {
             const SizedBox(width: 24),
             Button(
               label: 'Done',
-              onPressed: _controller.text.isEmpty
-                  ? null
-                  : () => widget.onSubmitted(_controller.text),
+              onPressed:
+                  _isEmpty ? null : () => widget.onSubmitted(_controller.text),
             ),
           ],
         ),

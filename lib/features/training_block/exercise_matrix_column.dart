@@ -20,6 +20,7 @@ class ExerciseMatrixColumn extends StatelessWidget {
     const marginBottomLast = marginBottomRegular +
         ExerciseDayWidget.titleHeight +
         ExerciseDayWidget.additionalBottomSpaceHeight +
+        ExerciseDayWidget.spaceForExerciseTypeButton +
         ExerciseMatrixLabels.spacingBetweenItems;
 
     return Column(

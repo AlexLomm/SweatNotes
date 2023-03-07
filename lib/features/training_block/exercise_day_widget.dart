@@ -21,6 +21,7 @@ class ExerciseDayWidget extends StatelessWidget {
   static const spacingBetweenItems = 8.0;
   static const additionalBottomSpaceHeight = 28.0 - spacingBetweenItems;
   static const addExerciseTypeButtonSize = 40.0;
+  static const spaceForExerciseTypeButton = addExerciseTypeButtonSize / 2;
 
   final ExerciseDayClient exerciseDay;
 
@@ -48,7 +49,7 @@ class ExerciseDayWidget extends StatelessWidget {
           child: SizedBox(
             width: width,
             // add enough space for the add exercise type button's half size to fit
-            height: height + addExerciseTypeButtonSize / 2,
+            height: height + spaceForExerciseTypeButton,
             child: Stack(
               children: [
                 Align(

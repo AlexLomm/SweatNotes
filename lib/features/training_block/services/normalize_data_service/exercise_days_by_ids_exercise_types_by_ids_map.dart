@@ -13,7 +13,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
   final List<Exercise> exercises;
   final List<ExerciseType> exerciseTypes;
 
-  final _map = _ExerciseDaysExerciseTypesHelperMap();
+  final _map = _ExerciseDaysExerciseTypesMap();
 
   Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
       _map.entries;
@@ -69,6 +69,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
             exerciseSets: exercise.sets.map((set) {
               return ExerciseSetClient(
                 isFiller: false,
+                unit: exerciseType.unit,
                 reps: set.reps,
                 load: set.load,
               );
@@ -110,7 +111,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
   }
 }
 
-class _ExerciseDaysExerciseTypesHelperMap {
+class _ExerciseDaysExerciseTypesMap {
   final Map<String, Map<String, ExerciseTypeClient>> _map = {};
 
   Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>

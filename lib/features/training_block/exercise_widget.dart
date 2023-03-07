@@ -61,7 +61,6 @@ class ExerciseWidget extends ConsumerWidget {
             ).show(context),
             exerciseSet: entry.value,
             isSingle: exercise.exerciseSets.length == 1,
-            isLeftmost: entry.key == 0,
             isRightmost: entry.key == exercise.exerciseSets.length - 1,
           );
         }).toList(),

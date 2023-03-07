@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,6 @@ class ExerciseSetWidget extends StatelessWidget {
   static const borderRadius = Radius.circular(8);
 
   final bool isSingle;
-  final bool isLeftmost;
   final bool isRightmost;
   final ExerciseSetClient exerciseSet;
   final VoidCallback? onTap;
@@ -17,10 +17,81 @@ class ExerciseSetWidget extends StatelessWidget {
   const ExerciseSetWidget({
     Key? key,
     this.isSingle = false,
-    this.isLeftmost = false,
     this.isRightmost = false,
     required this.exerciseSet,
     this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final labelSmallTheme = Theme.of(context).textTheme.labelSmall!;
+    final labelLargeTheme = Theme.of(context).textTheme.labelLarge!;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: width,
+        height: ExerciseTypeWidget.height,
+        child: Column(
+          children: [
+            _Cell(
+              isBottomCell: false,
+              isSingle: isSingle,
+              isRightmost: isRightmost,
+              exerciseSet: exerciseSet,
+              child: AutoSizeText(
+                exerciseSet.reps,
+                maxLines: 1,
+                minFontSize: labelSmallTheme.fontSize!,
+                style: labelLargeTheme.copyWith(color: textColor),
+              ),
+            ),
+            _Cell(
+              isBottomCell: true,
+              isSingle: isSingle,
+              isRightmost: isRightmost,
+              exerciseSet: exerciseSet,
+              child: AutoSizeText.rich(
+                TextSpan(
+                  text: exerciseSet.load,
+                  children: [
+                    TextSpan(
+                      text: ' ',
+                      style: labelSmallTheme.copyWith(color: textColor),
+                    ),
+                    TextSpan(
+                      text: exerciseSet.unit,
+                      style: labelSmallTheme.copyWith(color: textColor),
+                    ),
+                  ],
+                ),
+                maxLines: 1,
+                minFontSize: labelSmallTheme.fontSize!,
+                style: labelLargeTheme.copyWith(color: textColor),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Cell extends StatelessWidget {
+  final bool isSingle;
+  final bool isRightmost;
+  final bool isBottomCell;
+  final ExerciseSetClient exerciseSet;
+  final Widget child;
+
+  const _Cell({
+    Key? key,
+    required this.exerciseSet,
+    required this.isSingle,
+    required this.isRightmost,
+    required this.isBottomCell,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -44,46 +115,13 @@ class ExerciseSetWidget extends StatelessWidget {
       right: isSingle || isRightmost ? BorderSide.none : borderSide,
     );
 
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        width: width,
-        height: ExerciseTypeWidget.height,
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                border: borderTopCell,
-              ),
-              height: ExerciseTypeWidget.height / 2,
-              child: Center(
-                child: Text(
-                  exerciseSet.reps,
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                border: borderBottomCell,
-              ),
-              height: ExerciseTypeWidget.height / 2,
-              child: Center(
-                child: Text(
-                  exerciseSet.load,
-                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                ),
-              ),
-            ),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        border: isBottomCell ? borderBottomCell : borderTopCell,
       ),
+      height: ExerciseTypeWidget.height / 2,
+      child: Center(child: child),
     );
   }
 }

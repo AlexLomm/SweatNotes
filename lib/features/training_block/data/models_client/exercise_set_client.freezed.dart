@@ -17,8 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ExerciseSetClient {
   bool get isFiller => throw _privateConstructorUsedError;
-  int get progressFactor =>
-      throw _privateConstructorUsedError; // TODO: change to int
+  int get progressFactor => throw _privateConstructorUsedError;
+  String get unit => throw _privateConstructorUsedError; // TODO: change to int
   String get reps =>
       throw _privateConstructorUsedError; // TODO: change to double
   String get load => throw _privateConstructorUsedError;
@@ -34,7 +34,12 @@ abstract class $ExerciseSetClientCopyWith<$Res> {
           ExerciseSetClient value, $Res Function(ExerciseSetClient) then) =
       _$ExerciseSetClientCopyWithImpl<$Res, ExerciseSetClient>;
   @useResult
-  $Res call({bool isFiller, int progressFactor, String reps, String load});
+  $Res call(
+      {bool isFiller,
+      int progressFactor,
+      String unit,
+      String reps,
+      String load});
 }
 
 /// @nodoc
@@ -52,6 +57,7 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
   $Res call({
     Object? isFiller = null,
     Object? progressFactor = null,
+    Object? unit = null,
     Object? reps = null,
     Object? load = null,
   }) {
@@ -64,6 +70,10 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
           ? _value.progressFactor
           : progressFactor // ignore: cast_nullable_to_non_nullable
               as int,
+      unit: null == unit
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as String,
       reps: null == reps
           ? _value.reps
           : reps // ignore: cast_nullable_to_non_nullable
@@ -84,7 +94,12 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
       __$$_ExerciseSetClientCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isFiller, int progressFactor, String reps, String load});
+  $Res call(
+      {bool isFiller,
+      int progressFactor,
+      String unit,
+      String reps,
+      String load});
 }
 
 /// @nodoc
@@ -100,6 +115,7 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
   $Res call({
     Object? isFiller = null,
     Object? progressFactor = null,
+    Object? unit = null,
     Object? reps = null,
     Object? load = null,
   }) {
@@ -112,6 +128,10 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
           ? _value.progressFactor
           : progressFactor // ignore: cast_nullable_to_non_nullable
               as int,
+      unit: null == unit
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as String,
       reps: null == reps
           ? _value.reps
           : reps // ignore: cast_nullable_to_non_nullable
@@ -131,6 +151,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   const _$_ExerciseSetClient(
       {this.isFiller = false,
       this.progressFactor = 0,
+      required this.unit,
       required this.reps,
       required this.load})
       : super._();
@@ -141,6 +162,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   @override
   @JsonKey()
   final int progressFactor;
+  @override
+  final String unit;
 // TODO: change to int
   @override
   final String reps;
@@ -150,7 +173,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseSetClient(isFiller: $isFiller, progressFactor: $progressFactor, reps: $reps, load: $load)';
+    return 'ExerciseSetClient(isFiller: $isFiller, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load)';
   }
 
   @override
@@ -160,6 +183,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       ..add(DiagnosticsProperty('type', 'ExerciseSetClient'))
       ..add(DiagnosticsProperty('isFiller', isFiller))
       ..add(DiagnosticsProperty('progressFactor', progressFactor))
+      ..add(DiagnosticsProperty('unit', unit))
       ..add(DiagnosticsProperty('reps', reps))
       ..add(DiagnosticsProperty('load', load));
   }
@@ -173,13 +197,14 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
                 other.isFiller == isFiller) &&
             (identical(other.progressFactor, progressFactor) ||
                 other.progressFactor == progressFactor) &&
+            (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.reps, reps) || other.reps == reps) &&
             (identical(other.load, load) || other.load == load));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, isFiller, progressFactor, reps, load);
+      Object.hash(runtimeType, isFiller, progressFactor, unit, reps, load);
 
   @JsonKey(ignore: true)
   @override
@@ -193,6 +218,7 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   const factory _ExerciseSetClient(
       {final bool isFiller,
       final int progressFactor,
+      required final String unit,
       required final String reps,
       required final String load}) = _$_ExerciseSetClient;
   const _ExerciseSetClient._() : super._();
@@ -201,6 +227,8 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   bool get isFiller;
   @override
   int get progressFactor;
+  @override
+  String get unit;
   @override // TODO: change to int
   String get reps;
   @override // TODO: change to double

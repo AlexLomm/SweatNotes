@@ -13,7 +13,7 @@ class TrainingBlocksRepository {
 
   TrainingBlocksRepository(this.firestore, this.firebaseAuth);
 
-  get collectionRef => firestore
+  CollectionReference<TrainingBlock> get collectionRef => firestore
       //
       .collection('training-blocks')
       .withConverter(
@@ -33,7 +33,7 @@ class TrainingBlocksRepository {
   }
 
   Future<void> addTrainingBlock(TrainingBlock trainingBlock) {
-    return collectionRef.add(trainingBlock.toJson());
+    return collectionRef.add(trainingBlock);
   }
 
   TrainingBlock _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {

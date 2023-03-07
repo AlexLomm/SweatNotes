@@ -10,6 +10,7 @@ import '../../data/models/exercise_day.dart';
 import '../../data/models/exercise_type.dart';
 import '../../data/models/training_block.dart';
 import '../../data/models_client/exercise_day_client.dart';
+import '../../data/models_client/exercise_set_client.dart';
 import '../../data/training_blocks_repository.dart';
 import 'exercise_days_by_ids_exercise_types_by_ids_map.dart';
 import 'exercise_days_by_ids_map.dart';
@@ -91,6 +92,7 @@ class NormalizeDataService {
     try {
       _exerciseDaysClientController.add(getNormalizedData(trainingBlockId));
     } on Exception catch (e) {
+      // ignore: avoid_print
       print(e);
     }
   }
@@ -115,7 +117,7 @@ class NormalizeDataService {
       exerciseTypes: exerciseTypes,
     );
 
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap
+    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
     final exerciseDaysWithSortedExerciseTypes =
         exerciseDaysTypesMap.entries.map((entry) {
       final exerciseDayId = entry.key;
@@ -140,12 +142,12 @@ class NormalizeDataService {
       );
     }).toList();
 
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap
+    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
     final emptyExerciseDayIds = exerciseDaysMap.getEmptyExerciseDayIds(
       exerciseDaysWithSortedExerciseTypes,
     );
 
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap
+    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
     for (final emptyExerciseDayId in emptyExerciseDayIds) {
       exerciseDaysWithSortedExerciseTypes.add(ExerciseDayClient(
         id: emptyExerciseDayId,
@@ -165,7 +167,105 @@ class NormalizeDataService {
       return o1.toInt() - o2.toInt();
     });
 
-    return exerciseDaysWithSortedExerciseTypes;
+    // TODO: refactor out
+    final exerciseDaysWithProgress =
+        exerciseDaysWithSortedExerciseTypes.map((exerciseDay) {
+      final exerciseTypesWithProgress =
+          exerciseDay.exerciseTypes.map((exerciseType) {
+        final allExerciseSets = exerciseType.exercises
+            .map(
+              (exercise) => exercise.exerciseSets.map(
+                (exerciseSet) => _ExerciseSetClientWithExerciseId(
+                  exerciseId: exercise.id,
+                  exerciseSet: exerciseSet,
+                ),
+              ),
+            )
+            .expand<_ExerciseSetClientWithExerciseId>((element) => element)
+            .toList();
+
+        final exerciseSetCountPerExercise =
+            exerciseType.exercises[0].exerciseSets.length;
+
+        final nearestExerciseSets =
+            exerciseType.exercises[0].exerciseSets.toList();
+
+        for (var i = exerciseSetCountPerExercise;
+            i < allExerciseSets.length;
+            i++) {
+          final nearestExerciseSetIndex = i % exerciseSetCountPerExercise;
+          final nearestExerciseSet =
+              nearestExerciseSets[nearestExerciseSetIndex];
+
+          final currentExerciseSet = allExerciseSets[i].exerciseSet;
+
+          if (currentExerciseSet.isFiller) continue;
+
+          if (currentExerciseSet.reps.isEmpty ||
+              currentExerciseSet.load.isEmpty) continue;
+
+          nearestExerciseSets[nearestExerciseSetIndex] = currentExerciseSet;
+
+          allExerciseSets[i] = allExerciseSets[i].copyWith(
+            exerciseSet: allExerciseSets[i].exerciseSet.copyWith(
+                  progressFactor: currentExerciseSet.compareProgress(
+                    nearestExerciseSet,
+                  ),
+                ),
+          );
+        }
+
+        final map = <String, List<ExerciseSetClient>>{};
+
+        for (var e in allExerciseSets) {
+          map[e.exerciseId] ??= [];
+          map[e.exerciseId]!.add(e.exerciseSet);
+        }
+
+        return exerciseType.copyWith(
+          exercises: exerciseType.exercises.map((exercise) {
+            return exercise.copyWith(
+              exerciseSets: exercise.exerciseSets.asMap().entries.map((entry) {
+                final i = entry.key;
+                final exerciseSet = entry.value;
+
+                return exerciseSet.copyWith(
+                  progressFactor: map[exercise.id]![i].progressFactor,
+                );
+              }).toList(),
+            );
+          }).toList(),
+        );
+      });
+
+      return exerciseDay.copyWith(
+        exerciseTypes: exerciseTypesWithProgress.toList(),
+      );
+    }).toList();
+
+    return exerciseDaysWithProgress;
+  }
+}
+
+/// temporary class that determines which
+/// exercise set belongs to which exercise
+class _ExerciseSetClientWithExerciseId {
+  final String exerciseId;
+  final ExerciseSetClient exerciseSet;
+
+  _ExerciseSetClientWithExerciseId({
+    required this.exerciseId,
+    required this.exerciseSet,
+  });
+
+  _ExerciseSetClientWithExerciseId copyWith({
+    String? exerciseId,
+    ExerciseSetClient? exerciseSet,
+  }) {
+    return _ExerciseSetClientWithExerciseId(
+      exerciseId: exerciseId ?? this.exerciseId,
+      exerciseSet: exerciseSet ?? this.exerciseSet,
+    );
   }
 }
 

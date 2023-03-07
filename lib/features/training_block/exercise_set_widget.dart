@@ -5,6 +5,18 @@ import 'package:flutter/material.dart';
 import 'data/models_client/exercise_set_client.dart';
 import 'exercise_type_widget.dart';
 
+const progressColors = <int, Color>{
+  -4: Color.fromRGBO(244, 71, 70, 0.32),
+  -3: Color.fromRGBO(236, 100, 45, 0.32),
+  -2: Color.fromRGBO(223, 125, 22, 0.32),
+  -1: Color.fromRGBO(205, 147, 4, 0.32),
+  0: Color.fromRGBO(184, 166, 21, 0.32),
+  1: Color.fromRGBO(160, 183, 51, 0.32),
+  2: Color.fromRGBO(134, 197, 84, 0.32),
+  3: Color.fromRGBO(102, 210, 120, 0.32),
+  4: Color.fromRGBO(56, 221, 158, 0.32),
+};
+
 class ExerciseSetWidget extends StatelessWidget {
   static const width = 75.0;
   static const borderRadius = Radius.circular(8);
@@ -96,7 +108,7 @@ class _Cell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor =
+    final backgroundColor = progressColors[exerciseSet.progressFactor] ??
         Theme.of(context).colorScheme.surfaceVariant.withOpacity(
               kDebugMode && exerciseSet.isFiller ? 0.5 : 1,
             );

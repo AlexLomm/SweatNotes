@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ExerciseSetClient {
   bool get isFiller => throw _privateConstructorUsedError;
-  int get progressFactor => throw _privateConstructorUsedError;
+  int? get progressFactor => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError; // TODO: change to int
   String get reps =>
       throw _privateConstructorUsedError; // TODO: change to double
@@ -36,7 +36,7 @@ abstract class $ExerciseSetClientCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isFiller,
-      int progressFactor,
+      int? progressFactor,
       String unit,
       String reps,
       String load});
@@ -56,7 +56,7 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
   @override
   $Res call({
     Object? isFiller = null,
-    Object? progressFactor = null,
+    Object? progressFactor = freezed,
     Object? unit = null,
     Object? reps = null,
     Object? load = null,
@@ -66,10 +66,10 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
               as bool,
-      progressFactor: null == progressFactor
+      progressFactor: freezed == progressFactor
           ? _value.progressFactor
           : progressFactor // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -96,7 +96,7 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
   @useResult
   $Res call(
       {bool isFiller,
-      int progressFactor,
+      int? progressFactor,
       String unit,
       String reps,
       String load});
@@ -114,7 +114,7 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isFiller = null,
-    Object? progressFactor = null,
+    Object? progressFactor = freezed,
     Object? unit = null,
     Object? reps = null,
     Object? load = null,
@@ -124,10 +124,10 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
               as bool,
-      progressFactor: null == progressFactor
+      progressFactor: freezed == progressFactor
           ? _value.progressFactor
           : progressFactor // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -150,7 +150,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseSetClient(
       {this.isFiller = false,
-      this.progressFactor = 0,
+      this.progressFactor,
       required this.unit,
       required this.reps,
       required this.load})
@@ -160,8 +160,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   @JsonKey()
   final bool isFiller;
   @override
-  @JsonKey()
-  final int progressFactor;
+  final int? progressFactor;
   @override
   final String unit;
 // TODO: change to int
@@ -217,7 +216,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 abstract class _ExerciseSetClient extends ExerciseSetClient {
   const factory _ExerciseSetClient(
       {final bool isFiller,
-      final int progressFactor,
+      final int? progressFactor,
       required final String unit,
       required final String reps,
       required final String load}) = _$_ExerciseSetClient;
@@ -226,7 +225,7 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   @override
   bool get isFiller;
   @override
-  int get progressFactor;
+  int? get progressFactor;
   @override
   String get unit;
   @override // TODO: change to int

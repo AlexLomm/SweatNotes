@@ -1,11 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
 import 'package:journal_flutter/widgets/text_editor_single_line.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
-import '../../widgets/text_editor_multi_line.dart';
-import 'data/models_client/exercise_type_client.dart';
 import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
@@ -19,11 +19,15 @@ class ExerciseDayWidget extends ConsumerWidget {
 
   final ExerciseDayClient exerciseDay;
 
-  get height =>
-      titleHeight +
-      exerciseDay.exerciseTypes.length *
-          (ExerciseTypeWidget.height + spacingBetweenItems) +
-      additionalBottomSpaceHeight;
+  get isEmpty => exerciseDay.exerciseTypes.isEmpty;
+
+  get height {
+    final exerciseDaysCount = max(1, exerciseDay.exerciseTypes.length);
+
+    return titleHeight +
+        exerciseDaysCount * (ExerciseTypeWidget.height + spacingBetweenItems) +
+        additionalBottomSpaceHeight;
+  }
 
   const ExerciseDayWidget({
     Key? key,

@@ -73,7 +73,7 @@ class ExerciseSetWidget extends StatelessWidget {
                       style: labelSmallTheme.copyWith(color: textColor),
                     ),
                     TextSpan(
-                      text: exerciseSet.unit,
+                      text: exerciseSet.load.isEmpty ? '' : exerciseSet.unit,
                       style: labelSmallTheme.copyWith(color: textColor),
                     ),
                   ],

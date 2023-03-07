@@ -36,7 +36,6 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      isGoBackButtonVisible: true,
       actions: [
         IconButton(
           icon: Icon(

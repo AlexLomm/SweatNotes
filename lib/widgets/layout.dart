@@ -3,9 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/services/auth_service.dart';
-import '../theme_switcher.dart';
-
 class Layout extends ConsumerWidget {
   static const spacingTop = 16.0;
 
@@ -13,7 +10,8 @@ class Layout extends ConsumerWidget {
   final Widget? floatingActionButton;
   final List<Widget>? actions;
   final bool isScrollable;
-  final bool isGoBackButtonVisible;
+  final Widget? leading;
+  final Drawer? endDrawer;
 
   const Layout({
     super.key,
@@ -21,14 +19,22 @@ class Layout extends ConsumerWidget {
     this.floatingActionButton,
     this.actions,
     this.isScrollable = true,
-    this.isGoBackButtonVisible = false,
+    this.leading,
+    this.endDrawer,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: move to drawer
-    final authService = ref.watch(authServiceProvider);
-    final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
+    final leadingOrGoBackButton = leading ??
+        IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          tooltip: 'Navigate to home screen',
+          splashRadius: 20,
+          onPressed: () => context.go('/'),
+        );
 
     return Scaffold(
       appBar: AppBar(
@@ -39,54 +45,10 @@ class Layout extends ConsumerWidget {
           height: 48,
           'assets/logo.svg',
         ),
-        leading: isGoBackButtonVisible
-            ? IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                tooltip: 'Navigate to home screen',
-                splashRadius: 20,
-                onPressed: () => context.go('/'),
-              )
-            : null,
+        leading: leadingOrGoBackButton,
         actions: actions,
-        // actions: [
-        //   // IconButton(
-        //   //   icon: Icon(
-        //   //     Icons.wb_sunny_outlined,
-        //   //     color: Theme.of(context).colorScheme.onSurface,
-        //   //   ),
-        //   //   tooltip: 'Switch theme',
-        //   //   splashRadius: 20,
-        //   //   onPressed: () => themeSwitcher.toggle(),
-        //   // ),
-        //   IconButton(
-        //     icon: Icon(
-        //       Icons.logout_outlined,
-        //       color: Theme.of(context).colorScheme.onSurface,
-        //     ),
-        //     tooltip: 'Sign out',
-        //     splashRadius: 20,
-        //     onPressed: () => authService.signOut(),
-        //   ),
-        //   // IconButton(
-        //   //   icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
-        //   //   tooltip: 'Add new entry',
-        //   //   splashRadius: 20,
-        //   //   onPressed: () {},
-        //   // ),
-        //   // IconButton(
-        //   //   icon: Icon(
-        //   //     Icons.settings_outlined,
-        //   //     color: Theme.of(context).colorScheme.onSurface,
-        //   //   ),
-        //   //   tooltip: 'View entries',
-        //   //   splashRadius: 20,
-        //   //   onPressed: () {},
-        //   // ),
-        // ],
       ),
+      endDrawer: endDrawer,
       body: SafeArea(
         bottom: false,
         child: Container(

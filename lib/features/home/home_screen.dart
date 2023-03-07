@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rive/rive.dart';
 
+import '../../theme_switcher.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
+import '../auth/services/auth_service.dart';
 import '../training_block/data/models/training_block.dart';
 import '../training_block/services/training_blocks_service.dart';
 
@@ -32,8 +34,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
 
+    final authService = ref.watch(authServiceProvider);
+    final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
+
     return Layout(
+      leading: IconButton(
+        icon: Transform.rotate(
+          angle: pi,
+          child: Icon(
+            Icons.logout,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        tooltip: 'Logout',
+        splashRadius: 20,
+        onPressed: () => authService.signOut(),
+      ),
       actions: [
+        IconButton(
+          icon: Icon(
+            Icons.wb_sunny_outlined,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          tooltip: 'Switch theme',
+          splashRadius: 20,
+          onPressed: () => themeSwitcher.toggle(),
+        ),
         IconButton(
           icon: Icon(
             Icons.add,
@@ -43,15 +69,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           splashRadius: 20,
           onPressed: () {},
         ),
-        IconButton(
-          icon: Icon(
-            Icons.settings_outlined,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          tooltip: 'Open settings',
-          splashRadius: 20,
-          onPressed: () {},
-        ),
+        // builder is needed in order for the
+        // Scaffold.of(context).openDrawer() to work
+        Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(
+              Icons.settings_outlined,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            tooltip: 'Open settings',
+            splashRadius: 20,
+            onPressed: () => Scaffold.of(context).openEndDrawer(),
+          );
+        }),
       ],
       child: StreamBuilder<List<TrainingBlock>>(
         stream: trainingBlocksStream,

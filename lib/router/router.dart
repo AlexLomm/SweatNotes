@@ -41,10 +41,6 @@ GoRouter goRouter(GoRouterRef ref) {
     },
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, routerState) => const HomeScreen(),
-      ),
-      GoRoute(
         path: '/auth/log-in',
         builder: (context, routerState) => const SignInScreen(),
       ),
@@ -65,6 +61,10 @@ GoRouter goRouter(GoRouterRef ref) {
         builder: (context, routerState) => TrainingBlockScreen(
           trainingBlockId: routerState.params['trainingBlockId'] ?? '',
         ),
+      ),
+      GoRoute(
+        path: '/',
+        builder: (context, routerState) => const HomeScreen(),
       ),
     ],
   );

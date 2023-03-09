@@ -11,8 +11,7 @@ class ExercisesCollection {
   int get maxExercisePlacement {
     if (exercises.isEmpty) return 0;
 
-    _maxExercisePlacement ??=
-        exercises.map((exercise) => exercise.placement).reduce(max);
+    _maxExercisePlacement ??= exercises.map((exercise) => exercise.placement).reduce(max);
 
     return _maxExercisePlacement ?? 0;
   }
@@ -20,8 +19,7 @@ class ExercisesCollection {
   int get maxExerciseSetsCount {
     if (exercises.isEmpty) return 0;
 
-    _maxExerciseSetsCount ??=
-        exercises.map((exercise) => exercise.sets.length).reduce(max);
+    _maxExerciseSetsCount ??= exercises.map((exercise) => exercise.sets.length).reduce(max);
 
     return _maxExerciseSetsCount ?? 0;
   }

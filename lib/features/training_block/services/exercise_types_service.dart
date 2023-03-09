@@ -38,9 +38,7 @@ class ExerciseTypesService {
     return exerciseTypesRepository
         //
         .getDocumentRefById(exerciseTypeClient.id)
-        .set(exerciseTypeClient
-            .copyWith(name: name, unit: unit)
-            .toExerciseType());
+        .set(exerciseTypeClient.copyWith(name: name, unit: unit).toExerciseType());
   }
 
   Future<void> create({

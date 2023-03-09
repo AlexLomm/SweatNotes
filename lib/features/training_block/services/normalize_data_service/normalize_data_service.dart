@@ -31,10 +31,8 @@ class NormalizeDataService {
   List<Exercise>? _exercises;
 
   // TODO: rename and include training block
-  Stream<List<ExerciseDayClient>> get exerciseDays =>
-      _exerciseDaysClientController.stream;
-  late final StreamController<List<ExerciseDayClient>>
-      _exerciseDaysClientController;
+  Stream<List<ExerciseDayClient>> get exerciseDays => _exerciseDaysClientController.stream;
+  late final StreamController<List<ExerciseDayClient>> _exerciseDaysClientController;
 
   NormalizeDataService({
     required this.trainingBlockId,
@@ -48,19 +46,13 @@ class NormalizeDataService {
       // onCancel: () => _exerciseDaysClientController.close(),
     );
 
-    trainingBlocksRepository
-        .getDocumentRefById(trainingBlockId)
-        .snapshots()
-        .listen((event) {
+    trainingBlocksRepository.getDocumentRefById(trainingBlockId).snapshots().listen((event) {
       _trainingBlock = event.data();
 
       _recalculateState();
     });
 
-    exerciseDaysRepository
-        .getQueryByTrainingBlockId(trainingBlockId)
-        .snapshots()
-        .listen((event) {
+    exerciseDaysRepository.getQueryByTrainingBlockId(trainingBlockId).snapshots().listen((event) {
       _exerciseDays = event.docs.map((e) => e.data()).toList();
 
       _recalculateState();
@@ -76,10 +68,7 @@ class NormalizeDataService {
       _recalculateState();
     });
 
-    exercisesRepository
-        .getQueryByTrainingBlockId(trainingBlockId)
-        .snapshots()
-        .listen(
+    exercisesRepository.getQueryByTrainingBlockId(trainingBlockId).snapshots().listen(
       (event) {
         _exercises = event.docs.map((e) => e.data()).toList();
 
@@ -103,10 +92,7 @@ class NormalizeDataService {
     final exerciseTypes = _exerciseTypes;
     final exercises = _exercises;
 
-    if (trainingBlock == null ||
-        exerciseDays == null ||
-        exerciseTypes == null ||
-        exercises == null) return [];
+    if (trainingBlock == null || exerciseDays == null || exerciseTypes == null || exercises == null) return [];
 
     final exerciseDaysMap = ExerciseDaysByIdsMap(exerciseDays);
 
@@ -118,13 +104,11 @@ class NormalizeDataService {
     );
 
     // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
-    final exerciseDaysWithSortedExerciseTypes =
-        exerciseDaysTypesMap.entries.map((entry) {
+    final exerciseDaysWithSortedExerciseTypes = exerciseDaysTypesMap.entries.map((entry) {
       final exerciseDayId = entry.key;
       final exerciseTypes = entry.value.values.toList();
 
-      final exerciseTypesOrdering =
-          exerciseDaysMap.get(exerciseDayId).exerciseTypesOrdering;
+      final exerciseTypesOrdering = exerciseDaysMap.get(exerciseDayId).exerciseTypesOrdering;
 
       exerciseTypes.sort((a, b) {
         final orderingA = exerciseTypesOrdering[a.id] ?? double.maxFinite;
@@ -168,10 +152,8 @@ class NormalizeDataService {
     });
 
     // TODO: refactor out
-    final exerciseDaysWithProgress =
-        exerciseDaysWithSortedExerciseTypes.map((exerciseDay) {
-      final exerciseTypesWithProgress =
-          exerciseDay.exerciseTypes.map((exerciseType) {
+    final exerciseDaysWithProgress = exerciseDaysWithSortedExerciseTypes.map((exerciseDay) {
+      final exerciseTypesWithProgress = exerciseDay.exerciseTypes.map((exerciseType) {
         final allExerciseSets = exerciseType.exercises
             .map(
               (exercise) => exercise.exerciseSets.map(
@@ -184,25 +166,19 @@ class NormalizeDataService {
             .expand<_ExerciseSetClientWithExerciseId>((element) => element)
             .toList();
 
-        final exerciseSetCountPerExercise =
-            exerciseType.exercises[0].exerciseSets.length;
+        final exerciseSetCountPerExercise = exerciseType.exercises[0].exerciseSets.length;
 
-        final nearestExerciseSets =
-            exerciseType.exercises[0].exerciseSets.toList();
+        final nearestExerciseSets = exerciseType.exercises[0].exerciseSets.toList();
 
-        for (var i = exerciseSetCountPerExercise;
-            i < allExerciseSets.length;
-            i++) {
+        for (var i = exerciseSetCountPerExercise; i < allExerciseSets.length; i++) {
           final nearestExerciseSetIndex = i % exerciseSetCountPerExercise;
-          final nearestExerciseSet =
-              nearestExerciseSets[nearestExerciseSetIndex];
+          final nearestExerciseSet = nearestExerciseSets[nearestExerciseSetIndex];
 
           final currentExerciseSet = allExerciseSets[i].exerciseSet;
 
           if (currentExerciseSet.isFiller) continue;
 
-          if (currentExerciseSet.reps.isEmpty ||
-              currentExerciseSet.load.isEmpty) continue;
+          if (currentExerciseSet.reps.isEmpty || currentExerciseSet.load.isEmpty) continue;
 
           nearestExerciseSets[nearestExerciseSetIndex] = currentExerciseSet;
 

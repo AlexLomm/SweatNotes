@@ -19,6 +19,7 @@ class ExerciseDaysService {
     required String name,
   }) async {
     exerciseDaysRepository
+        //
         .getDocumentRefById(exerciseDay.id)
         .set(exerciseDay.copyWith(name: name).toExerciseDay());
   }

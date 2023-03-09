@@ -31,7 +31,7 @@ class ExerciseTypesMap {
     final exerciseType = _map[id];
 
     // this can happen if the list of exercises is fetched
-    // before the list of exercise types is fetched. i.e race
+    // before the list of exercise types is fetched. i.e
     // a race condition happens
     if (exerciseType == null) {
       throw Exception('Exercise type with id $id does not exist');

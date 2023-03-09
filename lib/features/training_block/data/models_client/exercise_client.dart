@@ -32,12 +32,12 @@ class ExerciseClient with _$ExerciseClient {
     return ExerciseClient(
       id: generateHash(),
       userId: userId,
+      exerciseTypeId: exerciseTypeId,
       exerciseDayId: exerciseDayId,
       trainingBlockId: trainingBlockId,
       isFiller: true,
       placement: -1,
       exerciseSets: [],
-      exerciseTypeId: '',
     );
   }
 

@@ -15,8 +15,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
 
   final _map = _ExerciseDaysExerciseTypesMap();
 
-  Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
-      _map.entries;
+  Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries => _map.entries;
 
   ExerciseDaysByIdsExerciseTypesByIdsMap({
     required this.userId,
@@ -114,8 +113,7 @@ class ExerciseDaysByIdsExerciseTypesByIdsMap {
 class _ExerciseDaysExerciseTypesMap {
   final Map<String, Map<String, ExerciseTypeClient>> _map = {};
 
-  Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries =>
-      _map.entries;
+  Iterable<MapEntry<String, Map<String, ExerciseTypeClient>>> get entries => _map.entries;
 
   List<String> get exerciseDayIds => _map.keys.toList();
 

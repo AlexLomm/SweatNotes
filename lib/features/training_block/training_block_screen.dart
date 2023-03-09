@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/features/training_block/services/exercise_days_service.dart';
-import 'package:journal_flutter/router/router.dart';
-import 'package:journal_flutter/shared_preferences.dart';
 
+import '../../features/training_block/services/exercise_days_service.dart';
+import '../../router/router.dart';
+import '../../shared_preferences.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
@@ -56,6 +56,13 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final String trainingBlockId = routeArgs['trainingBlockId'];
 
     prefs.setString('initialLocation', '/$trainingBlockId');
+  }
+
+  @override
+  void didPop() {
+    final prefs = ref.read(prefsProvider);
+
+    prefs.setString('initialLocation', '/');
   }
 
   @override

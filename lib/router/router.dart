@@ -57,20 +57,27 @@ GoRouter goRouter(GoRouterRef ref) {
         builder: (context, routerState) => const ResetPasswordFinishedScreen(),
       ),
       GoRoute(
-        path: '/:trainingBlockId',
-        builder: (context, routerState) => TrainingBlockScreen(
-          trainingBlockId: routerState.params['trainingBlockId'] ?? '',
-        ),
-      ),
-      GoRoute(
         path: '/',
         builder: (context, routerState) => const HomeScreen(),
+        routes: [
+          GoRoute(
+            path: ':trainingBlockId',
+            builder: (context, routerState) => TrainingBlockScreen(
+              trainingBlockId: routerState.params['trainingBlockId'] ?? '',
+            ),
+          ),
+        ],
       ),
     ],
   );
 }
 
+// route observer is instantiated outside of the provider
+// to make sure that the same instance is provided every time
+// @see https://stackoverflow.com/a/68545914/4241959
+final _routeObserver = RouteObserver<ModalRoute<void>>();
+
 @riverpod
 RouteObserver<ModalRoute<void>> routeObserver(RouteObserverRef ref) {
-  return RouteObserver<ModalRoute<void>>();
+  return _routeObserver;
 }

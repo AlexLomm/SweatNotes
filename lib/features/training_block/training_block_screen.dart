@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/features/training_block/services/exercise_days_service.dart';
 import 'package:journal_flutter/router/router.dart';
 import 'package:journal_flutter/shared_preferences.dart';
@@ -73,6 +74,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
     return Layout(
+      onGoBackButtonTap: () => context.go('/'),
       actions: [
         IconButton(
           icon: Icon(

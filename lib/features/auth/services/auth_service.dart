@@ -14,6 +14,7 @@ part 'auth_service.g.dart';
 class AuthService {
   final AuthRepository authRepository;
   final GoRouter goRouter;
+  final _defaultErrorMessage = 'Something went wrong.. Please try again later.';
 
   AuthService(this.authRepository, this.goRouter);
 
@@ -31,7 +32,36 @@ class AuthService {
         return 'No user!';
       }
     } on FirebaseAuthException catch (e) {
-      return e.message ?? '';
+      return e.message ?? _defaultErrorMessage;
+    }
+
+    return '';
+  }
+
+  Future<String> signUp({
+    required String displayName,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await authRepository.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await authRepository.updateDisplayName(displayName);
+    } on FirebaseAuthException catch (e) {
+      return e.message ?? _defaultErrorMessage;
+    }
+
+    return '';
+  }
+
+  Future<String> sendPasswordResetEmail(String email) async {
+    try {
+      await authRepository.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
     }
 
     return '';

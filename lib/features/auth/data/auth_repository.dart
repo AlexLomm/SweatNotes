@@ -10,25 +10,32 @@ class AuthRepository {
 
   AuthRepository(this._auth);
 
-  signInAnonymously() {
-    return _auth.signInAnonymously();
-  }
-
-  signInWithEmailAndPassword({
+  Future<UserCredential> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) {
     return _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  createUserWithEmailAndPassword({
+  Future<UserCredential> createUserWithEmailAndPassword({
     required String email,
     required String password,
-  }) {
-    return _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  }) async {
+    return _auth.createUserWithEmailAndPassword(email: email, password: password);
+  }
+
+  Future<void> sendPasswordResetEmail({required String email}) {
+    return _auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> updateDisplayName(String displayName) {
+    final user = _auth.currentUser;
+
+    if (user == null) {
+      throw Exception('User is unauthenticated!');
+    }
+
+    return user.updateDisplayName(displayName);
   }
 
   Future<void> signOut() {

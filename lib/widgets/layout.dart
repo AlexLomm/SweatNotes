@@ -12,6 +12,9 @@ class Layout extends ConsumerWidget {
   final bool isScrollable;
   final Widget? leading;
   final Drawer? endDrawer;
+  final bool isAppBarVisible;
+  final Function()? onGoBackButtonTap;
+  final Widget? appBarTitle;
 
   const Layout({
     super.key,
@@ -21,6 +24,9 @@ class Layout extends ConsumerWidget {
     this.isScrollable = true,
     this.leading,
     this.endDrawer,
+    this.isAppBarVisible = true,
+    this.onGoBackButtonTap,
+    this.appBarTitle,
   });
 
   @override
@@ -33,21 +39,20 @@ class Layout extends ConsumerWidget {
           ),
           tooltip: 'Navigate to home screen',
           splashRadius: 20,
-          onPressed: () => context.go('/'),
+          onPressed: onGoBackButtonTap,
         );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        centerTitle: true,
-        title: SvgPicture.asset(
-          height: 48,
-          'assets/logo.svg',
-        ),
-        leading: leadingOrGoBackButton,
-        actions: actions,
-      ),
+      appBar: isAppBarVisible
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              centerTitle: true,
+              title: appBarTitle ?? SvgPicture.asset(height: 48, 'assets/logo.svg'),
+              leading: leadingOrGoBackButton,
+              actions: actions,
+            )
+          : null,
       endDrawer: endDrawer,
       body: SafeArea(
         bottom: false,

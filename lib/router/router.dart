@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/firebase.dart';
 import 'package:journal_flutter/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../firebase.dart';
+import '../features/auth/sign_up_screen.dart';
+import '../features/auth/reset_password_screen.dart';
+import '../features/auth/reset_password_finished_screen.dart';
 import '../features/auth/sign_in_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/training_block/training_block_screen.dart';
@@ -44,6 +47,18 @@ GoRouter goRouter(GoRouterRef ref) {
       GoRoute(
         path: '/auth/log-in',
         builder: (context, routerState) => const SignInScreen(),
+      ),
+      GoRoute(
+        path: '/auth/sign-up',
+        builder: (context, routerState) => const SignUpScreen(),
+      ),
+      GoRoute(
+        path: '/auth/reset-password',
+        builder: (context, routerState) => const ResetPasswordScreen(),
+      ),
+      GoRoute(
+        path: '/auth/reset-password-finished',
+        builder: (context, routerState) => const ResetPasswordFinishedScreen(),
       ),
       GoRoute(
         path: '/:trainingBlockId',

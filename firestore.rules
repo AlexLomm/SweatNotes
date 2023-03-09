@@ -1,6 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // ------------------------- HELPERS -------------------------
+
     function isOwner() {
       return request.auth.uid == resource.data.userId;
     }
@@ -46,7 +48,7 @@ service cloud.firestore {
       function isCorrectSchema() {
         return onlyHasAttrs(request.resource.data, ['userId', 'name', 'trainingBlockId', 'exerciseTypesOrdering'])
             && incoming().name is string
-            && incoming().trainingBlockId is string
+            && incoming().trainingBlockId is string && incoming().trainingBlockId != ''
             && isMissingOrMap('exerciseTypesOrdering');
       }
 
@@ -58,9 +60,9 @@ service cloud.firestore {
       function isCorrectSchema() {
         return onlyHasAttrs(request.resource.data, ['userId', 'placement', 'exerciseDayId', 'exerciseTypeId', 'trainingBlockId', 'sets'])
             && incoming().placement is int
-            && incoming().exerciseDayId is string
-            && incoming().exerciseTypeId is string
-            && incoming().trainingBlockId is string
+            && incoming().exerciseDayId is string && incoming().exerciseDayId != ''
+            && incoming().exerciseTypeId is string && incoming().exerciseTypeId != ''
+            && incoming().trainingBlockId is string && incoming().trainingBlockId != ''
             && incoming().sets is list;
       }
 

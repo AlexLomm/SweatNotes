@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/features/training_block/services/exercise_days_service.dart';
+import 'package:journal_flutter/router/router.dart';
+import 'package:journal_flutter/shared_preferences.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
@@ -23,8 +25,37 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _TrainingBlockScreenState();
 }
 
-class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> {
+class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with RouteAware {
   late final Stream<List<ExerciseDayClient>> exerciseDaysStream;
+  late RouteObserver _routeObserver;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _routeObserver = ref.read(routeObserverProvider);
+
+    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    // calling ref.read causes the "Looking up a
+    // deactivated widget's ancestor is unsafe" error
+    _routeObserver.unsubscribe(this);
+
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    final prefs = ref.read(prefsProvider);
+
+    final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final String trainingBlockId = routeArgs['trainingBlockId'];
+
+    prefs.setString('initialLocation', '/$trainingBlockId');
+  }
 
   @override
   void initState() {

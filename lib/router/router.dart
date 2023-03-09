@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/firebase.dart';
+import 'package:journal_flutter/shared_preferences.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/auth/sign_in_screen.dart';
@@ -10,10 +12,13 @@ part 'router.g.dart';
 
 @riverpod
 GoRouter goRouter(GoRouterRef ref) {
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
+  final firebaseAuth = ref.read(firebaseAuthProvider);
+  final prefs = ref.read(prefsProvider);
+  final routeObserver = ref.read(routeObserverProvider);
 
   return GoRouter(
-    initialLocation: '/auth/log-in',
+    observers: [routeObserver],
+    initialLocation: prefs.getString('initialLocation') ?? '/auth/log-in',
     redirect: (context, state) {
       final isLoggedIn = firebaseAuth.currentUser != null;
 
@@ -48,4 +53,9 @@ GoRouter goRouter(GoRouterRef ref) {
       ),
     ],
   );
+}
+
+@riverpod
+RouteObserver<ModalRoute<void>> routeObserver(RouteObserverRef ref) {
+  return RouteObserver<ModalRoute<void>>();
 }

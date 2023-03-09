@@ -3,8 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rive/rive.dart';
 
+import '../../router/router.dart';
+import '../../shared_preferences.dart';
 import '../../theme_switcher.dart';
 import '../../widgets/button.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
@@ -22,8 +23,34 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
   late final Stream<List<TrainingBlock>> trainingBlocksStream;
+  late RouteObserver _routeObserver;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _routeObserver = ref.read(routeObserverProvider);
+
+    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    // calling ref.read causes the "Looking up a
+    // deactivated widget's ancestor is unsafe" error
+    _routeObserver.unsubscribe(this);
+
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    final prefs = ref.read(prefsProvider);
+
+    prefs.setString('initialLocation', '/');
+  }
 
   @override
   void initState() {
@@ -102,10 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         stream: trainingBlocksStream,
         builder: (context, snapshot) {
           final appBarHeight = Scaffold.of(context).appBarMaxHeight ?? 0;
-          final safeAreaHeight = mq.size.height -
-              mq.padding.top -
-              mq.padding.bottom -
-              appBarHeight;
+          final safeAreaHeight = mq.size.height - mq.padding.top - mq.padding.bottom - appBarHeight;
 
           final data = snapshot.data;
 
@@ -139,8 +163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 class _TrainingBlockButton extends StatelessWidget {
   final TrainingBlock trainingBlock;
 
-  const _TrainingBlockButton({Key? key, required this.trainingBlock})
-      : super(key: key);
+  const _TrainingBlockButton({Key? key, required this.trainingBlock}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,14 +7,14 @@ class EmptyPagePlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // TODO: add dark mode
     return SizedBox(
       height: mq.size.height * 0.75,
       width: mq.size.width * 0.75,
-      child: const RiveAnimation.asset(
+      child: RiveAnimation.asset(
         alignment: Alignment.center,
-        'assets/rive/empty-state-home-light.riv',
+        isDark ? 'assets/rive/empty-state-dark.riv' : 'assets/rive/empty-state-light.riv',
       ),
     );
   }

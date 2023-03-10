@@ -22,6 +22,7 @@ class ExerciseDayWidget extends StatelessWidget {
   static const additionalBottomSpaceHeight = 28.0 - spacingBetweenItems;
   static const addExerciseTypeButtonSize = 40.0;
   static const spaceForExerciseTypeButton = addExerciseTypeButtonSize / 2;
+  static const marginBottom = 44.0;
 
   final ExerciseDayClient exerciseDay;
 
@@ -42,63 +43,62 @@ class ExerciseDayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: SizedBox(
-            width: width,
-            // add enough space for the add exercise type button's half size to fit
-            height: height + spaceForExerciseTypeButton,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: _Background(
-                    width: width,
-                    height: height,
-                    borderRadius: borderRadius,
-                    child: GestureDetector(
-                      onTap: () => CustomBottomSheet(
-                        height: CustomBottomSheet.allSpacing +
-                            TextEditorSingleLine.height,
-                        title: 'Edit exercise day',
-                        child: _TextEditorSingleLineWrapper(
-                          exerciseDay: exerciseDay,
-                        ),
-                      ).show(context),
-                      child: _ExerciseDayName(
-                        name: exerciseDay.name,
+    return Container(
+      margin: const EdgeInsets.only(
+        bottom: marginBottom,
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: width,
+              // add enough space for the add exercise type button's half size to fit
+              height: height + spaceForExerciseTypeButton,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: _Background(
+                      width: width,
+                      height: height,
+                      borderRadius: borderRadius,
+                      child: GestureDetector(
+                        onTap: () => CustomBottomSheet(
+                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                          title: 'Edit exercise day',
+                          child: _TextEditorSingleLineWrapper(exerciseDay: exerciseDay),
+                        ).show(context),
+                        child: _ExerciseDayName(name: exerciseDay.name),
                       ),
                     ),
                   ),
-                ),
-                // the rounded button can't be Transform.translate()'d,
-                // because the button won't register taps
-                // @see https://stackoverflow.com/a/62500610/4241959
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: RoundedIconButton(
-                    size: addExerciseTypeButtonSize,
-                    onPressed: () => CustomBottomSheet(
-                      height: CustomBottomSheet.allSpacing +
-                          TextEditorSingleLineAndWheel.height,
-                      title: 'Add exercise type',
-                      child: _TextEditorSingleLineAndWheelWrapper(
-                        exerciseDay: exerciseDay,
-                      ),
-                    ).show(context),
-                  ),
-                )
-              ],
+                  // the rounded button can't be Transform.translate()'d,
+                  // because the button won't register taps
+                  // @see https://stackoverflow.com/a/62500610/4241959
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: RoundedIconButton(
+                      size: addExerciseTypeButtonSize,
+                      onPressed: () => CustomBottomSheet(
+                        height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                        title: 'Add exercise type',
+                        child: _TextEditorSingleLineAndWheelWrapper(
+                          exerciseDay: exerciseDay,
+                        ),
+                      ).show(context),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: _ExerciseTypesList(exerciseDay: exerciseDay),
-        ),
-      ],
+          Align(
+            alignment: Alignment.topLeft,
+            child: _ExerciseTypesList(exerciseDay: exerciseDay),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -203,7 +203,7 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
 
     return TextEditorSingleLineAndWheel(
       value: '',
-      // TODO: replace with user's preferred value
+      // TODO: replace with user preferred value
       unit: 'lb',
       buttonLabel: 'Add',
       hintText: 'Enter name',
@@ -224,8 +224,7 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
 class _ExerciseTypesList extends StatelessWidget {
   final ExerciseDayClient exerciseDay;
 
-  const _ExerciseTypesList({Key? key, required this.exerciseDay})
-      : super(key: key);
+  const _ExerciseTypesList({Key? key, required this.exerciseDay}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

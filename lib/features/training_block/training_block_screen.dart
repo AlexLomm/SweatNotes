@@ -10,8 +10,8 @@ import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import 'data/models_client/exercise_day_client.dart';
-import 'exercise_matrix.dart';
-import 'exercise_matrix_labels.dart';
+import 'exercise_day_widget.dart';
+import 'horizontally_scrollable_exercises.dart';
 import 'services/normalize_data_service/normalize_data_service.dart';
 
 class TrainingBlockScreen extends ConsumerStatefulWidget {
@@ -81,6 +81,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
     return Layout(
+      isScrollable: false,
       onGoBackButtonTap: () => context.go('/'),
       actions: [
         IconButton(
@@ -129,22 +130,31 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
             return const Center(child: EmptyPagePlaceholder());
           }
 
-          return Stack(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                // TODO: replace with ListView.builder https://www.youtube.com/watch?v=YY-_yrZdjGc&t=6s
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: ExerciseMatrix(exerciseDays: exerciseDays),
-                ),
+          return CustomScrollView(slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                childCount: exerciseDays.length,
+                (BuildContext context, int i) {
+                  return Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: HorizontallyScrollableExercises(
+                          exerciseTypes: exerciseDays[i].exerciseTypes.isEmpty ? [] : exerciseDays[i].exerciseTypes,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: ExerciseDayWidget(
+                          exerciseDay: exerciseDays[i],
+                        ),
+                      )
+                    ],
+                  );
+                },
               ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: ExerciseMatrixLabels(exerciseDays: exerciseDays),
-              ),
-            ],
-          );
+            ),
+          ]);
         },
       ),
     );

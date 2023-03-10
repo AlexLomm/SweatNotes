@@ -19,8 +19,7 @@ class ExerciseWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final routeArgs =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String trainingBlockId = routeArgs['trainingBlockId'];
 
     assert(trainingBlockId.isNotEmpty);
@@ -34,11 +33,9 @@ class ExerciseWidget extends ConsumerWidget {
       clipBehavior: Clip.hardEdge,
       child: Row(
         children: exercise.exerciseSets.asMap().entries.map((entry) {
-          final repsNum =
-              entry.value.reps.isEmpty ? 0 : int.parse(entry.value.reps);
+          final repsNum = entry.value.reps.isEmpty ? 0 : int.parse(entry.value.reps);
 
-          final loadNum =
-              entry.value.load.isEmpty ? 0.0 : double.parse(entry.value.load);
+          final loadNum = entry.value.load.isEmpty ? 0.0 : double.parse(entry.value.load);
 
           return ExerciseSetWidget(
             key: UniqueKey(),

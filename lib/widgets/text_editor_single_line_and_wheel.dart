@@ -63,6 +63,7 @@ class _TextEditorSingleLineAndWheelState
     return SizedBox(
       height: TextEditorSingleLineAndWheel.height,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,

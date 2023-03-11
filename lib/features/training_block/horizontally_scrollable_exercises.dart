@@ -7,8 +7,9 @@ import 'exercise_type_widget.dart';
 import 'exercise_widget.dart';
 
 class HorizontallyScrollableExercises extends StatelessWidget {
+  static const double scrollInwardsDepth = 16.0;
   static const double marginTop = ExerciseDayWidget.titleHeight;
-  static const double marginLeft = ExerciseTypeWidget.width + 16.0;
+  static const double marginLeft = ExerciseTypeWidget.width - scrollInwardsDepth + 8.0;
 
   static const marginBottomNotLast = ExerciseDayWidget.spacingBetweenItems;
   static const marginBottomLast = marginBottomNotLast +
@@ -46,8 +47,8 @@ class HorizontallyScrollableExercises extends StatelessWidget {
       numberOfExerciseSetsPerExercise = exerciseTypes.first.exercises.first.exerciseSets.length;
     }
 
-    final exerciseWithoutMargin = ExerciseSetWidget.width * numberOfExerciseSetsPerExercise;
-    final exerciseWithMargin = exerciseWithoutMargin + spacingBetweenExercises;
+    final exerciseWithoutMarginWidth = ExerciseSetWidget.width * numberOfExerciseSetsPerExercise;
+    final exerciseWithMarginWidth = exerciseWithoutMarginWidth + spacingBetweenExercises;
 
     return Container(
       height: height,
@@ -55,7 +56,11 @@ class HorizontallyScrollableExercises extends StatelessWidget {
         left: marginLeft,
       ),
       child: ListView.builder(
-        itemExtent: exerciseWithMargin,
+        padding: const EdgeInsets.only(
+          right: spacingBetweenExercises,
+          left: scrollInwardsDepth,
+        ),
+        itemExtent: exerciseWithMarginWidth,
         itemCount: numberOfExercisesPerExerciseType,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, j) {
@@ -66,7 +71,7 @@ class HorizontallyScrollableExercises extends StatelessWidget {
           return Align(
             alignment: Alignment.topLeft,
             child: Container(
-              width: exerciseWithoutMargin,
+              width: exerciseWithoutMarginWidth,
               margin: const EdgeInsets.only(
                 top: marginTop,
               ),

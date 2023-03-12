@@ -8,6 +8,7 @@ import 'package:journal_flutter/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'env.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -18,10 +19,11 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  if (kDebugMode) {
+  if (kDebugMode || kProfileMode) {
     try {
-      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-      await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+      FirebaseFirestore.instance.useFirestoreEmulator(Env.localIp, 8080);
+      await FirebaseAuth.instance.useAuthEmulator(Env.localIp, 9099);
+      await FirebaseFirestore.instance.clearPersistence();
     } catch (e) {
       // ignore: avoid_print
       print(e);

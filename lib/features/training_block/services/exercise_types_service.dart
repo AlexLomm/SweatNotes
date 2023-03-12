@@ -56,7 +56,7 @@ class ExerciseTypesService {
     final exerciseRef = exercisesRepository.collectionRef.doc();
 
     final orderingValues = exerciseDay.exerciseTypesOrdering.values;
-    final maxOrder = orderingValues.isEmpty ? 0 : orderingValues.reduce(max);
+    final maxOrder = orderingValues.isEmpty ? -1 : orderingValues.reduce(max);
     final exerciseDayRef = exerciseDaysRepository.getDocumentRefById(
       exerciseDay.id,
     );

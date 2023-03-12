@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
@@ -148,42 +147,6 @@ class Matrix extends StatefulWidget {
 }
 
 class _MatrixState extends State<Matrix> {
-  final _controllerGroup = LinkedScrollControllerGroup();
-  final Map<String, ScrollController> _controllersMap = {};
-
-  @override
-  void initState() {
-    super.initState();
-
-    for (final exerciseDay in widget.exerciseDays) {
-      if (exerciseDay.exerciseTypes.isEmpty) continue;
-
-      setState(() => _controllersMap[exerciseDay.id] = _controllerGroup.addAndGet());
-    }
-  }
-
-  @override
-  void didUpdateWidget(Matrix oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    for (final exerciseDay in widget.exerciseDays) {
-      if (exerciseDay.exerciseTypes.isEmpty) continue;
-
-      if (_controllersMap.containsKey(exerciseDay.id)) continue;
-
-      setState(() => _controllersMap[exerciseDay.id] = _controllerGroup.addAndGet());
-    }
-  }
-
-  @override
-  void dispose() {
-    for (final controller in _controllersMap.values) {
-      controller.dispose();
-    }
-
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: <Widget>[
@@ -198,11 +161,6 @@ class _MatrixState extends State<Matrix> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: HorizontallyScrollableExercises(
-                    // this is needed due to "If you add controllers dynamically, the corresponding scrollables
-                    // must be given unique keys to avoid the scroll offset going out of sync."
-                    // @see https://pub.dev/packages/linked_scroll_controller
-                    key: ValueKey(exerciseDay.id),
-                    controller: _controllersMap[exerciseDay.id],
                     exerciseDay: exerciseDay,
                   ),
                 ),

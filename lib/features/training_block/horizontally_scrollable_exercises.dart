@@ -21,12 +21,10 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
 
   static const spacingBetweenExercises = 16.0;
 
-  final ScrollController? controller;
   final ExerciseDayClient exerciseDay;
 
   const HorizontallyScrollableExercises({
     Key? key,
-    required this.controller,
     required this.exerciseDay,
   }) : super(key: key);
 
@@ -58,8 +56,6 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
           right: HorizontallyScrollableExercises.spacingBetweenExercises,
           left: HorizontallyScrollableExercises.scrollInwardsDepth,
         ),
-        // itemExtent: exerciseWithMarginWidth,
-        controller: controller,
         itemCount: numberOfExercisesPerExerciseType + 1,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, j) {

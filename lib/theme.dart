@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'theme_switcher.dart';
+import 'features/settings/theme_switcher.dart';
 
 part 'theme.g.dart';
 
@@ -127,8 +127,7 @@ ThemeData theme(ThemeRef ref) {
   final isLight = themeMode == ThemeMode.light;
 
   final colorScheme = isLight ? colorSchemeLight : colorSchemeDark;
-  final systemOverlayStyle =
-      isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
+  final systemOverlayStyle = isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
 
   return ThemeData(
     useMaterial3: true,

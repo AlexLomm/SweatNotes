@@ -14,10 +14,12 @@ class ExerciseTypeWidget extends StatelessWidget {
   static const dragHandleAndLabelSpacing = 8.0;
   static const labelWidth = width - dragHandleWidth - dragHandleAndLabelSpacing;
 
+  final int index;
   final ExerciseTypeClient exerciseType;
 
   const ExerciseTypeWidget({
     Key? key,
+    required this.index,
     required this.exerciseType,
   }) : super(key: key);
 
@@ -38,19 +40,19 @@ class ExerciseTypeWidget extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const _DragHandle(
-              width: dragHandleWidth,
-              marginRight: dragHandleAndLabelSpacing,
+            ReorderableDragStartListener(
+              index: index,
+              child: const _DragHandle(
+                width: dragHandleWidth,
+                marginRight: dragHandleAndLabelSpacing,
+              ),
             ),
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => CustomBottomSheet(
-                height: CustomBottomSheet.allSpacing +
-                    TextEditorSingleLineAndWheel.height,
+                height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
                 title: 'Edit exercise type',
-                child: _TextEditorSingleLineAndWheelWrapper(
-                  exerciseType: exerciseType,
-                ),
+                child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
               ).show(context),
               child: _ExerciseTypeName(
                 width: labelWidth,
@@ -108,8 +110,10 @@ class _DragHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      margin: EdgeInsets.only(right: marginRight),
+      height: double.infinity,
+      width: width + marginRight,
+      padding: EdgeInsets.only(right: marginRight),
+      color: Colors.white.withOpacity(0.0001),
       child: Icon(
         Icons.drag_indicator,
         color: Theme.of(context).colorScheme.outline,

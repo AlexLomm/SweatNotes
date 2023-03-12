@@ -11,7 +11,7 @@ import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import 'data/models_client/exercise_day_client.dart';
-import 'exercise_day_widget.dart';
+import 'horizontally_scrollable_exercise_labels.dart';
 import 'horizontally_scrollable_exercises.dart';
 import 'services/normalize_data_service/normalize_data_service.dart';
 
@@ -208,7 +208,7 @@ class _MatrixState extends State<Matrix> {
                 ),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: ExerciseDayWidget(
+                  child: HorizontallyScrollableExerciseLabels(
                     exerciseDay: exerciseDay,
                   ),
                 )

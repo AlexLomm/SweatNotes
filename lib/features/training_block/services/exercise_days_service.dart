@@ -34,12 +34,67 @@ class ExerciseDaysService {
       throw Exception('User is not logged in');
     }
 
-    exerciseDaysRepository.addExerciseDay(ExerciseDay(
+    exerciseDaysRepository.add(ExerciseDay(
       id: '',
       userId: userId,
       trainingBlockId: trainingBlockId,
       name: name,
     ));
+  }
+
+  Future<void> update({required ExerciseDayClient exerciseDay}) async {
+    return exerciseDaysRepository.update(exerciseDay.toExerciseDay());
+  }
+
+  // TODO: move this into the ExerciseDayClient class
+  ExerciseDayClient getReorderExerciseTypeInTheSameDay({
+    required ExerciseDayClient exerciseDay,
+    required int oldIndex,
+    required int newIndex,
+  }) {
+    // TODO: extract
+    final newOrderingMap = exerciseDay.exerciseTypes.asMap().entries.fold(
+      <String, int>{},
+      (previousValue, entry) {
+        final index = entry.key;
+        final exerciseTypeId = entry.value.id;
+
+        previousValue[exerciseTypeId] = index;
+
+        return previousValue;
+      },
+    );
+
+    // TODO: extract
+    final reorderedNewOrderingMap = newOrderingMap.entries.fold(
+      <String, int>{},
+      (previousValue, entry) {
+        final exerciseTypeId = entry.key;
+        final i = entry.value;
+
+        if (i == oldIndex) {
+          previousValue[exerciseTypeId] = newIndex;
+        } else if (i > oldIndex && i <= newIndex) {
+          previousValue[exerciseTypeId] = i - 1;
+        } else if (i < oldIndex && i >= newIndex) {
+          previousValue[exerciseTypeId] = i + 1;
+        } else {
+          previousValue[exerciseTypeId] = i;
+        }
+
+        return previousValue;
+      },
+    );
+
+    // TODO: extract
+    final newExerciseTypes = exerciseDay.exerciseTypes.toList();
+
+    newExerciseTypes.sort((a, b) => reorderedNewOrderingMap[a.id]!.compareTo(reorderedNewOrderingMap[b.id]!));
+
+    return exerciseDay.copyWith(
+      exerciseTypesOrdering: reorderedNewOrderingMap,
+      exerciseTypes: newExerciseTypes,
+    );
   }
 }
 

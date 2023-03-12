@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'data/models_client/exercise_day_client.dart';
-import 'exercise_day_widget.dart';
+import 'horizontally_scrollable_exercise_labels.dart';
 import 'exercise_type_widget.dart';
 import 'exercise_widget.dart';
 import 'services/exercises_service.dart';
 
 class HorizontallyScrollableExercises extends ConsumerWidget {
   static const double scrollInwardsDepth = 16.0;
-  static const double marginTop = ExerciseDayWidget.titleHeight;
+  static const double marginTop = HorizontallyScrollableExerciseLabels.titleHeight;
   static const double marginLeft = ExerciseTypeWidget.width - scrollInwardsDepth + 8.0;
 
-  static const marginBottomNotLast = ExerciseDayWidget.spacingBetweenItems;
+  static const marginBottomNotLast = HorizontallyScrollableExerciseLabels.spacingBetweenItems;
   static const marginBottomLast = marginBottomNotLast +
-      ExerciseDayWidget.titleHeight +
-      ExerciseDayWidget.additionalBottomSpaceHeight +
-      ExerciseDayWidget.spaceForExerciseTypeButton +
-      ExerciseDayWidget.marginBottom;
+      HorizontallyScrollableExerciseLabels.titleHeight +
+      HorizontallyScrollableExerciseLabels.additionalBottomSpaceHeight +
+      HorizontallyScrollableExerciseLabels.spaceForExerciseTypeButton +
+      HorizontallyScrollableExerciseLabels.marginBottom;
 
   static const spacingBetweenExercises = 16.0;
 

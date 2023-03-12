@@ -13,7 +13,7 @@ import '../../widgets/text_editor_single_line_and_wheel.dart';
 import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
-class ExerciseDayWidget extends StatelessWidget {
+class HorizontallyScrollableExerciseLabels extends StatelessWidget {
   static const borderRadius = 8.0;
   static const rightInsetSize = 24.0;
   static const width = ExerciseTypeWidget.width - rightInsetSize;
@@ -36,7 +36,7 @@ class ExerciseDayWidget extends StatelessWidget {
         additionalBottomSpaceHeight;
   }
 
-  const ExerciseDayWidget({
+  const HorizontallyScrollableExerciseLabels({
     Key? key,
     required this.exerciseDay,
   }) : super(key: key);
@@ -221,26 +221,100 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
   }
 }
 
-class _ExerciseTypesList extends StatelessWidget {
+class _ExerciseTypesList extends ConsumerStatefulWidget {
   final ExerciseDayClient exerciseDay;
 
   const _ExerciseTypesList({Key? key, required this.exerciseDay}) : super(key: key);
 
   @override
+  ConsumerState createState() => _ExerciseTypesListState();
+}
+
+class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
+  late ExerciseDayClient _exerciseDayClientCached;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _cacheExerciseDayClient();
+  }
+
+  @override
+  void didUpdateWidget(_ExerciseTypesList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _cacheExerciseDayClient();
+  }
+
+  _cacheExerciseDayClient() {
+    setState(() => _exerciseDayClientCached = widget.exerciseDay.copyWith());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+
     return Container(
-      margin: const EdgeInsets.only(top: ExerciseDayWidget.titleHeight),
-      child: Column(
-        children: [
-          for (final exerciseType in exerciseDay.exerciseTypes)
-            Container(
-              key: Key(exerciseType.id),
-              margin: const EdgeInsets.only(
-                bottom: ExerciseDayWidget.spacingBetweenItems,
-              ),
-              child: ExerciseTypeWidget(exerciseType: exerciseType),
-            )
-        ],
+      margin: const EdgeInsets.only(top: HorizontallyScrollableExerciseLabels.titleHeight),
+      width: ExerciseTypeWidget.width,
+      height: (ExerciseTypeWidget.height + HorizontallyScrollableExerciseLabels.spacingBetweenItems) *
+          _exerciseDayClientCached.exerciseTypes.length,
+      child: Theme(
+        // this is needed to remove the bottom
+        // margin when reordering the items.
+        // @see https://github.com/flutter/flutter/issues/63527#issuecomment-852740201
+        data: ThemeData(
+          canvasColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          dialogBackgroundColor: Colors.transparent,
+        ),
+        child: ReorderableListView(
+          physics: const NeverScrollableScrollPhysics(),
+          onReorder: (int oldIndex, int newIndex) async {
+            final exerciseTypesCount = _exerciseDayClientCached.exerciseTypes.length;
+
+            // these two lines are workarounds for ReorderableListView problems
+            // @see https://stackoverflow.com/a/54164333/4241959
+            if (newIndex > exerciseTypesCount) newIndex = exerciseTypesCount;
+            if (oldIndex < newIndex) newIndex--;
+
+            final backup = _exerciseDayClientCached;
+
+            // optimistically update the UI
+            setState(() {
+              _exerciseDayClientCached = exerciseDaysService.getReorderExerciseTypeInTheSameDay(
+                exerciseDay: _exerciseDayClientCached,
+                oldIndex: oldIndex,
+                newIndex: newIndex,
+              );
+            });
+
+            try {
+              await exerciseDaysService.update(exerciseDay: _exerciseDayClientCached);
+            } catch (e) {
+              // revert the UI if the call is unsuccessful
+              setState(() => _exerciseDayClientCached = backup);
+            }
+          },
+          children: [
+            for (final entry in _exerciseDayClientCached.exerciseTypes.asMap().entries)
+              Container(
+                key: Key(entry.value.id),
+                margin: const EdgeInsets.only(
+                  bottom: HorizontallyScrollableExerciseLabels.spacingBetweenItems,
+                ),
+                child: Theme(
+                  // this is needed to re-enable the canceled theming above
+                  data: Theme.of(context),
+                  child: ExerciseTypeWidget(
+                    index: entry.key,
+                    exerciseType: entry.value,
+                  ),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

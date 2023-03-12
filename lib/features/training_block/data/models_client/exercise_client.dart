@@ -75,9 +75,7 @@ class ExerciseClient with _$ExerciseClient {
 
     return [
       ...setsUpToLastPopulatedOne,
-      ...exerciseSets
-          .sublist(i + 1, exerciseSets.length)
-          .where((set) => !set.isFiller),
+      ...exerciseSets.sublist(i + 1, exerciseSets.length).where((set) => !set.isFiller),
     ];
   }
 }

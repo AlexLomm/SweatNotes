@@ -31,10 +31,19 @@ class ExerciseDaysRepository {
     return collectionRef.doc(id);
   }
 
-  Future<DocumentReference<ExerciseDay>> addExerciseDay(
+  Future<DocumentReference<ExerciseDay>> add(
     ExerciseDay exerciseDay,
   ) {
     return collectionRef.add(exerciseDay);
+  }
+
+  Future<void> update(
+    ExerciseDay exerciseDay,
+  ) {
+    final docRef = getDocumentRefById(exerciseDay.id);
+
+    // TODO: use withConverter?
+    return docRef.update(_toFirestore(exerciseDay, null));
   }
 
   ExerciseDay _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
@@ -49,8 +58,7 @@ class ExerciseDaysRepository {
     return ExerciseDay.fromJson(data);
   }
 
-  Map<String, dynamic> _toFirestore(ExerciseDay exerciseDay, _) =>
-      exerciseDay.toJson();
+  Map<String, dynamic> _toFirestore(ExerciseDay exerciseDay, _) => exerciseDay.toJson();
 }
 
 @riverpod

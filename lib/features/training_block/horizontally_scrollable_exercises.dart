@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'data/models_client/exercise_type_client.dart';
 import 'exercise_day_widget.dart';
-import 'exercise_set_widget.dart';
 import 'exercise_type_widget.dart';
 import 'exercise_widget.dart';
 
@@ -20,10 +19,12 @@ class HorizontallyScrollableExercises extends StatelessWidget {
 
   static const spacingBetweenExercises = 16.0;
 
+  final ScrollController? controller;
   final List<ExerciseTypeClient> exerciseTypes;
 
   const HorizontallyScrollableExercises({
     Key? key,
+    required this.controller,
     required this.exerciseTypes,
   }) : super(key: key);
 
@@ -31,65 +32,81 @@ class HorizontallyScrollableExercises extends StatelessWidget {
   Widget build(BuildContext context) {
     final exerciseTypesCount = exerciseTypes.length;
 
-    final height = ExerciseTypeWidget.height * exerciseTypesCount +
-        marginBottomNotLast * (exerciseTypesCount - 1) +
-        marginBottomLast;
+    final exercisesHeight = ExerciseTypeWidget.height * exerciseTypesCount +
+        HorizontallyScrollableExercises.marginBottomNotLast * (exerciseTypesCount - 1);
+
+    final height = exercisesHeight + HorizontallyScrollableExercises.marginBottomLast;
 
     int numberOfExercisesPerExerciseType = 0;
     if (exerciseTypes.isNotEmpty && exerciseTypes.first.exercises.isNotEmpty) {
       numberOfExercisesPerExerciseType = exerciseTypes.first.exercises.length;
     }
 
-    int numberOfExerciseSetsPerExercise = 0;
-    if (exerciseTypes.isNotEmpty &&
-        exerciseTypes.first.exercises.isNotEmpty &&
-        exerciseTypes.first.exercises.first.exerciseSets.isNotEmpty) {
-      numberOfExerciseSetsPerExercise = exerciseTypes.first.exercises.first.exerciseSets.length;
-    }
-
-    final exerciseWithoutMarginWidth = ExerciseSetWidget.width * numberOfExerciseSetsPerExercise;
-    final exerciseWithMarginWidth = exerciseWithoutMarginWidth + spacingBetweenExercises;
+    // int numberOfExerciseSetsPerExercise = 0;
+    // if (exerciseTypes.isNotEmpty &&
+    //     exerciseTypes.first.exercises.isNotEmpty &&
+    //     exerciseTypes.first.exercises.first.exerciseSets.isNotEmpty) {
+    //   numberOfExerciseSetsPerExercise = exerciseTypes.first.exercises.first.exerciseSets.length;
+    // }
 
     return Container(
       height: height,
       margin: const EdgeInsets.only(
-        left: marginLeft,
+        left: HorizontallyScrollableExercises.marginLeft,
       ),
       child: ListView.builder(
         padding: const EdgeInsets.only(
-          right: spacingBetweenExercises,
-          left: scrollInwardsDepth,
+          right: HorizontallyScrollableExercises.spacingBetweenExercises,
+          left: HorizontallyScrollableExercises.scrollInwardsDepth,
         ),
-        itemExtent: exerciseWithMarginWidth,
-        itemCount: numberOfExercisesPerExerciseType,
+        // itemExtent: exerciseWithMarginWidth,
+        controller: controller,
+        itemCount: numberOfExercisesPerExerciseType + 1,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, j) {
           // the alignment is needed to prevent the underlying container
           // from being stretched to the `exerciseWithMargin` width (and
           // thereby losing border radius on the right) instead of being
           // of the `exerciseWithoutMargin` width
-          return Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              width: exerciseWithoutMarginWidth,
-              margin: const EdgeInsets.only(
-                top: marginTop,
-              ),
-              child: Column(
-                children: [
-                  for (var verticalIndex = 0; verticalIndex < exerciseTypesCount; verticalIndex++)
-                    Container(
-                      margin: const EdgeInsets.only(
-                        bottom: marginBottomNotLast,
-                      ),
-                      child: ExerciseWidget(
-                        exercise: exerciseTypes[verticalIndex].exercises[j],
+          return j == numberOfExercisesPerExerciseType && j > 0
+              ? Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      top: HorizontallyScrollableExercises.marginTop,
+                    ),
+                    width: 50,
+                    height: exercisesHeight,
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8.0),
                       ),
                     ),
-                ],
-              ),
-            ),
-          );
+                  ),
+                )
+              : Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      top: HorizontallyScrollableExercises.marginTop,
+                    ),
+                    child: Column(
+                      children: [
+                        for (var verticalIndex = 0; verticalIndex < exerciseTypesCount; verticalIndex++)
+                          Container(
+                            margin: const EdgeInsets.only(
+                              right: HorizontallyScrollableExercises.spacingBetweenExercises,
+                              bottom: HorizontallyScrollableExercises.marginBottomNotLast,
+                            ),
+                            child: ExerciseWidget(
+                              exercise: exerciseTypes[verticalIndex].exercises[j],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                );
         },
       ),
     );

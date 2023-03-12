@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
@@ -130,33 +131,91 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
             return const Center(child: EmptyPagePlaceholder());
           }
 
-          return CustomScrollView(slivers: <Widget>[
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                childCount: exerciseDays.length,
-                (BuildContext context, int i) {
-                  return Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: HorizontallyScrollableExercises(
-                          exerciseTypes: exerciseDays[i].exerciseTypes.isEmpty ? [] : exerciseDays[i].exerciseTypes,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: ExerciseDayWidget(
-                          exerciseDay: exerciseDays[i],
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
-            ),
-          ]);
+          return Matrix(exerciseDays: exerciseDays);
         },
       ),
     );
+  }
+}
+
+class Matrix extends StatefulWidget {
+  final List<ExerciseDayClient> exerciseDays;
+
+  const Matrix({Key? key, required this.exerciseDays}) : super(key: key);
+
+  @override
+  State<Matrix> createState() => _MatrixState();
+}
+
+class _MatrixState extends State<Matrix> {
+  final _controllerGroup = LinkedScrollControllerGroup();
+  final Map<String, ScrollController> _controllersMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (final exerciseDay in widget.exerciseDays) {
+      if (exerciseDay.exerciseTypes.isEmpty) continue;
+
+      setState(() => _controllersMap[exerciseDay.id] = _controllerGroup.addAndGet());
+    }
+  }
+
+  @override
+  void didUpdateWidget(Matrix oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    for (final exerciseDay in widget.exerciseDays) {
+      if (exerciseDay.exerciseTypes.isEmpty) continue;
+
+      if (_controllersMap.containsKey(exerciseDay.id)) continue;
+
+      setState(() => _controllersMap[exerciseDay.id] = _controllerGroup.addAndGet());
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _controllersMap.values) {
+      controller.dispose();
+    }
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(slivers: <Widget>[
+      SliverList(
+        delegate: SliverChildBuilderDelegate(
+          childCount: widget.exerciseDays.length,
+          (BuildContext context, int i) {
+            return Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: HorizontallyScrollableExercises(
+                    // this is needed due to "If you add controllers dynamically, the corresponding scrollables
+                    // must be given unique keys to avoid the scroll offset going out of sync."
+                    // @see https://pub.dev/packages/linked_scroll_controller
+                    key: ValueKey(widget.exerciseDays[i].id),
+                    controller: _controllersMap[widget.exerciseDays[i].id],
+                    exerciseTypes:
+                        widget.exerciseDays[i].exerciseTypes.isEmpty ? [] : widget.exerciseDays[i].exerciseTypes,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: ExerciseDayWidget(
+                    exerciseDay: widget.exerciseDays[i],
+                  ),
+                )
+              ],
+            );
+          },
+        ),
+      ),
+    ]);
   }
 }

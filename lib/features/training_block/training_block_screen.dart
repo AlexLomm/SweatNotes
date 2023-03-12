@@ -191,6 +191,8 @@ class _MatrixState extends State<Matrix> {
         delegate: SliverChildBuilderDelegate(
           childCount: widget.exerciseDays.length,
           (BuildContext context, int i) {
+            final exerciseDay = widget.exerciseDays[i];
+
             return Stack(
               children: [
                 Align(
@@ -199,16 +201,15 @@ class _MatrixState extends State<Matrix> {
                     // this is needed due to "If you add controllers dynamically, the corresponding scrollables
                     // must be given unique keys to avoid the scroll offset going out of sync."
                     // @see https://pub.dev/packages/linked_scroll_controller
-                    key: ValueKey(widget.exerciseDays[i].id),
-                    controller: _controllersMap[widget.exerciseDays[i].id],
-                    exerciseTypes:
-                        widget.exerciseDays[i].exerciseTypes.isEmpty ? [] : widget.exerciseDays[i].exerciseTypes,
+                    key: ValueKey(exerciseDay.id),
+                    controller: _controllersMap[exerciseDay.id],
+                    exerciseDay: exerciseDay,
                   ),
                 ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: ExerciseDayWidget(
-                    exerciseDay: widget.exerciseDays[i],
+                    exerciseDay: exerciseDay,
                   ),
                 )
               ],

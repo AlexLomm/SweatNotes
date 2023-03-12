@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'data/models_client/exercise_type_client.dart';
+import 'data/models_client/exercise_day_client.dart';
 import 'exercise_day_widget.dart';
 import 'exercise_type_widget.dart';
 import 'exercise_widget.dart';
+import 'services/exercises_service.dart';
 
-class HorizontallyScrollableExercises extends StatelessWidget {
+class HorizontallyScrollableExercises extends ConsumerWidget {
   static const double scrollInwardsDepth = 16.0;
   static const double marginTop = ExerciseDayWidget.titleHeight;
   static const double marginLeft = ExerciseTypeWidget.width - scrollInwardsDepth + 8.0;
@@ -20,16 +22,20 @@ class HorizontallyScrollableExercises extends StatelessWidget {
   static const spacingBetweenExercises = 16.0;
 
   final ScrollController? controller;
-  final List<ExerciseTypeClient> exerciseTypes;
+  final ExerciseDayClient exerciseDay;
 
   const HorizontallyScrollableExercises({
     Key? key,
     required this.controller,
-    required this.exerciseTypes,
+    required this.exerciseDay,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exercisesService = ref.watch(exercisesServiceProvider);
+
+    final exerciseTypes = exerciseDay.exerciseTypes.isEmpty ? [] : exerciseDay.exerciseTypes;
+
     final exerciseTypesCount = exerciseTypes.length;
 
     final exercisesHeight = ExerciseTypeWidget.height * exerciseTypesCount +
@@ -41,13 +47,6 @@ class HorizontallyScrollableExercises extends StatelessWidget {
     if (exerciseTypes.isNotEmpty && exerciseTypes.first.exercises.isNotEmpty) {
       numberOfExercisesPerExerciseType = exerciseTypes.first.exercises.length;
     }
-
-    // int numberOfExerciseSetsPerExercise = 0;
-    // if (exerciseTypes.isNotEmpty &&
-    //     exerciseTypes.first.exercises.isNotEmpty &&
-    //     exerciseTypes.first.exercises.first.exerciseSets.isNotEmpty) {
-    //   numberOfExerciseSetsPerExercise = exerciseTypes.first.exercises.first.exerciseSets.length;
-    // }
 
     return Container(
       height: height,
@@ -71,16 +70,21 @@ class HorizontallyScrollableExercises extends StatelessWidget {
           return j == numberOfExercisesPerExerciseType && j > 0
               ? Align(
                   alignment: Alignment.topLeft,
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                      top: HorizontallyScrollableExercises.marginTop,
-                    ),
-                    width: 50,
-                    height: exercisesHeight,
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8.0),
+                  child: GestureDetector(
+                    onTap: () => exercisesService.addEmptyExercise(exerciseDay: exerciseDay),
+                    child: Container(
+                      width: 48,
+                      height: exercisesHeight,
+                      margin: const EdgeInsets.only(
+                        top: HorizontallyScrollableExercises.marginTop,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        color: Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),

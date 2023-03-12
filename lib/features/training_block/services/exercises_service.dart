@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/exercises_repository.dart';
 import '../data/models_client/exercise_client.dart';
+import '../data/models_client/exercise_day_client.dart';
 import '../data/models_client/exercise_set_client.dart';
 
 part 'exercises_service.g.dart';
@@ -32,6 +33,31 @@ class ExercisesService {
     ]);
 
     exercisesRepository.setExercise(modifiedExercise);
+  }
+
+  /// adds an empty exercise at the end of one of the
+  /// exercise types referenced in the exerciseDay,
+  /// thereby forcing the creation of a new "column"
+  Future<void> addEmptyExercise({
+    required ExerciseDayClient exerciseDay,
+  }) async {
+    if (exerciseDay.exerciseTypes.isEmpty) return;
+
+    if (exerciseDay.exerciseTypes.first.exercises.isEmpty) return;
+
+    final lastExercise = exerciseDay.exerciseTypes.first.exercises.last;
+
+    final newExercise = lastExercise.copyWith(
+      exerciseSets: [
+        lastExercise.exerciseSets.first.copyWith(
+          isFiller: false,
+          reps: '',
+          load: '',
+        )
+      ],
+    );
+
+    exercisesRepository.addExercise(newExercise);
   }
 }
 

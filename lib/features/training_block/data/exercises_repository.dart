@@ -31,9 +31,13 @@ class ExercisesRepository {
     }
 
     // otherwise, update it
-    return collectionRef
-        .doc(exerciseClient.id)
-        .set(exercise, SetOptions(merge: true));
+    return collectionRef.doc(exerciseClient.id).set(exercise, SetOptions(merge: true));
+  }
+
+  Future<void> addExercise(ExerciseClient exerciseClient) {
+    final exercise = exerciseClient.toExercise();
+
+    return collectionRef.add(exercise);
   }
 
   Query<Exercise> getQueryByTrainingBlockId(String trainingBlockId) {

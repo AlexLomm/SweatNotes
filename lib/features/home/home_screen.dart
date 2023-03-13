@@ -69,8 +69,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
     final currentTheme = ref.watch(themeSwitcherProvider);
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
 
-    print(currentTheme);
-
     return Layout(
       leading: IconButton(
         icon: Transform.rotate(

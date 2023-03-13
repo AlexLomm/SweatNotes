@@ -205,7 +205,8 @@ class _ExerciseDayName extends ConsumerWidget {
                 ),
               ),
             ),
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(

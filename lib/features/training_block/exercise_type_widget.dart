@@ -4,15 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/text_editor_single_line_and_wheel.dart';
+import '../settings/edit_mode_switcher.dart';
 import '../training_block/services/exercise_types_service.dart';
 import 'data/models_client/exercise_type_client.dart';
 
-class ExerciseTypeWidget extends StatelessWidget {
+class ExerciseTypeWidget extends ConsumerWidget {
   static const width = 144.0;
   static const height = 80.0;
   static const dragHandleWidth = 24.0;
   static const dragHandleAndLabelSpacing = 8.0;
   static const labelWidth = width - dragHandleWidth - dragHandleAndLabelSpacing;
+
+  static const widthExpanded = 192.0;
+  static const dragHandleWidthExpanded = 48.0;
+  static const labelWidthExpanded = widthExpanded - dragHandleWidthExpanded - dragHandleAndLabelSpacing;
 
   final int index;
   final ExerciseTypeClient exerciseType;
@@ -24,7 +29,9 @@ class ExerciseTypeWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
     return Material(
       elevation: 2,
       shape: const RoundedRectangleBorder(
@@ -34,29 +41,33 @@ class ExerciseTypeWidget extends StatelessWidget {
         ),
       ),
       color: Theme.of(context).colorScheme.surfaceVariant,
-      child: SizedBox(
-        width: width,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: isEditMode ? widthExpanded : width,
         height: height,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ReorderableDragStartListener(
               index: index,
-              child: const _DragHandle(
-                width: dragHandleWidth,
-                marginRight: dragHandleAndLabelSpacing,
+              child: _DragHandle(
+                width: isEditMode ? dragHandleWidthExpanded : dragHandleWidth,
+                spacingRight: dragHandleAndLabelSpacing,
               ),
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => CustomBottomSheet(
-                height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
-                title: 'Edit exercise type',
-                child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
-              ).show(context),
-              child: _ExerciseTypeName(
-                width: labelWidth,
-                name: exerciseType.name,
+            IgnorePointer(
+              ignoring: !isEditMode,
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () => CustomBottomSheet(
+                  height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                  title: 'Edit exercise type',
+                  child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
+                ).show(context),
+                child: _ExerciseTypeName(
+                  width: labelWidth,
+                  name: exerciseType.name,
+                ),
               ),
             ),
           ],
@@ -99,20 +110,23 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
 
 class _DragHandle extends StatelessWidget {
   final double width;
-  final double marginRight;
+  final double spacingRight;
 
   const _DragHandle({
     Key? key,
     required this.width,
-    required this.marginRight,
+    required this.spacingRight,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       height: double.infinity,
-      width: width + marginRight,
-      padding: EdgeInsets.only(right: marginRight),
+      width: width + spacingRight,
+      padding: EdgeInsets.only(right: spacingRight),
+      // this color is needed in order for the entire Container to
+      // be tappable. Otherwise, the tap area is only the icon
       color: Colors.white.withOpacity(0.0001),
       child: Icon(
         Icons.drag_indicator,
@@ -122,7 +136,7 @@ class _DragHandle extends StatelessWidget {
   }
 }
 
-class _ExerciseTypeName extends StatelessWidget {
+class _ExerciseTypeName extends ConsumerWidget {
   final double width;
   final String name;
 
@@ -133,21 +147,34 @@ class _ExerciseTypeName extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
     return Container(
       padding: const EdgeInsets.only(right: 8.0),
       width: width,
       height: double.infinity,
       child: Align(
         alignment: Alignment.centerLeft,
-        child: AutoSizeText(
-          name,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-          minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
-          style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                width: 1,
               ),
+            ),
+          ),
+          child: AutoSizeText(
+            name,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          ),
         ),
       ),
     );

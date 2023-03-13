@@ -9,6 +9,7 @@ import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
+import '../settings/edit_mode_switcher.dart';
 import 'data/models_client/exercise_day_client.dart';
 import 'horizontally_scrollable_exercise_labels.dart';
 import 'horizontally_scrollable_exercises.dart';
@@ -61,6 +62,12 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   @override
   void didPop() {
     final prefs = ref.read(prefsProvider);
+    final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
+
+    // this is needed to prevent an error being
+    // thrown by riverpod when provider is modified
+    // from inside the lifecycle hook
+    Future(() => editModeSwitcher.disable());
 
     prefs.setString('initialLocation', '/');
   }
@@ -80,41 +87,66 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   Widget build(BuildContext context) {
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
+    final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
+    const editModeAnimationDuration = Duration(milliseconds: 300);
+
     return Layout(
       isScrollable: false,
       onGoBackButtonTap: () => context.go('/'),
       actions: [
-        IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          tooltip: 'Add new entry',
-          splashRadius: 20,
-          onPressed: () => CustomBottomSheet(
-            height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-            title: 'Add exercise day',
-            child: TextEditorSingleLine(
-              value: '',
-              onSubmitted: (String text) {
-                exerciseDaysService.create(
-                  trainingBlockId: widget.trainingBlockId,
-                  name: text,
-                );
-
-                Navigator.of(context).pop();
-              },
+        AnimatedOpacity(
+          opacity: isEditMode ? 0 : 1,
+          duration: editModeAnimationDuration,
+          child: IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
-          ).show(context),
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.edit_outlined,
-            color: Theme.of(context).colorScheme.onSurface,
+            tooltip: 'Add new entry',
+            splashRadius: 20,
+            onPressed: isEditMode
+                ? null
+                : () => CustomBottomSheet(
+                      height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                      title: 'Add exercise day',
+                      child: TextEditorSingleLine(
+                        value: '',
+                        onSubmitted: (String text) {
+                          exerciseDaysService.create(
+                            trainingBlockId: widget.trainingBlockId,
+                            name: text,
+                          );
+
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ).show(context),
           ),
-          tooltip: 'Turn on edit mode',
-          splashRadius: 20,
-          onPressed: () {},
+        ),
+        AnimatedCrossFade(
+          alignment: Alignment.center,
+          crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          duration: editModeAnimationDuration,
+          firstChild: IconButton(
+            icon: Icon(
+              Icons.edit_outlined,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            tooltip: 'Turn on edit mode',
+            splashRadius: 20,
+            onPressed: () => editModeSwitcher.toggle(),
+          ),
+          secondChild: IconButton(
+            icon: Icon(
+              Icons.check,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            tooltip: 'Turn off edit mode',
+            splashRadius: 20,
+            onPressed: () => editModeSwitcher.toggle(),
+          ),
         ),
       ],
       child: StreamBuilder(

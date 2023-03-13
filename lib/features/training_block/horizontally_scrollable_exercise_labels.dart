@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../settings/edit_mode_switcher.dart';
 import '../training_block/data/models_client/exercise_day_client.dart';
 import '../../features/training_block/services/exercise_types_service.dart';
 import '../../widgets/text_editor_single_line.dart';
@@ -13,7 +14,7 @@ import '../../widgets/text_editor_single_line_and_wheel.dart';
 import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
-class HorizontallyScrollableExerciseLabels extends StatelessWidget {
+class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   static const borderRadius = 8.0;
   static const rightInsetSize = 24.0;
   static const width = ExerciseTypeWidget.width - rightInsetSize;
@@ -23,6 +24,8 @@ class HorizontallyScrollableExerciseLabels extends StatelessWidget {
   static const addExerciseTypeButtonSize = 40.0;
   static const spaceForExerciseTypeButton = addExerciseTypeButtonSize / 2;
   static const marginBottom = 44.0;
+
+  static const widthExpanded = ExerciseTypeWidget.widthExpanded - rightInsetSize;
 
   final ExerciseDayClient exerciseDay;
 
@@ -42,7 +45,9 @@ class HorizontallyScrollableExerciseLabels extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
     return Container(
       margin: const EdgeInsets.only(
         bottom: marginBottom,
@@ -51,8 +56,9 @@ class HorizontallyScrollableExerciseLabels extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: SizedBox(
-              width: width,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              width: isEditMode ? widthExpanded : width,
               // add enough space for the add exercise type button's half size to fit
               height: height + spaceForExerciseTypeButton,
               child: Stack(
@@ -60,33 +66,43 @@ class HorizontallyScrollableExerciseLabels extends StatelessWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: _Background(
-                      width: width,
+                      width: isEditMode ? widthExpanded : width,
                       height: height,
                       borderRadius: borderRadius,
-                      child: GestureDetector(
-                        onTap: () => CustomBottomSheet(
-                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                          title: 'Edit exercise day',
-                          child: _TextEditorSingleLineWrapper(exerciseDay: exerciseDay),
-                        ).show(context),
-                        child: _ExerciseDayName(name: exerciseDay.name),
+                      child: IgnorePointer(
+                        ignoring: !isEditMode,
+                        child: GestureDetector(
+                          onTap: () => CustomBottomSheet(
+                            height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                            title: 'Edit exercise day',
+                            child: _TextEditorSingleLineWrapper(exerciseDay: exerciseDay),
+                          ).show(context),
+                          child: _ExerciseDayName(name: exerciseDay.name),
+                        ),
                       ),
                     ),
                   ),
-                  // the rounded button can't be Transform.translate()'d,
-                  // because the button won't register taps
+                  // using Align instead of Positioned or transform, because the
+                  // rounded button can't be Transform.translate()'d, as the
+                  // button won't be registering taps in that case
                   // @see https://stackoverflow.com/a/62500610/4241959
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: RoundedIconButton(
-                      size: addExerciseTypeButtonSize,
-                      onPressed: () => CustomBottomSheet(
-                        height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
-                        title: 'Add exercise type',
-                        child: _TextEditorSingleLineAndWheelWrapper(
-                          exerciseDay: exerciseDay,
-                        ),
-                      ).show(context),
+                    child: AnimatedOpacity(
+                      opacity: isEditMode ? 0.0 : 1.0,
+                      duration: const Duration(milliseconds: 300),
+                      child: RoundedIconButton(
+                        size: addExerciseTypeButtonSize,
+                        onPressed: isEditMode
+                            ? null
+                            : () => CustomBottomSheet(
+                                  height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                                  title: 'Add exercise type',
+                                  child: _TextEditorSingleLineAndWheelWrapper(
+                                    exerciseDay: exerciseDay,
+                                  ),
+                                ).show(context),
+                      ),
                     ),
                   )
                 ],
@@ -119,7 +135,8 @@ class _Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       height: height,
       width: width,
       child: Material(
@@ -132,11 +149,7 @@ class _Background extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 18,
-            right: 16,
-            left: 16,
-          ),
+          padding: const EdgeInsets.only(right: 8.0),
           child: child,
         ),
       ),
@@ -144,21 +157,76 @@ class _Background extends StatelessWidget {
   }
 }
 
-class _ExerciseDayName extends StatelessWidget {
+class _ExerciseDayName extends ConsumerWidget {
   final String name;
 
   const _ExerciseDayName({Key? key, required this.name}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return AutoSizeText(
-      name,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      minFontSize: Theme.of(context).textTheme.titleSmall!.fontSize!,
-      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SizedBox(
+        height: 56.0,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: isEditMode ? 1.0 : 0.0,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.only(top: 4.0),
+                width: isEditMode ? ExerciseTypeWidget.dragHandleWidthExpanded : ExerciseTypeWidget.dragHandleWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: ExerciseTypeWidget.dragHandleWidth,
+                        height: ExerciseTypeWidget.dragHandleWidth,
+                        color: Colors.white.withOpacity(0.0001),
+                        child: Transform.rotate(angle: pi / 2, child: const Icon(Icons.chevron_left)),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: ExerciseTypeWidget.dragHandleWidth,
+                        height: ExerciseTypeWidget.dragHandleWidth,
+                        color: Colors.white.withOpacity(0.0001),
+                        child: Transform.rotate(angle: pi / 2, child: const Icon(Icons.chevron_right)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                    width: 1.0,
+                  ),
+                ),
+              ),
+              child: AutoSizeText(
+                name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                minFontSize: Theme.of(context).textTheme.titleSmall!.fontSize!,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -254,15 +322,16 @@ class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
   @override
   Widget build(BuildContext context) {
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+    final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.only(top: HorizontallyScrollableExerciseLabels.titleHeight),
-      width: ExerciseTypeWidget.width,
+      width: isEditMode ? ExerciseTypeWidget.widthExpanded : ExerciseTypeWidget.width,
       height: (ExerciseTypeWidget.height + HorizontallyScrollableExerciseLabels.spacingBetweenItems) *
           _exerciseDayClientCached.exerciseTypes.length,
       child: Theme(
-        // this is needed to remove the bottom
-        // margin when reordering the items.
+        // this is needed to remove the bottom margin when reordering the items
         // @see https://github.com/flutter/flutter/issues/63527#issuecomment-852740201
         data: ThemeData(
           canvasColor: Colors.transparent,

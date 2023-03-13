@@ -66,7 +66,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
     final authService = ref.watch(authServiceProvider);
     final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
+    final currentTheme = ref.watch(themeSwitcherProvider);
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
+
+    print(currentTheme);
 
     return Layout(
       leading: IconButton(
@@ -89,7 +92,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
           ),
           tooltip: 'Switch theme',
           splashRadius: 20,
-          onPressed: () => themeSwitcher.toggle(),
+          onPressed: () => themeSwitcher.setThemeMode(
+            currentTheme == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
+          ),
         ),
         IconButton(
           icon: Icon(

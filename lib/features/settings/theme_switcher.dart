@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../shared_preferences.dart';
@@ -11,18 +12,26 @@ class ThemeSwitcher extends _$ThemeSwitcher {
   ThemeMode build() {
     final prefs = ref.watch(prefsProvider);
 
-    final isDark = prefs.getBool('isDark') ?? false;
+    final themeMode = prefs.getString('themeMode') ?? 'system';
 
-    return isDark ? ThemeMode.dark : ThemeMode.light;
+    if (themeMode == 'system') {
+      final platformBrightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+
+      return platformBrightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+    }
+
+    if (themeMode == 'light') {
+      return ThemeMode.light;
+    }
+
+    return ThemeMode.dark;
   }
 
-  void toggle() {
+  void setThemeMode(ThemeMode themeMode) {
     final prefs = ref.watch(prefsProvider);
 
-    final isCurrentThemeDark = state == ThemeMode.dark;
-    final nextState = isCurrentThemeDark ? ThemeMode.light : ThemeMode.dark;
+    state = themeMode;
 
-    state = nextState;
-    prefs.setBool('isDark', !isCurrentThemeDark);
+    prefs.setString('themeMode', themeMode.toString().split('.').last);
   }
 }

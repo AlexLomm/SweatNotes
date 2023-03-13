@@ -6,7 +6,7 @@ part of 'theme_switcher.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeSwitcherHash() => r'3cecae96babf8ecf3d52eb524287dbcd13bd036a';
+String _$themeSwitcherHash() => r'0e1c549949e879e25bf72eeea0f64200b7126cb4';
 
 /// See also [ThemeSwitcher].
 @ProviderFor(ThemeSwitcher)

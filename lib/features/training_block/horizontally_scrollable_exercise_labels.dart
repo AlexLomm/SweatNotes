@@ -11,6 +11,7 @@ import '../../widgets/text_editor_single_line.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/rounded_icon_button.dart';
 import '../../widgets/text_editor_single_line_and_wheel.dart';
+import 'constants.dart';
 import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
@@ -57,7 +58,8 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
           Align(
             alignment: Alignment.topLeft,
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: animationDuration,
+              curve: animationCurve,
               width: isEditMode ? widthExpanded : width,
               // add enough space for the add exercise type button's half size to fit
               height: height + spaceForExerciseTypeButton,
@@ -90,7 +92,8 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                     alignment: Alignment.bottomCenter,
                     child: AnimatedOpacity(
                       opacity: isEditMode ? 0.0 : 1.0,
-                      duration: const Duration(milliseconds: 300),
+                      duration: animationDuration,
+                      curve: animationCurve,
                       child: RoundedIconButton(
                         size: addExerciseTypeButtonSize,
                         onPressed: isEditMode
@@ -136,7 +139,8 @@ class _Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: animationDuration,
+      curve: animationCurve,
       height: height,
       width: width,
       child: Material(
@@ -174,10 +178,12 @@ class _ExerciseDayName extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
+              duration: animationDuration,
+              curve: animationCurve,
               opacity: isEditMode ? 1.0 : 0.0,
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: animationDuration,
+                curve: animationCurve,
                 padding: const EdgeInsets.only(top: 4.0),
                 width: isEditMode ? ExerciseTypeWidget.dragHandleWidthExpanded : ExerciseTypeWidget.dragHandleWidth,
                 child: Column(
@@ -206,7 +212,8 @@ class _ExerciseDayName extends ConsumerWidget {
               ),
             ),
             AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: animationDuration,
+              curve: animationCurve,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -326,7 +333,8 @@ class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: animationDuration,
+      curve: animationCurve,
       margin: const EdgeInsets.only(top: HorizontallyScrollableExerciseLabels.titleHeight),
       width: isEditMode ? ExerciseTypeWidget.widthExpanded : ExerciseTypeWidget.width,
       height: (ExerciseTypeWidget.height + HorizontallyScrollableExerciseLabels.spacingBetweenItems) *

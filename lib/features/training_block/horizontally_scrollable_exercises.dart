@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/features/settings/edit_mode_switcher.dart';
 
+import 'constants.dart';
 import 'data/models_client/exercise_day_client.dart';
 import 'horizontally_scrollable_exercise_labels.dart';
 import 'exercise_type_widget.dart';
@@ -50,7 +51,8 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
 
     return AnimatedOpacity(
       opacity: isEditMode ? 0.32 : 1.0,
-      duration: const Duration(milliseconds: 300),
+      duration: animationDuration,
+      curve: animationCurve,
       child: IgnorePointer(
         ignoring: isEditMode,
         child: Container(

@@ -6,6 +6,7 @@ import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/text_editor_single_line_and_wheel.dart';
 import '../settings/edit_mode_switcher.dart';
 import '../training_block/services/exercise_types_service.dart';
+import 'constants.dart';
 import 'data/models_client/exercise_type_client.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
@@ -42,7 +43,8 @@ class ExerciseTypeWidget extends ConsumerWidget {
       ),
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: animationDuration,
+        curve: animationCurve,
         width: isEditMode ? widthExpanded : width,
         height: height,
         child: Row(
@@ -121,7 +123,8 @@ class _DragHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: animationDuration,
+      curve: animationCurve,
       height: double.infinity,
       width: width + spacingRight,
       padding: EdgeInsets.only(right: spacingRight),
@@ -157,7 +160,8 @@ class _ExerciseTypeName extends ConsumerWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: animationDuration,
+          curve: animationCurve,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(

@@ -200,6 +200,10 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (trainingBlock.exerciseDays.isEmpty) {
+            return const Center(child: EmptyPagePlaceholder());
+          }
+
           return Matrix(trainingBlock: trainingBlock);
         },
       ),

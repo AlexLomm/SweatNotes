@@ -125,12 +125,9 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
     return OverlayEntry(
       builder: (context) {
         return Positioned.fill(
-          child: GestureDetector(
-            onTap: _closeMenu,
-            child: Container(
-              // color is needed for the GestureDetector to work
-              color: Colors.white.withOpacity(0.0001),
-            ),
+          child: Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (event) => _closeMenu(),
           ),
         );
       },

@@ -61,13 +61,7 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
       vsync: this,
       duration: widget.animationDuration,
     )..addStatusListener((status) {
-        if (status == AnimationStatus.dismissed) {
-          _menuOverlayEntry?.remove();
-          _menuOverlayEntry = null;
-
-          _backdropOverlayEntry?.remove();
-          _backdropOverlayEntry = null;
-        }
+        if (status == AnimationStatus.dismissed) _removeOverlays();
       });
 
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
@@ -80,9 +74,19 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
     _key = GlobalKey();
   }
 
+  void _removeOverlays() {
+    _menuOverlayEntry?.remove();
+    _menuOverlayEntry = null;
+
+    _backdropOverlayEntry?.remove();
+    _backdropOverlayEntry = null;
+  }
+
   @override
   void dispose() {
+    _removeOverlays();
     _animationController.dispose();
+
     super.dispose();
   }
 

@@ -123,12 +123,14 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
         child: IconButton(
           icon: Icon(widget.icon),
           color: Theme.of(context).colorScheme.onSurface,
-          onPressed: () {
-            // only handle opening the menu, closing is handled by the backdrop.
-            // Also, `isDismissed` check is needed to cover an edge case when
-            // the button is clicked through the backdrop
-            if (isDismissed) _openMenu();
-          },
+          onPressed: widget.items.isEmpty
+              ? null
+              : () {
+                  // only handle opening the menu, closing is handled by the backdrop.
+                  // Also, `isDismissed` check is needed to cover an edge case when
+                  // the button is clicked through the backdrop
+                  if (isDismissed) _openMenu();
+                },
         ),
       ),
     );

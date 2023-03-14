@@ -54,7 +54,7 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
       duration: widget.animationDuration,
     )..addStatusListener((status) {
         // finish the animation and remove the menu overlay
-        if (status == AnimationStatus.dismissed) {
+        if (status == AnimationStatus.dismissed && _menuOverlayEntry.mounted) {
           _menuOverlayEntry.remove();
         }
       });
@@ -83,7 +83,7 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
 
   void _closeMenu() {
     // remove the backdrop overlay immediately
-    _backdropOverlayEntry.remove();
+    if (_backdropOverlayEntry.mounted) _backdropOverlayEntry.remove();
     _animationController.reverse();
 
     _isMenuOpen = false;

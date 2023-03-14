@@ -6,11 +6,11 @@ import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
 import '../../shared_preferences.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
-import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import '../settings/edit_mode_switcher.dart';
-import 'data/models_client/exercise_day_client.dart';
+import 'constants.dart';
+import 'data/models_client/training_block_client.dart';
 import 'horizontally_scrollable_exercise_labels.dart';
 import 'horizontally_scrollable_exercises.dart';
 import 'services/normalize_data_service/normalize_data_service.dart';
@@ -28,7 +28,7 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
 }
 
 class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with RouteAware {
-  late final Stream<List<ExerciseDayClient>> exerciseDaysStream;
+  late final Stream<TrainingBlockClient?> trainingBlockStream;
   late RouteObserver _routeObserver;
 
   @override
@@ -76,11 +76,9 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   void initState() {
     super.initState();
 
-    final normalizeDataService = ref.read(normalizeDataServiceProvider(
-      widget.trainingBlockId,
-    ));
+    final normalizeDataService = ref.read(normalizeDataServiceProvider(widget.trainingBlockId));
 
-    exerciseDaysStream = normalizeDataService.exerciseDays;
+    trainingBlockStream = normalizeDataService.trainingBlock;
   }
 
   @override
@@ -90,15 +88,14 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    const editModeAnimationDuration = Duration(milliseconds: 300);
-
     return Layout(
       isScrollable: false,
       onGoBackButtonTap: () => context.go('/'),
       actions: [
         AnimatedOpacity(
           opacity: isEditMode ? 0 : 1,
-          duration: editModeAnimationDuration,
+          duration: animationDuration,
+          curve: animationCurve,
           child: IconButton(
             icon: Icon(
               Icons.add,
@@ -128,7 +125,9 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
         AnimatedCrossFade(
           alignment: Alignment.center,
           crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          duration: editModeAnimationDuration,
+          duration: animationDuration,
+          firstCurve: animationCurve,
+          secondCurve: animationCurve,
           firstChild: IconButton(
             icon: Icon(
               Icons.edit_outlined,
@@ -150,19 +149,15 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
         ),
       ],
       child: StreamBuilder(
-        stream: exerciseDaysStream,
+        stream: trainingBlockStream,
         builder: (context, snapshot) {
-          final exerciseDays = snapshot.data;
+          final trainingBlock = snapshot.data;
 
-          if (exerciseDays == null) {
+          if (trainingBlock == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (exerciseDays.isEmpty) {
-            return const Center(child: EmptyPagePlaceholder());
-          }
-
-          return Matrix(exerciseDays: exerciseDays);
+          return Matrix(trainingBlock: trainingBlock);
         },
       ),
     );
@@ -170,9 +165,9 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
 }
 
 class Matrix extends StatefulWidget {
-  final List<ExerciseDayClient> exerciseDays;
+  final TrainingBlockClient trainingBlock;
 
-  const Matrix({Key? key, required this.exerciseDays}) : super(key: key);
+  const Matrix({Key? key, required this.trainingBlock}) : super(key: key);
 
   @override
   State<Matrix> createState() => _MatrixState();
@@ -184,9 +179,9 @@ class _MatrixState extends State<Matrix> {
     return CustomScrollView(slivers: <Widget>[
       SliverList(
         delegate: SliverChildBuilderDelegate(
-          childCount: widget.exerciseDays.length,
+          childCount: widget.trainingBlock.exerciseDays.length,
           (BuildContext context, int i) {
-            final exerciseDay = widget.exerciseDays[i];
+            final exerciseDay = widget.trainingBlock.exerciseDays[i];
 
             return Stack(
               children: [
@@ -200,6 +195,7 @@ class _MatrixState extends State<Matrix> {
                   alignment: Alignment.topLeft,
                   child: HorizontallyScrollableExerciseLabels(
                     exerciseDay: exerciseDay,
+                    trainingBlock: widget.trainingBlock,
                   ),
                 )
               ],

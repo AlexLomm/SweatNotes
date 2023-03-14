@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
 import 'package:journal_flutter/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -28,7 +29,7 @@ class TrainingBlocksService {
       throw Exception('User is not logged in');
     }
 
-    trainingBlocksRepository.addTrainingBlock(
+    trainingBlocksRepository.create(
       TrainingBlock(
         id: '',
         userId: userId,
@@ -36,6 +37,21 @@ class TrainingBlocksService {
         exerciseDaysOrdering: {},
       ),
     );
+  }
+
+  Future<void> moveExerciseDay({
+    required TrainingBlockClient trainingBlock,
+    required String exerciseDayId,
+    required int moveBy,
+  }) {
+    final trainingBlockServer = trainingBlock
+        .reorderExerciseDay(
+          exerciseDayId: exerciseDayId,
+          moveBy: moveBy,
+        )
+        .toTrainingBlock();
+
+    return trainingBlocksRepository.update(trainingBlockServer);
   }
 }
 

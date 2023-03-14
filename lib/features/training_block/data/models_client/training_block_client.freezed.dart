@@ -20,7 +20,7 @@ mixin _$TrainingBlockClient {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  Map<String, int> get exerciseDaysOrdering =>
+  List<ExerciseDayClient> get exerciseDays =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,7 +38,7 @@ abstract class $TrainingBlockClientCopyWith<$Res> {
       {@JsonKey(includeToJson: false) String id,
       String userId,
       String name,
-      Map<String, int> exerciseDaysOrdering});
+      List<ExerciseDayClient> exerciseDays});
 }
 
 /// @nodoc
@@ -57,7 +57,7 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
     Object? id = null,
     Object? userId = null,
     Object? name = null,
-    Object? exerciseDaysOrdering = null,
+    Object? exerciseDays = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -72,10 +72,10 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      exerciseDaysOrdering: null == exerciseDaysOrdering
-          ? _value.exerciseDaysOrdering
-          : exerciseDaysOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      exerciseDays: null == exerciseDays
+          ? _value.exerciseDays
+          : exerciseDays // ignore: cast_nullable_to_non_nullable
+              as List<ExerciseDayClient>,
     ) as $Val);
   }
 }
@@ -92,7 +92,7 @@ abstract class _$$_TrainingBlockClientCopyWith<$Res>
       {@JsonKey(includeToJson: false) String id,
       String userId,
       String name,
-      Map<String, int> exerciseDaysOrdering});
+      List<ExerciseDayClient> exerciseDays});
 }
 
 /// @nodoc
@@ -109,7 +109,7 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
     Object? id = null,
     Object? userId = null,
     Object? name = null,
-    Object? exerciseDaysOrdering = null,
+    Object? exerciseDays = null,
   }) {
     return _then(_$_TrainingBlockClient(
       id: null == id
@@ -124,25 +124,25 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      exerciseDaysOrdering: null == exerciseDaysOrdering
-          ? _value._exerciseDaysOrdering
-          : exerciseDaysOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      exerciseDays: null == exerciseDays
+          ? _value._exerciseDays
+          : exerciseDays // ignore: cast_nullable_to_non_nullable
+              as List<ExerciseDayClient>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_TrainingBlockClient
-    with DiagnosticableTreeMixin
-    implements _TrainingBlockClient {
+class _$_TrainingBlockClient extends _TrainingBlockClient
+    with DiagnosticableTreeMixin {
   const _$_TrainingBlockClient(
       {@JsonKey(includeToJson: false) required this.id,
       required this.userId,
       required this.name,
-      required final Map<String, int> exerciseDaysOrdering})
-      : _exerciseDaysOrdering = exerciseDaysOrdering;
+      required final List<ExerciseDayClient> exerciseDays})
+      : _exerciseDays = exerciseDays,
+        super._();
 
   @override
   @JsonKey(includeToJson: false)
@@ -151,18 +151,17 @@ class _$_TrainingBlockClient
   final String userId;
   @override
   final String name;
-  final Map<String, int> _exerciseDaysOrdering;
+  final List<ExerciseDayClient> _exerciseDays;
   @override
-  Map<String, int> get exerciseDaysOrdering {
-    if (_exerciseDaysOrdering is EqualUnmodifiableMapView)
-      return _exerciseDaysOrdering;
+  List<ExerciseDayClient> get exerciseDays {
+    if (_exerciseDays is EqualUnmodifiableListView) return _exerciseDays;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_exerciseDaysOrdering);
+    return EqualUnmodifiableListView(_exerciseDays);
   }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlockClient(id: $id, userId: $userId, name: $name, exerciseDaysOrdering: $exerciseDaysOrdering)';
+    return 'TrainingBlockClient(id: $id, userId: $userId, name: $name, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -173,7 +172,7 @@ class _$_TrainingBlockClient
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('exerciseDaysOrdering', exerciseDaysOrdering));
+      ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
 
   @override
@@ -185,12 +184,12 @@ class _$_TrainingBlockClient
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
-                .equals(other._exerciseDaysOrdering, _exerciseDaysOrdering));
+                .equals(other._exerciseDays, _exerciseDays));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, userId, name,
-      const DeepCollectionEquality().hash(_exerciseDaysOrdering));
+      const DeepCollectionEquality().hash(_exerciseDays));
 
   @JsonKey(ignore: true)
   @override
@@ -200,13 +199,14 @@ class _$_TrainingBlockClient
           this, _$identity);
 }
 
-abstract class _TrainingBlockClient implements TrainingBlockClient {
+abstract class _TrainingBlockClient extends TrainingBlockClient {
   const factory _TrainingBlockClient(
           {@JsonKey(includeToJson: false) required final String id,
           required final String userId,
           required final String name,
-          required final Map<String, int> exerciseDaysOrdering}) =
+          required final List<ExerciseDayClient> exerciseDays}) =
       _$_TrainingBlockClient;
+  const _TrainingBlockClient._() : super._();
 
   @override
   @JsonKey(includeToJson: false)
@@ -216,7 +216,7 @@ abstract class _TrainingBlockClient implements TrainingBlockClient {
   @override
   String get name;
   @override
-  Map<String, int> get exerciseDaysOrdering;
+  List<ExerciseDayClient> get exerciseDays;
   @override
   @JsonKey(ignore: true)
   _$$_TrainingBlockClientCopyWith<_$_TrainingBlockClient> get copyWith =>

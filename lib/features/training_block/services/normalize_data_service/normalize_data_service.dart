@@ -11,6 +11,7 @@ import '../../data/models/exercise_type.dart';
 import '../../data/models/training_block.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/exercise_set_client.dart';
+import '../../data/models_client/training_block_client.dart';
 import '../../data/training_blocks_repository.dart';
 import 'exercise_days_by_ids_exercise_types_by_ids_map.dart';
 import 'exercise_days_by_ids_map.dart';
@@ -30,9 +31,8 @@ class NormalizeDataService {
   List<ExerciseType>? _exerciseTypes;
   List<Exercise>? _exercises;
 
-  // TODO: rename and include training block
-  Stream<List<ExerciseDayClient>> get exerciseDays => _exerciseDaysClientController.stream;
-  late final StreamController<List<ExerciseDayClient>> _exerciseDaysClientController;
+  Stream<TrainingBlockClient?> get trainingBlock => _exerciseDaysClientController.stream;
+  late final StreamController<TrainingBlockClient?> _exerciseDaysClientController;
 
   NormalizeDataService({
     required this.trainingBlockId,
@@ -41,7 +41,7 @@ class NormalizeDataService {
     required this.exerciseTypesRepository,
     required this.exercisesRepository,
   }) {
-    _exerciseDaysClientController = StreamController<List<ExerciseDayClient>>(
+    _exerciseDaysClientController = StreamController<TrainingBlockClient?>(
       onListen: _recalculateState,
       // onCancel: () => _exerciseDaysClientController.close(),
     );
@@ -86,13 +86,15 @@ class NormalizeDataService {
     }
   }
 
-  List<ExerciseDayClient> getNormalizedData(String trainingBlockId) {
+  TrainingBlockClient? getNormalizedData(String trainingBlockId) {
     final trainingBlock = _trainingBlock;
     final exerciseDays = _exerciseDays;
     final exerciseTypes = _exerciseTypes;
     final exercises = _exercises;
 
-    if (trainingBlock == null || exerciseDays == null || exerciseTypes == null || exercises == null) return [];
+    if (trainingBlock == null || exerciseDays == null || exerciseTypes == null || exercises == null) {
+      return null;
+    }
 
     final exerciseDaysMap = ExerciseDaysByIdsMap(exerciseDays);
 
@@ -219,7 +221,12 @@ class NormalizeDataService {
       );
     }).toList();
 
-    return exerciseDaysWithProgress;
+    return TrainingBlockClient(
+      id: trainingBlock.id,
+      userId: trainingBlock.userId,
+      name: trainingBlock.name,
+      exerciseDays: exerciseDaysWithProgress,
+    );
   }
 }
 

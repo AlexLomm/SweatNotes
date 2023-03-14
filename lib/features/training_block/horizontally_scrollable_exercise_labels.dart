@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/features/training_block/services/training_blocks_service.dart';
+import 'package:journal_flutter/features/training_block/widgets/tappable_arrow.dart';
 
 import '../settings/edit_mode_switcher.dart';
 import '../training_block/data/models_client/exercise_day_client.dart';
@@ -12,6 +14,7 @@ import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/rounded_icon_button.dart';
 import '../../widgets/text_editor_single_line_and_wheel.dart';
 import 'constants.dart';
+import 'data/models_client/training_block_client.dart';
 import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
@@ -29,6 +32,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   static const widthExpanded = ExerciseTypeWidget.widthExpanded - rightInsetSize;
 
   final ExerciseDayClient exerciseDay;
+  final TrainingBlockClient trainingBlock;
 
   get isEmpty => exerciseDay.exerciseTypes.isEmpty;
 
@@ -43,6 +47,8 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   const HorizontallyScrollableExerciseLabels({
     Key? key,
     required this.exerciseDay,
+    // TODO: provide via riverpod
+    required this.trainingBlock,
   }) : super(key: key);
 
   @override
@@ -79,7 +85,10 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                             title: 'Edit exercise day',
                             child: _TextEditorSingleLineWrapper(exerciseDay: exerciseDay),
                           ).show(context),
-                          child: _ExerciseDayName(name: exerciseDay.name),
+                          child: _ExerciseDay(
+                            exerciseDay: exerciseDay,
+                            trainingBlock: trainingBlock,
+                          ),
                         ),
                       ),
                     ),
@@ -161,14 +170,29 @@ class _Background extends StatelessWidget {
   }
 }
 
-class _ExerciseDayName extends ConsumerWidget {
-  final String name;
+class _ExerciseDay extends ConsumerStatefulWidget {
+  final TrainingBlockClient trainingBlock;
+  final ExerciseDayClient exerciseDay;
 
-  const _ExerciseDayName({Key? key, required this.name}) : super(key: key);
+  const _ExerciseDay({
+    Key? key,
+    required this.trainingBlock,
+    required this.exerciseDay,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _ExerciseDayState();
+}
+
+class _ExerciseDayState extends ConsumerState<_ExerciseDay> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     final isEditMode = ref.watch(editModeSwitcherProvider);
+    final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay.id);
+    final isFirst = indexOfExerciseDay == 0;
+    final isLast = indexOfExerciseDay == widget.trainingBlock.exerciseDays.length - 1;
 
     return Align(
       alignment: Alignment.topLeft,
@@ -189,23 +213,15 @@ class _ExerciseDayName extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: ExerciseTypeWidget.dragHandleWidth,
-                        height: ExerciseTypeWidget.dragHandleWidth,
-                        color: Colors.white.withOpacity(0.0001),
-                        child: Transform.rotate(angle: pi / 2, child: const Icon(Icons.chevron_left)),
-                      ),
+                    TappableArrow(
+                      direction: TappableArrowDirection.up,
+                      isDisabled: isLoading || isFirst,
+                      onTap: () => _moveExerciseDayBy(-1),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: ExerciseTypeWidget.dragHandleWidth,
-                        height: ExerciseTypeWidget.dragHandleWidth,
-                        color: Colors.white.withOpacity(0.0001),
-                        child: Transform.rotate(angle: pi / 2, child: const Icon(Icons.chevron_right)),
-                      ),
+                    TappableArrow(
+                      direction: TappableArrowDirection.down,
+                      isDisabled: isLoading || isLast,
+                      onTap: () => _moveExerciseDayBy(1),
                     ),
                   ],
                 ),
@@ -223,7 +239,7 @@ class _ExerciseDayName extends ConsumerWidget {
                 ),
               ),
               child: AutoSizeText(
-                name,
+                widget.exerciseDay.name,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 minFontSize: Theme.of(context).textTheme.titleSmall!.fontSize!,
@@ -236,6 +252,25 @@ class _ExerciseDayName extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void _moveExerciseDayBy(int moveBy) async {
+    setState(() => isLoading = true);
+
+    final trainingBlocksService = ref.read(trainingBlocksServiceProvider);
+
+    try {
+      await trainingBlocksService.moveExerciseDay(
+        trainingBlock: widget.trainingBlock,
+        exerciseDayId: widget.exerciseDay.id,
+        moveBy: moveBy,
+      );
+    } catch (e) {
+      // ignore: avoid_print
+      print(e);
+    }
+
+    setState(() => isLoading = false);
   }
 }
 

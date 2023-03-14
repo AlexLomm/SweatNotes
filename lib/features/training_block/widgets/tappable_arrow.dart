@@ -36,15 +36,9 @@ class TappableArrow extends StatelessWidget {
           opacity: isDisabled ? 0.32 : 1.0,
           duration: animationDuration,
           curve: animationCurve,
-          child: Center(
-            // using SVGs instead of icons because the icons are
-            // shifted to the bottom when used with `Transform.rotate`
-            // and when their container's size becomes smaller
-            child: SvgPicture.asset(
-              direction == TappableArrowDirection.up ? 'assets/chevron-up.svg' : 'assets/chevron-down.svg',
-              width: 24.0,
-              height: 24.0,
-            ),
+          child: Icon(
+            direction == TappableArrowDirection.up ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ),

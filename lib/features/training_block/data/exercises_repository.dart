@@ -22,6 +22,10 @@ class ExercisesRepository {
         toFirestore: _toFirestore,
       );
 
+  DocumentReference<Exercise> getDocumentRefById(String id) {
+    return collectionRef.doc(id);
+  }
+
   Future<void> setExercise(ExerciseClient exerciseClient) {
     final exercise = exerciseClient.toExercise();
 

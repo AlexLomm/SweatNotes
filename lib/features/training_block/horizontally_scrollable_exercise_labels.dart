@@ -123,7 +123,10 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: _ExerciseTypesList(exerciseDay: exerciseDay),
+            child: _ExerciseTypesList(
+              exerciseDays: trainingBlock.exerciseDays,
+              exerciseDay: exerciseDay,
+            ),
           ),
         ],
       ),
@@ -336,9 +339,14 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
 }
 
 class _ExerciseTypesList extends ConsumerStatefulWidget {
+  final List<ExerciseDayClient> exerciseDays;
   final ExerciseDayClient exerciseDay;
 
-  const _ExerciseTypesList({Key? key, required this.exerciseDay}) : super(key: key);
+  const _ExerciseTypesList({
+    Key? key,
+    required this.exerciseDays,
+    required this.exerciseDay,
+  }) : super(key: key);
 
   @override
   ConsumerState createState() => _ExerciseTypesListState();
@@ -399,7 +407,7 @@ class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
 
             // optimistically update the UI
             setState(() {
-              _exerciseDayClientCached = exerciseDaysService.getReorderExerciseTypeInTheSameDay(
+              _exerciseDayClientCached = exerciseDaysService.getExerciseDayWithReorderedExerciseType(
                 exerciseDay: _exerciseDayClientCached,
                 oldIndex: oldIndex,
                 newIndex: newIndex,
@@ -425,6 +433,7 @@ class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
                   data: Theme.of(context),
                   child: ExerciseTypeWidget(
                     index: entry.key,
+                    exerciseDays: widget.exerciseDays,
                     exerciseType: entry.value,
                   ),
                 ),

@@ -10,6 +10,8 @@ part 'exercise_day_client.freezed.dart';
 class ExerciseDayClient with _$ExerciseDayClient {
   const ExerciseDayClient._();
 
+  Map<String, int> get _exerciseTypesNewOrdering => exerciseTypes.asMap().map((key, value) => MapEntry(value.id, key));
+
   const factory ExerciseDayClient({
     required String id,
     required String name,
@@ -24,6 +26,6 @@ class ExerciseDayClient with _$ExerciseDayClient {
         name: name,
         userId: userId,
         trainingBlockId: trainingBlockId,
-        exerciseTypesOrdering: exerciseTypesOrdering,
+        exerciseTypesOrdering: _exerciseTypesNewOrdering,
       );
 }

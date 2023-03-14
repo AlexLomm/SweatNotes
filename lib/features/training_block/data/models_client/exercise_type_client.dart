@@ -10,6 +10,15 @@ part 'exercise_type_client.freezed.dart';
 class ExerciseTypeClient with _$ExerciseTypeClient {
   const ExerciseTypeClient._();
 
+  List<ExerciseClient> get exercisesWithoutFillers {
+    final exercisesWithoutFillerSets = exercises
+        .where((exercise) => !exercise.isFiller)
+        .map((exercise) => exercise.copyWith(exerciseSets: exercise.setsWithNoTrailingFillers))
+        .toList();
+
+    return exercisesWithoutFillerSets;
+  }
+
   const factory ExerciseTypeClient({
     required String id,
     required String userId,

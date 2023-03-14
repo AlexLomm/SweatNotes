@@ -49,7 +49,7 @@ class ExerciseClient with _$ExerciseClient {
       exerciseTypeId: exerciseTypeId,
       trainingBlockId: trainingBlockId,
       placement: placement,
-      sets: _setsWithNoTrailingFillers
+      sets: setsWithNoTrailingFillers
           .map<ExerciseSet>(
             (ExerciseSetClient set) => set.toExerciseSet(),
           )
@@ -68,7 +68,7 @@ class ExerciseClient with _$ExerciseClient {
   /// ├───┼───┼───┼───┼───┤
   /// │ x │ x │   │ x │   │
   /// └───┴───┴───┴───┴───┘
-  get _setsWithNoTrailingFillers {
+  get setsWithNoTrailingFillers {
     final i = exerciseSets.lastIndexWhere((set) => !set.isFiller);
 
     final setsUpToLastPopulatedOne = exerciseSets.sublist(0, i + 1).toList();

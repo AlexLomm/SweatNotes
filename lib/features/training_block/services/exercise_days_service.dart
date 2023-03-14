@@ -46,8 +46,64 @@ class ExerciseDaysService {
     return exerciseDaysRepository.update(exerciseDay.toExerciseDay());
   }
 
+  Future<void> moveExerciseTypeIntoAnotherExerciseDay({
+    required List<ExerciseDayClient> exerciseDays,
+    required ExerciseDayClient newExerciseDay,
+    required String exerciseTypeId,
+  }) async {
+    final updatedExerciseDays = getExerciseDaysWithReorderedExerciseType(
+      exerciseDays: exerciseDays,
+      newExerciseDay: newExerciseDay,
+      exerciseTypeId: exerciseTypeId,
+    );
+
+    final updatedOldExerciseDay = updatedExerciseDays[0];
+    final updatedNewExerciseDay = updatedExerciseDays[1];
+    final updatedExercises = updatedNewExerciseDay
+        //
+        .exerciseTypes
+        .firstWhere((e) => e.id == exerciseTypeId)
+        .exercisesWithoutFillers;
+
+    return exerciseDaysRepository.moveExerciseTypeIntoAnotherExerciseDay(
+      oldExerciseDay: updatedOldExerciseDay.toExerciseDay(),
+      newExerciseDay: updatedNewExerciseDay.toExerciseDay(),
+      exercises: updatedExercises.map((e) => e.toExercise()).toList(),
+    );
+  }
+
+  List<ExerciseDayClient> getExerciseDaysWithReorderedExerciseType({
+    required List<ExerciseDayClient> exerciseDays,
+    required ExerciseDayClient newExerciseDay,
+    required String exerciseTypeId,
+  }) {
+    final oldExerciseDay = exerciseDays.firstWhere(
+      (exerciseDay) => exerciseDay.exerciseTypes.map((e) => e.id).contains(exerciseTypeId),
+    );
+
+    final i = oldExerciseDay.exerciseTypes.indexWhere((e) => e.id == exerciseTypeId);
+
+    final exerciseType = oldExerciseDay.exerciseTypes[i].copyWith(
+      exercises: oldExerciseDay.exerciseTypes[i].exercises
+          .map(
+            (e) => e.copyWith(exerciseDayId: newExerciseDay.id),
+          )
+          .toList(),
+    );
+
+    final oldExerciseDayWithExerciseTypeRemoved = oldExerciseDay.copyWith(
+      exerciseTypes: [...oldExerciseDay.exerciseTypes]..removeAt(i),
+    );
+
+    final newExerciseDayWithExerciseTypeAdded = newExerciseDay.copyWith(
+      exerciseTypes: [...newExerciseDay.exerciseTypes]..insert(0, exerciseType),
+    );
+
+    return [oldExerciseDayWithExerciseTypeRemoved, newExerciseDayWithExerciseTypeAdded];
+  }
+
   // TODO: move this into the ExerciseDayClient class
-  ExerciseDayClient getReorderExerciseTypeInTheSameDay({
+  ExerciseDayClient getExerciseDayWithReorderedExerciseType({
     required ExerciseDayClient exerciseDay,
     required int oldIndex,
     required int newIndex,
@@ -91,10 +147,7 @@ class ExerciseDaysService {
 
     newExerciseTypes.sort((a, b) => reorderedNewOrderingMap[a.id]!.compareTo(reorderedNewOrderingMap[b.id]!));
 
-    return exerciseDay.copyWith(
-      exerciseTypesOrdering: reorderedNewOrderingMap,
-      exerciseTypes: newExerciseTypes,
-    );
+    return exerciseDay.copyWith(exerciseTypes: newExerciseTypes);
   }
 }
 

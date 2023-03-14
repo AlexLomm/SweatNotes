@@ -8,17 +8,18 @@ import '../settings/edit_mode_switcher.dart';
 import '../training_block/services/exercise_types_service.dart';
 import 'constants.dart';
 import 'data/models_client/exercise_type_client.dart';
+import 'widgets/drag_handle.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
   static const width = 144.0;
   static const height = 80.0;
-  static const dragHandleWidth = 24.0;
-  static const dragHandleAndLabelSpacing = 8.0;
-  static const labelWidth = width - dragHandleWidth - dragHandleAndLabelSpacing;
+  static const paddingLeft = 8.0;
+
+  static const labelWidth = width - paddingLeft;
 
   static const widthExpanded = 192.0;
   static const dragHandleWidthExpanded = 48.0;
-  static const labelWidthExpanded = widthExpanded - dragHandleWidthExpanded - dragHandleAndLabelSpacing;
+  static const labelWidthExpanded = widthExpanded - dragHandleWidthExpanded - paddingLeft;
 
   final int index;
   final ExerciseTypeClient exerciseType;
@@ -45,16 +46,21 @@ class ExerciseTypeWidget extends ConsumerWidget {
       child: AnimatedContainer(
         duration: animationDuration,
         curve: animationCurve,
+        padding: EdgeInsets.only(left: isEditMode ? 0 : paddingLeft),
         width: isEditMode ? widthExpanded : width,
         height: height,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ReorderableDragStartListener(
-              index: index,
-              child: _DragHandle(
-                width: isEditMode ? dragHandleWidthExpanded : dragHandleWidth,
-                spacingRight: dragHandleAndLabelSpacing,
+            AnimatedOpacity(
+              duration: animationDuration,
+              curve: animationCurve,
+              opacity: isEditMode ? 1 : 0,
+              child: ReorderableDragStartListener(
+                index: index,
+                child: DragHandle(
+                  width: isEditMode ? dragHandleWidthExpanded : 0,
+                ),
               ),
             ),
             IgnorePointer(
@@ -67,7 +73,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
                 ).show(context),
                 child: _ExerciseTypeName(
-                  width: labelWidth,
+                  width: isEditMode ? labelWidthExpanded : labelWidth,
                   name: exerciseType.name,
                 ),
               ),
@@ -106,35 +112,6 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
 
         Navigator.of(context).pop();
       },
-    );
-  }
-}
-
-class _DragHandle extends StatelessWidget {
-  final double width;
-  final double spacingRight;
-
-  const _DragHandle({
-    Key? key,
-    required this.width,
-    required this.spacingRight,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: animationDuration,
-      curve: animationCurve,
-      height: double.infinity,
-      width: width + spacingRight,
-      padding: EdgeInsets.only(right: spacingRight),
-      // this color is needed in order for the entire Container to
-      // be tappable. Otherwise, the tap area is only the icon
-      color: Colors.white.withOpacity(0.0001),
-      child: Icon(
-        Icons.drag_indicator,
-        color: Theme.of(context).colorScheme.outline,
-      ),
     );
   }
 }

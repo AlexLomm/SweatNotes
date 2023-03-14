@@ -47,7 +47,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   const HorizontallyScrollableExerciseLabels({
     Key? key,
     required this.exerciseDay,
-    // TODO: provide via riverpod
+    // TODO: provide via riverpod?
     required this.trainingBlock,
   }) : super(key: key);
 
@@ -196,8 +196,11 @@ class _ExerciseDayState extends ConsumerState<_ExerciseDay> {
 
     return Align(
       alignment: Alignment.topLeft,
-      child: SizedBox(
+      child: AnimatedContainer(
         height: 56.0,
+        duration: animationDuration,
+        curve: animationCurve,
+        padding: EdgeInsets.only(left: isEditMode ? 0 : ExerciseTypeWidget.paddingLeft),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -209,7 +212,7 @@ class _ExerciseDayState extends ConsumerState<_ExerciseDay> {
                 duration: animationDuration,
                 curve: animationCurve,
                 padding: const EdgeInsets.only(top: 4.0),
-                width: isEditMode ? ExerciseTypeWidget.dragHandleWidthExpanded : ExerciseTypeWidget.dragHandleWidth,
+                width: isEditMode ? ExerciseTypeWidget.dragHandleWidthExpanded : 0.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

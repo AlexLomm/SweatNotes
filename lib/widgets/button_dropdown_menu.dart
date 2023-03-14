@@ -13,10 +13,13 @@ class ButtonDropdownMenuItem {
 }
 
 class ButtonDropdownMenu extends StatefulWidget {
+  static const double menuWidth = 200;
+
   final IconData icon;
   final List<ButtonDropdownMenuItem> items;
   final Duration animationDuration;
   final Curve animationCurve;
+  final Function(ButtonDropdownMenuItem)? onSelect;
 
   const ButtonDropdownMenu({
     Key? key,
@@ -24,6 +27,7 @@ class ButtonDropdownMenu extends StatefulWidget {
     required this.items,
     required this.animationDuration,
     required this.animationCurve,
+    this.onSelect,
   }) : super(key: key);
 
   @override
@@ -138,8 +142,8 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
       builder: (context) {
         return Positioned(
           top: _buttonPosition.dy + _buttonSize.height,
-          left: _buttonPosition.dx + _buttonSize.width - 200.0 - 8.0,
-          width: 200.0,
+          left: _buttonPosition.dx + _buttonSize.width - ButtonDropdownMenu.menuWidth - 8.0,
+          width: ButtonDropdownMenu.menuWidth,
           child: AnimatedBuilder(
             animation: _animationController,
             builder: (context, child) {
@@ -159,6 +163,7 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
                         return MaterialButton(
                           onPressed: () {
                             item.onTap?.call();
+                            widget.onSelect?.call(item);
 
                             _closeMenu();
                           },

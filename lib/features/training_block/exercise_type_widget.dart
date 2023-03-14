@@ -11,15 +11,17 @@ import 'data/models_client/exercise_type_client.dart';
 import 'widgets/drag_handle.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
-  static const width = 144.0;
   static const height = 80.0;
+
+  static const width = 128.0;
+  static const dragHandleWidth = 0.0;
   static const paddingLeft = 8.0;
+  static const labelWidth = width - dragHandleWidth - paddingLeft;
 
-  static const labelWidth = width - paddingLeft;
-
-  static const widthExpanded = 192.0;
+  static const widthExpanded = 168.0;
   static const dragHandleWidthExpanded = 48.0;
-  static const labelWidthExpanded = widthExpanded - dragHandleWidthExpanded - paddingLeft;
+  static const paddingLeftExpanded = 0.0;
+  static const labelWidthExpanded = widthExpanded - dragHandleWidthExpanded - paddingLeftExpanded;
 
   final int index;
   final ExerciseTypeClient exerciseType;
@@ -46,7 +48,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
       child: AnimatedContainer(
         duration: animationDuration,
         curve: animationCurve,
-        padding: EdgeInsets.only(left: isEditMode ? 0 : paddingLeft),
+        padding: EdgeInsets.only(left: isEditMode ? paddingLeftExpanded : paddingLeft),
         width: isEditMode ? widthExpanded : width,
         height: height,
         child: Row(
@@ -59,7 +61,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
               child: ReorderableDragStartListener(
                 index: index,
                 child: DragHandle(
-                  width: isEditMode ? dragHandleWidthExpanded : 0,
+                  width: isEditMode ? dragHandleWidthExpanded : dragHandleWidth,
                 ),
               ),
             ),
@@ -130,31 +132,34 @@ class _ExerciseTypeName extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    return Container(
-      padding: const EdgeInsets.only(right: 8.0),
-      width: width,
-      height: double.infinity,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: AnimatedContainer(
-          duration: animationDuration,
-          curve: animationCurve,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
-                width: 1,
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.only(right: 8.0),
+        width: width,
+        height: double.infinity,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: AnimatedContainer(
+            duration: animationDuration,
+            curve: animationCurve,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                  width: 1,
+                ),
               ),
             ),
-          ),
-          child: AutoSizeText(
-            name,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
-            style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+            child: AutoSizeText(
+              name,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
+              style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
           ),
         ),
       ),

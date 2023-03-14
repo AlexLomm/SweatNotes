@@ -20,7 +20,7 @@ import 'services/exercise_days_service.dart';
 
 class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   static const borderRadius = 8.0;
-  static const rightInsetSize = 24.0;
+  static const rightInsetSize = 18.0;
   static const width = ExerciseTypeWidget.width - rightInsetSize;
   static const titleHeight = 56.0;
   static const spacingBetweenItems = 8.0;

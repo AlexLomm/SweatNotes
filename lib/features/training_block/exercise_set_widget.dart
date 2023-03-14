@@ -18,7 +18,7 @@ const progressColors = <int, Color>{
 };
 
 class ExerciseSetWidget extends StatelessWidget {
-  static const width = 75.0;
+  static const width = 64.0;
   static const borderRadius = Radius.circular(8);
 
   final bool isSingle;

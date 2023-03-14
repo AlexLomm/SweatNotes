@@ -13,7 +13,7 @@ class ButtonDropdownMenuItem {
 }
 
 class ButtonDropdownMenu extends StatefulWidget {
-  static const double menuWidth = 200;
+  static const double menuWidth = 200.0;
 
   final IconData icon;
   final List<ButtonDropdownMenuItem> items;
@@ -38,12 +38,20 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
   late GlobalKey _key;
   late Offset _buttonPosition;
   late Size _buttonSize;
-  late OverlayEntry _menuOverlayEntry;
-  late OverlayEntry _backdropOverlayEntry;
+  OverlayEntry? _menuOverlayEntry;
+  OverlayEntry? _backdropOverlayEntry;
   late AnimationController _animationController;
   late Animation<double> _opacityAnimation;
 
-  bool _isMenuOpen = false;
+  get isCompletedOrAnimatingForward =>
+      _animationController.status == AnimationStatus.completed ||
+      _animationController.status == AnimationStatus.forward;
+
+  get isDismissedOrAnimatingReverse =>
+      _animationController.status == AnimationStatus.dismissed ||
+      _animationController.status == AnimationStatus.reverse;
+
+  get isDismissed => _animationController.status == AnimationStatus.dismissed;
 
   @override
   void initState() {
@@ -53,9 +61,12 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
       vsync: this,
       duration: widget.animationDuration,
     )..addStatusListener((status) {
-        // finish the animation and remove the menu overlay
-        if (status == AnimationStatus.dismissed && _menuOverlayEntry.mounted) {
-          _menuOverlayEntry.remove();
+        if (status == AnimationStatus.dismissed) {
+          _menuOverlayEntry?.remove();
+          _menuOverlayEntry = null;
+
+          _backdropOverlayEntry?.remove();
+          _backdropOverlayEntry = null;
         }
       });
 
@@ -75,48 +86,50 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
     super.dispose();
   }
 
-  void _updateButtonData() {
-    final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
-    _buttonSize = renderBox.size;
-    _buttonPosition = renderBox.localToGlobal(Offset.zero);
-  }
-
   void _closeMenu() {
-    // remove the backdrop overlay immediately
-    if (_backdropOverlayEntry.mounted) _backdropOverlayEntry.remove();
-    _animationController.reverse();
+    if (isDismissedOrAnimatingReverse) return;
 
-    _isMenuOpen = false;
+    _animationController.reverse();
   }
 
   void _openMenu() {
-    _updateButtonData();
+    if (isCompletedOrAnimatingForward) return;
 
-    _backdropOverlayEntry = _backdropOverlayEntryBuilder();
-    _menuOverlayEntry = _overlayEntryBuilder();
+    final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
 
-    Overlay.of(context).insert(_backdropOverlayEntry);
-    Overlay.of(context).insert(_menuOverlayEntry);
+    _buttonSize = renderBox.size;
+    _buttonPosition = renderBox.localToGlobal(Offset.zero);
 
-    _isMenuOpen = true;
+    if (_menuOverlayEntry == null && _backdropOverlayEntry == null) {
+      final backdropOverlayEntry = _backdropOverlayEntryBuilder();
+      final menuOverlayEntry = _menuOverlayEntryBuilder();
+
+      _backdropOverlayEntry = backdropOverlayEntry;
+      _menuOverlayEntry = menuOverlayEntry;
+
+      Overlay.of(context).insert(backdropOverlayEntry);
+      Overlay.of(context).insert(menuOverlayEntry);
+    }
 
     _animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      key: _key,
-      child: IconButton(
-        icon: Icon(widget.icon),
-        color: Theme.of(context).colorScheme.onSurface,
-        onPressed: () {
-          if (_isMenuOpen) {
-            _closeMenu();
-          } else {
-            _openMenu();
-          }
-        },
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) => Container(
+        key: _key,
+        child: IconButton(
+          icon: Icon(widget.icon),
+          color: Theme.of(context).colorScheme.onSurface,
+          onPressed: () {
+            // only handle opening the menu, closing is handled by the backdrop.
+            // Also, `isDismissed` check is needed to cover an edge case when
+            // the button is clicked through the backdrop
+            if (isDismissed) _openMenu();
+          },
+        ),
       ),
     );
   }
@@ -134,7 +147,7 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
     );
   }
 
-  OverlayEntry _overlayEntryBuilder() {
+  OverlayEntry _menuOverlayEntryBuilder() {
     return OverlayEntry(
       builder: (context) {
         return Positioned(
@@ -148,6 +161,7 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
                 opacity: _opacityAnimation.value,
                 child: Material(
                   elevation: 2,
+                  surfaceTintColor: Theme.of(context).colorScheme.primary,
                   color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(4.0),
                   child: Container(
@@ -165,12 +179,9 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
                             _closeMenu();
                           },
                           child: SizedBox(
-                            width: 200.0,
+                            width: ButtonDropdownMenu.menuWidth,
                             height: 40.0,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: item.child,
-                            ),
+                            child: Align(alignment: Alignment.centerLeft, child: item.child),
                           ),
                         );
                       }).toList(),

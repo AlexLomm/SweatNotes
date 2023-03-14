@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-class DragHandle extends StatelessWidget {
-  final double width;
+class ExerciseDayIconWrapper extends StatelessWidget {
+  final IconData icon;
+  final double? width;
 
-  const DragHandle({
+  const ExerciseDayIconWrapper({
     Key? key,
-    required this.width,
+    required this.icon,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class DragHandle extends StatelessWidget {
       // be tappable. Otherwise, the tap area is only the icon
       color: Colors.white.withOpacity(0.0001),
       child: Icon(
-        Icons.drag_indicator,
+        icon,
         color: Theme.of(context).colorScheme.outline,
       ),
     );

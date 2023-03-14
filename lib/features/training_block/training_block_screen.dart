@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
 import '../../shared_preferences.dart';
+import '../../widgets/button_dropdown_menu.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
@@ -88,6 +89,13 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
+    final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        );
+    final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+        );
+
     return Layout(
       isScrollable: false,
       onGoBackButtonTap: () => context.go('/'),
@@ -122,20 +130,55 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
                     ).show(context),
           ),
         ),
-        AnimatedCrossFade(
-          alignment: Alignment.center,
-          crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        AnimatedOpacity(
+          opacity: isEditMode ? 0 : 1,
           duration: animationDuration,
-          firstCurve: animationCurve,
-          secondCurve: animationCurve,
-          firstChild: IconButton(
+          curve: animationCurve,
+          child: IconButton(
             icon: Icon(
               Icons.edit_outlined,
               color: Theme.of(context).colorScheme.onSurface,
             ),
             tooltip: 'Turn on edit mode',
             splashRadius: 20,
-            onPressed: () => editModeSwitcher.toggle(),
+            onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+          ),
+        ),
+        AnimatedCrossFade(
+          alignment: Alignment.center,
+          crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          duration: animationDuration,
+          firstCurve: animationCurve,
+          secondCurve: animationCurve,
+          firstChild: ButtonDropdownMenu(
+            icon: Icons.more_vert,
+            animationDuration: animationDuration,
+            animationCurve: animationCurve,
+            items: [
+              ButtonDropdownMenuItem(
+                id: 'view-archived-items',
+                child: Text('View archived items', style: menuItemTheme),
+              ),
+              ButtonDropdownMenuItem(
+                id: 'compact-mode',
+                child: RichText(
+                  softWrap: false,
+                  text: TextSpan(
+                    text: 'Compact mode',
+                    style: menuItemTheme,
+                    children: [
+                      WidgetSpan(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 24.0),
+                          padding: const EdgeInsets.only(bottom: 1.0),
+                          child: Text('Off', style: menuItemSubTextTheme),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
           secondChild: IconButton(
             icon: Icon(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../constants.dart';
-import '../exercise_type_widget.dart';
 
 enum TappableArrowDirection {
   up,
@@ -30,7 +28,7 @@ class TappableArrow extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
         height: 24.0,
-        width: ExerciseTypeWidget.dragHandleWidthExpanded,
+        width: etDragHandleWidthExpanded,
         color: Colors.white.withOpacity(0.0001),
         child: AnimatedOpacity(
           opacity: isDisabled ? 0.32 : 1.0,

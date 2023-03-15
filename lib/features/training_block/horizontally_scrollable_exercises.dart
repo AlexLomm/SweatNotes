@@ -4,24 +4,11 @@ import 'package:journal_flutter/features/settings/edit_mode_switcher.dart';
 
 import 'constants.dart';
 import 'data/models_client/exercise_day_client.dart';
-import 'horizontally_scrollable_exercise_labels.dart';
-import 'exercise_type_widget.dart';
 import 'exercise_widget.dart';
 import 'services/exercises_service.dart';
 
 class HorizontallyScrollableExercises extends ConsumerWidget {
-  static const double scrollInwardsDepth = 16.0;
-  static const double marginTop = HorizontallyScrollableExerciseLabels.titleHeight;
-  static const double marginLeft = ExerciseTypeWidget.width - scrollInwardsDepth + 8.0;
-
-  static const marginBottomNotLast = HorizontallyScrollableExerciseLabels.spacingBetweenItems;
-  static const marginBottomLast = marginBottomNotLast +
-      HorizontallyScrollableExerciseLabels.titleHeight +
-      HorizontallyScrollableExerciseLabels.additionalBottomSpaceHeight +
-      HorizontallyScrollableExerciseLabels.spaceForExerciseTypeButton +
-      HorizontallyScrollableExerciseLabels.marginBottom;
-
-  static const spacingBetweenExercises = 16.0;
+  static const exercisesScrollContainerSpacingBetweenExercises = 16.0;
 
   final ExerciseDayClient exerciseDay;
 
@@ -39,10 +26,10 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
 
     final exerciseTypesCount = exerciseTypes.length;
 
-    final exercisesHeight = ExerciseTypeWidget.height * exerciseTypesCount +
-        HorizontallyScrollableExercises.marginBottomNotLast * (exerciseTypesCount - 1);
+    final exercisesHeight = etHeight * exerciseTypesCount +
+        escMarginBottomNotLast * (exerciseTypesCount - 1);
 
-    final height = exercisesHeight + HorizontallyScrollableExercises.marginBottomLast;
+    final height = exercisesHeight + escMarginBottomLast;
 
     int numberOfExercisesPerExerciseType = 0;
     if (exerciseTypes.isNotEmpty && exerciseTypes.first.exercises.isNotEmpty) {
@@ -58,12 +45,12 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
         child: Container(
           height: height,
           margin: const EdgeInsets.only(
-            left: HorizontallyScrollableExercises.marginLeft,
+            left: escMarginLeft,
           ),
           child: ListView.builder(
             padding: const EdgeInsets.only(
-              right: HorizontallyScrollableExercises.spacingBetweenExercises,
-              left: HorizontallyScrollableExercises.scrollInwardsDepth,
+              right: exercisesScrollContainerSpacingBetweenExercises,
+              left: escInwardsDepth,
             ),
             itemCount: numberOfExercisesPerExerciseType + 1,
             scrollDirection: Axis.horizontal,
@@ -81,11 +68,11 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
                           width: 48,
                           height: exercisesHeight,
                           margin: const EdgeInsets.only(
-                            top: HorizontallyScrollableExercises.marginTop,
+                            top: escMarginTop,
                           ),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondaryContainer,
-                            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius: const BorderRadius.all(Radius.circular(borderRadius)),
                           ),
                           child: Icon(
                             Icons.add,
@@ -98,15 +85,15 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
                       alignment: Alignment.topLeft,
                       child: Container(
                         margin: const EdgeInsets.only(
-                          top: HorizontallyScrollableExercises.marginTop,
+                          top: escMarginTop,
                         ),
                         child: Column(
                           children: [
                             for (var verticalIndex = 0; verticalIndex < exerciseTypesCount; verticalIndex++)
                               Container(
                                 margin: const EdgeInsets.only(
-                                  right: HorizontallyScrollableExercises.spacingBetweenExercises,
-                                  bottom: HorizontallyScrollableExercises.marginBottomNotLast,
+                                  right: exercisesScrollContainerSpacingBetweenExercises,
+                                  bottom: escMarginBottomNotLast,
                                 ),
                                 child: ExerciseWidget(
                                   exercise: exerciseTypes[verticalIndex].exercises[j],

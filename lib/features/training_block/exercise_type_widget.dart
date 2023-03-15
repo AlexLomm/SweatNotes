@@ -14,21 +14,6 @@ import 'services/exercise_days_service.dart';
 import 'widgets/exercise_day_icon_wrapper.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
-  static const height = 80.0;
-
-  static const width = 128.0;
-  static const dragHandleWidth = 0.0;
-  static const dropdownWidth = 0.0;
-  static const paddingLeft = 8.0;
-  static const labelWidth = width - dragHandleWidth - paddingLeft;
-
-  static const widthExpanded = 216.0;
-  static const dragHandleWidthExpanded = 48.0;
-  static const dropdownWidthExpanded = 48.0;
-  static const paddingLeftExpanded = 0.0;
-  static const labelWidthExpanded =
-      widthExpanded - dragHandleWidthExpanded - dropdownWidthExpanded - paddingLeftExpanded;
-
   final int index;
   final List<ExerciseDayClient> exerciseDays;
   final ExerciseTypeClient exerciseType;
@@ -63,9 +48,9 @@ class ExerciseTypeWidget extends ConsumerWidget {
       child: AnimatedContainer(
         duration: animationDuration,
         curve: animationCurve,
-        padding: EdgeInsets.only(left: isEditMode ? paddingLeftExpanded : paddingLeft),
-        width: isEditMode ? widthExpanded : width,
-        height: height,
+        padding: EdgeInsets.only(left: isEditMode ? etPaddingLeftExpanded : etPaddingLeft),
+        width: isEditMode ? etWidthExpanded : etWidth,
+        height: etHeight,
         child: Stack(
           children: [
             Align(
@@ -78,7 +63,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   index: index,
                   child: ExerciseDayIconWrapper(
                     icon: Icons.drag_indicator,
-                    width: isEditMode ? dragHandleWidthExpanded : dragHandleWidth,
+                    width: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth,
                   ),
                 ),
               ),
@@ -88,7 +73,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
               child: AnimatedContainer(
                 duration: animationDuration,
                 curve: animationCurve,
-                margin: EdgeInsets.only(left: isEditMode ? dragHandleWidthExpanded : dragHandleWidth),
+                margin: EdgeInsets.only(left: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth),
                 child: IgnorePointer(
                   ignoring: !isEditMode,
                   child: GestureDetector(
@@ -99,7 +84,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                       child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
                     ).show(context),
                     child: _ExerciseTypeName(
-                      width: isEditMode ? labelWidthExpanded : labelWidth,
+                      width: isEditMode ? etLabelWidthExpanded : etLabelWidth,
                       name: exerciseType.name,
                     ),
                   ),

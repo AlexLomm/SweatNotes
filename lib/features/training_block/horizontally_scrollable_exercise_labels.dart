@@ -19,18 +19,6 @@ import 'exercise_type_widget.dart';
 import 'services/exercise_days_service.dart';
 
 class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
-  static const borderRadius = 8.0;
-  static const rightInsetSize = 18.0;
-  static const width = ExerciseTypeWidget.width - rightInsetSize;
-  static const titleHeight = 56.0;
-  static const spacingBetweenItems = 8.0;
-  static const additionalBottomSpaceHeight = 28.0 - spacingBetweenItems;
-  static const addExerciseTypeButtonSize = 40.0;
-  static const spaceForExerciseTypeButton = addExerciseTypeButtonSize / 2;
-  static const marginBottom = 44.0;
-
-  static const widthExpanded = ExerciseTypeWidget.widthExpanded - rightInsetSize;
-
   final ExerciseDayClient exerciseDay;
   final TrainingBlockClient trainingBlock;
 
@@ -39,9 +27,9 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   get height {
     final exerciseDaysCount = max(1, exerciseDay.exerciseTypes.length);
 
-    return titleHeight +
-        exerciseDaysCount * (ExerciseTypeWidget.height + spacingBetweenItems) +
-        additionalBottomSpaceHeight;
+    return elscTitleHeight +
+        exerciseDaysCount * (etHeight + elscSpacingBetweenItems) +
+        elscAdditionalBottomSpaceHeight;
   }
 
   const HorizontallyScrollableExerciseLabels({
@@ -57,7 +45,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
 
     return Container(
       margin: const EdgeInsets.only(
-        bottom: marginBottom,
+        bottom: elscMarginBottom,
       ),
       child: Stack(
         children: [
@@ -66,15 +54,16 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
             child: AnimatedContainer(
               duration: animationDuration,
               curve: animationCurve,
-              width: isEditMode ? widthExpanded : width,
+              width: isEditMode ? elscWidthExpanded : elscWidth,
               // add enough space for the add exercise type button's half size to fit
-              height: height + spaceForExerciseTypeButton,
+              height: height + elscSpaceForExerciseTypeButton,
               child: Stack(
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
                     child: _Background(
-                      width: isEditMode ? widthExpanded : width,
+                      width:
+                          isEditMode ? elscWidthExpanded : elscWidth,
                       height: height,
                       borderRadius: borderRadius,
                       child: IgnorePointer(
@@ -104,7 +93,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                       duration: animationDuration,
                       curve: animationCurve,
                       child: RoundedIconButton(
-                        size: addExerciseTypeButtonSize,
+                        size: elscAddExerciseTypeButtonSize,
                         onPressed: isEditMode
                             ? null
                             : () => CustomBottomSheet(
@@ -203,7 +192,7 @@ class _ExerciseDayState extends ConsumerState<_ExerciseDay> {
         height: 56.0,
         duration: animationDuration,
         curve: animationCurve,
-        padding: EdgeInsets.only(left: isEditMode ? 0 : ExerciseTypeWidget.paddingLeft),
+        padding: EdgeInsets.only(left: isEditMode ? 0 : etPaddingLeft),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -215,7 +204,7 @@ class _ExerciseDayState extends ConsumerState<_ExerciseDay> {
                 duration: animationDuration,
                 curve: animationCurve,
                 padding: const EdgeInsets.only(top: 4.0),
-                width: isEditMode ? ExerciseTypeWidget.dragHandleWidthExpanded : 0.0,
+                width: isEditMode ? etDragHandleWidthExpanded : 0.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -381,9 +370,9 @@ class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
     return AnimatedContainer(
       duration: animationDuration,
       curve: animationCurve,
-      margin: const EdgeInsets.only(top: HorizontallyScrollableExerciseLabels.titleHeight),
-      width: isEditMode ? ExerciseTypeWidget.widthExpanded : ExerciseTypeWidget.width,
-      height: (ExerciseTypeWidget.height + HorizontallyScrollableExerciseLabels.spacingBetweenItems) *
+      margin: const EdgeInsets.only(top: elscTitleHeight),
+      width: isEditMode ? etWidthExpanded : etWidth,
+      height: (etHeight + elscSpacingBetweenItems) *
           _exerciseDayClientCached.exerciseTypes.length,
       child: Theme(
         // this is needed to remove the bottom margin when reordering the items
@@ -426,7 +415,7 @@ class _ExerciseTypesListState extends ConsumerState<_ExerciseTypesList> {
               Container(
                 key: Key(entry.value.id),
                 margin: const EdgeInsets.only(
-                  bottom: HorizontallyScrollableExerciseLabels.spacingBetweenItems,
+                  bottom: elscSpacingBetweenItems,
                 ),
                 child: Theme(
                   // this is needed to re-enable the canceled theming above

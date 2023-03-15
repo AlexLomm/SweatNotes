@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
 import 'data/models_client/exercise_set_client.dart';
 import 'exercise_type_widget.dart';
 
@@ -18,9 +19,6 @@ const progressColors = <int, Color>{
 };
 
 class ExerciseSetWidget extends StatelessWidget {
-  static const width = 64.0;
-  static const borderRadius = Radius.circular(8);
-
   final bool isSingle;
   final bool isRightmost;
   final ExerciseSetClient exerciseSet;
@@ -43,8 +41,8 @@ class ExerciseSetWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width: width,
-        height: ExerciseTypeWidget.height,
+        width: exerciseSetWidth,
+        height: etHeight,
         child: Column(
           children: [
             _Cell(
@@ -132,7 +130,7 @@ class _Cell extends StatelessWidget {
         color: backgroundColor,
         border: isBottomCell ? borderBottomCell : borderTopCell,
       ),
-      height: ExerciseTypeWidget.height / 2,
+      height: etHeight / 2,
       child: Center(child: child),
     );
   }

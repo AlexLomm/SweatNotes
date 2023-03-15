@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'services/exercises_service.dart';
-import 'data/models_client/exercise_client.dart';
-import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
-import 'exercise_set_editor/exercise_set_editor.dart';
+import '../services/exercises_service.dart';
+import '../data/models_client/exercise_client.dart';
+import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import 'exercise_set_widget.dart';
+import 'exercise_set_editor/exercise_set_editor.dart';
 
 class ExerciseWidget extends ConsumerWidget {
   static const borderRadius = Radius.circular(8);
@@ -34,7 +34,6 @@ class ExerciseWidget extends ConsumerWidget {
       child: Row(
         children: exercise.exerciseSets.asMap().entries.map((entry) {
           final repsNum = entry.value.reps.isEmpty ? 0 : int.parse(entry.value.reps);
-
           final loadNum = entry.value.load.isEmpty ? 0.0 : double.parse(entry.value.load);
 
           return ExerciseSetWidget(

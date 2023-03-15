@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/wheel_selector/models/wheel_selector_value.dart';
-import '../../../widgets/wheel_selector/wheel_selector.dart';
+import '../../../../widgets/wheel_selector/models/wheel_selector_value.dart';
+import '../../../../widgets/wheel_selector/wheel_selector.dart';
 
 class RepsSelector extends StatelessWidget {
   final int value;

@@ -13,9 +13,9 @@ import '../../widgets/text_editor_single_line.dart';
 import '../settings/edit_mode_switcher.dart';
 import 'constants.dart';
 import 'data/models_client/training_block_client.dart';
-import 'horizontally_scrollable_exercise_labels.dart';
-import 'horizontally_scrollable_exercises.dart';
+import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
 import 'services/normalize_data_service/normalize_data_service.dart';
+import 'widgets/horizontally_scrollable_exercises.dart';
 
 class TrainingBlockScreen extends ConsumerStatefulWidget {
   final String trainingBlockId;

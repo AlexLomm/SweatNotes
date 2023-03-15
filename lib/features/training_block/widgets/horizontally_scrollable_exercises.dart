@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/features/settings/edit_mode_switcher.dart';
 
-import 'constants.dart';
-import 'data/models_client/exercise_day_client.dart';
+import '../constants.dart';
+import '../data/models_client/exercise_day_client.dart';
 import 'exercise_widget.dart';
-import 'services/exercises_service.dart';
+import '../services/exercises_service.dart';
+import 'ignore_pointer_edit_mode.dart';
 
 class HorizontallyScrollableExercises extends ConsumerWidget {
   static const exercisesScrollContainerSpacingBetweenExercises = 16.0;
@@ -26,8 +27,7 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
 
     final exerciseTypesCount = exerciseTypes.length;
 
-    final exercisesHeight = etHeight * exerciseTypesCount +
-        escMarginBottomNotLast * (exerciseTypesCount - 1);
+    final exercisesHeight = etHeight * exerciseTypesCount + escMarginBottomNotLast * (exerciseTypesCount - 1);
 
     final height = exercisesHeight + escMarginBottomLast;
 
@@ -40,8 +40,8 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
       opacity: isEditMode ? 0.32 : 1.0,
       duration: animationDuration,
       curve: animationCurve,
-      child: IgnorePointer(
-        ignoring: isEditMode,
+      child: IgnorePointerEditMode(
+        ignoreWhenEditMode: true,
         child: Container(
           height: height,
           margin: const EdgeInsets.only(

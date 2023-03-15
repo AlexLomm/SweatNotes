@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/vertical_gradient.dart';
+import '../../../../widgets/vertical_gradient.dart';
 
 class VerticalDividerWithGradient extends StatelessWidget {
   final double? height;

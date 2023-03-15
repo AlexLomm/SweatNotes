@@ -2,9 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
-import 'data/models_client/exercise_set_client.dart';
-import 'exercise_type_widget.dart';
+import '../constants.dart';
+import '../data/models_client/exercise_set_client.dart';
 
 const progressColors = <int, Color>{
   -4: Color.fromRGBO(244, 71, 70, 0.32),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/button.dart';
-import '../../../widgets/wheel_selector/wheel_selector.dart';
+import '../../../../widgets/button.dart';
+import '../../../../widgets/wheel_selector/wheel_selector.dart';
 import 'load_selector.dart';
 import 'reps_selector.dart';
 import 'vertical_divider.dart';

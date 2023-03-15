@@ -1,17 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
 
-import '../../widgets/button_dropdown_menu.dart';
-import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
-import '../../widgets/text_editor_single_line_and_wheel.dart';
-import '../settings/edit_mode_switcher.dart';
-import '../training_block/services/exercise_types_service.dart';
-import 'constants.dart';
-import 'data/models_client/exercise_type_client.dart';
-import 'services/exercise_days_service.dart';
-import 'widgets/exercise_day_icon_wrapper.dart';
+import '../../../widgets/button_dropdown_menu.dart';
+import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../../widgets/text_editor_single_line_and_wheel.dart';
+import '../../settings/edit_mode_switcher.dart';
+import '../constants.dart';
+import '../data/models_client/exercise_day_client.dart';
+import '../data/models_client/exercise_type_client.dart';
+import '../services/exercise_days_service.dart';
+import '../services/exercise_types_service.dart';
+import 'exercise_day_icon_wrapper.dart';
+import 'ignore_pointer_edit_mode.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
   final int index;
@@ -74,19 +75,16 @@ class ExerciseTypeWidget extends ConsumerWidget {
                 duration: animationDuration,
                 curve: animationCurve,
                 margin: EdgeInsets.only(left: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth),
-                child: IgnorePointer(
-                  ignoring: !isEditMode,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => CustomBottomSheet(
-                      height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
-                      title: 'Edit exercise type',
-                      child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
-                    ).show(context),
-                    child: _ExerciseTypeName(
-                      width: isEditMode ? etLabelWidthExpanded : etLabelWidth,
-                      name: exerciseType.name,
-                    ),
+                child: IgnorePointerEditMode(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () => CustomBottomSheet(
+                    height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                    title: 'Edit exercise type',
+                    child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
+                  ).show(context),
+                  child: _ExerciseTypeName(
+                    width: isEditMode ? etLabelWidthExpanded : etLabelWidth,
+                    name: exerciseType.name,
                   ),
                 ),
               ),
@@ -97,8 +95,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                 duration: animationDuration,
                 curve: animationCurve,
                 opacity: isEditMode ? 1 : 0,
-                child: IgnorePointer(
-                  ignoring: !isEditMode,
+                child: IgnorePointerEditMode(
                   child: AnimatedContainer(
                     duration: animationDuration,
                     curve: animationCurve,

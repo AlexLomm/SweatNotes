@@ -12,9 +12,10 @@ _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
       trainingBlockId: json['trainingBlockId'] as String,
       name: json['name'] as String,
       unit: json['unit'] as String,
-      exercises: json['exercises'] == null
-          ? const []
-          : _exercisesFromJson(json['exercises'] as List),
+      exercises: (json['exercises'] as List<dynamic>?)
+              ?.map((e) => Exercise.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_ExerciseTypeToJson(_$_ExerciseType instance) =>

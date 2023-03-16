@@ -76,9 +76,14 @@ class NormalizeDataService {
       return null;
     }
 
+    final maxExercisesCount = exerciseTypes
+        //
+        .map((exerciseType) => exerciseType.exercises.length)
+        .fold<int>(0, max);
+
     final maxExerciseSetsCount = exerciseTypes
-        .map((exerciseType) => exerciseType.exercises.map((exercise) => exercise.sets.length).reduce(max))
-        .reduce(max);
+        .expand((exerciseType) => exerciseType.exercises.map((exercise) => exercise.sets.length))
+        .fold<int>(0, max);
 
     final List<ExerciseTypeClient> exerciseTypesClient = exerciseTypes
         .map(
@@ -86,34 +91,40 @@ class NormalizeDataService {
         dbModel: exerciseType,
         name: exerciseType.name,
         unit: exerciseType.unit,
-        exercises: exerciseType.exercises
-            .map<ExerciseClient>(
-              (exercise) => ExerciseClient(
-                dbModel: exercise,
-                placement: exercise.placement,
-                sets: [
-                  ...exercise.sets.map(
-                    (exerciseSet) => ExerciseSetClient(
-                      dbModel: exerciseSet,
-                      unit: exerciseType.unit,
-                      load: exerciseSet.load,
-                      reps: exerciseSet.reps,
-                    ),
+        exercises: [
+          ...exerciseType.exercises.map(
+            (exercise) => ExerciseClient(
+              dbModel: exercise,
+              isFiller: false,
+              sets: [
+                ...exercise.sets.map(
+                  (exerciseSet) => ExerciseSetClient(
+                    dbModel: exerciseSet,
+                    isFiller: false,
+                    unit: exerciseType.unit,
+                    load: exerciseSet.load,
+                    reps: exerciseSet.reps,
                   ),
-                  // add filler sets
-                  ...List.generate(
-                    maxExerciseSetsCount - exercise.sets.length + 1,
-                    (index) => ExerciseSetClient(
-                      dbModel: null,
-                      unit: exerciseType.unit,
-                      load: '',
-                      reps: '',
-                    ),
-                  ),
-                ].toList(),
+                ),
+                // add filler sets
+                ...List.generate(
+                  maxExerciseSetsCount - exercise.sets.length + 1,
+                  (index) => ExerciseSetClient.empty().copyWith(unit: exerciseType.unit),
+                ),
+              ].toList(),
+            ),
+          ),
+          // add filler exercises
+          ...List.generate(
+            maxExercisesCount - exerciseType.exercises.length + 1,
+            (index) => ExerciseClient.empty().copyWith(
+              sets: List.generate(
+                maxExerciseSetsCount + 1,
+                (index) => ExerciseSetClient.empty().copyWith(unit: exerciseType.unit),
               ),
-            )
-            .toList(),
+            ),
+          ),
+        ].toList(),
       ),
     )
         .map((exerciseType) {

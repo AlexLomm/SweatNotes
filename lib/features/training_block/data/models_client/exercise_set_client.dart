@@ -9,8 +9,6 @@ part 'exercise_set_client.freezed.dart';
 class ExerciseSetClient with _$ExerciseSetClient {
   ExerciseSetClient._();
 
-  bool get isFiller => dbModel == null;
-
   factory ExerciseSetClient({
     required ExerciseSet? dbModel,
     int? progressFactor,
@@ -19,6 +17,7 @@ class ExerciseSetClient with _$ExerciseSetClient {
     required String reps,
     // TODO: change to double
     required String load,
+    required bool isFiller,
     @Default('0') String predictedReps,
     @Default('0') String predictedLoad,
   }) = _ExerciseSetClient;
@@ -27,6 +26,7 @@ class ExerciseSetClient with _$ExerciseSetClient {
     return ExerciseSetClient(
       dbModel: null,
       progressFactor: null,
+      isFiller: true,
       unit: '',
       reps: '',
       load: '',

@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ExerciseDayClient {
-  ExerciseDay get dbModel => throw _privateConstructorUsedError;
+  ExerciseDay? get dbModel => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseTypeClient> get exerciseTypes =>
       throw _privateConstructorUsedError;
@@ -33,11 +33,11 @@ abstract class $ExerciseDayClientCopyWith<$Res> {
       _$ExerciseDayClientCopyWithImpl<$Res, ExerciseDayClient>;
   @useResult
   $Res call(
-      {ExerciseDay dbModel,
+      {ExerciseDay? dbModel,
       String name,
       List<ExerciseTypeClient> exerciseTypes});
 
-  $ExerciseDayCopyWith<$Res> get dbModel;
+  $ExerciseDayCopyWith<$Res>? get dbModel;
 }
 
 /// @nodoc
@@ -53,15 +53,15 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dbModel = null,
+    Object? dbModel = freezed,
     Object? name = null,
     Object? exerciseTypes = null,
   }) {
     return _then(_value.copyWith(
-      dbModel: null == dbModel
+      dbModel: freezed == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
-              as ExerciseDay,
+              as ExerciseDay?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -75,8 +75,12 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
 
   @override
   @pragma('vm:prefer-inline')
-  $ExerciseDayCopyWith<$Res> get dbModel {
-    return $ExerciseDayCopyWith<$Res>(_value.dbModel, (value) {
+  $ExerciseDayCopyWith<$Res>? get dbModel {
+    if (_value.dbModel == null) {
+      return null;
+    }
+
+    return $ExerciseDayCopyWith<$Res>(_value.dbModel!, (value) {
       return _then(_value.copyWith(dbModel: value) as $Val);
     });
   }
@@ -91,12 +95,12 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {ExerciseDay dbModel,
+      {ExerciseDay? dbModel,
       String name,
       List<ExerciseTypeClient> exerciseTypes});
 
   @override
-  $ExerciseDayCopyWith<$Res> get dbModel;
+  $ExerciseDayCopyWith<$Res>? get dbModel;
 }
 
 /// @nodoc
@@ -110,15 +114,15 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dbModel = null,
+    Object? dbModel = freezed,
     Object? name = null,
     Object? exerciseTypes = null,
   }) {
     return _then(_$_ExerciseDayClient(
-      dbModel: null == dbModel
+      dbModel: freezed == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
-              as ExerciseDay,
+              as ExerciseDay?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -136,14 +140,14 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
 class _$_ExerciseDayClient extends _ExerciseDayClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseDayClient(
-      {required this.dbModel,
+      {this.dbModel,
       required this.name,
       required final List<ExerciseTypeClient> exerciseTypes})
       : _exerciseTypes = exerciseTypes,
         super._();
 
   @override
-  final ExerciseDay dbModel;
+  final ExerciseDay? dbModel;
   @override
   final String name;
   final List<ExerciseTypeClient> _exerciseTypes;
@@ -194,14 +198,14 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 
 abstract class _ExerciseDayClient extends ExerciseDayClient {
   const factory _ExerciseDayClient(
-          {required final ExerciseDay dbModel,
+          {final ExerciseDay? dbModel,
           required final String name,
           required final List<ExerciseTypeClient> exerciseTypes}) =
       _$_ExerciseDayClient;
   const _ExerciseDayClient._() : super._();
 
   @override
-  ExerciseDay get dbModel;
+  ExerciseDay? get dbModel;
   @override
   String get name;
   @override

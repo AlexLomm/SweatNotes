@@ -25,7 +25,6 @@ mixin _$ExerciseType {
   String get trainingBlockId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _exercisesFromJson)
   List<Exercise> get exercises => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,7 +44,7 @@ abstract class $ExerciseTypeCopyWith<$Res> {
       String trainingBlockId,
       String name,
       String unit,
-      @JsonKey(fromJson: _exercisesFromJson) List<Exercise> exercises});
+      List<Exercise> exercises});
 }
 
 /// @nodoc
@@ -105,7 +104,7 @@ abstract class _$$_ExerciseTypeCopyWith<$Res>
       String trainingBlockId,
       String name,
       String unit,
-      @JsonKey(fromJson: _exercisesFromJson) List<Exercise> exercises});
+      List<Exercise> exercises});
 }
 
 /// @nodoc
@@ -154,13 +153,11 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   const _$_ExerciseType(
-      {@JsonKey(includeToJson: false)
-          required this.id,
+      {@JsonKey(includeToJson: false) required this.id,
       required this.trainingBlockId,
       required this.name,
       required this.unit,
-      @JsonKey(fromJson: _exercisesFromJson)
-          final List<Exercise> exercises = const []})
+      final List<Exercise> exercises = const []})
       : _exercises = exercises;
 
   factory _$_ExerciseType.fromJson(Map<String, dynamic> json) =>
@@ -177,7 +174,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   final String unit;
   final List<Exercise> _exercises;
   @override
-  @JsonKey(fromJson: _exercisesFromJson)
+  @JsonKey()
   List<Exercise> get exercises {
     if (_exercises is EqualUnmodifiableListView) return _exercises;
     // ignore: implicit_dynamic_type
@@ -236,13 +233,11 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
 
 abstract class _ExerciseType implements ExerciseType {
   const factory _ExerciseType(
-      {@JsonKey(includeToJson: false)
-          required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       required final String trainingBlockId,
       required final String name,
       required final String unit,
-      @JsonKey(fromJson: _exercisesFromJson)
-          final List<Exercise> exercises}) = _$_ExerciseType;
+      final List<Exercise> exercises}) = _$_ExerciseType;
 
   factory _ExerciseType.fromJson(Map<String, dynamic> json) =
       _$_ExerciseType.fromJson;
@@ -257,7 +252,6 @@ abstract class _ExerciseType implements ExerciseType {
   @override
   String get unit;
   @override
-  @JsonKey(fromJson: _exercisesFromJson)
   List<Exercise> get exercises;
   @override
   @JsonKey(ignore: true)

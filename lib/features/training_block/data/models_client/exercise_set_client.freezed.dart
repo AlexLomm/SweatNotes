@@ -22,6 +22,7 @@ mixin _$ExerciseSetClient {
   String get reps =>
       throw _privateConstructorUsedError; // TODO: change to double
   String get load => throw _privateConstructorUsedError;
+  bool get isFiller => throw _privateConstructorUsedError;
   String get predictedReps => throw _privateConstructorUsedError;
   String get predictedLoad => throw _privateConstructorUsedError;
 
@@ -42,6 +43,7 @@ abstract class $ExerciseSetClientCopyWith<$Res> {
       String unit,
       String reps,
       String load,
+      bool isFiller,
       String predictedReps,
       String predictedLoad});
 
@@ -66,6 +68,7 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
     Object? unit = null,
     Object? reps = null,
     Object? load = null,
+    Object? isFiller = null,
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
@@ -90,6 +93,10 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
               as String,
+      isFiller: null == isFiller
+          ? _value.isFiller
+          : isFiller // ignore: cast_nullable_to_non_nullable
+              as bool,
       predictedReps: null == predictedReps
           ? _value.predictedReps
           : predictedReps // ignore: cast_nullable_to_non_nullable
@@ -128,6 +135,7 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
       String unit,
       String reps,
       String load,
+      bool isFiller,
       String predictedReps,
       String predictedLoad});
 
@@ -151,6 +159,7 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
     Object? unit = null,
     Object? reps = null,
     Object? load = null,
+    Object? isFiller = null,
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
@@ -175,6 +184,10 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
               as String,
+      isFiller: null == isFiller
+          ? _value.isFiller
+          : isFiller // ignore: cast_nullable_to_non_nullable
+              as bool,
       predictedReps: null == predictedReps
           ? _value.predictedReps
           : predictedReps // ignore: cast_nullable_to_non_nullable
@@ -197,6 +210,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       required this.unit,
       required this.reps,
       required this.load,
+      required this.isFiller,
       this.predictedReps = '0',
       this.predictedLoad = '0'})
       : super._();
@@ -214,6 +228,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   @override
   final String load;
   @override
+  final bool isFiller;
+  @override
   @JsonKey()
   final String predictedReps;
   @override
@@ -222,7 +238,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseSetClient(dbModel: $dbModel, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load, predictedReps: $predictedReps, predictedLoad: $predictedLoad)';
+    return 'ExerciseSetClient(dbModel: $dbModel, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load, isFiller: $isFiller, predictedReps: $predictedReps, predictedLoad: $predictedLoad)';
   }
 
   @override
@@ -235,6 +251,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       ..add(DiagnosticsProperty('unit', unit))
       ..add(DiagnosticsProperty('reps', reps))
       ..add(DiagnosticsProperty('load', load))
+      ..add(DiagnosticsProperty('isFiller', isFiller))
       ..add(DiagnosticsProperty('predictedReps', predictedReps))
       ..add(DiagnosticsProperty('predictedLoad', predictedLoad));
   }
@@ -250,6 +267,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
             (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.reps, reps) || other.reps == reps) &&
             (identical(other.load, load) || other.load == load) &&
+            (identical(other.isFiller, isFiller) ||
+                other.isFiller == isFiller) &&
             (identical(other.predictedReps, predictedReps) ||
                 other.predictedReps == predictedReps) &&
             (identical(other.predictedLoad, predictedLoad) ||
@@ -258,7 +277,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 
   @override
   int get hashCode => Object.hash(runtimeType, dbModel, progressFactor, unit,
-      reps, load, predictedReps, predictedLoad);
+      reps, load, isFiller, predictedReps, predictedLoad);
 
   @JsonKey(ignore: true)
   @override
@@ -275,6 +294,7 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
       required final String unit,
       required final String reps,
       required final String load,
+      required final bool isFiller,
       final String predictedReps,
       final String predictedLoad}) = _$_ExerciseSetClient;
   _ExerciseSetClient._() : super._();
@@ -289,6 +309,8 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   String get reps;
   @override // TODO: change to double
   String get load;
+  @override
+  bool get isFiller;
   @override
   String get predictedReps;
   @override

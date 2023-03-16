@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ExerciseClient {
-  Exercise? get dbModel => throw _privateConstructorUsedError; // TODO: remove?
-  int get placement => throw _privateConstructorUsedError;
+  Exercise? get dbModel => throw _privateConstructorUsedError;
+  bool get isFiller => throw _privateConstructorUsedError;
   List<ExerciseSetClient> get sets => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +31,7 @@ abstract class $ExerciseClientCopyWith<$Res> {
           ExerciseClient value, $Res Function(ExerciseClient) then) =
       _$ExerciseClientCopyWithImpl<$Res, ExerciseClient>;
   @useResult
-  $Res call({Exercise? dbModel, int placement, List<ExerciseSetClient> sets});
+  $Res call({Exercise? dbModel, bool isFiller, List<ExerciseSetClient> sets});
 
   $ExerciseCopyWith<$Res>? get dbModel;
 }
@@ -50,7 +50,7 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
   @override
   $Res call({
     Object? dbModel = freezed,
-    Object? placement = null,
+    Object? isFiller = null,
     Object? sets = null,
   }) {
     return _then(_value.copyWith(
@@ -58,10 +58,10 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as Exercise?,
-      placement: null == placement
-          ? _value.placement
-          : placement // ignore: cast_nullable_to_non_nullable
-              as int,
+      isFiller: null == isFiller
+          ? _value.isFiller
+          : isFiller // ignore: cast_nullable_to_non_nullable
+              as bool,
       sets: null == sets
           ? _value.sets
           : sets // ignore: cast_nullable_to_non_nullable
@@ -90,7 +90,7 @@ abstract class _$$_ExerciseClientCopyWith<$Res>
       __$$_ExerciseClientCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Exercise? dbModel, int placement, List<ExerciseSetClient> sets});
+  $Res call({Exercise? dbModel, bool isFiller, List<ExerciseSetClient> sets});
 
   @override
   $ExerciseCopyWith<$Res>? get dbModel;
@@ -108,7 +108,7 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? dbModel = freezed,
-    Object? placement = null,
+    Object? isFiller = null,
     Object? sets = null,
   }) {
     return _then(_$_ExerciseClient(
@@ -116,10 +116,10 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as Exercise?,
-      placement: null == placement
-          ? _value.placement
-          : placement // ignore: cast_nullable_to_non_nullable
-              as int,
+      isFiller: null == isFiller
+          ? _value.isFiller
+          : isFiller // ignore: cast_nullable_to_non_nullable
+              as bool,
       sets: null == sets
           ? _value.sets
           : sets // ignore: cast_nullable_to_non_nullable
@@ -132,20 +132,19 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
 
 class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   const _$_ExerciseClient(
-      {this.dbModel, required this.placement, required this.sets})
+      {this.dbModel, required this.isFiller, required this.sets})
       : super._();
 
   @override
   final Exercise? dbModel;
-// TODO: remove?
   @override
-  final int placement;
+  final bool isFiller;
   @override
   final List<ExerciseSetClient> sets;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseClient(dbModel: $dbModel, placement: $placement, sets: $sets)';
+    return 'ExerciseClient(dbModel: $dbModel, isFiller: $isFiller, sets: $sets)';
   }
 
   @override
@@ -154,7 +153,7 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseClient'))
       ..add(DiagnosticsProperty('dbModel', dbModel))
-      ..add(DiagnosticsProperty('placement', placement))
+      ..add(DiagnosticsProperty('isFiller', isFiller))
       ..add(DiagnosticsProperty('sets', sets));
   }
 
@@ -164,13 +163,13 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseClient &&
             (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
-            (identical(other.placement, placement) ||
-                other.placement == placement) &&
+            (identical(other.isFiller, isFiller) ||
+                other.isFiller == isFiller) &&
             const DeepCollectionEquality().equals(other.sets, sets));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, dbModel, placement,
+  int get hashCode => Object.hash(runtimeType, dbModel, isFiller,
       const DeepCollectionEquality().hash(sets));
 
   @JsonKey(ignore: true)
@@ -183,14 +182,14 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
 abstract class _ExerciseClient extends ExerciseClient {
   const factory _ExerciseClient(
       {final Exercise? dbModel,
-      required final int placement,
+      required final bool isFiller,
       required final List<ExerciseSetClient> sets}) = _$_ExerciseClient;
   const _ExerciseClient._() : super._();
 
   @override
   Exercise? get dbModel;
-  @override // TODO: remove?
-  int get placement;
+  @override
+  bool get isFiller;
   @override
   List<ExerciseSetClient> get sets;
   @override

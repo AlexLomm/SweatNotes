@@ -26,36 +26,47 @@ class TrainingBlockClient with _$TrainingBlockClient {
 
   TrainingBlockClient addExerciseDay(ExerciseDayClient exerciseDayClient) {
     return copyWith(
-      exerciseDays: <ExerciseDayClient>[...exerciseDays, exerciseDayClient],
+      exerciseDays: [...exerciseDays, exerciseDayClient],
     );
   }
 
-  // TrainingBlockClient reorderExerciseDay({
-  //   required String exerciseDayId,
-  //   required int moveBy,
-  // }) {
-  //   final oldIndex = -1; //exerciseDays.indexWhere((element) => element.id == exerciseDayId);
-  //
-  //   if (oldIndex == -1) {
-  //     throw Exception('Exercise day with id $exerciseDayId is not found');
-  //   }
-  //
-  //   final newIndex = (oldIndex + moveBy).clamp(0, exerciseDays.length - 1);
-  //
-  //   if (oldIndex == newIndex) {
-  //     return this;
-  //   }
-  //
-  //   final newList = [...exerciseDays];
-  //
-  //   final temp = newList[oldIndex];
-  //   newList[oldIndex] = newList[newIndex];
-  //   newList[newIndex] = temp;
-  //
-  //   return copyWith(exerciseDays: newList);
-  // }
+  TrainingBlockClient updateExerciseDay({
+    required ExerciseDayClient exerciseDay,
+    required int index,
+  }) {
+    final newExerciseDays = [...exerciseDays];
+
+    newExerciseDays[index] = exerciseDay;
+
+    return copyWith(exerciseDays: newExerciseDays);
+  }
+
+  TrainingBlockClient reorderExerciseDay({
+    required ExerciseDayClient exerciseDay,
+    required int moveBy,
+  }) {
+    final oldIndex = exerciseDays.indexWhere((e) => e == exerciseDay);
+
+    if (oldIndex == -1) throw Exception('Exercise day not found');
+
+    final newIndex = (oldIndex + moveBy).clamp(0, exerciseDays.length - 1);
+
+    if (oldIndex == newIndex) return this;
+
+    final newList = [...exerciseDays];
+
+    final temp = newList[oldIndex];
+    newList[oldIndex] = newList[newIndex];
+    newList[newIndex] = temp;
+
+    return copyWith(exerciseDays: newList);
+  }
 
   int indexOfExerciseDay(ExerciseDayClient exerciseDayClient) {
-    return exerciseDays.indexWhere((element) => element == exerciseDayClient);
+    final index = exerciseDays.indexWhere((e) => e == exerciseDayClient);
+
+    if (index == -1) throw Exception('Exercise day not found');
+
+    return index;
   }
 }

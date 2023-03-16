@@ -9,10 +9,13 @@ part 'exercise.g.dart';
 
 @freezed
 class Exercise with _$Exercise {
+  const Exercise._();
+
   const factory Exercise({
-    @JsonKey(includeToJson: false) required int placement,
     @Default([]) List<ExerciseSet> sets,
   }) = _Exercise;
+
+  factory Exercise.empty() => const Exercise(sets: []);
 
   factory Exercise.fromJson(Map<String, Object?> json) => _$ExerciseFromJson(json);
 }

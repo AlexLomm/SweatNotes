@@ -7,7 +7,6 @@ part of 'exercise.dart';
 // **************************************************************************
 
 _$_Exercise _$$_ExerciseFromJson(Map<String, dynamic> json) => _$_Exercise(
-      placement: json['placement'] as int,
       sets: (json['sets'] as List<dynamic>?)
               ?.map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
               .toList() ??

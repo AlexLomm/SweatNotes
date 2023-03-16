@@ -16,31 +16,36 @@ class ExerciseDayClient with _$ExerciseDayClient {
       .map((key, value) => MapEntry(value.dbModel.id, key));
 
   const factory ExerciseDayClient({
-    required ExerciseDay dbModel,
+    ExerciseDay? dbModel,
     required String name,
     required List<ExerciseTypeClient> exerciseTypes,
   }) = _ExerciseDayClient;
 
-  ExerciseDay toDbModel() => dbModel.copyWith(
+  ExerciseDay toDbModel() {
+    final dbModel = this.dbModel;
+
+    if (dbModel == null) {
+      return ExerciseDay(
         name: name,
         exerciseTypesOrdering: _exerciseTypesNewOrdering,
       );
+    }
+
+    return dbModel.copyWith(
+      name: name,
+      exerciseTypesOrdering: _exerciseTypesNewOrdering,
+    );
+  }
 
   ExerciseDayClient reorderExerciseType({
     required int from,
     required int to,
   }) {
-    if (from == to) {
-      return this;
-    }
+    if (from == to) return this;
 
-    if (from < 0 || from >= exerciseTypes.length) {
-      throw Exception('Invalid from index $from');
-    }
+    if (from < 0 || from >= exerciseTypes.length) throw Exception('Invalid from index $from');
 
-    if (to < 0 || to >= exerciseTypes.length) {
-      throw Exception('Invalid to index $to');
-    }
+    if (to < 0 || to >= exerciseTypes.length) throw Exception('Invalid to index $to');
 
     final newList = [...exerciseTypes];
 
@@ -56,12 +61,12 @@ class ExerciseDayClient with _$ExerciseDayClient {
 
     newList[to] = exerciseTypes[from];
 
-    print('------------------------------');
-    print('------------------------------');
-    print('------------------------------');
-    print(exerciseTypes.map((e) => e.dbModel.id).toList());
-    print(newList.map((e) => e.dbModel.id).toList());
-
     return copyWith(exerciseTypes: newList);
+  }
+
+  ExerciseDayClient addExerciseType(ExerciseTypeClient exerciseTypeClient) {
+    return copyWith(
+      exerciseTypes: [...exerciseTypes, exerciseTypeClient],
+    );
   }
 }

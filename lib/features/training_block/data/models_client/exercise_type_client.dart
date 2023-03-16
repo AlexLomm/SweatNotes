@@ -33,4 +33,31 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
       exercises: exercisesWithoutFillers.map((exercise) => exercise.toExercise()).toList(),
     );
   }
+
+  ///              Included          Filtered out
+  ///                 │                   │
+  ///                 ▼                   ▼
+  ///   ┌───┬───┐ ┌───┬───┐ ┌───┬───┐ ┌───┬───┐
+  ///   │ x │   │ │   │   │ │   │ x │ │   │   │
+  ///   ├───┼───┤ ├───┼───┤ ├───┼───┤ ├───┼───┤
+  ///   │ x │   │ │   │   │ │   │ x │ │   │   │
+  ///   └───┴───┘ └───┴───┘ └───┴───┘ └───┴───┘
+  get exercisesWithNoTrailingFillers {
+    final i = exercises.lastIndexWhere((e) => !e.isFiller);
+
+    final exercisesUpToLastPopulatedOne = exercises.sublist(0, i + 1).toList();
+
+    return exercisesUpToLastPopulatedOne;
+  }
+
+  ExerciseTypeClient updateExercise({
+    required int index,
+    required ExerciseClient exercise,
+  }) {
+    return copyWith(exercises: [
+      ...exercises.sublist(0, index),
+      exercise.copyWith(isFiller: false),
+      ...exercises.sublist(index + 1),
+    ]);
+  }
 }

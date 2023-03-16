@@ -256,29 +256,6 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       ..add(DiagnosticsProperty('predictedLoad', predictedLoad));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ExerciseSetClient &&
-            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
-            (identical(other.progressFactor, progressFactor) ||
-                other.progressFactor == progressFactor) &&
-            (identical(other.unit, unit) || other.unit == unit) &&
-            (identical(other.reps, reps) || other.reps == reps) &&
-            (identical(other.load, load) || other.load == load) &&
-            (identical(other.isFiller, isFiller) ||
-                other.isFiller == isFiller) &&
-            (identical(other.predictedReps, predictedReps) ||
-                other.predictedReps == predictedReps) &&
-            (identical(other.predictedLoad, predictedLoad) ||
-                other.predictedLoad == predictedLoad));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, dbModel, progressFactor, unit,
-      reps, load, isFiller, predictedReps, predictedLoad);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

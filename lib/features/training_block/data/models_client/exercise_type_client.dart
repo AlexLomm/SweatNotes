@@ -1,23 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../models/exercise.dart';
 import '../models/exercise_type.dart';
 import 'exercise_client.dart';
 
 part 'exercise_type_client.freezed.dart';
 
-@freezed
+@Freezed(equal: false)
 class ExerciseTypeClient with _$ExerciseTypeClient {
   const ExerciseTypeClient._();
-
-  List<ExerciseClient> get exercisesWithoutFillers {
-    final exercisesWithoutFillerSets = exercises
-        .where((exercise) => !exercise.isFiller)
-        .map((exercise) => exercise.copyWith(sets: exercise.setsWithNoTrailingFillers))
-        .toList();
-
-    return exercisesWithoutFillerSets;
-  }
 
   const factory ExerciseTypeClient({
     required ExerciseType dbModel,
@@ -30,7 +22,9 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
 
   ExerciseType toDbModel() {
     return dbModel.copyWith(
-      exercises: exercisesWithoutFillers.map((exercise) => exercise.toExercise()).toList(),
+      name: name,
+      unit: unit,
+      exercises: _exercisesWithNoTrailingFillers.map<Exercise>((e) => e.toDbModel()).toList(),
     );
   }
 
@@ -42,7 +36,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
   ///   ├───┼───┤ ├───┼───┤ ├───┼───┤ ├───┼───┤
   ///   │ x │   │ │   │   │ │   │ x │ │   │   │
   ///   └───┴───┘ └───┴───┘ └───┴───┘ └───┴───┘
-  get exercisesWithNoTrailingFillers {
+  List<ExerciseClient> get _exercisesWithNoTrailingFillers {
     final i = exercises.lastIndexWhere((e) => !e.isFiller);
 
     final exercisesUpToLastPopulatedOne = exercises.sublist(0, i + 1).toList();
@@ -54,10 +48,10 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     required int index,
     required ExerciseClient exercise,
   }) {
-    return copyWith(exercises: [
-      ...exercises.sublist(0, index),
-      exercise.copyWith(isFiller: false),
-      ...exercises.sublist(index + 1),
-    ]);
+    final updatedExercises = [...exercises];
+
+    updatedExercises[index] = exercise.copyWith(isFiller: false);
+
+    return copyWith(exercises: updatedExercises);
   }
 }

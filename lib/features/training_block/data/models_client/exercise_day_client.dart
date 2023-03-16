@@ -6,7 +6,7 @@ import 'exercise_type_client.dart';
 
 part 'exercise_day_client.freezed.dart';
 
-@freezed
+@Freezed(equal: false)
 class ExerciseDayClient with _$ExerciseDayClient {
   const ExerciseDayClient._();
 

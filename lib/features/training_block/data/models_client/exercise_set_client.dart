@@ -5,7 +5,7 @@ import '../models/exercise_set.dart';
 
 part 'exercise_set_client.freezed.dart';
 
-@freezed
+@Freezed(equal: false)
 class ExerciseSetClient with _$ExerciseSetClient {
   ExerciseSetClient._();
 

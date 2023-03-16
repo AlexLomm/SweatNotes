@@ -137,19 +137,6 @@ class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
       ..add(DiagnosticsProperty('reps', reps));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ExerciseSet &&
-            (identical(other.load, load) || other.load == load) &&
-            (identical(other.reps, reps) || other.reps == reps));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, load, reps);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

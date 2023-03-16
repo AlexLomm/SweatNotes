@@ -7,7 +7,7 @@ part 'training_block.freezed.dart';
 
 part 'training_block.g.dart';
 
-@freezed
+@Freezed(equal: false)
 class TrainingBlock with _$TrainingBlock {
   const factory TrainingBlock({
     @JsonKey(includeToJson: false) required String id,

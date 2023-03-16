@@ -164,22 +164,6 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
       ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_TrainingBlock &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality()
-                .equals(other._exerciseDays, _exerciseDays));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name,
-      const DeepCollectionEquality().hash(_exerciseDays));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

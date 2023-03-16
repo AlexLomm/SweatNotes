@@ -173,21 +173,6 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
       ..add(DiagnosticsProperty('exerciseTypes', exerciseTypes));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ExerciseDayClient &&
-            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality()
-                .equals(other._exerciseTypes, _exerciseTypes));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, dbModel, name,
-      const DeepCollectionEquality().hash(_exerciseTypes));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

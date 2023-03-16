@@ -7,7 +7,10 @@ import 'exercise_set_client.dart';
 
 part 'exercise_client.freezed.dart';
 
-@Freezed(makeCollectionsUnmodifiable: false)
+@Freezed(
+  makeCollectionsUnmodifiable: false,
+  equal: false,
+)
 class ExerciseClient with _$ExerciseClient {
   const ExerciseClient._();
 
@@ -25,10 +28,10 @@ class ExerciseClient with _$ExerciseClient {
     );
   }
 
-  Exercise toExercise() {
+  Exercise toDbModel() {
     final dbModel = this.dbModel;
 
-    final sets = setsWithNoTrailingFillers
+    final sets = _setsWithNoTrailingFillers
         .map<ExerciseSet>(
           (ExerciseSetClient set) => set.toDbModel(),
         )
@@ -52,7 +55,7 @@ class ExerciseClient with _$ExerciseClient {
   /// ├───┼───┼───┼───┼───┤
   /// │ x │ x │   │ x │   │
   /// └───┴───┴───┴───┴───┘
-  get setsWithNoTrailingFillers {
+  get _setsWithNoTrailingFillers {
     final i = sets.lastIndexWhere((set) => !set.isFiller);
 
     final setsUpToLastPopulatedOne = sets.sublist(0, i + 1).toList();
@@ -64,10 +67,10 @@ class ExerciseClient with _$ExerciseClient {
     required int index,
     required ExerciseSetClient set,
   }) {
-    return copyWith(sets: [
-      ...sets.sublist(0, index),
-      set.copyWith(isFiller: false),
-      ...sets.sublist(index + 1),
-    ]);
+    final updatedSets = [...sets];
+
+    updatedSets[index] = set.copyWith(isFiller: false);
+
+    return copyWith(sets: updatedSets);
   }
 }

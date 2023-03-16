@@ -7,7 +7,7 @@ import 'exercise_day_client.dart';
 
 part 'training_block_client.freezed.dart';
 
-@freezed
+@Freezed(equal: false)
 class TrainingBlockClient with _$TrainingBlockClient {
   const TrainingBlockClient._();
 

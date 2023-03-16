@@ -144,21 +144,6 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
           DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ExerciseDay &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality()
-                .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, name,
-      const DeepCollectionEquality().hash(_exerciseTypesOrdering));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

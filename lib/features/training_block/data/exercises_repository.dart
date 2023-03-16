@@ -27,7 +27,7 @@ class ExercisesRepository {
   }
 
   Future<void> setExercise(ExerciseClient exerciseClient) {
-    final exercise = exerciseClient.toExercise();
+    final exercise = exerciseClient.toDbModel();
 
     // if the exercise doesn't exist, create it
     if (exerciseClient.isFiller) {
@@ -39,7 +39,7 @@ class ExercisesRepository {
   }
 
   Future<void> addExercise(ExerciseClient exerciseClient) {
-    final exercise = exerciseClient.toExercise();
+    final exercise = exerciseClient.toDbModel();
 
     return collectionRef.add(exercise);
   }

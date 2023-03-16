@@ -5,7 +5,7 @@ part 'exercise_day.freezed.dart';
 
 part 'exercise_day.g.dart';
 
-@freezed
+@Freezed(equal: false)
 class ExerciseDay with _$ExerciseDay {
   const factory ExerciseDay({
     required String name,

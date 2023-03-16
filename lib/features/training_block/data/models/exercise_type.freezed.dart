@@ -198,25 +198,6 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
       ..add(DiagnosticsProperty('exercises', exercises));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ExerciseType &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.trainingBlockId, trainingBlockId) ||
-                other.trainingBlockId == trainingBlockId) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.unit, unit) || other.unit == unit) &&
-            const DeepCollectionEquality()
-                .equals(other._exercises, _exercises));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, trainingBlockId, name, unit,
-      const DeepCollectionEquality().hash(_exercises));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

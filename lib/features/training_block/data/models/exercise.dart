@@ -7,7 +7,7 @@ part 'exercise.freezed.dart';
 
 part 'exercise.g.dart';
 
-@freezed
+@Freezed(equal: false)
 class Exercise with _$Exercise {
   const Exercise._();
 

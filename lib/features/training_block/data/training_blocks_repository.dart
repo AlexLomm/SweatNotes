@@ -20,7 +20,7 @@ class TrainingBlocksRepository {
       .collection('training-blocks')
       .withConverter(
         fromFirestore: _fromFirestore,
-        toFirestore: _toFirestore,
+        toFirestore: toFirestore,
       );
 
   DocumentReference<TrainingBlock> getDocumentRefById(String id) {
@@ -32,7 +32,7 @@ class TrainingBlocksRepository {
   }
 
   Future<void> update(TrainingBlock trainingBlock) {
-    return getDocumentRefById(trainingBlock.id).update(_toFirestore(trainingBlock, null));
+    return getDocumentRefById(trainingBlock.id).update(toFirestore(trainingBlock, null));
   }
 
   TrainingBlock _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
@@ -47,7 +47,7 @@ class TrainingBlocksRepository {
     return TrainingBlock.fromJson(data);
   }
 
-  Map<String, dynamic> _toFirestore(TrainingBlock trainingBlock, _) => trainingBlock.toJson();
+  Map<String, dynamic> toFirestore(TrainingBlock trainingBlock, _) => trainingBlock.toJson();
 }
 
 @riverpod

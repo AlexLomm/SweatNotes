@@ -7,7 +7,7 @@ part 'exercise_type.freezed.dart';
 
 part 'exercise_type.g.dart';
 
-@freezed
+@Freezed(equal: false)
 class ExerciseType with _$ExerciseType {
   const factory ExerciseType({
     @JsonKey(includeToJson: false) required String id,

@@ -5,7 +5,7 @@ part 'exercise_set.freezed.dart';
 
 part 'exercise_set.g.dart';
 
-@freezed
+@Freezed(equal: false)
 class ExerciseSet with _$ExerciseSet {
   const factory ExerciseSet({
     // TODO: change to double

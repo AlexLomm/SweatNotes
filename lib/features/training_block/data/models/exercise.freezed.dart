@@ -124,19 +124,6 @@ class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('sets', sets));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_Exercise &&
-            const DeepCollectionEquality().equals(other._sets, _sets));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_sets));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

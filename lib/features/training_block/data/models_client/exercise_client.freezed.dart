@@ -157,21 +157,6 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('sets', sets));
   }
 
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ExerciseClient &&
-            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
-            (identical(other.isFiller, isFiller) ||
-                other.isFiller == isFiller) &&
-            const DeepCollectionEquality().equals(other.sets, sets));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, dbModel, isFiller,
-      const DeepCollectionEquality().hash(sets));
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

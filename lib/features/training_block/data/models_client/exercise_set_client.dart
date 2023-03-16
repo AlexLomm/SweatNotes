@@ -19,8 +19,8 @@ class ExerciseSetClient with _$ExerciseSetClient {
     required String reps,
     // TODO: change to double
     required String load,
-    @Default('') String predictedReps,
-    @Default('') String predictedLoad,
+    @Default('0') String predictedReps,
+    @Default('0') String predictedLoad,
   }) = _ExerciseSetClient;
 
   factory ExerciseSetClient.empty() {

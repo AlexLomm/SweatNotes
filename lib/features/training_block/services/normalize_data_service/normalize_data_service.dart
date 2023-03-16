@@ -189,13 +189,13 @@ class NormalizeDataService {
             predictedReps: [
               nearestExerciseSet.reps,
               currentExerciseSet.reps,
-              neighboringExerciseSet?.predictedReps ?? '',
-            ].firstWhere((element) => element.isNotEmpty, orElse: () => ''),
+              neighboringExerciseSet?.predictedReps ?? '0',
+            ].firstWhere((element) => element.isNotEmpty, orElse: () => '0'),
             predictedLoad: [
               nearestExerciseSet.load,
               currentExerciseSet.load,
-              neighboringExerciseSet?.predictedLoad ?? '',
-            ].firstWhere((element) => element.isNotEmpty, orElse: () => ''),
+              neighboringExerciseSet?.predictedLoad ?? '0',
+            ].firstWhere((element) => element.isNotEmpty, orElse: () => '0'),
           );
 
           nearestPopulatedExerciseSets[j] = currentExerciseSet;
@@ -214,8 +214,7 @@ class NormalizeDataService {
               dbModel: exerciseDay,
               name: exerciseDay.name,
               exerciseTypes: exerciseTypesClient
-                  .where((exerciseType) => exerciseDay
-                  .exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
+                  .where((exerciseType) => exerciseDay.exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
                   .toList()
                 ..sort((a, b) {
                   final orderingA = exerciseDay.exerciseTypesOrdering[a.dbModel.id] ?? double.maxFinite;

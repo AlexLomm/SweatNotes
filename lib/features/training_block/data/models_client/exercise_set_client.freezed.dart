@@ -197,8 +197,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       required this.unit,
       required this.reps,
       required this.load,
-      this.predictedReps = '',
-      this.predictedLoad = ''})
+      this.predictedReps = '0',
+      this.predictedLoad = '0'})
       : super._();
 
   @override

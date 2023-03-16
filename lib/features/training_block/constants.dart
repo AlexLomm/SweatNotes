@@ -25,6 +25,9 @@ const etLabelWidthExpanded =
 const elscRightInsetSize = 18.0;
 const elscWidth = etWidth - elscRightInsetSize;
 const elscTitleHeight = 56.0;
+const elscTitlePaddingLeft = 8.0;
+const elscTitlePaddingRight = 4.0;
+const elscTitleWidth = elscWidth - elscTitlePaddingLeft - elscTitlePaddingRight;
 const elscSpacingBetweenItems = 8.0;
 const elscAdditionalBottomSpaceHeight = 28.0 - elscSpacingBetweenItems;
 const elscAddExerciseTypeButtonSize = 40.0;
@@ -32,6 +35,8 @@ const elscSpaceForExerciseTypeButton = elscAddExerciseTypeButtonSize / 2;
 const elscMarginBottom = 44.0;
 
 const elscWidthExpanded = etWidthExpanded - elscRightInsetSize;
+const elscTitleWidthExpanded =
+    elscWidthExpanded - elscTitlePaddingLeft - elscTitlePaddingRight - etDragHandleWidthExpanded;
 
 // Exercises scroll container
 const escInwardsDepth = 16.0;

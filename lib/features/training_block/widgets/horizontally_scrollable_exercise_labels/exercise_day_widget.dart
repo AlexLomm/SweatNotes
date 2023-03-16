@@ -40,8 +40,12 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
         height: 56.0,
         duration: animationDuration,
         curve: animationCurve,
-        padding: EdgeInsets.only(left: isEditMode ? 0 : etPaddingLeft),
+        padding: EdgeInsets.only(
+          left: isEditMode ? 0 : elscTitlePaddingLeft,
+          right: elscTitlePaddingRight,
+        ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AnimatedOpacity(
@@ -73,6 +77,7 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
             AnimatedContainer(
               duration: animationDuration,
               curve: animationCurve,
+              width: isEditMode ? elscTitleWidthExpanded : elscTitleWidth,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(

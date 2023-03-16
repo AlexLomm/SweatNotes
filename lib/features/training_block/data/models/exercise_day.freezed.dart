@@ -20,13 +20,9 @@ ExerciseDay _$ExerciseDayFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExerciseDay {
-  @JsonKey(includeToJson: false)
-  String get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   Map<String, int> get exerciseTypesOrdering =>
       throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get trainingBlockId => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,12 +36,7 @@ abstract class $ExerciseDayCopyWith<$Res> {
           ExerciseDay value, $Res Function(ExerciseDay) then) =
       _$ExerciseDayCopyWithImpl<$Res, ExerciseDay>;
   @useResult
-  $Res call(
-      {@JsonKey(includeToJson: false) String id,
-      Map<String, int> exerciseTypesOrdering,
-      String userId,
-      String trainingBlockId,
-      String name});
+  $Res call({String name, Map<String, int> exerciseTypesOrdering});
 }
 
 /// @nodoc
@@ -61,33 +52,18 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? exerciseTypesOrdering = null,
-    Object? userId = null,
-    Object? trainingBlockId = null,
     Object? name = null,
+    Object? exerciseTypesOrdering = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       exerciseTypesOrdering: null == exerciseTypesOrdering
           ? _value.exerciseTypesOrdering
           : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -100,12 +76,7 @@ abstract class _$$_ExerciseDayCopyWith<$Res>
       __$$_ExerciseDayCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(includeToJson: false) String id,
-      Map<String, int> exerciseTypesOrdering,
-      String userId,
-      String trainingBlockId,
-      String name});
+  $Res call({String name, Map<String, int> exerciseTypesOrdering});
 }
 
 /// @nodoc
@@ -119,33 +90,18 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? exerciseTypesOrdering = null,
-    Object? userId = null,
-    Object? trainingBlockId = null,
     Object? name = null,
+    Object? exerciseTypesOrdering = null,
   }) {
     return _then(_$_ExerciseDay(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       exerciseTypesOrdering: null == exerciseTypesOrdering
           ? _value._exerciseTypesOrdering
           : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -154,19 +110,15 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
   const _$_ExerciseDay(
-      {@JsonKey(includeToJson: false) required this.id,
-      final Map<String, int> exerciseTypesOrdering = const {},
-      required this.userId,
-      required this.trainingBlockId,
-      required this.name})
+      {required this.name,
+      final Map<String, int> exerciseTypesOrdering = const {}})
       : _exerciseTypesOrdering = exerciseTypesOrdering;
 
   factory _$_ExerciseDay.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseDayFromJson(json);
 
   @override
-  @JsonKey(includeToJson: false)
-  final String id;
+  final String name;
   final Map<String, int> _exerciseTypesOrdering;
   @override
   @JsonKey()
@@ -178,15 +130,8 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
   }
 
   @override
-  final String userId;
-  @override
-  final String trainingBlockId;
-  @override
-  final String name;
-
-  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDay(id: $id, exerciseTypesOrdering: $exerciseTypesOrdering, userId: $userId, trainingBlockId: $trainingBlockId, name: $name)';
+    return 'ExerciseDay(name: $name, exerciseTypesOrdering: $exerciseTypesOrdering)';
   }
 
   @override
@@ -194,11 +139,9 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDay'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
-      ..add(DiagnosticsProperty('name', name));
+      ..add(DiagnosticsProperty('name', name))
+      ..add(
+          DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering));
   }
 
   @override
@@ -206,24 +149,15 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseDay &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
-                .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.trainingBlockId, trainingBlockId) ||
-                other.trainingBlockId == trainingBlockId) &&
-            (identical(other.name, name) || other.name == name));
+                .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      const DeepCollectionEquality().hash(_exerciseTypesOrdering),
-      userId,
-      trainingBlockId,
-      name);
+  int get hashCode => Object.hash(runtimeType, name,
+      const DeepCollectionEquality().hash(_exerciseTypesOrdering));
 
   @JsonKey(ignore: true)
   @override
@@ -241,26 +175,16 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
 
 abstract class _ExerciseDay implements ExerciseDay {
   const factory _ExerciseDay(
-      {@JsonKey(includeToJson: false) required final String id,
-      final Map<String, int> exerciseTypesOrdering,
-      required final String userId,
-      required final String trainingBlockId,
-      required final String name}) = _$_ExerciseDay;
+      {required final String name,
+      final Map<String, int> exerciseTypesOrdering}) = _$_ExerciseDay;
 
   factory _ExerciseDay.fromJson(Map<String, dynamic> json) =
       _$_ExerciseDay.fromJson;
 
   @override
-  @JsonKey(includeToJson: false)
-  String get id;
+  String get name;
   @override
   Map<String, int> get exerciseTypesOrdering;
-  @override
-  String get userId;
-  @override
-  String get trainingBlockId;
-  @override
-  String get name;
   @override
   @JsonKey(ignore: true)
   _$$_ExerciseDayCopyWith<_$_ExerciseDay> get copyWith =>

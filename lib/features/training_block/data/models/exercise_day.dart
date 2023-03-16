@@ -8,13 +8,9 @@ part 'exercise_day.g.dart';
 @freezed
 class ExerciseDay with _$ExerciseDay {
   const factory ExerciseDay({
-    @JsonKey(includeToJson: false) required String id,
-    @Default({}) Map<String, int> exerciseTypesOrdering,
-    required String userId,
-    required String trainingBlockId,
     required String name,
+    @Default({}) Map<String, int> exerciseTypesOrdering,
   }) = _ExerciseDay;
 
-  factory ExerciseDay.fromJson(Map<String, Object?> json) =>
-      _$ExerciseDayFromJson(json);
+  factory ExerciseDay.fromJson(Map<String, Object?> json) => _$ExerciseDayFromJson(json);
 }

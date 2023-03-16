@@ -22,10 +22,8 @@ TrainingBlock _$TrainingBlockFromJson(Map<String, dynamic> json) {
 mixin _$TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  Map<String, int> get exerciseDaysOrdering =>
-      throw _privateConstructorUsedError;
+  List<ExerciseDay> get exerciseDays => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,9 +39,8 @@ abstract class $TrainingBlockCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String id,
-      String userId,
       String name,
-      Map<String, int> exerciseDaysOrdering});
+      List<ExerciseDay> exerciseDays});
 }
 
 /// @nodoc
@@ -60,27 +57,22 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
     Object? name = null,
-    Object? exerciseDaysOrdering = null,
+    Object? exerciseDays = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      exerciseDaysOrdering: null == exerciseDaysOrdering
-          ? _value.exerciseDaysOrdering
-          : exerciseDaysOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      exerciseDays: null == exerciseDays
+          ? _value.exerciseDays
+          : exerciseDays // ignore: cast_nullable_to_non_nullable
+              as List<ExerciseDay>,
     ) as $Val);
   }
 }
@@ -95,9 +87,8 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String id,
-      String userId,
       String name,
-      Map<String, int> exerciseDaysOrdering});
+      List<ExerciseDay> exerciseDays});
 }
 
 /// @nodoc
@@ -112,27 +103,22 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
     Object? name = null,
-    Object? exerciseDaysOrdering = null,
+    Object? exerciseDays = null,
   }) {
     return _then(_$_TrainingBlock(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      exerciseDaysOrdering: null == exerciseDaysOrdering
-          ? _value._exerciseDaysOrdering
-          : exerciseDaysOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      exerciseDays: null == exerciseDays
+          ? _value._exerciseDays
+          : exerciseDays // ignore: cast_nullable_to_non_nullable
+              as List<ExerciseDay>,
     ));
   }
 }
@@ -142,10 +128,9 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
 class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   const _$_TrainingBlock(
       {@JsonKey(includeToJson: false) required this.id,
-      required this.userId,
       required this.name,
-      final Map<String, int> exerciseDaysOrdering = const {}})
-      : _exerciseDaysOrdering = exerciseDaysOrdering;
+      final List<ExerciseDay> exerciseDays = const []})
+      : _exerciseDays = exerciseDays;
 
   factory _$_TrainingBlock.fromJson(Map<String, dynamic> json) =>
       _$$_TrainingBlockFromJson(json);
@@ -154,22 +139,19 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   @JsonKey(includeToJson: false)
   final String id;
   @override
-  final String userId;
-  @override
   final String name;
-  final Map<String, int> _exerciseDaysOrdering;
+  final List<ExerciseDay> _exerciseDays;
   @override
   @JsonKey()
-  Map<String, int> get exerciseDaysOrdering {
-    if (_exerciseDaysOrdering is EqualUnmodifiableMapView)
-      return _exerciseDaysOrdering;
+  List<ExerciseDay> get exerciseDays {
+    if (_exerciseDays is EqualUnmodifiableListView) return _exerciseDays;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_exerciseDaysOrdering);
+    return EqualUnmodifiableListView(_exerciseDays);
   }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlock(id: $id, userId: $userId, name: $name, exerciseDaysOrdering: $exerciseDaysOrdering)';
+    return 'TrainingBlock(id: $id, name: $name, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -178,9 +160,8 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
     properties
       ..add(DiagnosticsProperty('type', 'TrainingBlock'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('exerciseDaysOrdering', exerciseDaysOrdering));
+      ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
 
   @override
@@ -189,16 +170,15 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
         (other.runtimeType == runtimeType &&
             other is _$_TrainingBlock &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
-                .equals(other._exerciseDaysOrdering, _exerciseDaysOrdering));
+                .equals(other._exerciseDays, _exerciseDays));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, name,
-      const DeepCollectionEquality().hash(_exerciseDaysOrdering));
+  int get hashCode => Object.hash(runtimeType, id, name,
+      const DeepCollectionEquality().hash(_exerciseDays));
 
   @JsonKey(ignore: true)
   @override
@@ -217,9 +197,8 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
 abstract class _TrainingBlock implements TrainingBlock {
   const factory _TrainingBlock(
       {@JsonKey(includeToJson: false) required final String id,
-      required final String userId,
       required final String name,
-      final Map<String, int> exerciseDaysOrdering}) = _$_TrainingBlock;
+      final List<ExerciseDay> exerciseDays}) = _$_TrainingBlock;
 
   factory _TrainingBlock.fromJson(Map<String, dynamic> json) =
       _$_TrainingBlock.fromJson;
@@ -228,11 +207,9 @@ abstract class _TrainingBlock implements TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id;
   @override
-  String get userId;
-  @override
   String get name;
   @override
-  Map<String, int> get exerciseDaysOrdering;
+  List<ExerciseDay> get exerciseDays;
   @override
   @JsonKey(ignore: true)
   _$$_TrainingBlockCopyWith<_$_TrainingBlock> get copyWith =>

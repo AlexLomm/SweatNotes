@@ -10,22 +10,19 @@ part 'exercise_day_client.freezed.dart';
 class ExerciseDayClient with _$ExerciseDayClient {
   const ExerciseDayClient._();
 
-  Map<String, int> get _exerciseTypesNewOrdering => exerciseTypes.asMap().map((key, value) => MapEntry(value.id, key));
+  Map<String, int> get _exerciseTypesNewOrdering => exerciseTypes
+      //
+      .asMap()
+      .map((key, value) => MapEntry(value.dbModel.id, key));
 
   const factory ExerciseDayClient({
-    required String id,
+    required ExerciseDay dbModel,
     required String name,
-    required String userId,
-    required String trainingBlockId,
-    required Map<String, int> exerciseTypesOrdering,
     required List<ExerciseTypeClient> exerciseTypes,
   }) = _ExerciseDayClient;
 
-  toExerciseDay() => ExerciseDay(
-        id: id,
+  ExerciseDay toDbModel() => dbModel.copyWith(
         name: name,
-        userId: userId,
-        trainingBlockId: trainingBlockId,
         exerciseTypesOrdering: _exerciseTypesNewOrdering,
       );
 }

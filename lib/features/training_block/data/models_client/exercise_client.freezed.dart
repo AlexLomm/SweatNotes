@@ -16,15 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ExerciseClient {
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get exerciseDayId => throw _privateConstructorUsedError;
-  String get exerciseTypeId => throw _privateConstructorUsedError;
-  String get trainingBlockId => throw _privateConstructorUsedError;
-  bool get isFiller => throw _privateConstructorUsedError;
+  Exercise? get dbModel => throw _privateConstructorUsedError; // TODO: remove?
   int get placement => throw _privateConstructorUsedError;
-  List<ExerciseSetClient> get exerciseSets =>
-      throw _privateConstructorUsedError;
+  List<ExerciseSetClient> get sets => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ExerciseClientCopyWith<ExerciseClient> get copyWith =>
@@ -37,15 +31,9 @@ abstract class $ExerciseClientCopyWith<$Res> {
           ExerciseClient value, $Res Function(ExerciseClient) then) =
       _$ExerciseClientCopyWithImpl<$Res, ExerciseClient>;
   @useResult
-  $Res call(
-      {String id,
-      String userId,
-      String exerciseDayId,
-      String exerciseTypeId,
-      String trainingBlockId,
-      bool isFiller,
-      int placement,
-      List<ExerciseSetClient> exerciseSets});
+  $Res call({Exercise? dbModel, int placement, List<ExerciseSetClient> sets});
+
+  $ExerciseCopyWith<$Res>? get dbModel;
 }
 
 /// @nodoc
@@ -61,49 +49,36 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? exerciseDayId = null,
-    Object? exerciseTypeId = null,
-    Object? trainingBlockId = null,
-    Object? isFiller = null,
+    Object? dbModel = freezed,
     Object? placement = null,
-    Object? exerciseSets = null,
+    Object? sets = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseDayId: null == exerciseDayId
-          ? _value.exerciseDayId
-          : exerciseDayId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseTypeId: null == exerciseTypeId
-          ? _value.exerciseTypeId
-          : exerciseTypeId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
-      isFiller: null == isFiller
-          ? _value.isFiller
-          : isFiller // ignore: cast_nullable_to_non_nullable
-              as bool,
+      dbModel: freezed == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as Exercise?,
       placement: null == placement
           ? _value.placement
           : placement // ignore: cast_nullable_to_non_nullable
               as int,
-      exerciseSets: null == exerciseSets
-          ? _value.exerciseSets
-          : exerciseSets // ignore: cast_nullable_to_non_nullable
+      sets: null == sets
+          ? _value.sets
+          : sets // ignore: cast_nullable_to_non_nullable
               as List<ExerciseSetClient>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExerciseCopyWith<$Res>? get dbModel {
+    if (_value.dbModel == null) {
+      return null;
+    }
+
+    return $ExerciseCopyWith<$Res>(_value.dbModel!, (value) {
+      return _then(_value.copyWith(dbModel: value) as $Val);
+    });
   }
 }
 
@@ -115,15 +90,10 @@ abstract class _$$_ExerciseClientCopyWith<$Res>
       __$$_ExerciseClientCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String userId,
-      String exerciseDayId,
-      String exerciseTypeId,
-      String trainingBlockId,
-      bool isFiller,
-      int placement,
-      List<ExerciseSetClient> exerciseSets});
+  $Res call({Exercise? dbModel, int placement, List<ExerciseSetClient> sets});
+
+  @override
+  $ExerciseCopyWith<$Res>? get dbModel;
 }
 
 /// @nodoc
@@ -137,47 +107,22 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? exerciseDayId = null,
-    Object? exerciseTypeId = null,
-    Object? trainingBlockId = null,
-    Object? isFiller = null,
+    Object? dbModel = freezed,
     Object? placement = null,
-    Object? exerciseSets = null,
+    Object? sets = null,
   }) {
     return _then(_$_ExerciseClient(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseDayId: null == exerciseDayId
-          ? _value.exerciseDayId
-          : exerciseDayId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseTypeId: null == exerciseTypeId
-          ? _value.exerciseTypeId
-          : exerciseTypeId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
-      isFiller: null == isFiller
-          ? _value.isFiller
-          : isFiller // ignore: cast_nullable_to_non_nullable
-              as bool,
+      dbModel: freezed == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as Exercise?,
       placement: null == placement
           ? _value.placement
           : placement // ignore: cast_nullable_to_non_nullable
               as int,
-      exerciseSets: null == exerciseSets
-          ? _value._exerciseSets
-          : exerciseSets // ignore: cast_nullable_to_non_nullable
+      sets: null == sets
+          ? _value.sets
+          : sets // ignore: cast_nullable_to_non_nullable
               as List<ExerciseSetClient>,
     ));
   }
@@ -187,44 +132,20 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
 
 class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   const _$_ExerciseClient(
-      {required this.id,
-      required this.userId,
-      required this.exerciseDayId,
-      required this.exerciseTypeId,
-      required this.trainingBlockId,
-      this.isFiller = false,
-      this.placement = -1,
-      required final List<ExerciseSetClient> exerciseSets})
-      : _exerciseSets = exerciseSets,
-        super._();
+      {this.dbModel, required this.placement, required this.sets})
+      : super._();
 
   @override
-  final String id;
+  final Exercise? dbModel;
+// TODO: remove?
   @override
-  final String userId;
-  @override
-  final String exerciseDayId;
-  @override
-  final String exerciseTypeId;
-  @override
-  final String trainingBlockId;
-  @override
-  @JsonKey()
-  final bool isFiller;
-  @override
-  @JsonKey()
   final int placement;
-  final List<ExerciseSetClient> _exerciseSets;
   @override
-  List<ExerciseSetClient> get exerciseSets {
-    if (_exerciseSets is EqualUnmodifiableListView) return _exerciseSets;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_exerciseSets);
-  }
+  final List<ExerciseSetClient> sets;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseClient(id: $id, userId: $userId, exerciseDayId: $exerciseDayId, exerciseTypeId: $exerciseTypeId, trainingBlockId: $trainingBlockId, isFiller: $isFiller, placement: $placement, exerciseSets: $exerciseSets)';
+    return 'ExerciseClient(dbModel: $dbModel, placement: $placement, sets: $sets)';
   }
 
   @override
@@ -232,14 +153,9 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseClient'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('exerciseDayId', exerciseDayId))
-      ..add(DiagnosticsProperty('exerciseTypeId', exerciseTypeId))
-      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
-      ..add(DiagnosticsProperty('isFiller', isFiller))
+      ..add(DiagnosticsProperty('dbModel', dbModel))
       ..add(DiagnosticsProperty('placement', placement))
-      ..add(DiagnosticsProperty('exerciseSets', exerciseSets));
+      ..add(DiagnosticsProperty('sets', sets));
   }
 
   @override
@@ -247,33 +163,15 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseClient &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.exerciseDayId, exerciseDayId) ||
-                other.exerciseDayId == exerciseDayId) &&
-            (identical(other.exerciseTypeId, exerciseTypeId) ||
-                other.exerciseTypeId == exerciseTypeId) &&
-            (identical(other.trainingBlockId, trainingBlockId) ||
-                other.trainingBlockId == trainingBlockId) &&
-            (identical(other.isFiller, isFiller) ||
-                other.isFiller == isFiller) &&
+            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
             (identical(other.placement, placement) ||
                 other.placement == placement) &&
-            const DeepCollectionEquality()
-                .equals(other._exerciseSets, _exerciseSets));
+            const DeepCollectionEquality().equals(other.sets, sets));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      userId,
-      exerciseDayId,
-      exerciseTypeId,
-      trainingBlockId,
-      isFiller,
-      placement,
-      const DeepCollectionEquality().hash(_exerciseSets));
+  int get hashCode => Object.hash(runtimeType, dbModel, placement,
+      const DeepCollectionEquality().hash(sets));
 
   @JsonKey(ignore: true)
   @override
@@ -284,32 +182,17 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
 
 abstract class _ExerciseClient extends ExerciseClient {
   const factory _ExerciseClient(
-      {required final String id,
-      required final String userId,
-      required final String exerciseDayId,
-      required final String exerciseTypeId,
-      required final String trainingBlockId,
-      final bool isFiller,
-      final int placement,
-      required final List<ExerciseSetClient> exerciseSets}) = _$_ExerciseClient;
+      {final Exercise? dbModel,
+      required final int placement,
+      required final List<ExerciseSetClient> sets}) = _$_ExerciseClient;
   const _ExerciseClient._() : super._();
 
   @override
-  String get id;
-  @override
-  String get userId;
-  @override
-  String get exerciseDayId;
-  @override
-  String get exerciseTypeId;
-  @override
-  String get trainingBlockId;
-  @override
-  bool get isFiller;
-  @override
+  Exercise? get dbModel;
+  @override // TODO: remove?
   int get placement;
   @override
-  List<ExerciseSetClient> get exerciseSets;
+  List<ExerciseSetClient> get sets;
   @override
   @JsonKey(ignore: true)
   _$$_ExerciseClientCopyWith<_$_ExerciseClient> get copyWith =>

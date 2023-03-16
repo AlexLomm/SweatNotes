@@ -15,6 +15,8 @@ class ExerciseTypesRepository {
 
   CollectionReference<ExerciseType> get collectionRef => firestore
       //
+      .collection('users')
+      .doc(firebaseAuth.currentUser?.uid)
       .collection('exercise-types')
       .withConverter(
         fromFirestore: _fromFirestore,
@@ -25,11 +27,8 @@ class ExerciseTypesRepository {
     return collectionRef.doc(id);
   }
 
-  Query<ExerciseType> getQuery() {
-    return collectionRef.where(
-      'userId',
-      isEqualTo: firebaseAuth.currentUser?.uid,
-    );
+  Query<ExerciseType> getQueryByTrainingBlockId(String trainingBlockId) {
+    return collectionRef.where('trainingBlockId', isEqualTo: trainingBlockId);
   }
 
   ExerciseType _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
@@ -44,8 +43,7 @@ class ExerciseTypesRepository {
     return ExerciseType.fromJson(data);
   }
 
-  Map<String, dynamic> _toFirestore(ExerciseType exerciseType, _) =>
-      exerciseType.toJson();
+  Map<String, dynamic> _toFirestore(ExerciseType exerciseType, _) => exerciseType.toJson();
 }
 
 @riverpod

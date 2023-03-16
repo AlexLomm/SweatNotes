@@ -47,10 +47,12 @@ class ExerciseDaysRepository {
   Future<void> update(
     ExerciseDay exerciseDay,
   ) {
-    final docRef = getDocumentRefById(exerciseDay.id);
+    // final docRef = getDocumentRefById(exerciseDay.id);
+    //
+    // // TODO: use withConverter?
+    // return docRef.update(_toFirestore(exerciseDay, null));
 
-    // TODO: use withConverter?
-    return docRef.update(_toFirestore(exerciseDay, null));
+    return Future.value();
   }
 
   Future<void> moveExerciseTypeIntoAnotherExerciseDay({
@@ -58,33 +60,35 @@ class ExerciseDaysRepository {
     required ExerciseDay newExerciseDay,
     required List<Exercise> exercises,
   }) async {
-    final batch = firestore.batch();
-
-    for (final exerciseDay in [oldExerciseDay, newExerciseDay]) {
-      final docRef = getDocumentRefById(exerciseDay.id);
-
-      batch.update(docRef, {"exerciseTypesOrdering": exerciseDay.exerciseTypesOrdering});
-    }
-
-    for (final exercise in exercises) {
-      final docRef = exercisesRepository.getDocumentRefById(exercise.id);
-
-      batch.update(docRef, {"exerciseDayId": newExerciseDay.id});
-    }
-
-    return batch.commit();
+    // final batch = firestore.batch();
+    //
+    // for (final exerciseDay in [oldExerciseDay, newExerciseDay]) {
+    //   final docRef = getDocumentRefById(exerciseDay.id);
+    //
+    //   batch.update(docRef, {"exerciseTypesOrdering": exerciseDay.exerciseTypesOrdering});
+    // }
+    //
+    // for (final exercise in exercises) {
+    //   final docRef = exercisesRepository.getDocumentRefById(exercise.id);
+    //
+    //   batch.update(docRef, {"exerciseDayId": newExerciseDay.id});
+    // }
+    //
+    // return batch.commit();
   }
 
   ExerciseDay _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
-    final dataWithoutId = doc.data();
+    // final dataWithoutId = doc.data();
+    //
+    // if (dataWithoutId == null) {
+    //   return ExerciseDay.fromJson({});
+    // }
+    //
+    // final data = {'id': doc.id, ...dataWithoutId};
+    //
+    // return ExerciseDay.fromJson(data);
 
-    if (dataWithoutId == null) {
-      return ExerciseDay.fromJson({});
-    }
-
-    final data = {'id': doc.id, ...dataWithoutId};
-
-    return ExerciseDay.fromJson(data);
+    return ExerciseDay.fromJson({});
   }
 
   Map<String, dynamic> _toFirestore(ExerciseDay exerciseDay, _) => exerciseDay.toJson();

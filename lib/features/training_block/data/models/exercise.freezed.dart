@@ -21,11 +21,6 @@ Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Exercise {
   @JsonKey(includeToJson: false)
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get exerciseDayId => throw _privateConstructorUsedError;
-  String get exerciseTypeId => throw _privateConstructorUsedError;
-  String get trainingBlockId => throw _privateConstructorUsedError;
   int get placement => throw _privateConstructorUsedError;
   List<ExerciseSet> get sets => throw _privateConstructorUsedError;
 
@@ -41,13 +36,7 @@ abstract class $ExerciseCopyWith<$Res> {
       _$ExerciseCopyWithImpl<$Res, Exercise>;
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false) String id,
-      String userId,
-      String exerciseDayId,
-      String exerciseTypeId,
-      String trainingBlockId,
-      int placement,
-      List<ExerciseSet> sets});
+      {@JsonKey(includeToJson: false) int placement, List<ExerciseSet> sets});
 }
 
 /// @nodoc
@@ -63,35 +52,10 @@ class _$ExerciseCopyWithImpl<$Res, $Val extends Exercise>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? exerciseDayId = null,
-    Object? exerciseTypeId = null,
-    Object? trainingBlockId = null,
     Object? placement = null,
     Object? sets = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseDayId: null == exerciseDayId
-          ? _value.exerciseDayId
-          : exerciseDayId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseTypeId: null == exerciseTypeId
-          ? _value.exerciseTypeId
-          : exerciseTypeId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
       placement: null == placement
           ? _value.placement
           : placement // ignore: cast_nullable_to_non_nullable
@@ -112,13 +76,7 @@ abstract class _$$_ExerciseCopyWith<$Res> implements $ExerciseCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false) String id,
-      String userId,
-      String exerciseDayId,
-      String exerciseTypeId,
-      String trainingBlockId,
-      int placement,
-      List<ExerciseSet> sets});
+      {@JsonKey(includeToJson: false) int placement, List<ExerciseSet> sets});
 }
 
 /// @nodoc
@@ -132,35 +90,10 @@ class __$$_ExerciseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? exerciseDayId = null,
-    Object? exerciseTypeId = null,
-    Object? trainingBlockId = null,
     Object? placement = null,
     Object? sets = null,
   }) {
     return _then(_$_Exercise(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseDayId: null == exerciseDayId
-          ? _value.exerciseDayId
-          : exerciseDayId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseTypeId: null == exerciseTypeId
-          ? _value.exerciseTypeId
-          : exerciseTypeId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
       placement: null == placement
           ? _value.placement
           : placement // ignore: cast_nullable_to_non_nullable
@@ -177,12 +110,7 @@ class __$$_ExerciseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
   const _$_Exercise(
-      {@JsonKey(includeToJson: false) required this.id,
-      required this.userId,
-      required this.exerciseDayId,
-      required this.exerciseTypeId,
-      required this.trainingBlockId,
-      this.placement = 0,
+      {@JsonKey(includeToJson: false) required this.placement,
       final List<ExerciseSet> sets = const []})
       : _sets = sets;
 
@@ -191,17 +119,6 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
 
   @override
   @JsonKey(includeToJson: false)
-  final String id;
-  @override
-  final String userId;
-  @override
-  final String exerciseDayId;
-  @override
-  final String exerciseTypeId;
-  @override
-  final String trainingBlockId;
-  @override
-  @JsonKey()
   final int placement;
   final List<ExerciseSet> _sets;
   @override
@@ -214,7 +131,7 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Exercise(id: $id, userId: $userId, exerciseDayId: $exerciseDayId, exerciseTypeId: $exerciseTypeId, trainingBlockId: $trainingBlockId, placement: $placement, sets: $sets)';
+    return 'Exercise(placement: $placement, sets: $sets)';
   }
 
   @override
@@ -222,11 +139,6 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Exercise'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('exerciseDayId', exerciseDayId))
-      ..add(DiagnosticsProperty('exerciseTypeId', exerciseTypeId))
-      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
       ..add(DiagnosticsProperty('placement', placement))
       ..add(DiagnosticsProperty('sets', sets));
   }
@@ -236,14 +148,6 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Exercise &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.exerciseDayId, exerciseDayId) ||
-                other.exerciseDayId == exerciseDayId) &&
-            (identical(other.exerciseTypeId, exerciseTypeId) ||
-                other.exerciseTypeId == exerciseTypeId) &&
-            (identical(other.trainingBlockId, trainingBlockId) ||
-                other.trainingBlockId == trainingBlockId) &&
             (identical(other.placement, placement) ||
                 other.placement == placement) &&
             const DeepCollectionEquality().equals(other._sets, _sets));
@@ -252,14 +156,7 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      userId,
-      exerciseDayId,
-      exerciseTypeId,
-      trainingBlockId,
-      placement,
-      const DeepCollectionEquality().hash(_sets));
+      runtimeType, placement, const DeepCollectionEquality().hash(_sets));
 
   @JsonKey(ignore: true)
   @override
@@ -277,28 +174,13 @@ class _$_Exercise with DiagnosticableTreeMixin implements _Exercise {
 
 abstract class _Exercise implements Exercise {
   const factory _Exercise(
-      {@JsonKey(includeToJson: false) required final String id,
-      required final String userId,
-      required final String exerciseDayId,
-      required final String exerciseTypeId,
-      required final String trainingBlockId,
-      final int placement,
+      {@JsonKey(includeToJson: false) required final int placement,
       final List<ExerciseSet> sets}) = _$_Exercise;
 
   factory _Exercise.fromJson(Map<String, dynamic> json) = _$_Exercise.fromJson;
 
   @override
   @JsonKey(includeToJson: false)
-  String get id;
-  @override
-  String get userId;
-  @override
-  String get exerciseDayId;
-  @override
-  String get exerciseTypeId;
-  @override
-  String get trainingBlockId;
-  @override
   int get placement;
   @override
   List<ExerciseSet> get sets;

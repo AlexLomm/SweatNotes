@@ -16,12 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ExerciseDayClient {
-  String get id => throw _privateConstructorUsedError;
+  ExerciseDay get dbModel => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get trainingBlockId => throw _privateConstructorUsedError;
-  Map<String, int> get exerciseTypesOrdering =>
-      throw _privateConstructorUsedError;
   List<ExerciseTypeClient> get exerciseTypes =>
       throw _privateConstructorUsedError;
 
@@ -37,12 +33,11 @@ abstract class $ExerciseDayClientCopyWith<$Res> {
       _$ExerciseDayClientCopyWithImpl<$Res, ExerciseDayClient>;
   @useResult
   $Res call(
-      {String id,
+      {ExerciseDay dbModel,
       String name,
-      String userId,
-      String trainingBlockId,
-      Map<String, int> exerciseTypesOrdering,
       List<ExerciseTypeClient> exerciseTypes});
+
+  $ExerciseDayCopyWith<$Res> get dbModel;
 }
 
 /// @nodoc
@@ -58,39 +53,32 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? dbModel = null,
     Object? name = null,
-    Object? userId = null,
-    Object? trainingBlockId = null,
-    Object? exerciseTypesOrdering = null,
     Object? exerciseTypes = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
+      dbModel: null == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as ExerciseDay,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseTypesOrdering: null == exerciseTypesOrdering
-          ? _value.exerciseTypesOrdering
-          : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
       exerciseTypes: null == exerciseTypes
           ? _value.exerciseTypes
           : exerciseTypes // ignore: cast_nullable_to_non_nullable
               as List<ExerciseTypeClient>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExerciseDayCopyWith<$Res> get dbModel {
+    return $ExerciseDayCopyWith<$Res>(_value.dbModel, (value) {
+      return _then(_value.copyWith(dbModel: value) as $Val);
+    });
   }
 }
 
@@ -103,12 +91,12 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {ExerciseDay dbModel,
       String name,
-      String userId,
-      String trainingBlockId,
-      Map<String, int> exerciseTypesOrdering,
       List<ExerciseTypeClient> exerciseTypes});
+
+  @override
+  $ExerciseDayCopyWith<$Res> get dbModel;
 }
 
 /// @nodoc
@@ -122,34 +110,19 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? dbModel = null,
     Object? name = null,
-    Object? userId = null,
-    Object? trainingBlockId = null,
-    Object? exerciseTypesOrdering = null,
     Object? exerciseTypes = null,
   }) {
     return _then(_$_ExerciseDayClient(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
+      dbModel: null == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as ExerciseDay,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      trainingBlockId: null == trainingBlockId
-          ? _value.trainingBlockId
-          : trainingBlockId // ignore: cast_nullable_to_non_nullable
-              as String,
-      exerciseTypesOrdering: null == exerciseTypesOrdering
-          ? _value._exerciseTypesOrdering
-          : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
       exerciseTypes: null == exerciseTypes
           ? _value._exerciseTypes
           : exerciseTypes // ignore: cast_nullable_to_non_nullable
@@ -163,33 +136,16 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
 class _$_ExerciseDayClient extends _ExerciseDayClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseDayClient(
-      {required this.id,
+      {required this.dbModel,
       required this.name,
-      required this.userId,
-      required this.trainingBlockId,
-      required final Map<String, int> exerciseTypesOrdering,
       required final List<ExerciseTypeClient> exerciseTypes})
-      : _exerciseTypesOrdering = exerciseTypesOrdering,
-        _exerciseTypes = exerciseTypes,
+      : _exerciseTypes = exerciseTypes,
         super._();
 
   @override
-  final String id;
+  final ExerciseDay dbModel;
   @override
   final String name;
-  @override
-  final String userId;
-  @override
-  final String trainingBlockId;
-  final Map<String, int> _exerciseTypesOrdering;
-  @override
-  Map<String, int> get exerciseTypesOrdering {
-    if (_exerciseTypesOrdering is EqualUnmodifiableMapView)
-      return _exerciseTypesOrdering;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_exerciseTypesOrdering);
-  }
-
   final List<ExerciseTypeClient> _exerciseTypes;
   @override
   List<ExerciseTypeClient> get exerciseTypes {
@@ -200,7 +156,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDayClient(id: $id, name: $name, userId: $userId, trainingBlockId: $trainingBlockId, exerciseTypesOrdering: $exerciseTypesOrdering, exerciseTypes: $exerciseTypes)';
+    return 'ExerciseDayClient(dbModel: $dbModel, name: $name, exerciseTypes: $exerciseTypes)';
   }
 
   @override
@@ -208,11 +164,8 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDayClient'))
-      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('dbModel', dbModel))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
-      ..add(DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering))
       ..add(DiagnosticsProperty('exerciseTypes', exerciseTypes));
   }
 
@@ -221,25 +174,14 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseDayClient &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.trainingBlockId, trainingBlockId) ||
-                other.trainingBlockId == trainingBlockId) &&
-            const DeepCollectionEquality()
-                .equals(other._exerciseTypesOrdering, _exerciseTypesOrdering) &&
             const DeepCollectionEquality()
                 .equals(other._exerciseTypes, _exerciseTypes));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      name,
-      userId,
-      trainingBlockId,
-      const DeepCollectionEquality().hash(_exerciseTypesOrdering),
+  int get hashCode => Object.hash(runtimeType, dbModel, name,
       const DeepCollectionEquality().hash(_exerciseTypes));
 
   @JsonKey(ignore: true)
@@ -252,25 +194,16 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 
 abstract class _ExerciseDayClient extends ExerciseDayClient {
   const factory _ExerciseDayClient(
-          {required final String id,
+          {required final ExerciseDay dbModel,
           required final String name,
-          required final String userId,
-          required final String trainingBlockId,
-          required final Map<String, int> exerciseTypesOrdering,
           required final List<ExerciseTypeClient> exerciseTypes}) =
       _$_ExerciseDayClient;
   const _ExerciseDayClient._() : super._();
 
   @override
-  String get id;
+  ExerciseDay get dbModel;
   @override
   String get name;
-  @override
-  String get userId;
-  @override
-  String get trainingBlockId;
-  @override
-  Map<String, int> get exerciseTypesOrdering;
   @override
   List<ExerciseTypeClient> get exerciseTypes;
   @override

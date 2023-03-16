@@ -13,21 +13,24 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
   List<ExerciseClient> get exercisesWithoutFillers {
     final exercisesWithoutFillerSets = exercises
         .where((exercise) => !exercise.isFiller)
-        .map((exercise) => exercise.copyWith(exerciseSets: exercise.setsWithNoTrailingFillers))
+        .map((exercise) => exercise.copyWith(sets: exercise.setsWithNoTrailingFillers))
         .toList();
 
     return exercisesWithoutFillerSets;
   }
 
   const factory ExerciseTypeClient({
-    required String id,
-    required String userId,
+    required ExerciseType dbModel,
+    // TODO: remove?
     required String name,
+    // TODO: remove?
     required String unit,
     required List<ExerciseClient> exercises,
   }) = _ExerciseTypeClient;
 
-  ExerciseType toExerciseType() {
-    return ExerciseType(id: id, userId: userId, name: name, unit: unit);
+  ExerciseType toDbModel() {
+    return dbModel.copyWith(
+      exercises: exercisesWithoutFillers.map((exercise) => exercise.toExercise()).toList(),
+    );
   }
 }

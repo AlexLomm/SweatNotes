@@ -10,11 +10,9 @@ class ExerciseSet with _$ExerciseSet {
   const factory ExerciseSet({
     // TODO: change to double
     @Default('') String load,
-
     // TODO: change to int
     @Default('') String reps,
   }) = _ExerciseSet;
 
-  factory ExerciseSet.fromJson(Map<String, Object?> json) =>
-      _$ExerciseSetFromJson(json);
+  factory ExerciseSet.fromJson(Map<String, Object?> json) => _$ExerciseSetFromJson(json);
 }

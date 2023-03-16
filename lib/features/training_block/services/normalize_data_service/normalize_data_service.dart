@@ -1,254 +1,234 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:journal_flutter/features/training_block/data/models_client/exercise_type_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/exercise_days_repository.dart';
 import '../../data/exercise_types_repository.dart';
-import '../../data/exercises_repository.dart';
-import '../../data/models/exercise.dart';
-import '../../data/models/exercise_day.dart';
 import '../../data/models/exercise_type.dart';
 import '../../data/models/training_block.dart';
+import '../../data/models_client/exercise_client.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/exercise_set_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../data/training_blocks_repository.dart';
-import 'exercise_days_by_ids_exercise_types_by_ids_map.dart';
-import 'exercise_days_by_ids_map.dart';
 
 part 'normalize_data_service.g.dart';
 
 // TODO: rename service
+// TODO: convert to riverpod?
 class NormalizeDataService {
   final String trainingBlockId;
   final TrainingBlocksRepository trainingBlocksRepository;
-  final ExerciseDaysRepository exerciseDaysRepository;
   final ExerciseTypesRepository exerciseTypesRepository;
-  final ExercisesRepository exercisesRepository;
 
   TrainingBlock? _trainingBlock;
-  List<ExerciseDay>? _exerciseDays;
   List<ExerciseType>? _exerciseTypes;
-  List<Exercise>? _exercises;
 
-  Stream<TrainingBlockClient?> get trainingBlock => _exerciseDaysClientController.stream;
-  late final StreamController<TrainingBlockClient?> _exerciseDaysClientController;
+  Stream<TrainingBlockClient?> get data => _dataController.stream;
+  late final StreamController<TrainingBlockClient?> _dataController;
 
   NormalizeDataService({
     required this.trainingBlockId,
     required this.trainingBlocksRepository,
-    required this.exerciseDaysRepository,
     required this.exerciseTypesRepository,
-    required this.exercisesRepository,
   }) {
-    _exerciseDaysClientController = StreamController<TrainingBlockClient?>(
+    _dataController = StreamController<TrainingBlockClient?>(
       onListen: _recalculateState,
-      // onCancel: () => _exerciseDaysClientController.close(),
+      onCancel: () => _dataController.close(),
     );
 
-    trainingBlocksRepository.getDocumentRefById(trainingBlockId).snapshots().listen((event) {
+    trainingBlocksRepository
+        //
+        .getDocumentRefById(trainingBlockId)
+        .snapshots()
+        .listen((event) {
       _trainingBlock = event.data();
-
-      _recalculateState();
-    });
-
-    exerciseDaysRepository.getQueryByTrainingBlockId(trainingBlockId).snapshots().listen((event) {
-      _exerciseDays = event.docs.map((e) => e.data()).toList();
 
       _recalculateState();
     });
 
     exerciseTypesRepository
         //
-        .getQuery()
+        .getQueryByTrainingBlockId(trainingBlockId)
         .snapshots()
         .listen((event) {
       _exerciseTypes = event.docs.map((e) => e.data()).toList();
 
       _recalculateState();
     });
-
-    exercisesRepository.getQueryByTrainingBlockId(trainingBlockId).snapshots().listen(
-      (event) {
-        _exercises = event.docs.map((e) => e.data()).toList();
-
-        _recalculateState();
-      },
-    );
   }
 
   _recalculateState() {
     try {
-      _exerciseDaysClientController.add(getNormalizedData(trainingBlockId));
+      _dataController.add(getNormalizedData(trainingBlockId));
     } on Exception catch (e) {
       // ignore: avoid_print
       print(e);
     }
   }
 
-  TrainingBlockClient? getNormalizedData(String trainingBlockId) {
+  TrainingBlockClient? getNormalizedData(trainingBlockId) {
     final trainingBlock = _trainingBlock;
-    final exerciseDays = _exerciseDays;
     final exerciseTypes = _exerciseTypes;
-    final exercises = _exercises;
 
-    if (trainingBlock == null || exerciseDays == null || exerciseTypes == null || exercises == null) {
+    if (trainingBlock == null || exerciseTypes == null) {
       return null;
     }
 
-    final exerciseDaysMap = ExerciseDaysByIdsMap(exerciseDays);
+    final maxExerciseSetsCount = exerciseTypes
+        .map((exerciseType) => exerciseType.exercises.map((exercise) => exercise.sets.length).reduce(max))
+        .reduce(max);
 
-    final exerciseDaysTypesMap = ExerciseDaysByIdsExerciseTypesByIdsMap(
-      userId: trainingBlock.userId,
-      trainingBlockId: trainingBlock.id,
-      exercises: exercises,
-      exerciseTypes: exerciseTypes,
-    );
-
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
-    final exerciseDaysWithSortedExerciseTypes = exerciseDaysTypesMap.entries.map((entry) {
-      final exerciseDayId = entry.key;
-      final exerciseTypes = entry.value.values.toList();
-
-      final exerciseTypesOrdering = exerciseDaysMap.get(exerciseDayId).exerciseTypesOrdering;
-
-      exerciseTypes.sort((a, b) {
-        final orderingA = exerciseTypesOrdering[a.id] ?? double.maxFinite;
-        final orderingB = exerciseTypesOrdering[b.id] ?? double.maxFinite;
-
-        return orderingA.toInt() - orderingB.toInt();
-      });
-
-      final exerciseDay = exerciseDaysMap.get(entry.key);
-
-      return exerciseDay.copyWith(
-        id: exerciseDay.id,
-        name: exerciseDay.name,
-        exerciseTypes: exerciseTypes,
-      );
-    }).toList();
-
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
-    final emptyExerciseDayIds = exerciseDaysMap.getEmptyExerciseDayIds(
-      exerciseDaysWithSortedExerciseTypes,
-    );
-
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap??
-    for (final emptyExerciseDayId in emptyExerciseDayIds) {
-      exerciseDaysWithSortedExerciseTypes.add(ExerciseDayClient(
-        id: emptyExerciseDayId,
-        userId: trainingBlock.userId,
-        trainingBlockId: trainingBlockId,
-        name: exerciseDaysMap.get(emptyExerciseDayId).name,
-        exerciseTypesOrdering: {},
-        exerciseTypes: [],
-      ));
-    }
-
-    // TODO: refactor into ExerciseDaysByIdsExerciseTypesByIdsMap
-    exerciseDaysWithSortedExerciseTypes.sort((a, b) {
-      final o1 = trainingBlock.exerciseDaysOrdering[a.id] ?? double.maxFinite;
-      final o2 = trainingBlock.exerciseDaysOrdering[b.id] ?? double.maxFinite;
-
-      return o1.toInt() - o2.toInt();
-    });
-
-    // TODO: refactor out
-    final exerciseDaysWithProgress = exerciseDaysWithSortedExerciseTypes.map((exerciseDay) {
-      final exerciseTypesWithProgress = exerciseDay.exerciseTypes.map((exerciseType) {
-        final allExerciseSets = exerciseType.exercises
-            .map(
-              (exercise) => exercise.exerciseSets.map(
-                (exerciseSet) => _ExerciseSetClientWithExerciseId(
-                  exerciseId: exercise.id,
-                  exerciseSet: exerciseSet,
-                ),
+    final List<ExerciseTypeClient> exerciseTypesClient = exerciseTypes
+        .map(
+      (exerciseType) => ExerciseTypeClient(
+        dbModel: exerciseType,
+        name: exerciseType.name,
+        unit: exerciseType.unit,
+        exercises: exerciseType.exercises
+            .map<ExerciseClient>(
+              (exercise) => ExerciseClient(
+                dbModel: exercise,
+                placement: exercise.placement,
+                sets: [
+                  ...exercise.sets.map(
+                    (exerciseSet) => ExerciseSetClient(
+                      dbModel: exerciseSet,
+                      unit: exerciseType.unit,
+                      load: exerciseSet.load,
+                      reps: exerciseSet.reps,
+                    ),
+                  ),
+                  // add filler sets
+                  ...List.generate(
+                    maxExerciseSetsCount - exercise.sets.length + 1,
+                    (index) => ExerciseSetClient(
+                      dbModel: null,
+                      unit: exerciseType.unit,
+                      load: '',
+                      reps: '',
+                    ),
+                  ),
+                ].toList(),
               ),
             )
-            .expand<_ExerciseSetClientWithExerciseId>((element) => element)
-            .toList();
+            .toList(),
+      ),
+    )
+        .map((exerciseType) {
+      final exerciseSetsPerExerciseCount = exerciseType.exercises[0].sets.length;
 
-        final exerciseSetCountPerExercise = exerciseType.exercises[0].exerciseSets.length;
+      var nearestPopulatedExerciseSets = [...exerciseType.exercises[0].sets];
 
-        final nearestExerciseSets = exerciseType.exercises[0].exerciseSets.toList();
-
-        for (var i = exerciseSetCountPerExercise; i < allExerciseSets.length; i++) {
-          final nearestExerciseSetIndex = i % exerciseSetCountPerExercise;
-          final nearestExerciseSet = nearestExerciseSets[nearestExerciseSetIndex];
-
-          final currentExerciseSet = allExerciseSets[i].exerciseSet;
+      ///                       compared to
+      ///                     ┌─────────────┐
+      ///                     ▼             │
+      /// ┌───┬───┬───┐ ┌───┬───┬───┐ ┌───┬─┴─┬───┐
+      /// │ x │ x │   │ │   │ x │   │ │   │ x │   │
+      /// ├───┼───┼───┤ ├───┼───┼───┤ ├───┼───┼───┤
+      /// │ x │ x │   │ │   │   │   │ │   │ x │   │
+      /// └───┴───┴───┘ └───┴───┴───┘ └───┴─┬─┴───┘
+      ///       ▲                           │
+      ///       └───────────────────────────┘
+      ///                compared to
+      for (var i = 1; i < exerciseType.exercises.length; i++) {
+        for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
+          final nearestExerciseSet = nearestPopulatedExerciseSets[j];
+          final currentExerciseSet = exerciseType.exercises[i].sets[j];
 
           if (currentExerciseSet.isFiller) continue;
 
           if (currentExerciseSet.reps.isEmpty || currentExerciseSet.load.isEmpty) continue;
 
-          nearestExerciseSets[nearestExerciseSetIndex] = currentExerciseSet;
-
-          allExerciseSets[i] = allExerciseSets[i].copyWith(
-            exerciseSet: allExerciseSets[i].exerciseSet.copyWith(
-                  progressFactor: currentExerciseSet.compareProgress(
-                    nearestExerciseSet,
-                  ),
-                ),
+          exerciseType.exercises[i].sets[j] = exerciseType.exercises[i].sets[j].copyWith(
+            progressFactor: currentExerciseSet.compareProgress(nearestExerciseSet),
           );
+
+          nearestPopulatedExerciseSets[j] = currentExerciseSet;
         }
+      }
 
-        final map = <String, List<ExerciseSetClient>>{};
+      return exerciseType;
+    }).map((exerciseType) {
+      final exerciseSetsPerExerciseCount = exerciseType.exercises[0].sets.length;
+      var nearestPopulatedExerciseSets = [...exerciseType.exercises[0].sets];
 
-        for (var e in allExerciseSets) {
-          map[e.exerciseId] ??= [];
-          map[e.exerciseId]!.add(e.exerciseSet);
+      ///       get prediction from
+      ///         ┌─────────────┐
+      ///         ▼             │
+      ///   ┌───┬───┬───┐ ┌───┬─┴─┬───┐
+      ///   │   │ x │   │ │ x │ x │   │
+      ///   ├───┼───┼───┤ ├───┼───┼───┤
+      ///   │   │   │   │ │   │   │   │
+      ///   └───┴───┴───┘ └───┴───┴───┘
+      ///
+      ///   get prediction from │
+      ///                       ▼
+      ///   ┌───┬───┬───┐ ┌───┬───┬───┐
+      ///   │   │   │   │ │ x │ x │   │
+      ///   ├───┼───┼───┤ ├───┼───┼───┤
+      ///   │   │   │   │ │   │   │   │
+      ///   └───┴───┴───┘ └───┴───┴───┘
+      ///
+      ///            get prediction from
+      ///                   ┌───┐
+      ///                   ▼   │
+      ///   ┌───┬───┬───┐ ┌───┬─┴─┬───┐
+      ///   │   │   │   │ │ x │   │   │
+      ///   ├───┼───┼───┤ ├───┼───┼───┤
+      ///   │   │   │   │ │   │   │   │
+      ///   └───┴───┴───┘ └───┴───┴───┘
+      for (var i = 0; i < exerciseType.exercises.length; i++) {
+        for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
+          final nearestExerciseSet = nearestPopulatedExerciseSets[j];
+          final currentExerciseSet = exerciseType.exercises[i].sets[j];
+          final neighboringExerciseSet = j > 0 ? exerciseType.exercises[i].sets[j - 1] : null;
+
+          exerciseType.exercises[i].sets[j] = exerciseType.exercises[i].sets[j].copyWith(
+            predictedReps: [
+              nearestExerciseSet.reps,
+              currentExerciseSet.reps,
+              neighboringExerciseSet?.predictedReps ?? '',
+            ].firstWhere((element) => element.isNotEmpty, orElse: () => ''),
+            predictedLoad: [
+              nearestExerciseSet.load,
+              currentExerciseSet.load,
+              neighboringExerciseSet?.predictedLoad ?? '',
+            ].firstWhere((element) => element.isNotEmpty, orElse: () => ''),
+          );
+
+          nearestPopulatedExerciseSets[j] = currentExerciseSet;
         }
+      }
 
-        return exerciseType.copyWith(
-          exercises: exerciseType.exercises.map((exercise) {
-            return exercise.copyWith(
-              exerciseSets: exercise.exerciseSets.asMap().entries.map((entry) {
-                final i = entry.key;
-                final exerciseSet = entry.value;
-
-                return exerciseSet.copyWith(
-                  progressFactor: map[exercise.id]![i].progressFactor,
-                );
-              }).toList(),
-            );
-          }).toList(),
-        );
-      });
-
-      return exerciseDay.copyWith(
-        exerciseTypes: exerciseTypesWithProgress.toList(),
-      );
+      return exerciseType;
     }).toList();
 
-    return TrainingBlockClient(
-      id: trainingBlock.id,
-      userId: trainingBlock.userId,
+    final trainingBlockClient = TrainingBlockClient(
+      dbModel: trainingBlock,
       name: trainingBlock.name,
-      exerciseDays: exerciseDaysWithProgress,
+      exerciseDays: trainingBlock.exerciseDays
+          .map(
+            (exerciseDay) => ExerciseDayClient(
+              dbModel: exerciseDay,
+              name: exerciseDay.name,
+              exerciseTypes: exerciseTypesClient
+                  .where((exerciseType) => exerciseDay
+                  .exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
+                  .toList()
+                ..sort((a, b) {
+                  final orderingA = exerciseDay.exerciseTypesOrdering[a.dbModel.id] ?? double.maxFinite;
+                  final orderingB = exerciseDay.exerciseTypesOrdering[b.dbModel.id] ?? double.maxFinite;
+
+                  return orderingA.compareTo(orderingB);
+                }),
+            ),
+          )
+          .toList(),
     );
-  }
-}
 
-/// temporary class that determines which
-/// exercise set belongs to which exercise
-class _ExerciseSetClientWithExerciseId {
-  final String exerciseId;
-  final ExerciseSetClient exerciseSet;
-
-  _ExerciseSetClientWithExerciseId({
-    required this.exerciseId,
-    required this.exerciseSet,
-  });
-
-  _ExerciseSetClientWithExerciseId copyWith({
-    String? exerciseId,
-    ExerciseSetClient? exerciseSet,
-  }) {
-    return _ExerciseSetClientWithExerciseId(
-      exerciseId: exerciseId ?? this.exerciseId,
-      exerciseSet: exerciseSet ?? this.exerciseSet,
-    );
+    return trainingBlockClient;
   }
 }
 
@@ -258,15 +238,11 @@ NormalizeDataService normalizeDataService(
   String trainingBlockId,
 ) {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
-  final exerciseDaysRepository = ref.watch(exerciseDaysRepositoryProvider);
-  final exercisesRepository = ref.watch(exercisesRepositoryProvider);
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
 
   return NormalizeDataService(
     trainingBlockId: trainingBlockId,
     trainingBlocksRepository: trainingBlocksRepository,
-    exerciseDaysRepository: exerciseDaysRepository,
-    exercisesRepository: exercisesRepository,
     exerciseTypesRepository: exerciseTypesRepository,
   );
 }

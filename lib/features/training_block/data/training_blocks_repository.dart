@@ -15,18 +15,13 @@ class TrainingBlocksRepository {
 
   CollectionReference<TrainingBlock> get collectionRef => firestore
       //
+      .collection('users')
+      .doc(firebaseAuth.currentUser?.uid)
       .collection('training-blocks')
       .withConverter(
         fromFirestore: _fromFirestore,
         toFirestore: _toFirestore,
       );
-
-  Query<TrainingBlock> getQuery() {
-    return collectionRef.where(
-      'userId',
-      isEqualTo: firebaseAuth.currentUser?.uid,
-    );
-  }
 
   DocumentReference<TrainingBlock> getDocumentRefById(String id) {
     return collectionRef.doc(id);

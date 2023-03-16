@@ -9,18 +9,15 @@ part of 'training_block.dart';
 _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
     _$_TrainingBlock(
       id: json['id'] as String,
-      userId: json['userId'] as String,
       name: json['name'] as String,
-      exerciseDaysOrdering:
-          (json['exerciseDaysOrdering'] as Map<String, dynamic>?)?.map(
-                (k, e) => MapEntry(k, e as int),
-              ) ??
-              const {},
+      exerciseDays: (json['exerciseDays'] as List<dynamic>?)
+              ?.map((e) => ExerciseDay.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_TrainingBlockToJson(_$_TrainingBlock instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
       'name': instance.name,
-      'exerciseDaysOrdering': instance.exerciseDaysOrdering,
+      'exerciseDays': instance.exerciseDays.map((e) => e.toJson()).toList(),
     };

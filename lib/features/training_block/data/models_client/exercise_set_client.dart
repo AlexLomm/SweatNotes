@@ -7,21 +7,25 @@ part 'exercise_set_client.freezed.dart';
 
 @freezed
 class ExerciseSetClient with _$ExerciseSetClient {
-  const ExerciseSetClient._();
+  ExerciseSetClient._();
 
-  const factory ExerciseSetClient({
-    @Default(false) bool isFiller,
+  bool get isFiller => dbModel == null;
+
+  factory ExerciseSetClient({
+    required ExerciseSet? dbModel,
     int? progressFactor,
     required String unit,
     // TODO: change to int
     required String reps,
     // TODO: change to double
     required String load,
+    @Default('') String predictedReps,
+    @Default('') String predictedLoad,
   }) = _ExerciseSetClient;
 
   factory ExerciseSetClient.empty() {
-    return const ExerciseSetClient(
-      isFiller: true,
+    return ExerciseSetClient(
+      dbModel: null,
       progressFactor: null,
       unit: '',
       reps: '',
@@ -29,7 +33,7 @@ class ExerciseSetClient with _$ExerciseSetClient {
     );
   }
 
-  ExerciseSet toExerciseSet() {
+  ExerciseSet toDbModel() {
     return ExerciseSet(reps: reps, load: load);
   }
 

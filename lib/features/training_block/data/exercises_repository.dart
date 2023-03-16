@@ -35,7 +35,7 @@ class ExercisesRepository {
     }
 
     // otherwise, update it
-    return collectionRef.doc(exerciseClient.id).set(exercise, SetOptions(merge: true));
+    return collectionRef.doc('exerciseClient.id').set(exercise, SetOptions(merge: true));
   }
 
   Future<void> addExercise(ExerciseClient exerciseClient) {

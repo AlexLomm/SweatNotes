@@ -16,9 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ExerciseTypeClient {
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  ExerciseType get dbModel =>
+      throw _privateConstructorUsedError; // TODO: remove?
+  String get name => throw _privateConstructorUsedError; // TODO: remove?
   String get unit => throw _privateConstructorUsedError;
   List<ExerciseClient> get exercises => throw _privateConstructorUsedError;
 
@@ -34,11 +34,12 @@ abstract class $ExerciseTypeClientCopyWith<$Res> {
       _$ExerciseTypeClientCopyWithImpl<$Res, ExerciseTypeClient>;
   @useResult
   $Res call(
-      {String id,
-      String userId,
+      {ExerciseType dbModel,
       String name,
       String unit,
       List<ExerciseClient> exercises});
+
+  $ExerciseTypeCopyWith<$Res> get dbModel;
 }
 
 /// @nodoc
@@ -54,21 +55,16 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
+    Object? dbModel = null,
     Object? name = null,
     Object? unit = null,
     Object? exercises = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+      dbModel: null == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as ExerciseType,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -83,6 +79,14 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
               as List<ExerciseClient>,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExerciseTypeCopyWith<$Res> get dbModel {
+    return $ExerciseTypeCopyWith<$Res>(_value.dbModel, (value) {
+      return _then(_value.copyWith(dbModel: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -94,11 +98,13 @@ abstract class _$$_ExerciseTypeClientCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String userId,
+      {ExerciseType dbModel,
       String name,
       String unit,
       List<ExerciseClient> exercises});
+
+  @override
+  $ExerciseTypeCopyWith<$Res> get dbModel;
 }
 
 /// @nodoc
@@ -112,21 +118,16 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
+    Object? dbModel = null,
     Object? name = null,
     Object? unit = null,
     Object? exercises = null,
   }) {
     return _then(_$_ExerciseTypeClient(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+      dbModel: null == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as ExerciseType,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -148,8 +149,7 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
 class _$_ExerciseTypeClient extends _ExerciseTypeClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseTypeClient(
-      {required this.id,
-      required this.userId,
+      {required this.dbModel,
       required this.name,
       required this.unit,
       required final List<ExerciseClient> exercises})
@@ -157,11 +157,11 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
         super._();
 
   @override
-  final String id;
-  @override
-  final String userId;
+  final ExerciseType dbModel;
+// TODO: remove?
   @override
   final String name;
+// TODO: remove?
   @override
   final String unit;
   final List<ExerciseClient> _exercises;
@@ -174,7 +174,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseTypeClient(id: $id, userId: $userId, name: $name, unit: $unit, exercises: $exercises)';
+    return 'ExerciseTypeClient(dbModel: $dbModel, name: $name, unit: $unit, exercises: $exercises)';
   }
 
   @override
@@ -182,8 +182,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseTypeClient'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('dbModel', dbModel))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('unit', unit))
       ..add(DiagnosticsProperty('exercises', exercises));
@@ -194,8 +193,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseTypeClient &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.unit, unit) || other.unit == unit) &&
             const DeepCollectionEquality()
@@ -203,7 +201,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, name, unit,
+  int get hashCode => Object.hash(runtimeType, dbModel, name, unit,
       const DeepCollectionEquality().hash(_exercises));
 
   @JsonKey(ignore: true)
@@ -216,20 +214,17 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
 
 abstract class _ExerciseTypeClient extends ExerciseTypeClient {
   const factory _ExerciseTypeClient(
-      {required final String id,
-      required final String userId,
+      {required final ExerciseType dbModel,
       required final String name,
       required final String unit,
       required final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
   const _ExerciseTypeClient._() : super._();
 
   @override
-  String get id;
-  @override
-  String get userId;
-  @override
+  ExerciseType get dbModel;
+  @override // TODO: remove?
   String get name;
-  @override
+  @override // TODO: remove?
   String get unit;
   @override
   List<ExerciseClient> get exercises;

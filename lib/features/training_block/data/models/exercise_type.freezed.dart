@@ -22,9 +22,11 @@ ExerciseType _$ExerciseTypeFromJson(Map<String, dynamic> json) {
 mixin _$ExerciseType {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  String get trainingBlockId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _exercisesFromJson)
+  List<Exercise> get exercises => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,9 +42,10 @@ abstract class $ExerciseTypeCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String id,
-      String userId,
+      String trainingBlockId,
       String name,
-      String unit});
+      String unit,
+      @JsonKey(fromJson: _exercisesFromJson) List<Exercise> exercises});
 }
 
 /// @nodoc
@@ -59,18 +62,19 @@ class _$ExerciseTypeCopyWithImpl<$Res, $Val extends ExerciseType>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
+    Object? trainingBlockId = null,
     Object? name = null,
     Object? unit = null,
+    Object? exercises = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      trainingBlockId: null == trainingBlockId
+          ? _value.trainingBlockId
+          : trainingBlockId // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -80,6 +84,10 @@ class _$ExerciseTypeCopyWithImpl<$Res, $Val extends ExerciseType>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as String,
+      exercises: null == exercises
+          ? _value.exercises
+          : exercises // ignore: cast_nullable_to_non_nullable
+              as List<Exercise>,
     ) as $Val);
   }
 }
@@ -94,9 +102,10 @@ abstract class _$$_ExerciseTypeCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String id,
-      String userId,
+      String trainingBlockId,
       String name,
-      String unit});
+      String unit,
+      @JsonKey(fromJson: _exercisesFromJson) List<Exercise> exercises});
 }
 
 /// @nodoc
@@ -111,18 +120,19 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
+    Object? trainingBlockId = null,
     Object? name = null,
     Object? unit = null,
+    Object? exercises = null,
   }) {
     return _then(_$_ExerciseType(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      trainingBlockId: null == trainingBlockId
+          ? _value.trainingBlockId
+          : trainingBlockId // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -132,6 +142,10 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as String,
+      exercises: null == exercises
+          ? _value._exercises
+          : exercises // ignore: cast_nullable_to_non_nullable
+              as List<Exercise>,
     ));
   }
 }
@@ -140,10 +154,14 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   const _$_ExerciseType(
-      {@JsonKey(includeToJson: false) required this.id,
-      required this.userId,
+      {@JsonKey(includeToJson: false)
+          required this.id,
+      required this.trainingBlockId,
       required this.name,
-      required this.unit});
+      required this.unit,
+      @JsonKey(fromJson: _exercisesFromJson)
+          final List<Exercise> exercises = const []})
+      : _exercises = exercises;
 
   factory _$_ExerciseType.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseTypeFromJson(json);
@@ -152,15 +170,23 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   @JsonKey(includeToJson: false)
   final String id;
   @override
-  final String userId;
+  final String trainingBlockId;
   @override
   final String name;
   @override
   final String unit;
+  final List<Exercise> _exercises;
+  @override
+  @JsonKey(fromJson: _exercisesFromJson)
+  List<Exercise> get exercises {
+    if (_exercises is EqualUnmodifiableListView) return _exercises;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_exercises);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseType(id: $id, userId: $userId, name: $name, unit: $unit)';
+    return 'ExerciseType(id: $id, trainingBlockId: $trainingBlockId, name: $name, unit: $unit, exercises: $exercises)';
   }
 
   @override
@@ -169,9 +195,10 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseType'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
       ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('unit', unit));
+      ..add(DiagnosticsProperty('unit', unit))
+      ..add(DiagnosticsProperty('exercises', exercises));
   }
 
   @override
@@ -180,14 +207,18 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
         (other.runtimeType == runtimeType &&
             other is _$_ExerciseType &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.trainingBlockId, trainingBlockId) ||
+                other.trainingBlockId == trainingBlockId) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.unit, unit) || other.unit == unit));
+            (identical(other.unit, unit) || other.unit == unit) &&
+            const DeepCollectionEquality()
+                .equals(other._exercises, _exercises));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, name, unit);
+  int get hashCode => Object.hash(runtimeType, id, trainingBlockId, name, unit,
+      const DeepCollectionEquality().hash(_exercises));
 
   @JsonKey(ignore: true)
   @override
@@ -205,10 +236,13 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
 
 abstract class _ExerciseType implements ExerciseType {
   const factory _ExerciseType(
-      {@JsonKey(includeToJson: false) required final String id,
-      required final String userId,
+      {@JsonKey(includeToJson: false)
+          required final String id,
+      required final String trainingBlockId,
       required final String name,
-      required final String unit}) = _$_ExerciseType;
+      required final String unit,
+      @JsonKey(fromJson: _exercisesFromJson)
+          final List<Exercise> exercises}) = _$_ExerciseType;
 
   factory _ExerciseType.fromJson(Map<String, dynamic> json) =
       _$_ExerciseType.fromJson;
@@ -217,11 +251,14 @@ abstract class _ExerciseType implements ExerciseType {
   @JsonKey(includeToJson: false)
   String get id;
   @override
-  String get userId;
+  String get trainingBlockId;
   @override
   String get name;
   @override
   String get unit;
+  @override
+  @JsonKey(fromJson: _exercisesFromJson)
+  List<Exercise> get exercises;
   @override
   @JsonKey(ignore: true)
   _$$_ExerciseTypeCopyWith<_$_ExerciseType> get copyWith =>

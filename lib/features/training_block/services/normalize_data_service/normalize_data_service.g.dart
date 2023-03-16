@@ -7,7 +7,7 @@ part of 'normalize_data_service.dart';
 // **************************************************************************
 
 String _$normalizeDataServiceHash() =>
-    r'dab65ac1796b3bcb19ef1596d23390cfb6832f15';
+    r'8131bc709e5d0852ad49a2114c50fbf4ed02df74';
 
 /// Copied from Dart SDK
 class _SystemHash {

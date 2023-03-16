@@ -16,9 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TrainingBlockClient {
-  @JsonKey(includeToJson: false)
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
+  TrainingBlock get dbModel => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseDayClient> get exerciseDays =>
       throw _privateConstructorUsedError;
@@ -35,10 +33,11 @@ abstract class $TrainingBlockClientCopyWith<$Res> {
       _$TrainingBlockClientCopyWithImpl<$Res, TrainingBlockClient>;
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false) String id,
-      String userId,
+      {TrainingBlock dbModel,
       String name,
       List<ExerciseDayClient> exerciseDays});
+
+  $TrainingBlockCopyWith<$Res> get dbModel;
 }
 
 /// @nodoc
@@ -54,20 +53,15 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
+    Object? dbModel = null,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+      dbModel: null == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as TrainingBlock,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -77,6 +71,14 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
           : exerciseDays // ignore: cast_nullable_to_non_nullable
               as List<ExerciseDayClient>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $TrainingBlockCopyWith<$Res> get dbModel {
+    return $TrainingBlockCopyWith<$Res>(_value.dbModel, (value) {
+      return _then(_value.copyWith(dbModel: value) as $Val);
+    });
   }
 }
 
@@ -89,10 +91,12 @@ abstract class _$$_TrainingBlockClientCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false) String id,
-      String userId,
+      {TrainingBlock dbModel,
       String name,
       List<ExerciseDayClient> exerciseDays});
+
+  @override
+  $TrainingBlockCopyWith<$Res> get dbModel;
 }
 
 /// @nodoc
@@ -106,20 +110,15 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
+    Object? dbModel = null,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
     return _then(_$_TrainingBlockClient(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
+      dbModel: null == dbModel
+          ? _value.dbModel
+          : dbModel // ignore: cast_nullable_to_non_nullable
+              as TrainingBlock,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -137,18 +136,14 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
 class _$_TrainingBlockClient extends _TrainingBlockClient
     with DiagnosticableTreeMixin {
   const _$_TrainingBlockClient(
-      {@JsonKey(includeToJson: false) required this.id,
-      required this.userId,
+      {required this.dbModel,
       required this.name,
       required final List<ExerciseDayClient> exerciseDays})
       : _exerciseDays = exerciseDays,
         super._();
 
   @override
-  @JsonKey(includeToJson: false)
-  final String id;
-  @override
-  final String userId;
+  final TrainingBlock dbModel;
   @override
   final String name;
   final List<ExerciseDayClient> _exerciseDays;
@@ -161,7 +156,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlockClient(id: $id, userId: $userId, name: $name, exerciseDays: $exerciseDays)';
+    return 'TrainingBlockClient(dbModel: $dbModel, name: $name, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -169,8 +164,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TrainingBlockClient'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('dbModel', dbModel))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
@@ -180,15 +174,14 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_TrainingBlockClient &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.dbModel, dbModel) || other.dbModel == dbModel) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality()
                 .equals(other._exerciseDays, _exerciseDays));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, name,
+  int get hashCode => Object.hash(runtimeType, dbModel, name,
       const DeepCollectionEquality().hash(_exerciseDays));
 
   @JsonKey(ignore: true)
@@ -201,18 +194,14 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
 
 abstract class _TrainingBlockClient extends TrainingBlockClient {
   const factory _TrainingBlockClient(
-          {@JsonKey(includeToJson: false) required final String id,
-          required final String userId,
+          {required final TrainingBlock dbModel,
           required final String name,
           required final List<ExerciseDayClient> exerciseDays}) =
       _$_TrainingBlockClient;
   const _TrainingBlockClient._() : super._();
 
   @override
-  @JsonKey(includeToJson: false)
-  String get id;
-  @override
-  String get userId;
+  TrainingBlock get dbModel;
   @override
   String get name;
   @override

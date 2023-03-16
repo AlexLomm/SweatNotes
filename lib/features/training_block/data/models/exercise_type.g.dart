@@ -9,14 +9,18 @@ part of 'exercise_type.dart';
 _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
     _$_ExerciseType(
       id: json['id'] as String,
-      userId: json['userId'] as String,
+      trainingBlockId: json['trainingBlockId'] as String,
       name: json['name'] as String,
       unit: json['unit'] as String,
+      exercises: json['exercises'] == null
+          ? const []
+          : _exercisesFromJson(json['exercises'] as List),
     );
 
 Map<String, dynamic> _$$_ExerciseTypeToJson(_$_ExerciseType instance) =>
     <String, dynamic>{
-      'userId': instance.userId,
+      'trainingBlockId': instance.trainingBlockId,
       'name': instance.name,
       'unit': instance.unit,
+      'exercises': instance.exercises.map((e) => e.toJson()).toList(),
     };

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../settings/edit_mode_switcher.dart';
-import '../../constants.dart';
+import '../../widget_params.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
@@ -45,15 +45,15 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
 
   @override
   Widget build(BuildContext context) {
+    final widgetParams = ref.watch(widgetParamsProvider);
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
-    final isEditMode = ref.watch(editModeSwitcherProvider);
 
     return AnimatedContainer(
-      duration: animationDuration,
-      curve: animationCurve,
-      margin: const EdgeInsets.only(top: elscTitleHeight),
-      width: isEditMode ? etWidthExpanded : etWidth,
-      height: (etHeight + elscSpacingBetweenItems) * _exerciseDayClientCached.exerciseTypes.length,
+      duration: WidgetParams.animationDuration,
+      curve: WidgetParams.animationCurve,
+      margin: EdgeInsets.only(top: widgetParams.exerciseDayTitleHeight),
+      width: widgetParams.exerciseTypeWidth,
+      height: widgetParams.getExerciseTypesListHeight(_exerciseDayClientCached.exerciseTypes.length),
       child: Theme(
         // this is needed to remove the bottom margin when reordering the items
         // @see https://github.com/flutter/flutter/issues/63527#issuecomment-852740201
@@ -99,8 +99,8 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
             for (final entry in _exerciseDayClientCached.exerciseTypes.asMap().entries)
               Container(
                 key: Key(entry.value.dbModel.id),
-                margin: const EdgeInsets.only(
-                  bottom: elscSpacingBetweenItems,
+                margin: EdgeInsets.only(
+                  bottom: widgetParams.exerciseTypesVerticalSpacing,
                 ),
                 child: Theme(
                   // this is needed to re-enable the canceled theming above

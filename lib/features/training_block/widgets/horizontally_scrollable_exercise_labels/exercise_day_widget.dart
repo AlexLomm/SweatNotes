@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../settings/edit_mode_switcher.dart';
-import '../../constants.dart';
+import '../../widget_params.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/training_blocks_service.dart';
@@ -28,6 +28,7 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
     final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay);
@@ -38,25 +39,26 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
       alignment: Alignment.topLeft,
       child: AnimatedContainer(
         height: 56.0,
-        duration: animationDuration,
-        curve: animationCurve,
+        duration: WidgetParams.animationDuration,
+        curve: WidgetParams.animationCurve,
         padding: EdgeInsets.only(
-          left: isEditMode ? 0 : elscTitlePaddingLeft,
-          right: elscTitlePaddingRight,
+          left: widgetParams.exercisesTitlePaddingLeft,
+          right: widgetParams.exercisesTitlePaddingRight,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AnimatedOpacity(
-              duration: animationDuration,
-              curve: animationCurve,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              // TODO: ??
               opacity: isEditMode ? 1.0 : 0.0,
               child: AnimatedContainer(
-                duration: animationDuration,
-                curve: animationCurve,
+                duration: WidgetParams.animationDuration,
+                curve: WidgetParams.animationCurve,
                 padding: const EdgeInsets.only(top: 4.0),
-                width: isEditMode ? etDragHandleWidthExpanded : 0.0,
+                width: widgetParams.exerciseTypeDragHandleWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -75,9 +77,9 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
               ),
             ),
             AnimatedContainer(
-              duration: animationDuration,
-              curve: animationCurve,
-              width: isEditMode ? elscTitleWidthExpanded : elscTitleWidth,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              width: widgetParams.exerciseLabelsTitleWidth,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(

@@ -8,7 +8,7 @@ import '../../../../widgets/rounded_icon_button.dart';
 import '../../../../widgets/text_editor_single_line.dart';
 import '../../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../../settings/edit_mode_switcher.dart';
-import '../../constants.dart';
+import '../../widget_params.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
@@ -23,12 +23,6 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
 
   get isEmpty => exerciseDay.exerciseTypes.isEmpty;
 
-  get height {
-    final exerciseDaysCount = max(1, exerciseDay.exerciseTypes.length);
-
-    return elscTitleHeight + exerciseDaysCount * (etHeight + elscSpacingBetweenItems) + elscAdditionalBottomSpaceHeight;
-  }
-
   const HorizontallyScrollableExerciseLabels({
     Key? key,
     required this.exerciseDay,
@@ -38,30 +32,38 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
+    final heightWithButton = widgetParams.getExerciseLabelsHeightWithButton(
+      exerciseDay.exerciseTypes.length,
+    );
+
+    final heightWithoutButton = widgetParams.getExerciseLabelsHeight(
+      exerciseDay.exerciseTypes.length,
+    );
+
     return Container(
-      margin: const EdgeInsets.only(
-        bottom: elscMarginBottom,
+      margin: EdgeInsets.only(
+        bottom: widgetParams.exercisesMarginBottom,
       ),
       child: Stack(
         children: [
           Align(
             alignment: Alignment.topLeft,
             child: AnimatedContainer(
-              duration: animationDuration,
-              curve: animationCurve,
-              width: isEditMode ? elscWidthExpanded : elscWidth,
-              // add enough space for the add exercise type button's half size to fit
-              height: height + elscSpaceForExerciseTypeButton,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              width: widgetParams.exerciseLabelsListWidth,
+              height: heightWithButton,
               child: Stack(
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
                     child: _Background(
-                      width: isEditMode ? elscWidthExpanded : elscWidth,
-                      height: height,
-                      borderRadius: borderRadius,
+                      width: widgetParams.exerciseLabelsListWidth,
+                      height: heightWithoutButton,
+                      borderRadius: WidgetParams.borderRadius,
                       child: IgnorePointerEditMode(
                         onTap: () => CustomBottomSheet(
                           height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
@@ -85,11 +87,12 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: AnimatedOpacity(
+                      // TODO: extract?
                       opacity: isEditMode ? 0.0 : 1.0,
-                      duration: animationDuration,
-                      curve: animationCurve,
+                      duration: WidgetParams.animationDuration,
+                      curve: WidgetParams.animationCurve,
                       child: RoundedIconButton(
-                        size: elscAddExerciseTypeButtonSize,
+                        size: widgetParams.addExerciseButtonSize,
                         onPressed: isEditMode
                             ? null
                             : () => CustomBottomSheet(
@@ -137,8 +140,8 @@ class _Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: animationDuration,
-      curve: animationCurve,
+      duration: WidgetParams.animationDuration,
+      curve: WidgetParams.animationCurve,
       height: height,
       width: width,
       child: Material(

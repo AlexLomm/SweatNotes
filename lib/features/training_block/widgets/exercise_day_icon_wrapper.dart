@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../widget_params.dart';
 
 class ExerciseDayIconWrapper extends StatelessWidget {
   final IconData icon;
@@ -15,8 +15,8 @@ class ExerciseDayIconWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: animationDuration,
-      curve: animationCurve,
+      duration: WidgetParams.animationDuration,
+      curve: WidgetParams.animationCurve,
       height: double.infinity,
       width: width,
       // this color is needed in order for the entire Container to

@@ -10,8 +10,9 @@ import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
+import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
-import 'constants.dart';
+import 'widget_params.dart';
 import 'data/models_client/training_block_client.dart';
 import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
 import 'services/normalize_data_service.dart';
@@ -78,14 +79,17 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final data = ref.watch(normalizedDataServiceProvider(widget.trainingBlockId));
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
+    final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
+
+    final isCompactMode = ref.watch(compactModeSwitcherProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
     final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
           color: Theme.of(context).colorScheme.onSurface,
         );
     final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
+          color: isCompactMode ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
         );
 
     return data.when(
@@ -102,8 +106,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
           actions: [
             AnimatedOpacity(
               opacity: isEditMode ? 0 : 1,
-              duration: animationDuration,
-              curve: animationCurve,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
               child: IconButton(
                 icon: Icon(
                   Icons.add,
@@ -132,8 +136,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
             ),
             AnimatedOpacity(
               opacity: isEditMode ? 0 : 1,
-              duration: animationDuration,
-              curve: animationCurve,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
               child: IconButton(
                 icon: Icon(
                   Icons.edit_outlined,
@@ -147,18 +151,19 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
             AnimatedCrossFade(
               alignment: Alignment.center,
               crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-              duration: animationDuration,
-              firstCurve: animationCurve,
-              secondCurve: animationCurve,
+              duration: WidgetParams.animationDuration,
+              firstCurve: WidgetParams.animationCurve,
+              secondCurve: WidgetParams.animationCurve,
               firstChild: ButtonDropdownMenu(
                 icon: Icons.more_vert,
-                animationDuration: animationDuration,
-                animationCurve: animationCurve,
+                animationDuration: WidgetParams.animationDuration,
+                animationCurve: WidgetParams.animationCurve,
                 items: [
                   ButtonDropdownMenuItem(
                     child: Text('View archived items', style: menuItemTheme),
                   ),
                   ButtonDropdownMenuItem(
+                    onTap: compactModeSwitcher.toggle,
                     child: RichText(
                       softWrap: false,
                       text: TextSpan(
@@ -169,7 +174,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
                             child: Container(
                               margin: const EdgeInsets.only(left: 24.0),
                               padding: const EdgeInsets.only(bottom: 1.0),
-                              child: Text('Off', style: menuItemSubTextTheme),
+                              child: Text(isCompactMode ? 'On' : 'Off', style: menuItemSubTextTheme),
                             ),
                           ),
                         ],

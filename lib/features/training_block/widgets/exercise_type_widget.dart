@@ -6,7 +6,7 @@ import '../../../widgets/button_dropdown_menu.dart';
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../settings/edit_mode_switcher.dart';
-import '../constants.dart';
+import '../widget_params.dart';
 import '../data/models_client/exercise_day_client.dart';
 import '../data/models_client/exercise_type_client.dart';
 import '../data/models_client/training_block_client.dart';
@@ -31,8 +31,9 @@ class ExerciseTypeWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEditMode = ref.watch(editModeSwitcherProvider);
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+    final widgetParams = ref.watch(widgetParamsProvider);
 
     final fromExerciseDay = exerciseDays.firstWhere(
       (exerciseDay) => exerciseDay.exerciseTypes
@@ -56,25 +57,26 @@ class ExerciseTypeWidget extends ConsumerWidget {
         // the height is set outside of the AnimatedContainer
         // in order to prevent newly created widgets' heights
         // from being animated
-        height: etHeight,
+        height: widgetParams.exerciseTypeHeight,
         child: AnimatedContainer(
-          duration: animationDuration,
-          curve: animationCurve,
-          padding: EdgeInsets.only(left: isEditMode ? etPaddingLeftExpanded : etPaddingLeft),
-          width: isEditMode ? etWidthExpanded : etWidth,
+          duration: WidgetParams.animationDuration,
+          curve: WidgetParams.animationCurve,
+          padding: EdgeInsets.only(left: widgetParams.exerciseTypePaddingLeft),
+          width: widgetParams.exerciseTypeWidth,
           child: Stack(
             children: [
               Align(
                 alignment: Alignment.centerLeft,
                 child: AnimatedOpacity(
-                  duration: animationDuration,
-                  curve: animationCurve,
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  // TODO: should extract ???
                   opacity: isEditMode ? 1 : 0,
                   child: ReorderableDragStartListener(
                     index: index,
                     child: ExerciseDayIconWrapper(
                       icon: Icons.drag_indicator,
-                      width: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth,
+                      width: widgetParams.exerciseTypeDragHandleWidth,
                     ),
                   ),
                 ),
@@ -82,9 +84,9 @@ class ExerciseTypeWidget extends ConsumerWidget {
               Align(
                 alignment: Alignment.center,
                 child: AnimatedContainer(
-                  duration: animationDuration,
-                  curve: animationCurve,
-                  margin: EdgeInsets.only(left: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth),
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
                   child: IgnorePointerEditMode(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => CustomBottomSheet(
@@ -93,7 +95,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                       child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
                     ).show(context),
                     child: _ExerciseTypeName(
-                      width: isEditMode ? etLabelWidthExpanded : etLabelWidth,
+                      width: widgetParams.exerciseTypeLabelWidth,
                       name: exerciseType.name,
                     ),
                   ),
@@ -102,17 +104,18 @@ class ExerciseTypeWidget extends ConsumerWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: AnimatedOpacity(
-                  duration: animationDuration,
-                  curve: animationCurve,
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  // TODO: should extract ???
                   opacity: isEditMode ? 1 : 0,
                   child: IgnorePointerEditMode(
                     child: AnimatedContainer(
-                      duration: animationDuration,
-                      curve: animationCurve,
+                      duration: WidgetParams.animationDuration,
+                      curve: WidgetParams.animationCurve,
                       child: ButtonDropdownMenu(
                         icon: Icons.keyboard_arrow_down,
-                        animationDuration: animationDuration,
-                        animationCurve: animationCurve,
+                        animationDuration: WidgetParams.animationDuration,
+                        animationCurve: WidgetParams.animationCurve,
                         items: toExerciseDay
                             .map(
                               (exerciseDay) => ButtonDropdownMenuItem(
@@ -199,8 +202,8 @@ class _ExerciseTypeName extends ConsumerWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: AnimatedContainer(
-            duration: animationDuration,
-            curve: animationCurve,
+            duration: WidgetParams.animationDuration,
+            curve: WidgetParams.animationCurve,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(

@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../constants.dart';
+import '../widget_params.dart';
 import '../data/models_client/exercise_set_client.dart';
 
 const progressColors = <int, Color>{
@@ -17,7 +18,7 @@ const progressColors = <int, Color>{
   4: Color.fromRGBO(56, 221, 158, 0.32),
 };
 
-class ExerciseSetWidget extends StatelessWidget {
+class ExerciseSetWidget extends ConsumerWidget {
   final bool isSingle;
   final bool isRightmost;
   final ExerciseSetClient exerciseSet;
@@ -36,7 +37,9 @@ class ExerciseSetWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
+
     final textColor = Theme.of(context).colorScheme.onSurfaceVariant;
     final labelSmallTheme = Theme.of(context).textTheme.labelSmall!;
     final labelLargeTheme = Theme.of(context).textTheme.labelLarge!;
@@ -44,8 +47,8 @@ class ExerciseSetWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width: exerciseSetWidth,
-        height: etHeight,
+        width: widgetParams.exerciseSetWidth,
+        height: widgetParams.exerciseTypeHeight,
         child: Column(
           children: [
             _Cell(
@@ -91,7 +94,7 @@ class ExerciseSetWidget extends StatelessWidget {
   }
 }
 
-class _Cell extends StatelessWidget {
+class _Cell extends ConsumerWidget {
   final bool isSingle;
   final bool isRightmost;
   final bool isBottomCell;
@@ -108,7 +111,9 @@ class _Cell extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
+
     final backgroundColor = progressColors[exerciseSet.progressFactor] ??
         Theme.of(context).colorScheme.surfaceVariant.withOpacity(
               kDebugMode && exerciseSet.isFiller ? 0.5 : 1,
@@ -133,7 +138,7 @@ class _Cell extends StatelessWidget {
         color: backgroundColor,
         border: isBottomCell ? borderBottomCell : borderTopCell,
       ),
-      height: etHeight / 2,
+      height: widgetParams.exerciseTypeHeight / 2,
       child: Center(child: child),
     );
   }

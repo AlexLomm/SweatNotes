@@ -8,11 +8,13 @@ part 'theme_switcher.g.dart';
 
 @riverpod
 class ThemeSwitcher extends _$ThemeSwitcher {
+  static const key = 'themeMode';
+
   @override
   ThemeMode build() {
     final prefs = ref.watch(prefsProvider);
 
-    final themeMode = prefs.getString('themeMode') ?? 'system';
+    final themeMode = prefs.getString(key) ?? 'system';
 
     if (themeMode == 'system') {
       final platformBrightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
@@ -32,6 +34,6 @@ class ThemeSwitcher extends _$ThemeSwitcher {
 
     state = themeMode;
 
-    prefs.setString('themeMode', themeMode.toString().split('.').last);
+    prefs.setString(key, themeMode.toString().split('.').last);
   }
 }

@@ -131,7 +131,6 @@ class WidgetParams {
   double get exercisesMarginBottomNotLast => exerciseTypesVerticalSpacing;
 }
 
-// TODO: extract out
 @riverpod
 WidgetParams widgetParams(WidgetParamsRef ref) {
   final isEditMode = ref.watch(editModeSwitcherProvider);

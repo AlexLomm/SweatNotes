@@ -7,7 +7,7 @@ part of 'exercise_days_service.dart';
 // **************************************************************************
 
 String _$exerciseDaysServiceHash() =>
-    r'035c04759b1d1987a0cc7222b9d1b208ff24b226';
+    r'ca80e85dc7a28e35b70f0e52ddacdabc235414ab';
 
 /// See also [exerciseDaysService].
 @ProviderFor(exerciseDaysService)

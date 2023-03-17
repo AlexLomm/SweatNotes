@@ -14,7 +14,7 @@ import '../settings/edit_mode_switcher.dart';
 import 'constants.dart';
 import 'data/models_client/training_block_client.dart';
 import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
-import 'services/normalize_data_service/normalize_data_service.dart';
+import 'services/normalize_data_service.dart';
 import 'widgets/horizontally_scrollable_exercises.dart';
 
 class TrainingBlockScreen extends ConsumerStatefulWidget {
@@ -30,7 +30,6 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
 }
 
 class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with RouteAware {
-  late final Stream<TrainingBlockClient?> dataStream;
   late RouteObserver _routeObserver;
 
   @override
@@ -75,16 +74,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    final normalizeDataService = ref.read(normalizeDataServiceProvider(widget.trainingBlockId));
-
-    dataStream = normalizeDataService.data;
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final data = ref.watch(normalizedDataServiceProvider(widget.trainingBlockId));
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
@@ -97,11 +88,10 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
           color: Theme.of(context).colorScheme.primary,
         );
 
-    return StreamBuilder(
-      stream: dataStream,
-      builder: (context, snapshot) {
-        final trainingBlock = snapshot.data;
-
+    return data.when(
+      error: (Object error, StackTrace stackTrace) => const Center(child: Text('Error')),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      data: (trainingBlock) {
         if (trainingBlock == null) {
           return const Center(child: CircularProgressIndicator());
         }

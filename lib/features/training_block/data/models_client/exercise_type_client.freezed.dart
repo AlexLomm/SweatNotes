@@ -16,9 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ExerciseTypeClient {
-  ExerciseType get dbModel =>
-      throw _privateConstructorUsedError; // TODO: remove?
-  String get name => throw _privateConstructorUsedError; // TODO: remove?
+  ExerciseType get dbModel => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
   List<ExerciseClient> get exercises => throw _privateConstructorUsedError;
 
@@ -158,10 +157,8 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
 
   @override
   final ExerciseType dbModel;
-// TODO: remove?
   @override
   final String name;
-// TODO: remove?
   @override
   final String unit;
   final List<ExerciseClient> _exercises;
@@ -206,9 +203,9 @@ abstract class _ExerciseTypeClient extends ExerciseTypeClient {
 
   @override
   ExerciseType get dbModel;
-  @override // TODO: remove?
+  @override
   String get name;
-  @override // TODO: remove?
+  @override
   String get unit;
   @override
   List<ExerciseClient> get exercises;

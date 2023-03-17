@@ -6,8 +6,8 @@ part of 'normalize_data_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$normalizeDataServiceHash() =>
-    r'8131bc709e5d0852ad49a2114c50fbf4ed02df74';
+String _$normalizedDataServiceHash() =>
+    r'f2f1c150bcf9cea7a495a8bbb6c39b40a9012a23';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,29 +30,31 @@ class _SystemHash {
   }
 }
 
-typedef NormalizeDataServiceRef = AutoDisposeProviderRef<NormalizeDataService>;
+typedef NormalizedDataServiceRef
+    = AutoDisposeStreamProviderRef<TrainingBlockClient?>;
 
-/// See also [normalizeDataService].
-@ProviderFor(normalizeDataService)
-const normalizeDataServiceProvider = NormalizeDataServiceFamily();
+/// See also [normalizedDataService].
+@ProviderFor(normalizedDataService)
+const normalizedDataServiceProvider = NormalizedDataServiceFamily();
 
-/// See also [normalizeDataService].
-class NormalizeDataServiceFamily extends Family<NormalizeDataService> {
-  /// See also [normalizeDataService].
-  const NormalizeDataServiceFamily();
+/// See also [normalizedDataService].
+class NormalizedDataServiceFamily
+    extends Family<AsyncValue<TrainingBlockClient?>> {
+  /// See also [normalizedDataService].
+  const NormalizedDataServiceFamily();
 
-  /// See also [normalizeDataService].
-  NormalizeDataServiceProvider call(
+  /// See also [normalizedDataService].
+  NormalizedDataServiceProvider call(
     String trainingBlockId,
   ) {
-    return NormalizeDataServiceProvider(
+    return NormalizedDataServiceProvider(
       trainingBlockId,
     );
   }
 
   @override
-  NormalizeDataServiceProvider getProviderOverride(
-    covariant NormalizeDataServiceProvider provider,
+  NormalizedDataServiceProvider getProviderOverride(
+    covariant NormalizedDataServiceProvider provider,
   ) {
     return call(
       provider.trainingBlockId,
@@ -71,36 +73,36 @@ class NormalizeDataServiceFamily extends Family<NormalizeDataService> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'normalizeDataServiceProvider';
+  String? get name => r'normalizedDataServiceProvider';
 }
 
-/// See also [normalizeDataService].
-class NormalizeDataServiceProvider
-    extends AutoDisposeProvider<NormalizeDataService> {
-  /// See also [normalizeDataService].
-  NormalizeDataServiceProvider(
+/// See also [normalizedDataService].
+class NormalizedDataServiceProvider
+    extends AutoDisposeStreamProvider<TrainingBlockClient?> {
+  /// See also [normalizedDataService].
+  NormalizedDataServiceProvider(
     this.trainingBlockId,
   ) : super.internal(
-          (ref) => normalizeDataService(
+          (ref) => normalizedDataService(
             ref,
             trainingBlockId,
           ),
-          from: normalizeDataServiceProvider,
-          name: r'normalizeDataServiceProvider',
+          from: normalizedDataServiceProvider,
+          name: r'normalizedDataServiceProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$normalizeDataServiceHash,
-          dependencies: NormalizeDataServiceFamily._dependencies,
+                  : _$normalizedDataServiceHash,
+          dependencies: NormalizedDataServiceFamily._dependencies,
           allTransitiveDependencies:
-              NormalizeDataServiceFamily._allTransitiveDependencies,
+              NormalizedDataServiceFamily._allTransitiveDependencies,
         );
 
   final String trainingBlockId;
 
   @override
   bool operator ==(Object other) {
-    return other is NormalizeDataServiceProvider &&
+    return other is NormalizedDataServiceProvider &&
         other.trainingBlockId == trainingBlockId;
   }
 

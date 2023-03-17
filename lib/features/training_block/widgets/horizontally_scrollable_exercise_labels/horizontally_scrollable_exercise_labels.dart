@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/training_block/widgets/ignore_pointer_edit_mode.dart';
 
 import '../../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../../../widgets/rounded_icon_button.dart';
@@ -14,6 +13,7 @@ import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
 import '../../services/exercise_types_service.dart';
+import '../ignore_pointer_edit_mode.dart';
 import 'exercise_day_widget.dart';
 import 'exercise_types_list.dart';
 
@@ -66,7 +66,10 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                         onTap: () => CustomBottomSheet(
                           height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
                           title: 'Edit exercise day',
-                          child: _TextEditorSingleLineWrapper(exerciseDay: exerciseDay),
+                          child: _TextEditorSingleLineWrapper(
+                            trainingBlock: trainingBlock,
+                            exerciseDay: exerciseDay,
+                          ),
                         ).show(context),
                         child: ExerciseDayWidget(
                           exerciseDay: exerciseDay,
@@ -93,6 +96,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                                   height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
                                   title: 'Add exercise type',
                                   child: _TextEditorSingleLineAndWheelWrapper(
+                                    trainingBlock: trainingBlock,
                                     exerciseDay: exerciseDay,
                                   ),
                                 ).show(context),
@@ -106,7 +110,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
           Align(
             alignment: Alignment.topLeft,
             child: ExerciseTypesList(
-              exerciseDays: trainingBlock.exerciseDays,
+              trainingBlock: trainingBlock,
               exerciseDay: exerciseDay,
             ),
           ),
@@ -146,20 +150,19 @@ class _Background extends StatelessWidget {
             bottomRight: Radius.circular(borderRadius),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: child,
-        ),
+        child: child,
       ),
     );
   }
 }
 
 class _TextEditorSingleLineWrapper extends ConsumerWidget {
+  final TrainingBlockClient trainingBlock;
   final ExerciseDayClient exerciseDay;
 
   const _TextEditorSingleLineWrapper({
     Key? key,
+    required this.trainingBlock,
     required this.exerciseDay,
   }) : super(key: key);
 
@@ -170,7 +173,8 @@ class _TextEditorSingleLineWrapper extends ConsumerWidget {
     return TextEditorSingleLine(
       value: exerciseDay.name,
       onSubmitted: (String text) {
-        exerciseDaysService.setName(
+        exerciseDaysService.updateName(
+          trainingBlock: trainingBlock,
           exerciseDay: exerciseDay,
           name: text,
         );
@@ -182,10 +186,12 @@ class _TextEditorSingleLineWrapper extends ConsumerWidget {
 }
 
 class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
+  final TrainingBlockClient trainingBlock;
   final ExerciseDayClient exerciseDay;
 
   const _TextEditorSingleLineAndWheelWrapper({
     Key? key,
+    required this.trainingBlock,
     required this.exerciseDay,
   }) : super(key: key);
 
@@ -202,6 +208,7 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
       options: const ['lb', 'kg'],
       onSubmitted: (String name, String unit) {
         exerciseTypesService.create(
+          trainingBlock: trainingBlock,
           exerciseDay: exerciseDay,
           name: name,
           unit: unit,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ButtonDropdownMenuItem {
-  final String id;
   final Widget? child;
   final Function? onTap;
 
   const ButtonDropdownMenuItem({
-    required this.id,
     this.child,
     this.onTap,
   });

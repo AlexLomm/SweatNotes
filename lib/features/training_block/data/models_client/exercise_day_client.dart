@@ -64,7 +64,21 @@ class ExerciseDayClient with _$ExerciseDayClient {
     return copyWith(exerciseTypes: newList);
   }
 
-  ExerciseDayClient addExerciseType(ExerciseTypeClient exerciseTypeClient) {
+  ExerciseTypeClient getExerciseTypeById(String id) {
+    return exerciseTypes.firstWhere((e) => e.dbModel.id == id);
+  }
+
+  ExerciseDayClient removeExerciseTypeById(String id) {
+    return copyWith(exerciseTypes: exerciseTypes.where((e) => e.dbModel.id != id).toList());
+  }
+
+  ExerciseDayClient prependExerciseType(ExerciseTypeClient exerciseTypeClient) {
+    return copyWith(
+      exerciseTypes: [exerciseTypeClient, ...exerciseTypes],
+    );
+  }
+
+  ExerciseDayClient appendExerciseType(ExerciseTypeClient exerciseTypeClient) {
     return copyWith(
       exerciseTypes: [...exerciseTypes, exerciseTypeClient],
     );

@@ -9,6 +9,7 @@ import '../../settings/edit_mode_switcher.dart';
 import '../constants.dart';
 import '../data/models_client/exercise_day_client.dart';
 import '../data/models_client/exercise_type_client.dart';
+import '../data/models_client/training_block_client.dart';
 import '../services/exercise_days_service.dart';
 import '../services/exercise_types_service.dart';
 import 'exercise_day_icon_wrapper.dart';
@@ -16,12 +17,14 @@ import 'ignore_pointer_edit_mode.dart';
 
 class ExerciseTypeWidget extends ConsumerWidget {
   final int index;
+  final TrainingBlockClient trainingBlock;
   final List<ExerciseDayClient> exerciseDays;
   final ExerciseTypeClient exerciseType;
 
   const ExerciseTypeWidget({
     Key? key,
     required this.index,
+    required this.trainingBlock,
     required this.exerciseDays,
     required this.exerciseType,
   }) : super(key: key);
@@ -31,11 +34,14 @@ class ExerciseTypeWidget extends ConsumerWidget {
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
-    final oldExerciseDay = exerciseDays.firstWhere(
-      (exerciseDay) => exerciseDay.exerciseTypes.map((e) => e.id).contains(exerciseType.id),
+    final fromExerciseDay = exerciseDays.firstWhere(
+      (exerciseDay) => exerciseDay.exerciseTypes
+          //
+          .map((e) => e.dbModel.id)
+          .contains(exerciseType.dbModel.id),
     );
 
-    final exerciseDaysToMoveTo = exerciseDays.where((exerciseDay) => exerciseDay.id != oldExerciseDay.id).toList();
+    final toExerciseDay = exerciseDays.where((e) => e != fromExerciseDay).toList();
 
     return Material(
       elevation: 2,
@@ -103,14 +109,14 @@ class ExerciseTypeWidget extends ConsumerWidget {
                       icon: Icons.keyboard_arrow_down,
                       animationDuration: animationDuration,
                       animationCurve: animationCurve,
-                      items: exerciseDaysToMoveTo
+                      items: toExerciseDay
                           .map(
                             (exerciseDay) => ButtonDropdownMenuItem(
-                              id: exerciseDay.id,
                               onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
-                                exerciseDays: exerciseDays,
-                                newExerciseDay: exerciseDay,
-                                exerciseTypeId: exerciseType.id,
+                                trainingBlock: trainingBlock,
+                                fromExerciseDay: fromExerciseDay,
+                                toExerciseDay: exerciseDay,
+                                exerciseTypeId: exerciseType.dbModel.id,
                               ),
                               child: Text(
                                 exerciseDay.name,

@@ -30,7 +30,7 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
 }
 
 class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with RouteAware {
-  late final Stream<TrainingBlockClient?> trainingBlockStream;
+  late final Stream<TrainingBlockClient?> dataStream;
   late RouteObserver _routeObserver;
 
   @override
@@ -80,7 +80,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
 
     final normalizeDataService = ref.read(normalizeDataServiceProvider(widget.trainingBlockId));
 
-    trainingBlockStream = normalizeDataService.trainingBlock;
+    dataStream = normalizeDataService.data;
   }
 
   @override
@@ -97,139 +97,130 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
           color: Theme.of(context).colorScheme.primary,
         );
 
-    return Layout(
-      isScrollable: false,
-      onGoBackButtonTap: () => context.go('/'),
-      actions: [
-        AnimatedOpacity(
-          opacity: isEditMode ? 0 : 1,
-          duration: animationDuration,
-          curve: animationCurve,
-          child: IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            tooltip: 'Add new entry',
-            splashRadius: 20,
-            onPressed: isEditMode
-                ? null
-                : () => CustomBottomSheet(
-                      height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                      title: 'Add exercise day',
-                      child: TextEditorSingleLine(
-                        value: '',
-                        onSubmitted: (String text) {
-                          exerciseDaysService.create(
-                            trainingBlockId: widget.trainingBlockId,
-                            name: text,
-                          );
+    return StreamBuilder(
+      stream: dataStream,
+      builder: (context, snapshot) {
+        final trainingBlock = snapshot.data;
 
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ).show(context),
-          ),
-        ),
-        AnimatedOpacity(
-          opacity: isEditMode ? 0 : 1,
-          duration: animationDuration,
-          curve: animationCurve,
-          child: IconButton(
-            icon: Icon(
-              Icons.edit_outlined,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            tooltip: 'Turn on edit mode',
-            splashRadius: 20,
-            onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
-          ),
-        ),
-        AnimatedCrossFade(
-          alignment: Alignment.center,
-          crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          duration: animationDuration,
-          firstCurve: animationCurve,
-          secondCurve: animationCurve,
-          firstChild: ButtonDropdownMenu(
-            icon: Icons.more_vert,
-            animationDuration: animationDuration,
-            animationCurve: animationCurve,
-            items: [
-              ButtonDropdownMenuItem(
-                id: 'view-archived-items',
-                child: Text('View archived items', style: menuItemTheme),
-              ),
-              ButtonDropdownMenuItem(
-                id: 'compact-mode',
-                child: RichText(
-                  softWrap: false,
-                  text: TextSpan(
-                    text: 'Compact mode',
-                    style: menuItemTheme,
-                    children: [
-                      WidgetSpan(
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 24.0),
-                          padding: const EdgeInsets.only(bottom: 1.0),
-                          child: Text('Off', style: menuItemSubTextTheme),
-                        ),
-                      ),
-                    ],
-                  ),
+        if (trainingBlock == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return Layout(
+          isScrollable: false,
+          onGoBackButtonTap: () => context.go('/'),
+          actions: [
+            AnimatedOpacity(
+              opacity: isEditMode ? 0 : 1,
+              duration: animationDuration,
+              curve: animationCurve,
+              child: IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
+                tooltip: 'Add new entry',
+                splashRadius: 20,
+                onPressed: isEditMode
+                    ? null
+                    : () => CustomBottomSheet(
+                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                          title: 'Add exercise day',
+                          child: TextEditorSingleLine(
+                            value: '',
+                            onSubmitted: (String text) {
+                              exerciseDaysService.create(
+                                trainingBlock: trainingBlock,
+                                name: text,
+                              );
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ).show(context),
               ),
-            ],
-          ),
-          secondChild: IconButton(
-            icon: Icon(
-              Icons.check,
-              color: Theme.of(context).colorScheme.primary,
             ),
-            tooltip: 'Turn off edit mode',
-            splashRadius: 20,
-            onPressed: () => editModeSwitcher.toggle(),
-          ),
-        ),
-      ],
-      child: StreamBuilder(
-        stream: trainingBlockStream,
-        builder: (context, snapshot) {
-          final trainingBlock = snapshot.data;
-
-          if (trainingBlock == null) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (trainingBlock.exerciseDays.isEmpty) {
-            return const Center(child: EmptyPagePlaceholder());
-          }
-
-          return Matrix(trainingBlock: trainingBlock);
-        },
-      ),
+            AnimatedOpacity(
+              opacity: isEditMode ? 0 : 1,
+              duration: animationDuration,
+              curve: animationCurve,
+              child: IconButton(
+                icon: Icon(
+                  Icons.edit_outlined,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                tooltip: 'Turn on edit mode',
+                splashRadius: 20,
+                onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+              ),
+            ),
+            AnimatedCrossFade(
+              alignment: Alignment.center,
+              crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: animationDuration,
+              firstCurve: animationCurve,
+              secondCurve: animationCurve,
+              firstChild: ButtonDropdownMenu(
+                icon: Icons.more_vert,
+                animationDuration: animationDuration,
+                animationCurve: animationCurve,
+                items: [
+                  ButtonDropdownMenuItem(
+                    child: Text('View archived items', style: menuItemTheme),
+                  ),
+                  ButtonDropdownMenuItem(
+                    child: RichText(
+                      softWrap: false,
+                      text: TextSpan(
+                        text: 'Compact mode',
+                        style: menuItemTheme,
+                        children: [
+                          WidgetSpan(
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 24.0),
+                              padding: const EdgeInsets.only(bottom: 1.0),
+                              child: Text('Off', style: menuItemSubTextTheme),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              secondChild: IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                tooltip: 'Turn off edit mode',
+                splashRadius: 20,
+                onPressed: () => editModeSwitcher.toggle(),
+              ),
+            ),
+          ],
+          child: trainingBlock.exerciseDays.isEmpty
+              ? const Center(child: EmptyPagePlaceholder())
+              : Matrix(trainingBlock: trainingBlock),
+        );
+      },
     );
   }
 }
 
-class Matrix extends StatefulWidget {
+class Matrix extends StatelessWidget {
   final TrainingBlockClient trainingBlock;
 
   const Matrix({Key? key, required this.trainingBlock}) : super(key: key);
 
   @override
-  State<Matrix> createState() => _MatrixState();
-}
-
-class _MatrixState extends State<Matrix> {
-  @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: <Widget>[
       SliverList(
         delegate: SliverChildBuilderDelegate(
-          childCount: widget.trainingBlock.exerciseDays.length,
+          childCount: trainingBlock.exerciseDays.length,
           (BuildContext context, int i) {
-            final exerciseDay = widget.trainingBlock.exerciseDays[i];
+            final exerciseDay = trainingBlock.exerciseDays[i];
 
             return Stack(
               children: [
@@ -243,7 +234,7 @@ class _MatrixState extends State<Matrix> {
                   alignment: Alignment.topLeft,
                   child: HorizontallyScrollableExerciseLabels(
                     exerciseDay: exerciseDay,
-                    trainingBlock: widget.trainingBlock,
+                    trainingBlock: trainingBlock,
                   ),
                 )
               ],

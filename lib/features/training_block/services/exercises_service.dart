@@ -1,69 +1,59 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../data/exercises_repository.dart';
+import '../data/exercise_types_repository.dart';
 import '../data/models_client/exercise_client.dart';
-import '../data/models_client/exercise_day_client.dart';
-import '../data/models_client/exercise_set_client.dart';
+import '../data/models_client/exercise_type_client.dart';
 
 part 'exercises_service.g.dart';
 
 class ExercisesService {
-  ExercisesRepository exercisesRepository;
+  ExerciseTypesRepository exerciseTypesRepository;
 
-  ExercisesService(this.exercisesRepository);
+  ExercisesService(this.exerciseTypesRepository);
 
   Future<void> setExerciseSet({
+    required ExerciseTypeClient exerciseType,
     required ExerciseClient exercise,
+    required int exerciseSetIndex,
     required String reps,
     required String load,
-    required int index,
   }) async {
-    final exerciseSet = exercise.exerciseSets[index];
+    final exerciseIndex = exerciseType.exercises.indexOf(exercise);
 
-    final ExerciseSetClient modifiedExerciseSet = exerciseSet.copyWith(
-      isFiller: false,
-      reps: reps,
-      load: load,
+    if (exerciseIndex == -1) {
+      throw Exception('Exercise not found in exercise type');
+    }
+
+    final set = exercise.sets[exerciseSetIndex];
+
+    final updatedExercise = exercise.updateSet(
+      index: exerciseSetIndex,
+      set: set.copyWith(reps: reps, load: load),
     );
 
-    final modifiedExercise = exercise.copyWith(exerciseSets: [
-      ...exercise.exerciseSets.sublist(0, index),
-      modifiedExerciseSet,
-      ...exercise.exerciseSets.sublist(index + 1),
-    ]);
+    final updatedExerciseType = exerciseType.updateExercise(
+      index: exerciseIndex,
+      exercise: updatedExercise,
+    );
 
-    exercisesRepository.setExercise(modifiedExercise);
+    exerciseTypesRepository.update(updatedExerciseType.toDbModel());
   }
 
   /// adds an empty exercise at the end of one of the
   /// exercise types referenced in the exerciseDay,
   /// thereby forcing the creation of a new "column"
   Future<void> addEmptyExercise({
-    required ExerciseDayClient exerciseDay,
+    required ExerciseTypeClient exerciseType,
   }) async {
-    if (exerciseDay.exerciseTypes.isEmpty) return;
+    final updatedExerciseType = exerciseType.enlargeExercisesRow();
 
-    if (exerciseDay.exerciseTypes.first.exercises.isEmpty) return;
-
-    final lastExercise = exerciseDay.exerciseTypes.first.exercises.last;
-
-    final newExercise = lastExercise.copyWith(
-      exerciseSets: [
-        lastExercise.exerciseSets.first.copyWith(
-          isFiller: false,
-          reps: '',
-          load: '',
-        )
-      ],
-    );
-
-    exercisesRepository.addExercise(newExercise);
+    exerciseTypesRepository.update(updatedExerciseType.toDbModel());
   }
 }
 
 @riverpod
 ExercisesService exercisesService(ExercisesServiceRef ref) {
-  final exercisesRepository = ref.watch(exercisesRepositoryProvider);
+  final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
 
-  return ExercisesService(exercisesRepository);
+  return ExercisesService(exerciseTypesRepository);
 }

@@ -13,9 +13,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
 
   const factory ExerciseTypeClient({
     required ExerciseType dbModel,
-    // TODO: remove?
     required String name,
-    // TODO: remove?
     required String unit,
     required List<ExerciseClient> exercises,
   }) = _ExerciseTypeClient;
@@ -51,6 +49,17 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     final updatedExercises = [...exercises];
 
     updatedExercises[index] = exercise.copyWith(isFiller: false);
+
+    return copyWith(exercises: updatedExercises);
+  }
+
+  ExerciseTypeClient enlargeExercisesRow() {
+    // the last exercise is always a filler
+    final lastExercise = exercises.last;
+
+    final updatedExercises = [...exercises];
+
+    updatedExercises[exercises.length - 1] = lastExercise.copyWith(isFiller: false);
 
     return copyWith(exercises: updatedExercises);
   }

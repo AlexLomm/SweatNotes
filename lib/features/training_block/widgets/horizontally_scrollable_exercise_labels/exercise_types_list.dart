@@ -4,16 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../settings/edit_mode_switcher.dart';
 import '../../constants.dart';
 import '../../data/models_client/exercise_day_client.dart';
+import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
 import '../exercise_type_widget.dart';
 
 class ExerciseTypesList extends ConsumerStatefulWidget {
-  final List<ExerciseDayClient> exerciseDays;
+  final TrainingBlockClient trainingBlock;
   final ExerciseDayClient exerciseDay;
 
   const ExerciseTypesList({
     Key? key,
-    required this.exerciseDays,
+    required this.trainingBlock,
     required this.exerciseDay,
   }) : super(key: key);
 
@@ -63,27 +64,32 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
         ),
         child: ReorderableListView(
           physics: const NeverScrollableScrollPhysics(),
-          onReorder: (int oldIndex, int newIndex) async {
+          onReorder: (int fromIndex, int toIndex) async {
+            final exerciseDayIndex = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay);
+
             final exerciseTypesCount = _exerciseDayClientCached.exerciseTypes.length;
 
             // these two lines are workarounds for ReorderableListView problems
             // @see https://stackoverflow.com/a/54164333/4241959
-            if (newIndex > exerciseTypesCount) newIndex = exerciseTypesCount;
-            if (oldIndex < newIndex) newIndex--;
+            if (toIndex > exerciseTypesCount) toIndex = exerciseTypesCount;
+            if (fromIndex < toIndex) toIndex--;
 
             final backup = _exerciseDayClientCached;
 
             // optimistically update the UI
             setState(() {
-              _exerciseDayClientCached = exerciseDaysService.getExerciseDayWithReorderedExerciseType(
-                exerciseDay: _exerciseDayClientCached,
-                oldIndex: oldIndex,
-                newIndex: newIndex,
+              _exerciseDayClientCached = _exerciseDayClientCached.reorderExerciseType(
+                from: fromIndex,
+                to: toIndex,
               );
             });
 
             try {
-              await exerciseDaysService.update(exerciseDay: _exerciseDayClientCached);
+              await exerciseDaysService.update(
+                trainingBlock: widget.trainingBlock,
+                exerciseDay: _exerciseDayClientCached,
+                index: exerciseDayIndex,
+              );
             } catch (e) {
               // revert the UI if the call is unsuccessful
               setState(() => _exerciseDayClientCached = backup);
@@ -92,7 +98,7 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
           children: [
             for (final entry in _exerciseDayClientCached.exerciseTypes.asMap().entries)
               Container(
-                key: Key(entry.value.id),
+                key: Key(entry.value.dbModel.id),
                 margin: const EdgeInsets.only(
                   bottom: elscSpacingBetweenItems,
                 ),
@@ -101,7 +107,8 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
                   data: Theme.of(context),
                   child: ExerciseTypeWidget(
                     index: entry.key,
-                    exerciseDays: widget.exerciseDays,
+                    trainingBlock: widget.trainingBlock,
+                    exerciseDays: widget.trainingBlock.exerciseDays,
                     exerciseType: entry.value,
                   ),
                 ),

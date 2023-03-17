@@ -31,6 +31,10 @@ class ExerciseTypesRepository {
     return collectionRef.where('trainingBlockId', isEqualTo: trainingBlockId);
   }
 
+  Future<void> update(ExerciseType exerciseType) async {
+    return getDocumentRefById(exerciseType.id).update(_toFirestore(exerciseType, null));
+  }
+
   ExerciseType _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
     final dataWithoutId = doc.data();
 

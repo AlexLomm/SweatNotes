@@ -6,7 +6,7 @@ part of 'exercises_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$exercisesServiceHash() => r'836d1da1ce3d7fbdc4b80be4a44e7b11a6119e85';
+String _$exercisesServiceHash() => r'5ced371d52c96f6ac4bd2a5181305153f42a9501';
 
 /// See also [exercisesService].
 @ProviderFor(exercisesService)

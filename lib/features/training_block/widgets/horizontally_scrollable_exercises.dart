@@ -63,7 +63,7 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
                   ? Align(
                       alignment: Alignment.topLeft,
                       child: GestureDetector(
-                        onTap: () => exercisesService.addEmptyExercise(exerciseDay: exerciseDay),
+                        onTap: () => exercisesService.addEmptyExercise(exerciseType: exerciseTypes.first),
                         child: Container(
                           width: 48,
                           height: exercisesHeight,
@@ -96,6 +96,7 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
                                   bottom: escMarginBottomNotLast,
                                 ),
                                 child: ExerciseWidget(
+                                  exerciseType: exerciseTypes[verticalIndex],
                                   exercise: exerciseTypes[verticalIndex].exercises[j],
                                 ),
                               ),

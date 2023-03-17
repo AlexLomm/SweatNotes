@@ -23,6 +23,10 @@ class ExerciseSetWidget extends StatelessWidget {
   final ExerciseSetClient exerciseSet;
   final VoidCallback? onTap;
 
+  bool get _shouldShowPredictedReps => exerciseSet.reps.isEmpty;
+
+  bool get _shouldShowPredictedLoad => exerciseSet.load.isEmpty;
+
   const ExerciseSetWidget({
     Key? key,
     this.isSingle = false,
@@ -50,10 +54,10 @@ class ExerciseSetWidget extends StatelessWidget {
               isRightmost: isRightmost,
               exerciseSet: exerciseSet,
               child: AutoSizeText(
-                exerciseSet.reps,
+                _shouldShowPredictedReps ? exerciseSet.predictedReps : exerciseSet.reps,
                 maxLines: 1,
                 minFontSize: labelSmallTheme.fontSize!,
-                style: labelLargeTheme.copyWith(color: textColor),
+                style: labelLargeTheme.copyWith(color: textColor.withOpacity(_shouldShowPredictedReps ? 0.32 : 1)),
               ),
             ),
             _Cell(
@@ -63,7 +67,7 @@ class ExerciseSetWidget extends StatelessWidget {
               exerciseSet: exerciseSet,
               child: AutoSizeText.rich(
                 TextSpan(
-                  text: exerciseSet.load,
+                  text: _shouldShowPredictedLoad ? exerciseSet.predictedLoad : exerciseSet.load,
                   children: [
                     TextSpan(
                       text: ' ',
@@ -77,7 +81,7 @@ class ExerciseSetWidget extends StatelessWidget {
                 ),
                 maxLines: 1,
                 minFontSize: labelSmallTheme.fontSize!,
-                style: labelLargeTheme.copyWith(color: textColor),
+                style: labelLargeTheme.copyWith(color: textColor.withOpacity(_shouldShowPredictedLoad ? 0.32 : 1)),
               ),
             ),
           ],

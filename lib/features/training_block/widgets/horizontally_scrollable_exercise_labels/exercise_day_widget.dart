@@ -30,7 +30,7 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
   Widget build(BuildContext context) {
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay.id);
+    final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay);
     final isFirst = indexOfExerciseDay == 0;
     final isLast = indexOfExerciseDay == widget.trainingBlock.exerciseDays.length - 1;
 
@@ -110,7 +110,7 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
     try {
       await trainingBlocksService.moveExerciseDay(
         trainingBlock: widget.trainingBlock,
-        exerciseDayId: widget.exerciseDay.id,
+        exerciseDay: widget.exerciseDay,
         moveBy: moveBy,
       );
     } catch (e) {

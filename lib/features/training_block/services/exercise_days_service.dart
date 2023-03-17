@@ -1,160 +1,94 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
+import 'package:journal_flutter/features/training_block/data/training_blocks_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../firebase.dart';
-import '../data/exercise_days_repository.dart';
-import '../data/models/exercise_day.dart';
 import '../data/models_client/exercise_day_client.dart';
 
 part 'exercise_days_service.g.dart';
 
 class ExerciseDaysService {
-  ExerciseDaysRepository exerciseDaysRepository;
+  TrainingBlocksRepository trainingBlocksRepository;
   FirebaseAuth firebaseAuth;
 
-  ExerciseDaysService(this.exerciseDaysRepository, this.firebaseAuth);
+  ExerciseDaysService(
+    this.trainingBlocksRepository,
+    this.firebaseAuth,
+  );
 
-  Future<void> setName({
+  Future<void> updateName({
+    required TrainingBlockClient trainingBlock,
     required ExerciseDayClient exerciseDay,
     required String name,
   }) async {
-    exerciseDaysRepository
-        //
-        .getDocumentRefById(exerciseDay.id)
-        .set(exerciseDay.copyWith(name: name).toExerciseDay());
+    final index = trainingBlock.exerciseDays.indexOf(exerciseDay);
+
+    if (index == -1) {
+      throw Exception('Exercise day not found');
+    }
+
+    trainingBlocksRepository.update(
+      trainingBlock
+          .updateExerciseDay(
+            index: index,
+            exerciseDay: exerciseDay.copyWith(name: name),
+          )
+          .toDbModel(),
+    );
   }
 
   Future<void> create({
-    required String trainingBlockId,
+    required TrainingBlockClient trainingBlock,
     required String name,
   }) async {
-    final userId = firebaseAuth.currentUser?.uid;
-
-    if (userId == null) {
-      throw Exception('User is not logged in');
-    }
-
-    exerciseDaysRepository.add(ExerciseDay(
-      id: '',
-      userId: userId,
-      trainingBlockId: trainingBlockId,
+    final updatedTrainingBlock = trainingBlock.addExerciseDay(ExerciseDayClient(
       name: name,
+      exerciseTypes: [],
     ));
+
+    return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }
 
-  Future<void> update({required ExerciseDayClient exerciseDay}) async {
-    return exerciseDaysRepository.update(exerciseDay.toExerciseDay());
+  Future<void> update({
+    required TrainingBlockClient trainingBlock,
+    required ExerciseDayClient exerciseDay,
+    required int index,
+  }) async {
+    final updatedTrainingBlock = trainingBlock.updateExerciseDay(
+      index: index,
+      exerciseDay: exerciseDay,
+    );
+
+    return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }
 
   Future<void> moveExerciseTypeIntoAnotherExerciseDay({
-    required List<ExerciseDayClient> exerciseDays,
-    required ExerciseDayClient newExerciseDay,
+    required TrainingBlockClient trainingBlock,
+    required ExerciseDayClient fromExerciseDay,
+    required ExerciseDayClient toExerciseDay,
     required String exerciseTypeId,
   }) async {
-    final updatedExerciseDays = getExerciseDaysWithReorderedExerciseType(
-      exerciseDays: exerciseDays,
-      newExerciseDay: newExerciseDay,
-      exerciseTypeId: exerciseTypeId,
-    );
+    final fromExerciseDayIndex = trainingBlock.exerciseDays.indexOf(fromExerciseDay);
+    final toExerciseDayIndex = trainingBlock.exerciseDays.indexOf(toExerciseDay);
 
-    final updatedOldExerciseDay = updatedExerciseDays[0];
-    final updatedNewExerciseDay = updatedExerciseDays[1];
-    final updatedExercises = updatedNewExerciseDay
-        //
-        .exerciseTypes
-        .firstWhere((e) => e.id == exerciseTypeId)
-        .exercisesWithoutFillers;
+    final exerciseType = fromExerciseDay.getExerciseTypeById(exerciseTypeId);
 
-    return exerciseDaysRepository.moveExerciseTypeIntoAnotherExerciseDay(
-      oldExerciseDay: updatedOldExerciseDay.toExerciseDay(),
-      newExerciseDay: updatedNewExerciseDay.toExerciseDay(),
-      exercises: updatedExercises.map((e) => e.toExercise()).toList(),
-    );
-  }
+    final updatedFromExerciseDay = fromExerciseDay.removeExerciseTypeById(exerciseTypeId);
+    final updatedToExerciseDay = toExerciseDay.prependExerciseType(exerciseType);
 
-  List<ExerciseDayClient> getExerciseDaysWithReorderedExerciseType({
-    required List<ExerciseDayClient> exerciseDays,
-    required ExerciseDayClient newExerciseDay,
-    required String exerciseTypeId,
-  }) {
-    final oldExerciseDay = exerciseDays.firstWhere(
-      (exerciseDay) => exerciseDay.exerciseTypes.map((e) => e.id).contains(exerciseTypeId),
-    );
+    final updatedTrainingBlock = trainingBlock
+        .updateExerciseDay(index: fromExerciseDayIndex, exerciseDay: updatedFromExerciseDay)
+        .updateExerciseDay(index: toExerciseDayIndex, exerciseDay: updatedToExerciseDay);
 
-    final i = oldExerciseDay.exerciseTypes.indexWhere((e) => e.id == exerciseTypeId);
-
-    final exerciseType = oldExerciseDay.exerciseTypes[i].copyWith(
-      exercises: oldExerciseDay.exerciseTypes[i].exercises
-          .map(
-            (e) => e.copyWith(exerciseDayId: newExerciseDay.id),
-          )
-          .toList(),
-    );
-
-    final oldExerciseDayWithExerciseTypeRemoved = oldExerciseDay.copyWith(
-      exerciseTypes: [...oldExerciseDay.exerciseTypes]..removeAt(i),
-    );
-
-    final newExerciseDayWithExerciseTypeAdded = newExerciseDay.copyWith(
-      exerciseTypes: [...newExerciseDay.exerciseTypes]..insert(0, exerciseType),
-    );
-
-    return [oldExerciseDayWithExerciseTypeRemoved, newExerciseDayWithExerciseTypeAdded];
-  }
-
-  // TODO: move this into the ExerciseDayClient class
-  ExerciseDayClient getExerciseDayWithReorderedExerciseType({
-    required ExerciseDayClient exerciseDay,
-    required int oldIndex,
-    required int newIndex,
-  }) {
-    // TODO: extract
-    final newOrderingMap = exerciseDay.exerciseTypes.asMap().entries.fold(
-      <String, int>{},
-      (previousValue, entry) {
-        final index = entry.key;
-        final exerciseTypeId = entry.value.id;
-
-        previousValue[exerciseTypeId] = index;
-
-        return previousValue;
-      },
-    );
-
-    // TODO: extract
-    final reorderedNewOrderingMap = newOrderingMap.entries.fold(
-      <String, int>{},
-      (previousValue, entry) {
-        final exerciseTypeId = entry.key;
-        final i = entry.value;
-
-        if (i == oldIndex) {
-          previousValue[exerciseTypeId] = newIndex;
-        } else if (i > oldIndex && i <= newIndex) {
-          previousValue[exerciseTypeId] = i - 1;
-        } else if (i < oldIndex && i >= newIndex) {
-          previousValue[exerciseTypeId] = i + 1;
-        } else {
-          previousValue[exerciseTypeId] = i;
-        }
-
-        return previousValue;
-      },
-    );
-
-    // TODO: extract
-    final newExerciseTypes = exerciseDay.exerciseTypes.toList();
-
-    newExerciseTypes.sort((a, b) => reorderedNewOrderingMap[a.id]!.compareTo(reorderedNewOrderingMap[b.id]!));
-
-    return exerciseDay.copyWith(exerciseTypes: newExerciseTypes);
+    return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }
 }
 
 @riverpod
 ExerciseDaysService exerciseDaysService(ExerciseDaysServiceRef ref) {
-  final exerciseDaysRepository = ref.watch(exerciseDaysRepositoryProvider);
+  final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
   final firebaseAuth = ref.watch(firebaseAuthProvider);
 
-  return ExerciseDaysService(exerciseDaysRepository, firebaseAuth);
+  return ExerciseDaysService(trainingBlocksRepository, firebaseAuth);
 }

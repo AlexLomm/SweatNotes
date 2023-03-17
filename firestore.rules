@@ -3,14 +3,6 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // ------------------------- HELPERS -------------------------
 
-    function isOwner() {
-      return request.auth.uid == resource.data.userId;
-    }
-
-    function isFutureOwner() {
-      return request.auth.uid == request.resource.data.userId;
-    }
-
     function onlyHasAttrs(obj, attrs) {
       return obj.keys().hasOnly(attrs);
     }
@@ -26,59 +18,33 @@ service cloud.firestore {
     // -------------------------- RULES --------------------------
 
     match /{document=**} {
-      allow read: if isOwner() || resource == null;
+      allow read, write: if false;
     }
 
-    match /users/{userId} {
-      allow read, write: if request.auth.uid == userId;
-    }
+    match /users/{userId}/{document=**} {
+      allow read: if request.auth.uid == userId;
 
-    match /training-blocks/{trainingBlockId} {
-      function isCorrectSchema() {
-        return onlyHasAttrs(request.resource.data, ['userId', 'name', 'exerciseDaysOrdering'])
-            && incoming().name is string
-            && isMissingOrMap('exerciseDaysOrdering');
+      match /training-blocks/{trainingBlockId} {
+        function isCorrectSchema() {
+          return onlyHasAttrs(request.resource.data, ['name', 'exerciseDays'])
+              && incoming().name is string
+              && incoming().exerciseDays is list;
+        }
+
+        allow write: if isCorrectSchema();
       }
 
-      allow create: if isFutureOwner() && isCorrectSchema();
-      allow update: if isOwner() && isCorrectSchema();
-    }
+      match /exercise-types/{exerciseTypeId} {
+        function isCorrectSchema() {
+          return onlyHasAttrs(request.resource.data, ['name', 'unit', 'trainingBlockId', 'exercises'])
+              && incoming().name is string
+              && incoming().name is string
+              && incoming().trainingBlockId is string
+              && incoming().exercises is list
+        }
 
-    match /exercise-days/{exerciseDayId} {
-      function isCorrectSchema() {
-        return onlyHasAttrs(request.resource.data, ['userId', 'name', 'trainingBlockId', 'exerciseTypesOrdering'])
-            && incoming().name is string
-            && incoming().trainingBlockId is string && incoming().trainingBlockId != ''
-            && isMissingOrMap('exerciseTypesOrdering');
+        allow write: if isCorrectSchema();
       }
-
-      allow create: if isFutureOwner() && isCorrectSchema();
-      allow update: if isOwner() && isCorrectSchema();
-    }
-
-    match /exercises/{exerciseId} {
-      function isCorrectSchema() {
-        return onlyHasAttrs(request.resource.data, ['userId', 'placement', 'exerciseDayId', 'exerciseTypeId', 'trainingBlockId', 'sets'])
-            && incoming().placement is int
-            && incoming().exerciseDayId is string && incoming().exerciseDayId != ''
-            && incoming().exerciseTypeId is string && incoming().exerciseTypeId != ''
-            && incoming().trainingBlockId is string && incoming().trainingBlockId != ''
-            && incoming().sets is list;
-      }
-
-      allow create: if isFutureOwner() && isCorrectSchema();
-      allow update: if isOwner() && isCorrectSchema();
-    }
-
-    match /exercise-types/{exerciseTypeId} {
-      function isCorrectSchema() {
-        return onlyHasAttrs(request.resource.data, ['userId', 'name', 'unit'])
-            && incoming().name is string
-            && incoming().unit is string
-      }
-
-      allow create: if isFutureOwner() && isCorrectSchema();
-      allow update: if isOwner() && isCorrectSchema();
     }
   }
 }

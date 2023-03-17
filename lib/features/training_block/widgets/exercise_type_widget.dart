@@ -52,88 +52,93 @@ class ExerciseTypeWidget extends ConsumerWidget {
         ),
       ),
       color: Theme.of(context).colorScheme.surfaceVariant,
-      child: AnimatedContainer(
-        duration: animationDuration,
-        curve: animationCurve,
-        padding: EdgeInsets.only(left: isEditMode ? etPaddingLeftExpanded : etPaddingLeft),
-        width: isEditMode ? etWidthExpanded : etWidth,
+      child: SizedBox(
+        // the height is set outside of the AnimatedContainer
+        // in order to prevent newly created widgets' heights
+        // from being animated
         height: etHeight,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: AnimatedOpacity(
-                duration: animationDuration,
-                curve: animationCurve,
-                opacity: isEditMode ? 1 : 0,
-                child: ReorderableDragStartListener(
-                  index: index,
-                  child: ExerciseDayIconWrapper(
-                    icon: Icons.drag_indicator,
-                    width: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: AnimatedContainer(
-                duration: animationDuration,
-                curve: animationCurve,
-                margin: EdgeInsets.only(left: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth),
-                child: IgnorePointerEditMode(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => CustomBottomSheet(
-                    height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
-                    title: 'Edit exercise type',
-                    child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
-                  ).show(context),
-                  child: _ExerciseTypeName(
-                    width: isEditMode ? etLabelWidthExpanded : etLabelWidth,
-                    name: exerciseType.name,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: AnimatedOpacity(
-                duration: animationDuration,
-                curve: animationCurve,
-                opacity: isEditMode ? 1 : 0,
-                child: IgnorePointerEditMode(
-                  child: AnimatedContainer(
-                    duration: animationDuration,
-                    curve: animationCurve,
-                    child: ButtonDropdownMenu(
-                      icon: Icons.keyboard_arrow_down,
-                      animationDuration: animationDuration,
-                      animationCurve: animationCurve,
-                      items: toExerciseDay
-                          .map(
-                            (exerciseDay) => ButtonDropdownMenuItem(
-                              onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
-                                trainingBlock: trainingBlock,
-                                fromExerciseDay: fromExerciseDay,
-                                toExerciseDay: exerciseDay,
-                                exerciseTypeId: exerciseType.dbModel.id,
-                              ),
-                              child: Text(
-                                exerciseDay.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                              ),
-                            ),
-                          )
-                          .toList(),
+        child: AnimatedContainer(
+          duration: animationDuration,
+          curve: animationCurve,
+          padding: EdgeInsets.only(left: isEditMode ? etPaddingLeftExpanded : etPaddingLeft),
+          width: isEditMode ? etWidthExpanded : etWidth,
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: AnimatedOpacity(
+                  duration: animationDuration,
+                  curve: animationCurve,
+                  opacity: isEditMode ? 1 : 0,
+                  child: ReorderableDragStartListener(
+                    index: index,
+                    child: ExerciseDayIconWrapper(
+                      icon: Icons.drag_indicator,
+                      width: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth,
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.center,
+                child: AnimatedContainer(
+                  duration: animationDuration,
+                  curve: animationCurve,
+                  margin: EdgeInsets.only(left: isEditMode ? etDragHandleWidthExpanded : etDragHandleWidth),
+                  child: IgnorePointerEditMode(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => CustomBottomSheet(
+                      height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                      title: 'Edit exercise type',
+                      child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
+                    ).show(context),
+                    child: _ExerciseTypeName(
+                      width: isEditMode ? etLabelWidthExpanded : etLabelWidth,
+                      name: exerciseType.name,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AnimatedOpacity(
+                  duration: animationDuration,
+                  curve: animationCurve,
+                  opacity: isEditMode ? 1 : 0,
+                  child: IgnorePointerEditMode(
+                    child: AnimatedContainer(
+                      duration: animationDuration,
+                      curve: animationCurve,
+                      child: ButtonDropdownMenu(
+                        icon: Icons.keyboard_arrow_down,
+                        animationDuration: animationDuration,
+                        animationCurve: animationCurve,
+                        items: toExerciseDay
+                            .map(
+                              (exerciseDay) => ButtonDropdownMenuItem(
+                                onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
+                                  trainingBlock: trainingBlock,
+                                  fromExerciseDay: fromExerciseDay,
+                                  toExerciseDay: exerciseDay,
+                                  exerciseTypeId: exerciseType.dbModel.id,
+                                ),
+                                child: Text(
+                                  exerciseDay.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

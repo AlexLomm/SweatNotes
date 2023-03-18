@@ -24,10 +24,6 @@ class ExerciseSetWidget extends ConsumerWidget {
   final ExerciseSetClient exerciseSet;
   final VoidCallback? onTap;
 
-  bool get _shouldShowPredictedReps => exerciseSet.reps.isEmpty;
-
-  bool get _shouldShowPredictedLoad => exerciseSet.load.isEmpty;
-
   const ExerciseSetWidget({
     Key? key,
     this.isSingle = false,
@@ -56,11 +52,11 @@ class ExerciseSetWidget extends ConsumerWidget {
               isSingle: isSingle,
               isRightmost: isRightmost,
               exerciseSet: exerciseSet,
-              child: AutoSizeText(
-                _shouldShowPredictedReps ? exerciseSet.predictedReps : exerciseSet.reps,
-                maxLines: 1,
-                minFontSize: labelSmallTheme.fontSize!,
-                style: labelLargeTheme.copyWith(color: textColor.withOpacity(_shouldShowPredictedReps ? 0.32 : 1)),
+              child: _RepsText(
+                exerciseSet: exerciseSet,
+                textColor: textColor,
+                labelSmallTheme: labelSmallTheme,
+                labelLargeTheme: labelLargeTheme,
               ),
             ),
             _Cell(
@@ -68,28 +64,84 @@ class ExerciseSetWidget extends ConsumerWidget {
               isSingle: isSingle,
               isRightmost: isRightmost,
               exerciseSet: exerciseSet,
-              child: AutoSizeText.rich(
-                TextSpan(
-                  text: _shouldShowPredictedLoad ? exerciseSet.predictedLoad : exerciseSet.load,
-                  children: [
-                    TextSpan(
-                      text: ' ',
-                      style: labelSmallTheme.copyWith(color: textColor),
-                    ),
-                    TextSpan(
-                      text: exerciseSet.load.isEmpty ? '' : exerciseSet.unit,
-                      style: labelSmallTheme.copyWith(color: textColor),
-                    ),
-                  ],
-                ),
-                maxLines: 1,
-                minFontSize: labelSmallTheme.fontSize!,
-                style: labelLargeTheme.copyWith(color: textColor.withOpacity(_shouldShowPredictedLoad ? 0.32 : 1)),
+              child: _LoadText(
+                exerciseSet: exerciseSet,
+                textColor: textColor,
+                labelSmallTheme: labelSmallTheme,
+                labelLargeTheme: labelLargeTheme,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _RepsText extends StatelessWidget {
+  final ExerciseSetClient exerciseSet;
+  final Color textColor;
+  final TextStyle labelSmallTheme;
+  final TextStyle labelLargeTheme;
+
+  bool get _shouldShowPredictedReps => exerciseSet.reps.isEmpty;
+
+  const _RepsText({
+    Key? key,
+    required this.exerciseSet,
+    required this.textColor,
+    required this.labelSmallTheme,
+    required this.labelLargeTheme,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final reps = _shouldShowPredictedReps ? exerciseSet.predictedReps : exerciseSet.reps;
+    final color = _shouldShowPredictedReps ? textColor.withOpacity(0.32) : textColor;
+
+    return AutoSizeText(
+      reps,
+      maxLines: 1,
+      minFontSize: labelSmallTheme.fontSize!,
+      style: labelLargeTheme.copyWith(color: color),
+    );
+  }
+}
+
+class _LoadText extends StatelessWidget {
+  final ExerciseSetClient exerciseSet;
+  final Color textColor;
+  final TextStyle labelSmallTheme;
+  final TextStyle labelLargeTheme;
+
+  bool get _shouldShowPredictedLoad => exerciseSet.load.isEmpty;
+
+  const _LoadText({
+    Key? key,
+    required this.exerciseSet,
+    required this.textColor,
+    required this.labelSmallTheme,
+    required this.labelLargeTheme,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final load = _shouldShowPredictedLoad ? exerciseSet.predictedLoad : exerciseSet.load;
+    final color = _shouldShowPredictedLoad ? textColor.withOpacity(0.32) : textColor;
+
+    return AutoSizeText.rich(
+      TextSpan(
+        text: load,
+        children: [
+          TextSpan(
+            text: load.isEmpty ? '' : ' ${exerciseSet.unit}',
+            style: labelSmallTheme.copyWith(color: color),
+          ),
+        ],
+      ),
+      maxLines: 1,
+      minFontSize: labelSmallTheme.fontSize!,
+      style: labelLargeTheme.copyWith(color: color),
     );
   }
 }

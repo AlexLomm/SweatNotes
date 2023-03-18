@@ -2,29 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../utils/timestamp_from_json.dart';
+import '../utils/timestamp_to_json.dart';
 import 'exercise.dart';
 
 part 'exercise_type.freezed.dart';
 
 part 'exercise_type.g.dart';
 
-Timestamp? _archivedAtFromJson(int? millisecondsSinceEpoch) {
-  if (millisecondsSinceEpoch == null) return null;
-
-  return Timestamp.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
-}
-
-int? _archivedAtToJson(Timestamp? timestamp) {
-  if (timestamp == null) return null;
-
-  return timestamp.millisecondsSinceEpoch;
-}
-
 @Freezed(equal: false)
 class ExerciseType with _$ExerciseType {
   const factory ExerciseType({
     @JsonKey(includeToJson: false) required String id,
-    @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson) Timestamp? archivedAt,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? archivedAt,
     required String trainingBlockId,
     required String name,
     required String unit,

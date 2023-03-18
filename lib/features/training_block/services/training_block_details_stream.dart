@@ -205,6 +205,7 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
     dbModel: trainingBlock,
     name: trainingBlock.name,
     exerciseDays: trainingBlock.exerciseDays
+        .where((exerciseDay) => exerciseDay.isNotArchived)
         .map(
           (exerciseDay) => ExerciseDayClient(
             dbModel: exerciseDay,

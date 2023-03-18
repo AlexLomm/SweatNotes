@@ -1,27 +1,26 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app.dart';
 import '../../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../../../widgets/custom_dismissible.dart';
 import '../../../../widgets/rounded_icon_button.dart';
 import '../../../../widgets/text_editor_single_line.dart';
 import '../../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../../settings/edit_mode_switcher.dart';
-import '../../widget_params.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
 import '../../services/exercise_types_service.dart';
+import '../../services/training_blocks_service.dart';
+import '../../widget_params.dart';
 import '../ignore_pointer_edit_mode.dart';
 import 'exercise_day_widget.dart';
 import 'exercise_types_list.dart';
 
-class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
+class HorizontallyScrollableExerciseLabels extends ConsumerStatefulWidget {
   final ExerciseDayClient exerciseDay;
   final TrainingBlockClient trainingBlock;
-
-  get isEmpty => exerciseDay.exerciseTypes.isEmpty;
 
   const HorizontallyScrollableExerciseLabels({
     Key? key,
@@ -31,16 +30,29 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _HorizontallyScrollableExerciseLabelsState();
+}
+
+class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<HorizontallyScrollableExerciseLabels> {
+  double _dismissProgress = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(editModeSwitcherProvider, (_, isEditMode) {
+      if (!isEditMode) setState(() => _dismissProgress = 0);
+    });
+
+    final messenger = ref.watch(messengerProvider);
+    final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
     final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
     final heightWithButton = widgetParams.getExerciseLabelsHeightWithButton(
-      exerciseDay.exerciseTypes.length,
+      widget.exerciseDay.exerciseTypes.length,
     );
 
     final heightWithoutButton = widgetParams.getExerciseLabelsHeight(
-      exerciseDay.exerciseTypes.length,
+      widget.exerciseDay.exerciseTypes.length,
     );
 
     return Container(
@@ -61,21 +73,42 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: _Background(
+                      id: '${widget.exerciseDay.hashCode}',
                       width: widgetParams.exerciseLabelsListWidth,
                       height: heightWithoutButton,
                       borderRadius: widgetParams.borderRadius,
+                      onUpdate: (details) => setState(() => _dismissProgress = details.progress),
+                      onDismissed: (_) {
+                        trainingBlocksService.archiveExerciseDay(
+                          trainingBlock: widget.trainingBlock,
+                          exerciseDay: widget.exerciseDay,
+                        );
+
+                        messenger?.showSnackBar(
+                          SnackBar(
+                            content: Text('Exercise day "${widget.exerciseDay.name}" archived'),
+                            action: SnackBarAction(
+                              label: 'Undo',
+                              onPressed: () => trainingBlocksService.unarchiveExerciseDay(
+                                trainingBlock: widget.trainingBlock,
+                                exerciseDay: widget.exerciseDay,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       child: IgnorePointerEditMode(
                         onTap: () => CustomBottomSheet(
                           height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
                           title: 'Edit exercise day',
                           child: _TextEditorSingleLineWrapper(
-                            trainingBlock: trainingBlock,
-                            exerciseDay: exerciseDay,
+                            trainingBlock: widget.trainingBlock,
+                            exerciseDay: widget.exerciseDay,
                           ),
                         ).show(context),
                         child: ExerciseDayWidget(
-                          exerciseDay: exerciseDay,
-                          trainingBlock: trainingBlock,
+                          exerciseDay: widget.exerciseDay,
+                          trainingBlock: widget.trainingBlock,
                         ),
                       ),
                     ),
@@ -99,8 +132,8 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                                   height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
                                   title: 'Add exercise type',
                                   child: _TextEditorSingleLineAndWheelWrapper(
-                                    trainingBlock: trainingBlock,
-                                    exerciseDay: exerciseDay,
+                                    trainingBlock: widget.trainingBlock,
+                                    exerciseDay: widget.exerciseDay,
                                   ),
                                 ).show(context),
                       ),
@@ -112,9 +145,12 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: ExerciseTypesList(
-              trainingBlock: trainingBlock,
-              exerciseDay: exerciseDay,
+            child: Opacity(
+              opacity: (1.0 - _dismissProgress).clamp(0, 1),
+              child: ExerciseTypesList(
+                trainingBlock: widget.trainingBlock,
+                exerciseDay: widget.exerciseDay,
+              ),
             ),
           ),
         ],
@@ -123,22 +159,30 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
   }
 }
 
-class _Background extends StatelessWidget {
+class _Background extends ConsumerWidget {
+  final String id;
   final double height;
   final double width;
   final Widget child;
   final double borderRadius;
+  final DismissUpdateCallback onUpdate;
+  final DismissDirectionCallback onDismissed;
 
   const _Background({
     Key? key,
+    required this.id,
     required this.height,
     required this.width,
     required this.child,
     required this.borderRadius,
+    required this.onUpdate,
+    required this.onDismissed,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
     return AnimatedContainer(
       duration: WidgetParams.animationDuration,
       curve: WidgetParams.animationCurve,
@@ -153,7 +197,18 @@ class _Background extends StatelessWidget {
             bottomRight: Radius.circular(borderRadius),
           ),
         ),
-        child: child,
+        child: CustomDismissible(
+          id: id,
+          iconAlignment: Alignment.topRight,
+          isEnabled: isEditMode,
+          onUpdate: onUpdate,
+          onDismissed: onDismissed,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(borderRadius),
+            bottomRight: Radius.circular(borderRadius),
+          ),
+          child: child,
+        ),
       ),
     );
   }

@@ -53,7 +53,7 @@ class ExerciseTypesService {
       unit: unit,
     );
 
-    final updatedTrainingBlock = trainingBlock.updateExerciseDay(
+    final updatedTrainingBlock = trainingBlock.updateExerciseDayAt(
       index: exerciseDayIndex,
       exerciseDay: exerciseDay.appendExerciseType(
         ExerciseTypeClient(

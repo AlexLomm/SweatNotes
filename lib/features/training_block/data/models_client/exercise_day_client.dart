@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,6 +18,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
 
   const factory ExerciseDayClient({
     ExerciseDay? dbModel,
+    Timestamp? archivedAt,
     required String name,
     required List<ExerciseTypeClient> exerciseTypes,
   }) = _ExerciseDayClient;
@@ -27,12 +29,14 @@ class ExerciseDayClient with _$ExerciseDayClient {
     if (dbModel == null) {
       return ExerciseDay(
         name: name,
+        archivedAt: archivedAt,
         exerciseTypesOrdering: _exerciseTypesNewOrdering,
       );
     }
 
     return dbModel.copyWith(
       name: name,
+      archivedAt: archivedAt,
       exerciseTypesOrdering: _exerciseTypesNewOrdering,
     );
   }
@@ -82,5 +86,13 @@ class ExerciseDayClient with _$ExerciseDayClient {
     return copyWith(
       exerciseTypes: [...exerciseTypes, exerciseTypeClient],
     );
+  }
+
+  ExerciseDayClient archive() {
+    return copyWith(archivedAt: Timestamp.now());
+  }
+
+  ExerciseDayClient unarchive() {
+    return copyWith(archivedAt: null);
   }
 }

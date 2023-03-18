@@ -33,7 +33,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
     );
   }
 
-  TrainingBlockClient updateExerciseDay({
+  TrainingBlockClient updateExerciseDayAt({
     required ExerciseDayClient exerciseDay,
     required int index,
   }) {
@@ -71,6 +71,26 @@ class TrainingBlockClient with _$TrainingBlockClient {
     if (index == -1) throw Exception('Exercise day not found');
 
     return index;
+  }
+
+  TrainingBlockClient archiveExerciseDay(ExerciseDayClient exerciseDayClient) {
+    final index = indexOfExerciseDay(exerciseDayClient);
+
+    final exerciseDaysUpdated = [...exerciseDays];
+
+    exerciseDaysUpdated[index] = exerciseDayClient.archive();
+
+    return copyWith(exerciseDays: exerciseDaysUpdated);
+  }
+
+  TrainingBlockClient unarchiveExerciseDay(ExerciseDayClient exerciseDayClient) {
+    final index = indexOfExerciseDay(exerciseDayClient);
+
+    final exerciseDaysUpdated = [...exerciseDays];
+
+    exerciseDaysUpdated[index] = exerciseDayClient.unarchive();
+
+    return copyWith(exerciseDays: exerciseDaysUpdated);
   }
 
   TrainingBlockClient archive() {

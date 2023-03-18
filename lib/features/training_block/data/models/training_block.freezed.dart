@@ -22,7 +22,7 @@ TrainingBlock _$TrainingBlockFromJson(Map<String, dynamic> json) {
 mixin _$TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseDay> get exerciseDays => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $TrainingBlockCopyWith<$Res> {
   $Res call(
       {@JsonKey(includeToJson: false)
           String id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       String name,
       List<ExerciseDay> exerciseDays});
@@ -98,7 +98,7 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
   $Res call(
       {@JsonKey(includeToJson: false)
           String id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       String name,
       List<ExerciseDay> exerciseDays});
@@ -147,7 +147,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   const _$_TrainingBlock(
       {@JsonKey(includeToJson: false)
           required this.id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           this.archivedAt,
       required this.name,
       final List<ExerciseDay> exerciseDays = const []})
@@ -160,7 +160,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   @JsonKey(includeToJson: false)
   final String id;
   @override
-  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   final Timestamp? archivedAt;
   @override
   final String name;
@@ -207,7 +207,7 @@ abstract class _TrainingBlock implements TrainingBlock {
   const factory _TrainingBlock(
       {@JsonKey(includeToJson: false)
           required final String id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           final Timestamp? archivedAt,
       required final String name,
       final List<ExerciseDay> exerciseDays}) = _$_TrainingBlock;
@@ -219,7 +219,7 @@ abstract class _TrainingBlock implements TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id;
   @override
-  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt;
   @override
   String get name;

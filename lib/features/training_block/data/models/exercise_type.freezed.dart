@@ -22,7 +22,7 @@ ExerciseType _$ExerciseTypeFromJson(Map<String, dynamic> json) {
 mixin _$ExerciseType {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get trainingBlockId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $ExerciseTypeCopyWith<$Res> {
   $Res call(
       {@JsonKey(includeToJson: false)
           String id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       String trainingBlockId,
       String name,
@@ -112,7 +112,7 @@ abstract class _$$_ExerciseTypeCopyWith<$Res>
   $Res call(
       {@JsonKey(includeToJson: false)
           String id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       String trainingBlockId,
       String name,
@@ -173,7 +173,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   const _$_ExerciseType(
       {@JsonKey(includeToJson: false)
           required this.id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           this.archivedAt,
       required this.trainingBlockId,
       required this.name,
@@ -188,7 +188,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   @JsonKey(includeToJson: false)
   final String id;
   @override
-  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   final Timestamp? archivedAt;
   @override
   final String trainingBlockId;
@@ -241,7 +241,7 @@ abstract class _ExerciseType implements ExerciseType {
   const factory _ExerciseType(
       {@JsonKey(includeToJson: false)
           required final String id,
-      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           final Timestamp? archivedAt,
       required final String trainingBlockId,
       required final String name,
@@ -255,7 +255,7 @@ abstract class _ExerciseType implements ExerciseType {
   @JsonKey(includeToJson: false)
   String get id;
   @override
-  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt;
   @override
   String get trainingBlockId;

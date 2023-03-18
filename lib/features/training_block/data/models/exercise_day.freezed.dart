@@ -21,6 +21,8 @@ ExerciseDay _$ExerciseDayFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ExerciseDay {
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  Timestamp? get archivedAt => throw _privateConstructorUsedError;
   Map<String, int> get exerciseTypesOrdering =>
       throw _privateConstructorUsedError;
 
@@ -36,7 +38,11 @@ abstract class $ExerciseDayCopyWith<$Res> {
           ExerciseDay value, $Res Function(ExerciseDay) then) =
       _$ExerciseDayCopyWithImpl<$Res, ExerciseDay>;
   @useResult
-  $Res call({String name, Map<String, int> exerciseTypesOrdering});
+  $Res call(
+      {String name,
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+          Timestamp? archivedAt,
+      Map<String, int> exerciseTypesOrdering});
 }
 
 /// @nodoc
@@ -53,6 +59,7 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
   @override
   $Res call({
     Object? name = null,
+    Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
     return _then(_value.copyWith(
@@ -60,6 +67,10 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       exerciseTypesOrdering: null == exerciseTypesOrdering
           ? _value.exerciseTypesOrdering
           : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
@@ -76,7 +87,11 @@ abstract class _$$_ExerciseDayCopyWith<$Res>
       __$$_ExerciseDayCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, Map<String, int> exerciseTypesOrdering});
+  $Res call(
+      {String name,
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+          Timestamp? archivedAt,
+      Map<String, int> exerciseTypesOrdering});
 }
 
 /// @nodoc
@@ -91,6 +106,7 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
+    Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
     return _then(_$_ExerciseDay(
@@ -98,6 +114,10 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       exerciseTypesOrdering: null == exerciseTypesOrdering
           ? _value._exerciseTypesOrdering
           : exerciseTypesOrdering // ignore: cast_nullable_to_non_nullable
@@ -108,17 +128,23 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
+class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
   const _$_ExerciseDay(
       {required this.name,
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+          this.archivedAt,
       final Map<String, int> exerciseTypesOrdering = const {}})
-      : _exerciseTypesOrdering = exerciseTypesOrdering;
+      : _exerciseTypesOrdering = exerciseTypesOrdering,
+        super._();
 
   factory _$_ExerciseDay.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseDayFromJson(json);
 
   @override
   final String name;
+  @override
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  final Timestamp? archivedAt;
   final Map<String, int> _exerciseTypesOrdering;
   @override
   @JsonKey()
@@ -131,7 +157,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDay(name: $name, exerciseTypesOrdering: $exerciseTypesOrdering)';
+    return 'ExerciseDay(name: $name, archivedAt: $archivedAt, exerciseTypesOrdering: $exerciseTypesOrdering)';
   }
 
   @override
@@ -140,6 +166,7 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDay'))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(
           DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering));
   }
@@ -158,16 +185,22 @@ class _$_ExerciseDay with DiagnosticableTreeMixin implements _ExerciseDay {
   }
 }
 
-abstract class _ExerciseDay implements ExerciseDay {
+abstract class _ExerciseDay extends ExerciseDay {
   const factory _ExerciseDay(
       {required final String name,
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+          final Timestamp? archivedAt,
       final Map<String, int> exerciseTypesOrdering}) = _$_ExerciseDay;
+  const _ExerciseDay._() : super._();
 
   factory _ExerciseDay.fromJson(Map<String, dynamic> json) =
       _$_ExerciseDay.fromJson;
 
   @override
   String get name;
+  @override
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  Timestamp? get archivedAt;
   @override
   Map<String, int> get exerciseTypesOrdering;
   @override

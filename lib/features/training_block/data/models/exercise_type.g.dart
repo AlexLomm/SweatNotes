@@ -9,7 +9,7 @@ part of 'exercise_type.dart';
 _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
     _$_ExerciseType(
       id: json['id'] as String,
-      archivedAt: _archivedAtFromJson(json['archivedAt'] as int?),
+      archivedAt: timestampFromJson(json['archivedAt'] as int?),
       trainingBlockId: json['trainingBlockId'] as String,
       name: json['name'] as String,
       unit: json['unit'] as String,
@@ -21,7 +21,7 @@ _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_ExerciseTypeToJson(_$_ExerciseType instance) =>
     <String, dynamic>{
-      'archivedAt': _archivedAtToJson(instance.archivedAt),
+      'archivedAt': timestampToJson(instance.archivedAt),
       'trainingBlockId': instance.trainingBlockId,
       'name': instance.name,
       'unit': instance.unit,

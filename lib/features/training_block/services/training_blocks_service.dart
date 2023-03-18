@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:journal_flutter/features/training_block/data/exercise_types_repository.dart';
 import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
 import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
 import 'package:journal_flutter/firebase.dart';
@@ -11,9 +13,16 @@ part 'training_blocks_service.g.dart';
 
 class TrainingBlocksService {
   final TrainingBlocksRepository trainingBlocksRepository;
+  final ExerciseTypesRepository exerciseTypesRepository;
   final FirebaseAuth firebaseAuth;
+  final FirebaseFirestore firestore;
 
-  TrainingBlocksService(this.trainingBlocksRepository, this.firebaseAuth);
+  TrainingBlocksService(
+    this.trainingBlocksRepository,
+    this.exerciseTypesRepository,
+    this.firebaseAuth,
+    this.firestore,
+  );
 
   void create({required String name}) {
     final userId = firebaseAuth.currentUser?.uid;
@@ -40,6 +49,57 @@ class TrainingBlocksService {
     return trainingBlocksRepository.update(trainingBlockServer);
   }
 
+  Future<void> archiveExerciseDay({
+    required TrainingBlockClient trainingBlock,
+    required ExerciseDayClient exerciseDay,
+  }) {
+    final batch = firestore.batch();
+
+    final updatedTrainingBlockDbModel = trainingBlock.archiveExerciseDay(exerciseDay).toDbModel();
+
+    batch.update(
+      trainingBlocksRepository.getDocumentRefById(updatedTrainingBlockDbModel.id),
+      updatedTrainingBlockDbModel.toJson(),
+    );
+
+    for (final exerciseType in exerciseDay.exerciseTypes) {
+      final updatedExerciseTypeDbModel = exerciseType.archive().toDbModel();
+
+      batch.update(
+        exerciseTypesRepository.getDocumentRefById(updatedExerciseTypeDbModel.id),
+        updatedExerciseTypeDbModel.toJson(),
+      );
+    }
+
+    return batch.commit();
+  }
+
+  // TODO: deduplicate
+  Future<void> unarchiveExerciseDay({
+    required TrainingBlockClient trainingBlock,
+    required ExerciseDayClient exerciseDay,
+  }) {
+    final batch = firestore.batch();
+
+    final updatedTrainingBlockDbModel = trainingBlock.unarchiveExerciseDay(exerciseDay).toDbModel();
+
+    batch.update(
+      trainingBlocksRepository.getDocumentRefById(updatedTrainingBlockDbModel.id),
+      updatedTrainingBlockDbModel.toJson(),
+    );
+
+    for (final exerciseType in exerciseDay.exerciseTypes) {
+      final updatedExerciseTypeDbModel = exerciseType.unarchive().toDbModel();
+
+      batch.update(
+        exerciseTypesRepository.getDocumentRefById(updatedExerciseTypeDbModel.id),
+        updatedExerciseTypeDbModel.toJson(),
+      );
+    }
+
+    return batch.commit();
+  }
+
   Future<void> archive(TrainingBlockClient trainingBlock) {
     return trainingBlocksRepository.update(trainingBlock.archive().toDbModel());
   }
@@ -52,7 +112,9 @@ class TrainingBlocksService {
 @riverpod
 TrainingBlocksService trainingBlocksService(TrainingBlocksServiceRef ref) {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
+  final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
   final firebaseAuth = ref.watch(firebaseAuthProvider);
+  final firestore = ref.watch(firestoreProvider);
 
-  return TrainingBlocksService(trainingBlocksRepository, firebaseAuth);
+  return TrainingBlocksService(trainingBlocksRepository, exerciseTypesRepository, firebaseAuth, firestore);
 }

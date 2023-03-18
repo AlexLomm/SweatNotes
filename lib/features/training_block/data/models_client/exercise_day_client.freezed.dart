@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ExerciseDayClient {
   ExerciseDay? get dbModel => throw _privateConstructorUsedError;
+  Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseTypeClient> get exerciseTypes =>
       throw _privateConstructorUsedError;
@@ -34,6 +35,7 @@ abstract class $ExerciseDayClientCopyWith<$Res> {
   @useResult
   $Res call(
       {ExerciseDay? dbModel,
+      Timestamp? archivedAt,
       String name,
       List<ExerciseTypeClient> exerciseTypes});
 
@@ -54,6 +56,7 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
   @override
   $Res call({
     Object? dbModel = freezed,
+    Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseTypes = null,
   }) {
@@ -62,6 +65,10 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as ExerciseDay?,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -96,6 +103,7 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
   @useResult
   $Res call(
       {ExerciseDay? dbModel,
+      Timestamp? archivedAt,
       String name,
       List<ExerciseTypeClient> exerciseTypes});
 
@@ -115,6 +123,7 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? dbModel = freezed,
+    Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseTypes = null,
   }) {
@@ -123,6 +132,10 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as ExerciseDay?,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -141,6 +154,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseDayClient(
       {this.dbModel,
+      this.archivedAt,
       required this.name,
       required final List<ExerciseTypeClient> exerciseTypes})
       : _exerciseTypes = exerciseTypes,
@@ -148,6 +162,8 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 
   @override
   final ExerciseDay? dbModel;
+  @override
+  final Timestamp? archivedAt;
   @override
   final String name;
   final List<ExerciseTypeClient> _exerciseTypes;
@@ -160,7 +176,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDayClient(dbModel: $dbModel, name: $name, exerciseTypes: $exerciseTypes)';
+    return 'ExerciseDayClient(dbModel: $dbModel, archivedAt: $archivedAt, name: $name, exerciseTypes: $exerciseTypes)';
   }
 
   @override
@@ -169,6 +185,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDayClient'))
       ..add(DiagnosticsProperty('dbModel', dbModel))
+      ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('exerciseTypes', exerciseTypes));
   }
@@ -184,6 +201,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 abstract class _ExerciseDayClient extends ExerciseDayClient {
   const factory _ExerciseDayClient(
           {final ExerciseDay? dbModel,
+          final Timestamp? archivedAt,
           required final String name,
           required final List<ExerciseTypeClient> exerciseTypes}) =
       _$_ExerciseDayClient;
@@ -191,6 +209,8 @@ abstract class _ExerciseDayClient extends ExerciseDayClient {
 
   @override
   ExerciseDay? get dbModel;
+  @override
+  Timestamp? get archivedAt;
   @override
   String get name;
   @override

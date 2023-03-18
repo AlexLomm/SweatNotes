@@ -163,7 +163,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 }
 
 class _TrainingBlockButton extends StatelessWidget {
-  final DismissDirectionCallback? onDismissed;
+  final DismissDirectionCallback onDismissed;
   final TrainingBlockClient trainingBlock;
 
   const _TrainingBlockButton({

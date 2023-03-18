@@ -30,7 +30,7 @@ class ExerciseDaysService {
 
     trainingBlocksRepository.update(
       trainingBlock
-          .updateExerciseDay(
+          .updateExerciseDayAt(
             index: index,
             exerciseDay: exerciseDay.copyWith(name: name),
           )
@@ -55,7 +55,7 @@ class ExerciseDaysService {
     required ExerciseDayClient exerciseDay,
     required int index,
   }) async {
-    final updatedTrainingBlock = trainingBlock.updateExerciseDay(
+    final updatedTrainingBlock = trainingBlock.updateExerciseDayAt(
       index: index,
       exerciseDay: exerciseDay,
     );
@@ -78,8 +78,8 @@ class ExerciseDaysService {
     final updatedToExerciseDay = toExerciseDay.prependExerciseType(exerciseType);
 
     final updatedTrainingBlock = trainingBlock
-        .updateExerciseDay(index: fromExerciseDayIndex, exerciseDay: updatedFromExerciseDay)
-        .updateExerciseDay(index: toExerciseDayIndex, exerciseDay: updatedToExerciseDay);
+        .updateExerciseDayAt(index: fromExerciseDayIndex, exerciseDay: updatedFromExerciseDay)
+        .updateExerciseDayAt(index: toExerciseDayIndex, exerciseDay: updatedToExerciseDay);
 
     return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }

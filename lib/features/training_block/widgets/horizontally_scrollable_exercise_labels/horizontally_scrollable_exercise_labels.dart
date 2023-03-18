@@ -63,7 +63,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
                     child: _Background(
                       width: widgetParams.exerciseLabelsListWidth,
                       height: heightWithoutButton,
-                      borderRadius: WidgetParams.borderRadius,
+                      borderRadius: widgetParams.borderRadius,
                       child: IgnorePointerEditMode(
                         onTap: () => CustomBottomSheet(
                           height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,

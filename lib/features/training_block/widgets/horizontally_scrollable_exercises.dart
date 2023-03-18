@@ -67,7 +67,7 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
                           ),
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.secondaryContainer,
-                            borderRadius: const BorderRadius.all(Radius.circular(WidgetParams.borderRadius)),
+                            borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
                           ),
                           child: Icon(
                             Icons.add,

@@ -5,12 +5,11 @@ import '../data/models_client/exercise_type_client.dart';
 import '../services/exercises_service.dart';
 import '../data/models_client/exercise_client.dart';
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../widget_params.dart';
 import 'exercise_set_widget.dart';
 import 'exercise_set_editor/exercise_set_editor.dart';
 
 class ExerciseWidget extends ConsumerWidget {
-  static const borderRadius = Radius.circular(8);
-
   final ExerciseTypeClient exerciseType;
   final ExerciseClient exercise;
 
@@ -22,6 +21,8 @@ class ExerciseWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
+
     final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String trainingBlockId = routeArgs['trainingBlockId'];
 
@@ -30,8 +31,8 @@ class ExerciseWidget extends ConsumerWidget {
     final exercisesService = ref.watch(exercisesServiceProvider);
 
     return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(borderRadius),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
       ),
       clipBehavior: Clip.hardEdge,
       child: Row(

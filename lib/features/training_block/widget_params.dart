@@ -11,7 +11,6 @@ part 'widget_params.g.dart';
 class WidgetParams {
   static const Duration animationDuration = Duration(milliseconds: 300);
   static const Cubic animationCurve = Cubic(0.79, 0.14, 0.15, 0.86);
-  static const double borderRadius = 8.0;
 
   final bool isEditMode;
   final bool isCompactMode;
@@ -20,6 +19,8 @@ class WidgetParams {
     required this.isEditMode,
     required this.isCompactMode,
   });
+
+  double get borderRadius => isCompactMode ? 4.0 : 8.0;
 
   double get exerciseTypeHeight => isCompactMode ? 64.0 : 80.0;
 
@@ -57,7 +58,7 @@ class WidgetParams {
 
   double get exerciseDayTitleHeight => 56.0;
 
-  double get exerciseTypesVerticalSpacing => 8.0;
+  double get exerciseTypesVerticalSpacing => isCompactMode ? 4.0 : 8.0;
 
   double getExerciseTypesListHeight(int exerciseTypesCount) {
     if (exerciseTypesCount == 0) return 0;
@@ -124,9 +125,9 @@ class WidgetParams {
 
   double get exercisesMarginBottom => 44.0;
 
-  double get exercisesMarginLeft => exerciseTypeWidth - exercisesScrollInwardsDepth + 8.0;
+  double get exercisesMarginLeft => exerciseTypeWidth - exercisesScrollInwardsDepth + exercisesSideSpacing;
 
-  double get exercisesSideSpacing => isCompactMode ? 8.0 : 16.0;
+  double get exercisesSideSpacing => isCompactMode ? 4.0 : 8.0;
 
   double get exercisesScrollInwardsDepth => 16.0;
 

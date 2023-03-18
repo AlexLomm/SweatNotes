@@ -52,9 +52,9 @@ class ExerciseTypeWidget extends ConsumerWidget {
     return CustomDismissible(
       id: exerciseType.dbModel.id,
       isEnabled: isEditMode,
-      borderRadius: const BorderRadius.only(
-        topRight: Radius.circular(8),
-        bottomRight: Radius.circular(8),
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(widgetParams.borderRadius),
+        bottomRight: Radius.circular(widgetParams.borderRadius),
       ),
       onDismissed: (direction) {
         exerciseTypeService.archive(exerciseType);

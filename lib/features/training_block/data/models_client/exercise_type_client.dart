@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,6 +14,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
 
   const factory ExerciseTypeClient({
     required ExerciseType dbModel,
+    Timestamp? archivedAt,
     required String name,
     required String unit,
     required List<ExerciseClient> exercises,
@@ -22,6 +24,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     return dbModel.copyWith(
       name: name,
       unit: unit,
+      archivedAt: archivedAt,
       exercises: _exercisesWithNoTrailingFillers.map<Exercise>((e) => e.toDbModel()).toList(),
     );
   }
@@ -62,5 +65,13 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     updatedExercises[exercises.length - 1] = lastExercise.copyWith(isFiller: false);
 
     return copyWith(exercises: updatedExercises);
+  }
+
+  ExerciseTypeClient archive() {
+    return copyWith(archivedAt: Timestamp.now());
+  }
+
+  ExerciseTypeClient unarchive() {
+    return copyWith(archivedAt: null);
   }
 }

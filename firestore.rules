@@ -33,11 +33,12 @@ service cloud.firestore {
 
       match /exercise-types/{exerciseTypeId} {
         function isCorrectSchema() {
-          return onlyHasAttrs(request.resource.data, ['name', 'unit', 'trainingBlockId', 'exercises'])
+          return onlyHasAttrs(request.resource.data, ['name', 'unit', 'trainingBlockId', 'exercises', 'archivedAt'])
               && incoming().name is string
               && incoming().unit is string
               && incoming().trainingBlockId is string
-              && incoming().exercises is list;
+              && incoming().exercises is list
+              && incoming().archivedAt is number || incoming().archivedAt == null;
         }
 
         allow write: if isCorrectSchema();

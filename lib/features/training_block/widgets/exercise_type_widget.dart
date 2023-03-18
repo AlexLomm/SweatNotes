@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/app.dart';
+import 'package:journal_flutter/widgets/custom_dismissible.dart';
 
 import '../../../widgets/button_dropdown_menu.dart';
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
@@ -31,7 +33,10 @@ class ExerciseTypeWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final messenger = ref.watch(messengerProvider);
+    final exerciseTypeService = ref.watch(exerciseTypesServiceProvider);
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final widgetParams = ref.watch(widgetParamsProvider);
 
@@ -44,103 +49,120 @@ class ExerciseTypeWidget extends ConsumerWidget {
 
     final toExerciseDay = exerciseDays.where((e) => e != fromExerciseDay).toList();
 
-    return Material(
-      elevation: 2,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(8),
-          bottomRight: Radius.circular(8),
-        ),
+    return CustomDismissible(
+      id: exerciseType.dbModel.id,
+      isEnabled: isEditMode,
+      borderRadius: const BorderRadius.only(
+        topRight: Radius.circular(8),
+        bottomRight: Radius.circular(8),
       ),
-      color: Theme.of(context).colorScheme.surfaceVariant,
-      child: SizedBox(
-        // the height is set outside of the AnimatedContainer
-        // in order to prevent newly created widgets' heights
-        // from being animated
-        height: widgetParams.exerciseTypeHeight,
-        child: AnimatedContainer(
-          duration: WidgetParams.animationDuration,
-          curve: WidgetParams.animationCurve,
-          padding: EdgeInsets.only(left: widgetParams.exerciseTypePaddingLeft),
-          width: widgetParams.exerciseTypeWidth,
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AnimatedOpacity(
-                  duration: WidgetParams.animationDuration,
-                  curve: WidgetParams.animationCurve,
-                  // TODO: should extract ???
-                  opacity: isEditMode ? 1 : 0,
-                  child: ReorderableDragStartListener(
-                    index: index,
-                    child: ExerciseDayIconWrapper(
-                      icon: Icons.drag_indicator,
-                      width: widgetParams.exerciseTypeDragHandleWidth,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: AnimatedContainer(
-                  duration: WidgetParams.animationDuration,
-                  curve: WidgetParams.animationCurve,
-                  margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
-                  child: IgnorePointerEditMode(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () => CustomBottomSheet(
-                      height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
-                      title: 'Edit exercise type',
-                      child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
-                    ).show(context),
-                    child: _ExerciseTypeName(
-                      width: widgetParams.exerciseTypeLabelWidth,
-                      name: exerciseType.name,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: AnimatedOpacity(
-                  duration: WidgetParams.animationDuration,
-                  curve: WidgetParams.animationCurve,
-                  // TODO: should extract ???
-                  opacity: isEditMode ? 1 : 0,
-                  child: IgnorePointerEditMode(
-                    child: AnimatedContainer(
-                      duration: WidgetParams.animationDuration,
-                      curve: WidgetParams.animationCurve,
-                      child: ButtonDropdownMenu(
-                        icon: Icons.keyboard_arrow_down,
-                        animationDuration: WidgetParams.animationDuration,
-                        animationCurve: WidgetParams.animationCurve,
-                        items: toExerciseDay
-                            .map(
-                              (exerciseDay) => ButtonDropdownMenuItem(
-                                onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
-                                  trainingBlock: trainingBlock,
-                                  fromExerciseDay: fromExerciseDay,
-                                  toExerciseDay: exerciseDay,
-                                  exerciseTypeId: exerciseType.dbModel.id,
-                                ),
-                                child: Text(
-                                  exerciseDay.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                                ),
-                              ),
-                            )
-                            .toList(),
+      onDismissed: (direction) {
+        exerciseTypeService.archive(exerciseType);
+
+        messenger?.showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 3),
+            content: Text('Exercise type "${exerciseType.name}" archived'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () => exerciseTypeService.unarchive(exerciseType),
+            ),
+          ),
+        );
+      },
+      child: Material(
+        elevation: 2,
+        shape: const RoundedRectangleBorder(),
+        color: Theme.of(context).colorScheme.surfaceVariant,
+        child: SizedBox(
+          // the height is set outside of the AnimatedContainer
+          // in order to prevent newly created widgets' heights
+          // from being animated
+          height: widgetParams.exerciseTypeHeight,
+          child: AnimatedContainer(
+            duration: WidgetParams.animationDuration,
+            curve: WidgetParams.animationCurve,
+            padding: EdgeInsets.only(left: widgetParams.exerciseTypePaddingLeft),
+            width: widgetParams.exerciseTypeWidth,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: AnimatedOpacity(
+                    duration: WidgetParams.animationDuration,
+                    curve: WidgetParams.animationCurve,
+                    // TODO: should extract ???
+                    opacity: isEditMode ? 1 : 0,
+                    child: ReorderableDragStartListener(
+                      index: index,
+                      child: ExerciseDayIconWrapper(
+                        icon: Icons.drag_indicator,
+                        width: widgetParams.exerciseTypeDragHandleWidth,
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+                Align(
+                  alignment: Alignment.center,
+                  child: AnimatedContainer(
+                    duration: WidgetParams.animationDuration,
+                    curve: WidgetParams.animationCurve,
+                    margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
+                    child: IgnorePointerEditMode(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => CustomBottomSheet(
+                        height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                        title: 'Edit exercise type',
+                        child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
+                      ).show(context),
+                      child: _ExerciseTypeName(
+                        width: widgetParams.exerciseTypeLabelWidth,
+                        name: exerciseType.name,
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: AnimatedOpacity(
+                    duration: WidgetParams.animationDuration,
+                    curve: WidgetParams.animationCurve,
+                    // TODO: should extract ???
+                    opacity: isEditMode ? 1 : 0,
+                    child: IgnorePointerEditMode(
+                      child: AnimatedContainer(
+                        duration: WidgetParams.animationDuration,
+                        curve: WidgetParams.animationCurve,
+                        child: ButtonDropdownMenu(
+                          icon: Icons.keyboard_arrow_down,
+                          animationDuration: WidgetParams.animationDuration,
+                          animationCurve: WidgetParams.animationCurve,
+                          items: toExerciseDay
+                              .map(
+                                (exerciseDay) => ButtonDropdownMenuItem(
+                                  onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
+                                    trainingBlock: trainingBlock,
+                                    fromExerciseDay: fromExerciseDay,
+                                    toExerciseDay: exerciseDay,
+                                    exerciseTypeId: exerciseType.dbModel.id,
+                                  ),
+                                  child: Text(
+                                    exerciseDay.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -23,12 +23,16 @@ class ExerciseTypesRepository {
         toFirestore: _toFirestore,
       );
 
+  Query<ExerciseType> get queryRef => collectionRef
+      //
+      .where('archivedAt', isNull: true);
+
   DocumentReference<ExerciseType> getDocumentRefById(String id) {
     return collectionRef.doc(id);
   }
 
   Query<ExerciseType> getQueryByTrainingBlockId(String trainingBlockId) {
-    return collectionRef.where('trainingBlockId', isEqualTo: trainingBlockId);
+    return queryRef.where('trainingBlockId', isEqualTo: trainingBlockId);
   }
 
   Future<void> update(ExerciseType exerciseType) async {

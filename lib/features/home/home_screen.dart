@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/app.dart';
+import 'package:journal_flutter/widgets/custom_dismissible.dart';
 
 import '../../router/router.dart';
 import '../../shared_preferences.dart';
@@ -157,7 +158,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
   }
 }
 
-class _TrainingBlockButton extends StatefulWidget {
+class _TrainingBlockButton extends StatelessWidget {
   final DismissDirectionCallback? onDismissed;
   final TrainingBlockClient trainingBlock;
 
@@ -168,81 +169,34 @@ class _TrainingBlockButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<_TrainingBlockButton> createState() => _TrainingBlockButtonState();
-}
-
-class _TrainingBlockButtonState extends State<_TrainingBlockButton> {
-  bool _isConfirmed = false;
-
-  @override
   Widget build(BuildContext context) {
-    const borderRadius = 12.0;
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       margin: const EdgeInsets.only(bottom: 8.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius),
-        child: Dismissible(
-          key: Key(widget.trainingBlock.dbModel.id),
-          direction: DismissDirection.endToStart,
-          dismissThresholds: const {
-            DismissDirection.endToStart: 0.25,
-          },
-          onUpdate: (direction) {
-            if (direction.reached && !_isConfirmed) {
-              HapticFeedback.lightImpact();
-              setState(() => _isConfirmed = true);
-            }
-
-            if (!direction.reached && _isConfirmed) {
-              HapticFeedback.lightImpact();
-              setState(() => _isConfirmed = false);
-            }
-          },
-          onDismissed: widget.onDismissed,
-          background: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiaryContainer,
-            ),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 18.0),
-                child: SizedBox(
-                  width: 24.0,
-                  child: Center(
-                    child: Icon(
-                      Icons.archive_outlined,
-                      color: Theme.of(context).colorScheme.tertiary,
-                      size: _isConfirmed ? 24.0 : 8.0,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+      child: CustomDismissible(
+        id: trainingBlock.dbModel.id,
+        borderRadius: BorderRadius.circular(12.0),
+        onDismissed: onDismissed,
+        child: Button(
+          borderRadius: 0,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+            horizontal: 24.0,
           ),
-          child: Button(
-            borderRadius: 0,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            padding: const EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 24.0,
-            ),
-            label: widget.trainingBlock.name,
-            onPressed: () => context.go('/${widget.trainingBlock.dbModel.id}'),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.trainingBlock.name,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
-                ),
-                const _ArrowRightIcon(),
-              ],
-            ),
+          label: trainingBlock.name,
+          onPressed: () => context.go('/${trainingBlock.dbModel.id}'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                trainingBlock.name,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+              ),
+              const _ArrowRightIcon(),
+            ],
           ),
         ),
       ),

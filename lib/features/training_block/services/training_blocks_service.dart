@@ -43,6 +43,10 @@ class TrainingBlocksService {
   Future<void> archive(TrainingBlockClient trainingBlock) {
     return trainingBlocksRepository.update(trainingBlock.archive().toDbModel());
   }
+
+  Future<void> unarchive(TrainingBlockClient trainingBlock) {
+    return trainingBlocksRepository.update(trainingBlock.unarchive().toDbModel());
+  }
 }
 
 @riverpod

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:journal_flutter/app.dart';
 
 import '../../router/router.dart';
 import '../../shared_preferences.dart';
@@ -114,6 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         data: (data) => Builder(
           builder: (context) {
+            final messenger = ref.watch(messengerProvider);
             final appBarHeight = Scaffold.of(context).appBarMaxHeight ?? 0;
             final safeAreaHeight = mq.size.height - mq.padding.top - mq.padding.bottom - appBarHeight;
 
@@ -129,7 +131,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
                   for (final trainingBlock in data)
                     _TrainingBlockButton(
                       key: Key(trainingBlock.dbModel.id),
-                      onDismissed: (_) => trainingBlocksService.archive(trainingBlock),
+                      onDismissed: (_) {
+                        trainingBlocksService.archive(trainingBlock);
+
+                        messenger?.showSnackBar(
+                          SnackBar(
+                            duration: const Duration(seconds: 3),
+                            content: Text('Training block "${trainingBlock.dbModel.name}" archived'),
+                            action: SnackBarAction(
+                              label: 'Undo',
+                              onPressed: () => trainingBlocksService.unarchive(trainingBlock),
+                            ),
+                          ),
+                        );
+                      },
                       trainingBlock: trainingBlock,
                     ),
                 ],

@@ -76,4 +76,8 @@ class TrainingBlockClient with _$TrainingBlockClient {
   TrainingBlockClient archive() {
     return copyWith(archivedAt: Timestamp.now());
   }
+
+  TrainingBlockClient unarchive() {
+    return copyWith(archivedAt: null);
+  }
 }

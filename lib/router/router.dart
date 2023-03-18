@@ -21,7 +21,7 @@ GoRouter goRouter(GoRouterRef ref) {
 
   return GoRouter(
     observers: [routeObserver],
-    initialLocation: prefs.getString('initialLocation') ?? '/auth/log-in',
+    initialLocation: prefs.getString('initialLocation') ?? '/auth',
     redirect: (context, state) {
       final isLoggedIn = firebaseAuth.currentUser != null;
 
@@ -34,27 +34,29 @@ GoRouter goRouter(GoRouterRef ref) {
       }
 
       if (!isLoggedIn && !isOnOneOfAuthPages) {
-        return '/auth/log-in';
+        return '/auth';
       }
 
       return null;
     },
     routes: [
       GoRoute(
-        path: '/auth/log-in',
+        path: '/auth',
         builder: (context, routerState) => const SignInScreen(),
-      ),
-      GoRoute(
-        path: '/auth/sign-up',
-        builder: (context, routerState) => const SignUpScreen(),
-      ),
-      GoRoute(
-        path: '/auth/reset-password',
-        builder: (context, routerState) => const ResetPasswordScreen(),
-      ),
-      GoRoute(
-        path: '/auth/reset-password-finished',
-        builder: (context, routerState) => const ResetPasswordFinishedScreen(),
+        routes: [
+          GoRoute(
+            path: 'sign-up',
+            builder: (context, routerState) => const SignUpScreen(),
+          ),
+          GoRoute(
+            path: 'reset-password',
+            builder: (context, routerState) => const ResetPasswordScreen(),
+          ),
+          GoRoute(
+            path: 'reset-password-finished',
+            builder: (context, routerState) => const ResetPasswordFinishedScreen(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/',

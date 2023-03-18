@@ -61,7 +61,7 @@ class ResetPasswordFinishedScreen extends StatelessWidget {
             const SizedBox(height: 32.0),
             Button(
               label: 'Back to login',
-              onPressed: () => context.go('/auth/log-in'),
+              onPressed: () => context.go('/auth'),
             ),
             const Spacer(),
             Text(

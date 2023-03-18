@@ -79,7 +79,7 @@ class AuthService {
     try {
       await authRepository.signOut();
 
-      goRouter.go('/auth/log-in');
+      goRouter.go('/auth');
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {

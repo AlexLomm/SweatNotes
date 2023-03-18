@@ -133,6 +133,10 @@ ThemeData theme(ThemeRef ref) {
     useMaterial3: true,
     textTheme: textTheme,
     colorScheme: colorScheme,
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: colorScheme.inverseSurface,
+      contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),
+    ),
     appBarTheme: AppBarTheme(
       systemOverlayStyle: systemOverlayStyle,
       // gets rid of the AppBar changing color when scrolling

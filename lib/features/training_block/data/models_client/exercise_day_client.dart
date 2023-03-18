@@ -88,11 +88,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
     );
   }
 
-  ExerciseDayClient archive() {
-    return copyWith(archivedAt: Timestamp.now());
-  }
-
-  ExerciseDayClient unarchive() {
-    return copyWith(archivedAt: null);
+  ExerciseDayClient archive(bool archive) {
+    return copyWith(archivedAt: archive ? Timestamp.now() : null);
   }
 }

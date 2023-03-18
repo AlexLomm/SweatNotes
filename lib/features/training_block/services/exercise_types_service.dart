@@ -74,12 +74,8 @@ class ExerciseTypesService {
     return batch.commit();
   }
 
-  Future<void> archive(ExerciseTypeClient exerciseTypeClient) async {
-    return exerciseTypesRepository.update(exerciseTypeClient.archive().toDbModel());
-  }
-
-  Future<void> unarchive(ExerciseTypeClient exerciseTypeClient) async {
-    return exerciseTypesRepository.update(exerciseTypeClient.unarchive().toDbModel());
+  Future<void> archive(ExerciseTypeClient exerciseTypeClient, bool archive) async {
+    return exerciseTypesRepository.update(exerciseTypeClient.archive(archive).toDbModel());
   }
 }
 

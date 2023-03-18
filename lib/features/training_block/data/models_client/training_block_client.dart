@@ -73,31 +73,17 @@ class TrainingBlockClient with _$TrainingBlockClient {
     return index;
   }
 
-  TrainingBlockClient archiveExerciseDay(ExerciseDayClient exerciseDayClient) {
+  TrainingBlockClient archiveExerciseDay(ExerciseDayClient exerciseDayClient, bool archive) {
     final index = indexOfExerciseDay(exerciseDayClient);
 
     final exerciseDaysUpdated = [...exerciseDays];
 
-    exerciseDaysUpdated[index] = exerciseDayClient.archive();
+    exerciseDaysUpdated[index] = exerciseDayClient.archive(archive);
 
     return copyWith(exerciseDays: exerciseDaysUpdated);
   }
 
-  TrainingBlockClient unarchiveExerciseDay(ExerciseDayClient exerciseDayClient) {
-    final index = indexOfExerciseDay(exerciseDayClient);
-
-    final exerciseDaysUpdated = [...exerciseDays];
-
-    exerciseDaysUpdated[index] = exerciseDayClient.unarchive();
-
-    return copyWith(exerciseDays: exerciseDaysUpdated);
-  }
-
-  TrainingBlockClient archive() {
-    return copyWith(archivedAt: Timestamp.now());
-  }
-
-  TrainingBlockClient unarchive() {
-    return copyWith(archivedAt: null);
+  TrainingBlockClient archive(bool archive) {
+    return copyWith(archivedAt: archive ? Timestamp.now() : null);
   }
 }

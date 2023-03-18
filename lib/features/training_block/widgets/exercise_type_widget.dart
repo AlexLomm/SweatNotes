@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/app.dart';
-import 'package:journal_flutter/widgets/custom_dismissible.dart';
 
+import '../../../app.dart';
 import '../../../widgets/button_dropdown_menu.dart';
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../../widgets/custom_dismissible.dart';
 import '../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../settings/edit_mode_switcher.dart';
 import '../widget_params.dart';
@@ -57,7 +57,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
         bottomRight: Radius.circular(widgetParams.borderRadius),
       ),
       onDismissed: (direction) {
-        exerciseTypeService.archive(exerciseType);
+        exerciseTypeService.archive(exerciseType, true);
 
         messenger?.showSnackBar(
           SnackBar(
@@ -65,7 +65,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
             content: Text('Exercise type "${exerciseType.name}" archived'),
             action: SnackBarAction(
               label: 'Undo',
-              onPressed: () => exerciseTypeService.unarchive(exerciseType),
+              onPressed: () => exerciseTypeService.archive(exerciseType, false),
             ),
           ),
         );

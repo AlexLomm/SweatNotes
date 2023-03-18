@@ -82,6 +82,7 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                         trainingBlocksService.archiveExerciseDay(
                           trainingBlock: widget.trainingBlock,
                           exerciseDay: widget.exerciseDay,
+                          archive: true,
                         );
 
                         messenger?.showSnackBar(
@@ -89,9 +90,10 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                             content: Text('Exercise day "${widget.exerciseDay.name}" archived'),
                             action: SnackBarAction(
                               label: 'Undo',
-                              onPressed: () => trainingBlocksService.unarchiveExerciseDay(
+                              onPressed: () => trainingBlocksService.archiveExerciseDay(
                                 trainingBlock: widget.trainingBlock,
                                 exerciseDay: widget.exerciseDay,
+                                archive: false,
                               ),
                             ),
                           ),

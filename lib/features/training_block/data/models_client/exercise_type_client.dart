@@ -67,11 +67,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     return copyWith(exercises: updatedExercises);
   }
 
-  ExerciseTypeClient archive() {
-    return copyWith(archivedAt: Timestamp.now());
-  }
-
-  ExerciseTypeClient unarchive() {
-    return copyWith(archivedAt: null);
+  ExerciseTypeClient archive(bool archive) {
+    return copyWith(archivedAt: archive ? Timestamp.now() : null);
   }
 }

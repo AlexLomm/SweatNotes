@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
                     _TrainingBlockButton(
                       key: Key(trainingBlock.dbModel.id),
                       onDismissed: (_) {
-                        trainingBlocksService.archive(trainingBlock);
+                        trainingBlocksService.archive(trainingBlock, true);
 
                         messenger?.showSnackBar(
                           SnackBar(
@@ -145,7 +145,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
                             content: Text('Training block "${trainingBlock.dbModel.name}" archived'),
                             action: SnackBarAction(
                               label: 'Undo',
-                              onPressed: () => trainingBlocksService.unarchive(trainingBlock),
+                              onPressed: () => trainingBlocksService.archive(trainingBlock, false),
                             ),
                           ),
                         );

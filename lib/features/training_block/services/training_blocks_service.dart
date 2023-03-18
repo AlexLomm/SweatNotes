@@ -52,10 +52,11 @@ class TrainingBlocksService {
   Future<void> archiveExerciseDay({
     required TrainingBlockClient trainingBlock,
     required ExerciseDayClient exerciseDay,
+    required bool archive,
   }) {
     final batch = firestore.batch();
 
-    final updatedTrainingBlockDbModel = trainingBlock.archiveExerciseDay(exerciseDay).toDbModel();
+    final updatedTrainingBlockDbModel = trainingBlock.archiveExerciseDay(exerciseDay, archive).toDbModel();
 
     batch.update(
       trainingBlocksRepository.getDocumentRefById(updatedTrainingBlockDbModel.id),
@@ -63,7 +64,7 @@ class TrainingBlocksService {
     );
 
     for (final exerciseType in exerciseDay.exerciseTypes) {
-      final updatedExerciseTypeDbModel = exerciseType.archive().toDbModel();
+      final updatedExerciseTypeDbModel = exerciseType.archive(archive).toDbModel();
 
       batch.update(
         exerciseTypesRepository.getDocumentRefById(updatedExerciseTypeDbModel.id),
@@ -74,38 +75,8 @@ class TrainingBlocksService {
     return batch.commit();
   }
 
-  // TODO: deduplicate
-  Future<void> unarchiveExerciseDay({
-    required TrainingBlockClient trainingBlock,
-    required ExerciseDayClient exerciseDay,
-  }) {
-    final batch = firestore.batch();
-
-    final updatedTrainingBlockDbModel = trainingBlock.unarchiveExerciseDay(exerciseDay).toDbModel();
-
-    batch.update(
-      trainingBlocksRepository.getDocumentRefById(updatedTrainingBlockDbModel.id),
-      updatedTrainingBlockDbModel.toJson(),
-    );
-
-    for (final exerciseType in exerciseDay.exerciseTypes) {
-      final updatedExerciseTypeDbModel = exerciseType.unarchive().toDbModel();
-
-      batch.update(
-        exerciseTypesRepository.getDocumentRefById(updatedExerciseTypeDbModel.id),
-        updatedExerciseTypeDbModel.toJson(),
-      );
-    }
-
-    return batch.commit();
-  }
-
-  Future<void> archive(TrainingBlockClient trainingBlock) {
-    return trainingBlocksRepository.update(trainingBlock.archive().toDbModel());
-  }
-
-  Future<void> unarchive(TrainingBlockClient trainingBlock) {
-    return trainingBlocksRepository.update(trainingBlock.unarchive().toDbModel());
+  Future<void> archive(TrainingBlockClient trainingBlock, bool archive) {
+    return trainingBlocksRepository.update(trainingBlock.archive(archive).toDbModel());
   }
 }
 

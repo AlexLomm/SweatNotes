@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TrainingBlockClient {
   TrainingBlock get dbModel => throw _privateConstructorUsedError;
+  Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseDayClient> get exerciseDays =>
       throw _privateConstructorUsedError;
@@ -34,6 +35,7 @@ abstract class $TrainingBlockClientCopyWith<$Res> {
   @useResult
   $Res call(
       {TrainingBlock dbModel,
+      Timestamp? archivedAt,
       String name,
       List<ExerciseDayClient> exerciseDays});
 
@@ -54,6 +56,7 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
   @override
   $Res call({
     Object? dbModel = null,
+    Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
@@ -62,6 +65,10 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as TrainingBlock,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -92,6 +99,7 @@ abstract class _$$_TrainingBlockClientCopyWith<$Res>
   @useResult
   $Res call(
       {TrainingBlock dbModel,
+      Timestamp? archivedAt,
       String name,
       List<ExerciseDayClient> exerciseDays});
 
@@ -111,6 +119,7 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? dbModel = null,
+    Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
@@ -119,6 +128,10 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as TrainingBlock,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -137,6 +150,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
     with DiagnosticableTreeMixin {
   const _$_TrainingBlockClient(
       {required this.dbModel,
+      this.archivedAt,
       required this.name,
       required final List<ExerciseDayClient> exerciseDays})
       : _exerciseDays = exerciseDays,
@@ -144,6 +158,8 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
 
   @override
   final TrainingBlock dbModel;
+  @override
+  final Timestamp? archivedAt;
   @override
   final String name;
   final List<ExerciseDayClient> _exerciseDays;
@@ -156,7 +172,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlockClient(dbModel: $dbModel, name: $name, exerciseDays: $exerciseDays)';
+    return 'TrainingBlockClient(dbModel: $dbModel, archivedAt: $archivedAt, name: $name, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -165,6 +181,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
     properties
       ..add(DiagnosticsProperty('type', 'TrainingBlockClient'))
       ..add(DiagnosticsProperty('dbModel', dbModel))
+      ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
@@ -180,6 +197,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
 abstract class _TrainingBlockClient extends TrainingBlockClient {
   const factory _TrainingBlockClient(
           {required final TrainingBlock dbModel,
+          final Timestamp? archivedAt,
           required final String name,
           required final List<ExerciseDayClient> exerciseDays}) =
       _$_TrainingBlockClient;
@@ -187,6 +205,8 @@ abstract class _TrainingBlockClient extends TrainingBlockClient {
 
   @override
   TrainingBlock get dbModel;
+  @override
+  Timestamp? get archivedAt;
   @override
   String get name;
   @override

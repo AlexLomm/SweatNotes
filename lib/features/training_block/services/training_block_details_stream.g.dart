@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'normalize_data_service.dart';
+part of 'training_block_details_stream.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$normalizedDataServiceHash() =>
-    r'f2f1c150bcf9cea7a495a8bbb6c39b40a9012a23';
+String _$trainingBlockDetailsStreamHash() =>
+    r'29838532389dc48556a47e2865a2d9aeef9aacfb';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,31 +30,31 @@ class _SystemHash {
   }
 }
 
-typedef NormalizedDataServiceRef
+typedef TrainingBlockDetailsStreamRef
     = AutoDisposeStreamProviderRef<TrainingBlockClient?>;
 
-/// See also [normalizedDataService].
-@ProviderFor(normalizedDataService)
-const normalizedDataServiceProvider = NormalizedDataServiceFamily();
+/// See also [trainingBlockDetailsStream].
+@ProviderFor(trainingBlockDetailsStream)
+const trainingBlockDetailsStreamProvider = TrainingBlockDetailsStreamFamily();
 
-/// See also [normalizedDataService].
-class NormalizedDataServiceFamily
+/// See also [trainingBlockDetailsStream].
+class TrainingBlockDetailsStreamFamily
     extends Family<AsyncValue<TrainingBlockClient?>> {
-  /// See also [normalizedDataService].
-  const NormalizedDataServiceFamily();
+  /// See also [trainingBlockDetailsStream].
+  const TrainingBlockDetailsStreamFamily();
 
-  /// See also [normalizedDataService].
-  NormalizedDataServiceProvider call(
+  /// See also [trainingBlockDetailsStream].
+  TrainingBlockDetailsStreamProvider call(
     String trainingBlockId,
   ) {
-    return NormalizedDataServiceProvider(
+    return TrainingBlockDetailsStreamProvider(
       trainingBlockId,
     );
   }
 
   @override
-  NormalizedDataServiceProvider getProviderOverride(
-    covariant NormalizedDataServiceProvider provider,
+  TrainingBlockDetailsStreamProvider getProviderOverride(
+    covariant TrainingBlockDetailsStreamProvider provider,
   ) {
     return call(
       provider.trainingBlockId,
@@ -73,36 +73,36 @@ class NormalizedDataServiceFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'normalizedDataServiceProvider';
+  String? get name => r'trainingBlockDetailsStreamProvider';
 }
 
-/// See also [normalizedDataService].
-class NormalizedDataServiceProvider
+/// See also [trainingBlockDetailsStream].
+class TrainingBlockDetailsStreamProvider
     extends AutoDisposeStreamProvider<TrainingBlockClient?> {
-  /// See also [normalizedDataService].
-  NormalizedDataServiceProvider(
+  /// See also [trainingBlockDetailsStream].
+  TrainingBlockDetailsStreamProvider(
     this.trainingBlockId,
   ) : super.internal(
-          (ref) => normalizedDataService(
+          (ref) => trainingBlockDetailsStream(
             ref,
             trainingBlockId,
           ),
-          from: normalizedDataServiceProvider,
-          name: r'normalizedDataServiceProvider',
+          from: trainingBlockDetailsStreamProvider,
+          name: r'trainingBlockDetailsStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$normalizedDataServiceHash,
-          dependencies: NormalizedDataServiceFamily._dependencies,
+                  : _$trainingBlockDetailsStreamHash,
+          dependencies: TrainingBlockDetailsStreamFamily._dependencies,
           allTransitiveDependencies:
-              NormalizedDataServiceFamily._allTransitiveDependencies,
+              TrainingBlockDetailsStreamFamily._allTransitiveDependencies,
         );
 
   final String trainingBlockId;
 
   @override
   bool operator ==(Object other) {
-    return other is NormalizedDataServiceProvider &&
+    return other is TrainingBlockDetailsStreamProvider &&
         other.trainingBlockId == trainingBlockId;
   }
 

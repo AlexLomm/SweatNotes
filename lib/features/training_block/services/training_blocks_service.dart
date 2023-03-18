@@ -15,14 +15,6 @@ class TrainingBlocksService {
 
   TrainingBlocksService(this.trainingBlocksRepository, this.firebaseAuth);
 
-  Stream<List<TrainingBlock>> get trainingBlocks => trainingBlocksRepository
-      //
-      .collectionRef
-      .snapshots()
-      .map<List<TrainingBlock>>(
-        (event) => event.docs.map((doc) => doc.data()).toList(),
-      );
-
   void create({required String name}) {
     final userId = firebaseAuth.currentUser?.uid;
 
@@ -46,6 +38,10 @@ class TrainingBlocksService {
         .toDbModel();
 
     return trainingBlocksRepository.update(trainingBlockServer);
+  }
+
+  Future<void> archive(TrainingBlockClient trainingBlock) {
+    return trainingBlocksRepository.update(trainingBlock.archive().toDbModel());
   }
 }
 

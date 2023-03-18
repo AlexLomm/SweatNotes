@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,6 +14,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
 
   const factory TrainingBlockClient({
     required TrainingBlock dbModel,
+    Timestamp? archivedAt,
     required String name,
     required List<ExerciseDayClient> exerciseDays,
   }) = _TrainingBlockClient;
@@ -20,6 +22,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
   TrainingBlock toDbModel() {
     return dbModel.copyWith(
       name: name,
+      archivedAt: archivedAt,
       exerciseDays: exerciseDays.map<ExerciseDay>((e) => e.toDbModel()).toList(),
     );
   }
@@ -68,5 +71,9 @@ class TrainingBlockClient with _$TrainingBlockClient {
     if (index == -1) throw Exception('Exercise day not found');
 
     return index;
+  }
+
+  TrainingBlockClient archive() {
+    return copyWith(archivedAt: Timestamp.now());
   }
 }

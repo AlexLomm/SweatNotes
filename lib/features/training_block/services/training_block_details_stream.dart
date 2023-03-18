@@ -14,10 +14,13 @@ import '../data/models_client/exercise_type_client.dart';
 import '../data/models_client/training_block_client.dart';
 import '../data/training_blocks_repository.dart';
 
-part 'normalize_data_service.g.dart';
+part 'training_block_details_stream.g.dart';
 
 @riverpod
-Stream<TrainingBlockClient?> normalizedDataService(NormalizedDataServiceRef ref, String trainingBlockId) async* {
+Stream<TrainingBlockClient?> trainingBlockDetailsStream(
+  TrainingBlockDetailsStreamRef ref,
+  String trainingBlockId,
+) async* {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
 

@@ -15,7 +15,7 @@ import '../settings/edit_mode_switcher.dart';
 import 'widget_params.dart';
 import 'data/models_client/training_block_client.dart';
 import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
-import 'services/normalize_data_service.dart';
+import 'services/training_block_details_stream.dart';
 import 'widgets/horizontally_scrollable_exercises.dart';
 
 class TrainingBlockScreen extends ConsumerStatefulWidget {
@@ -76,7 +76,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
 
   @override
   Widget build(BuildContext context) {
-    final data = ref.watch(normalizedDataServiceProvider(widget.trainingBlockId));
+    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
     final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);

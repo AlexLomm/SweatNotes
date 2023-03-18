@@ -13,7 +13,7 @@ class TrainingBlocksRepository {
 
   TrainingBlocksRepository(this.firestore, this.firebaseAuth);
 
-  CollectionReference<TrainingBlock> get collectionRef => firestore
+  CollectionReference<TrainingBlock> get _collectionRef => firestore
       //
       .collection('users')
       .doc(firebaseAuth.currentUser?.uid)
@@ -23,12 +23,16 @@ class TrainingBlocksRepository {
         toFirestore: toFirestore,
       );
 
+  Query<TrainingBlock> get queryRef => _collectionRef
+      //
+      .where('archivedAt', isNull: true);
+
   DocumentReference<TrainingBlock> getDocumentRefById(String id) {
-    return collectionRef.doc(id);
+    return _collectionRef.doc(id);
   }
 
   Future<void> create(TrainingBlock trainingBlock) {
-    return collectionRef.add(trainingBlock);
+    return _collectionRef.add(trainingBlock);
   }
 
   Future<void> update(TrainingBlock trainingBlock) {

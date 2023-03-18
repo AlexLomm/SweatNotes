@@ -22,6 +22,8 @@ TrainingBlock _$TrainingBlockFromJson(Map<String, dynamic> json) {
 mixin _$TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseDay> get exerciseDays => throw _privateConstructorUsedError;
 
@@ -38,7 +40,10 @@ abstract class $TrainingBlockCopyWith<$Res> {
       _$TrainingBlockCopyWithImpl<$Res, TrainingBlock>;
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false) String id,
+      {@JsonKey(includeToJson: false)
+          String id,
+      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+          Timestamp? archivedAt,
       String name,
       List<ExerciseDay> exerciseDays});
 }
@@ -57,6 +62,7 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
   @override
   $Res call({
     Object? id = null,
+    Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
@@ -65,6 +71,10 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -86,7 +96,10 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false) String id,
+      {@JsonKey(includeToJson: false)
+          String id,
+      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+          Timestamp? archivedAt,
       String name,
       List<ExerciseDay> exerciseDays});
 }
@@ -103,6 +116,7 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
@@ -111,6 +125,10 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      archivedAt: freezed == archivedAt
+          ? _value.archivedAt
+          : archivedAt // ignore: cast_nullable_to_non_nullable
+              as Timestamp?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -127,7 +145,10 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   const _$_TrainingBlock(
-      {@JsonKey(includeToJson: false) required this.id,
+      {@JsonKey(includeToJson: false)
+          required this.id,
+      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+          this.archivedAt,
       required this.name,
       final List<ExerciseDay> exerciseDays = const []})
       : _exerciseDays = exerciseDays;
@@ -138,6 +159,9 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   @override
   @JsonKey(includeToJson: false)
   final String id;
+  @override
+  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  final Timestamp? archivedAt;
   @override
   final String name;
   final List<ExerciseDay> _exerciseDays;
@@ -151,7 +175,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlock(id: $id, name: $name, exerciseDays: $exerciseDays)';
+    return 'TrainingBlock(id: $id, archivedAt: $archivedAt, name: $name, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -160,6 +184,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
     properties
       ..add(DiagnosticsProperty('type', 'TrainingBlock'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
@@ -180,7 +205,10 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
 
 abstract class _TrainingBlock implements TrainingBlock {
   const factory _TrainingBlock(
-      {@JsonKey(includeToJson: false) required final String id,
+      {@JsonKey(includeToJson: false)
+          required final String id,
+      @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+          final Timestamp? archivedAt,
       required final String name,
       final List<ExerciseDay> exerciseDays}) = _$_TrainingBlock;
 
@@ -190,6 +218,9 @@ abstract class _TrainingBlock implements TrainingBlock {
   @override
   @JsonKey(includeToJson: false)
   String get id;
+  @override
+  @JsonKey(fromJson: _archivedAtFromJson, toJson: _archivedAtToJson)
+  Timestamp? get archivedAt;
   @override
   String get name;
   @override

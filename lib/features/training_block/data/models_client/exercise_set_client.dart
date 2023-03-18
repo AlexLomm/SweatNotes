@@ -18,6 +18,7 @@ class ExerciseSetClient with _$ExerciseSetClient {
     // TODO: change to double
     required String load,
     required bool isFiller,
+    required bool isPersonalRecord,
     @Default('0') String predictedReps,
     @Default('0') String predictedLoad,
   }) = _ExerciseSetClient;
@@ -27,6 +28,7 @@ class ExerciseSetClient with _$ExerciseSetClient {
       dbModel: null,
       progressFactor: null,
       isFiller: true,
+      isPersonalRecord: false,
       unit: '',
       reps: '',
       load: '',

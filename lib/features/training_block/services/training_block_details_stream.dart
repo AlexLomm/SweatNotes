@@ -86,6 +86,7 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
                 (exerciseSet) => ExerciseSetClient(
                   dbModel: exerciseSet,
                   isFiller: false,
+                  isPersonalRecord: false,
                   unit: exerciseType.unit,
                   load: exerciseSet.load,
                   reps: exerciseSet.reps,
@@ -116,6 +117,7 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
     final exerciseSetsPerExerciseCount = exerciseType.exercises[0].sets.length;
 
     var nearestPopulatedExerciseSets = [...exerciseType.exercises[0].sets];
+    var personalRecords = [...exerciseType.exercises[0].sets];
 
     ///                       compared to
     ///                     ┌─────────────┐
@@ -130,6 +132,7 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
     ///                compared to
     for (var i = 1; i < exerciseType.exercises.length; i++) {
       for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
+        final prExerciseSet = personalRecords[j];
         final nearestExerciseSet = nearestPopulatedExerciseSets[j];
         final currentExerciseSet = exerciseType.exercises[i].sets[j];
 
@@ -137,9 +140,17 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
 
         if (currentExerciseSet.reps.isEmpty || currentExerciseSet.load.isEmpty) continue;
 
+        final progressFactorAgainstPr = currentExerciseSet.compareProgress(prExerciseSet) ?? 0;
+        final progressFactorAgainstNearest = currentExerciseSet.compareProgress(nearestExerciseSet);
+
+        final isPersonalRecord = progressFactorAgainstPr > 0;
+
         exerciseType.exercises[i].sets[j] = exerciseType.exercises[i].sets[j].copyWith(
-          progressFactor: currentExerciseSet.compareProgress(nearestExerciseSet),
+          isPersonalRecord: isPersonalRecord,
+          progressFactor: progressFactorAgainstNearest,
         );
+
+        if (isPersonalRecord) personalRecords[j] = currentExerciseSet;
 
         nearestPopulatedExerciseSets[j] = currentExerciseSet;
       }

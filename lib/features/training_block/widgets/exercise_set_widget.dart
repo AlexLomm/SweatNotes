@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../widgets/ribbon.dart';
 import '../widget_params.dart';
 import '../data/models_client/exercise_set_client.dart';
 
@@ -52,6 +53,7 @@ class ExerciseSetWidget extends ConsumerWidget {
               isSingle: isSingle,
               isRightmost: isRightmost,
               exerciseSet: exerciseSet,
+              isPersonalRecord: exerciseSet.isPersonalRecord,
               child: _RepsText(
                 exerciseSet: exerciseSet,
                 textColor: textColor,
@@ -152,6 +154,7 @@ class _Cell extends ConsumerWidget {
   final bool isBottomCell;
   final ExerciseSetClient exerciseSet;
   final Widget child;
+  final bool isPersonalRecord;
 
   const _Cell({
     Key? key,
@@ -160,6 +163,7 @@ class _Cell extends ConsumerWidget {
     required this.isRightmost,
     required this.isBottomCell,
     required this.child,
+    this.isPersonalRecord = false,
   }) : super(key: key);
 
   @override
@@ -185,7 +189,7 @@ class _Cell extends ConsumerWidget {
       right: isSingle || isRightmost ? BorderSide.none : borderSide,
     );
 
-    return Container(
+    final container = Container(
       decoration: BoxDecoration(
         color: backgroundColor,
         border: isBottomCell ? borderBottomCell : borderTopCell,
@@ -193,5 +197,24 @@ class _Cell extends ConsumerWidget {
       height: widgetParams.exerciseTypeHeight / 2,
       child: Center(child: child),
     );
+
+    final nearLength = widgetParams.isCompactMode ? 8.0 : 12.0;
+    final farLength = widgetParams.isCompactMode ? 24.0 : 32.0;
+    final fontSize = widgetParams.isCompactMode ? 9.0 : 10.0;
+
+    return isPersonalRecord
+        ? Ribbon(
+            title: 'PR',
+            nearLength: nearLength,
+            farLength: farLength,
+            color: Theme.of(context).colorScheme.primary,
+            location: RibbonLocation.topEnd,
+            titleStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  fontSize: fontSize,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+            child: container,
+          )
+        : container;
   }
 }

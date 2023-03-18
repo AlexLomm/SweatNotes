@@ -23,6 +23,7 @@ mixin _$ExerciseSetClient {
       throw _privateConstructorUsedError; // TODO: change to double
   String get load => throw _privateConstructorUsedError;
   bool get isFiller => throw _privateConstructorUsedError;
+  bool get isPersonalRecord => throw _privateConstructorUsedError;
   String get predictedReps => throw _privateConstructorUsedError;
   String get predictedLoad => throw _privateConstructorUsedError;
 
@@ -44,6 +45,7 @@ abstract class $ExerciseSetClientCopyWith<$Res> {
       String reps,
       String load,
       bool isFiller,
+      bool isPersonalRecord,
       String predictedReps,
       String predictedLoad});
 
@@ -69,6 +71,7 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
     Object? reps = null,
     Object? load = null,
     Object? isFiller = null,
+    Object? isPersonalRecord = null,
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
@@ -96,6 +99,10 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
       isFiller: null == isFiller
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isPersonalRecord: null == isPersonalRecord
+          ? _value.isPersonalRecord
+          : isPersonalRecord // ignore: cast_nullable_to_non_nullable
               as bool,
       predictedReps: null == predictedReps
           ? _value.predictedReps
@@ -136,6 +143,7 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
       String reps,
       String load,
       bool isFiller,
+      bool isPersonalRecord,
       String predictedReps,
       String predictedLoad});
 
@@ -160,6 +168,7 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
     Object? reps = null,
     Object? load = null,
     Object? isFiller = null,
+    Object? isPersonalRecord = null,
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
@@ -188,6 +197,10 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
               as bool,
+      isPersonalRecord: null == isPersonalRecord
+          ? _value.isPersonalRecord
+          : isPersonalRecord // ignore: cast_nullable_to_non_nullable
+              as bool,
       predictedReps: null == predictedReps
           ? _value.predictedReps
           : predictedReps // ignore: cast_nullable_to_non_nullable
@@ -211,6 +224,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       required this.reps,
       required this.load,
       required this.isFiller,
+      required this.isPersonalRecord,
       this.predictedReps = '0',
       this.predictedLoad = '0'})
       : super._();
@@ -230,6 +244,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   @override
   final bool isFiller;
   @override
+  final bool isPersonalRecord;
+  @override
   @JsonKey()
   final String predictedReps;
   @override
@@ -238,7 +254,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseSetClient(dbModel: $dbModel, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load, isFiller: $isFiller, predictedReps: $predictedReps, predictedLoad: $predictedLoad)';
+    return 'ExerciseSetClient(dbModel: $dbModel, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load, isFiller: $isFiller, isPersonalRecord: $isPersonalRecord, predictedReps: $predictedReps, predictedLoad: $predictedLoad)';
   }
 
   @override
@@ -252,6 +268,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       ..add(DiagnosticsProperty('reps', reps))
       ..add(DiagnosticsProperty('load', load))
       ..add(DiagnosticsProperty('isFiller', isFiller))
+      ..add(DiagnosticsProperty('isPersonalRecord', isPersonalRecord))
       ..add(DiagnosticsProperty('predictedReps', predictedReps))
       ..add(DiagnosticsProperty('predictedLoad', predictedLoad));
   }
@@ -272,6 +289,7 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
       required final String reps,
       required final String load,
       required final bool isFiller,
+      required final bool isPersonalRecord,
       final String predictedReps,
       final String predictedLoad}) = _$_ExerciseSetClient;
   _ExerciseSetClient._() : super._();
@@ -288,6 +306,8 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   String get load;
   @override
   bool get isFiller;
+  @override
+  bool get isPersonalRecord;
   @override
   String get predictedReps;
   @override

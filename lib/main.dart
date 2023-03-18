@@ -12,9 +12,6 @@ import 'env.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  // display a loading indicator while waiting for async initialization
-  runApp(const Center(child: CircularProgressIndicator()));
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

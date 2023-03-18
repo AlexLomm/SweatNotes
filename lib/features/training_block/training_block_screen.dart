@@ -10,6 +10,7 @@ import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
+import '../auth/services/auth_service.dart';
 import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
 import 'widget_params.dart';
@@ -76,6 +77,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
 
   @override
   Widget build(BuildContext context) {
+    final authService = ref.watch(authServiceProvider);
     final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
@@ -93,10 +95,16 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
         );
 
     return data.when(
-      error: (Object error, StackTrace stackTrace) => const Center(child: Text('Error')),
+      error: (Object error, StackTrace stackTrace) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => authService.signOut());
+
+        return Center(child: Text(error.toString()));
+      },
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (trainingBlock) {
         if (trainingBlock == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => context.go('/'));
+
           return const Center(child: CircularProgressIndicator());
         }
 

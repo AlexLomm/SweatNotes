@@ -113,7 +113,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
       ],
       child: trainingBlocks.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        error: (error, stackTrace) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => authService.signOut());
+
+          return Center(child: Text(error.toString()));
+        },
         data: (data) => Builder(
           builder: (context) {
             final messenger = ref.watch(messengerProvider);

@@ -6,6 +6,7 @@ class Button extends StatelessWidget {
   final EdgeInsets padding;
   final Color? backgroundColor;
   final Widget? child;
+  final bool isLoading;
   final void Function()? onPressed;
 
   const Button({
@@ -16,6 +17,7 @@ class Button extends StatelessWidget {
     this.backgroundColor,
     this.child,
     this.onPressed,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ class Button extends StatelessWidget {
     final primaryColor = Theme.of(context).colorScheme.primary;
 
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: ButtonStyle(
         iconColor: MaterialStateProperty.resolveWith((_) => onPrimaryColor),
         shape: MaterialStateProperty.resolveWith(
@@ -52,8 +54,7 @@ class Button extends StatelessWidget {
           },
         ),
       ),
-      child: child ??
-          Text(label, style: labelLarge?.copyWith(color: onPrimaryColor)),
+      child: child ?? Text(label, style: labelLarge?.copyWith(color: onPrimaryColor)),
     );
   }
 }

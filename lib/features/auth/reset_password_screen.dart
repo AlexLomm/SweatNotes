@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/features/auth/regular_text_field.dart';
 
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
+import 'regular_text_field.dart';
 import 'services/auth_service.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
@@ -20,6 +20,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   late final TextEditingController _emailController;
 
   bool _isValid = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -71,18 +72,14 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
             const SizedBox(height: 24.0),
             Button(
               label: 'Send',
+              isLoading: _isLoading,
               onPressed: _isValid
                   ? () async {
-                      final go = context.go;
-                      final messenger = ScaffoldMessenger.of(context);
+                      setState(() => _isLoading = true);
 
-                      final error = await authService.sendPasswordResetEmail(_emailController.text);
+                      await authService.sendPasswordResetEmail(_emailController.text);
 
-                      if (error.isNotEmpty) {
-                        messenger.showSnackBar(SnackBar(content: Text(error)));
-                      } else {
-                        go('/auth/reset-password-finished');
-                      }
+                      setState(() => _isLoading = false);
                     }
                   : null,
             ),

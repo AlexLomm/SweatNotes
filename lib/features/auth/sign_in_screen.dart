@@ -20,6 +20,8 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -77,20 +79,16 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
             const SizedBox(height: 24.0),
             Button(
               label: 'Log in',
+              isLoading: _isLoading,
               onPressed: () async {
-                final go = context.go;
-                final messenger = ScaffoldMessenger.of(context);
+                setState(() => _isLoading = true);
 
-                final error = await authService.signIn(
+                await authService.signIn(
                   email: _emailController.text,
                   password: _passwordController.text,
                 );
 
-                if (error.isNotEmpty) {
-                  messenger.showSnackBar(SnackBar(content: Text(error)));
-                } else {
-                  go('/');
-                }
+                setState(() => _isLoading = false);
               },
             ),
             const SizedBox(height: 36),

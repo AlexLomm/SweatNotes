@@ -22,6 +22,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     _displayNameController.dispose();
@@ -69,21 +71,17 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             const SizedBox(height: 44.0),
             Button(
               label: 'Sign up',
+              isLoading: _isLoading,
               onPressed: () async {
-                final go = context.go;
-                final messenger = ScaffoldMessenger.of(context);
+                setState(() => _isLoading = true);
 
-                final error = await authService.signUp(
+                await authService.signUp(
                   displayName: _displayNameController.text,
                   email: _emailController.text,
                   password: _passwordController.text,
                 );
 
-                if (error.isNotEmpty) {
-                  messenger.showSnackBar(SnackBar(content: Text(error)));
-                } else {
-                  go('/');
-                }
+                setState(() => _isLoading = false);
               },
             ),
           ],

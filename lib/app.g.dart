@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_service.dart';
+part of 'app.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authServiceHash() => r'528acdf5aeff1bb0e5609135d678a3f16cac487d';
+String _$messengerHash() => r'f6e4f253457d247e4949653aa874540c9b6f6d7b';
 
-/// See also [authService].
-@ProviderFor(authService)
-final authServiceProvider = AutoDisposeProvider<AuthService>.internal(
-  authService,
-  name: r'authServiceProvider',
+/// See also [messenger].
+@ProviderFor(messenger)
+final messengerProvider = AutoDisposeProvider<ScaffoldMessengerState?>.internal(
+  messenger,
+  name: r'messengerProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$authServiceHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$messengerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef AuthServiceRef = AutoDisposeProviderRef<AuthService>;
+typedef MessengerRef = AutoDisposeProviderRef<ScaffoldMessengerState?>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

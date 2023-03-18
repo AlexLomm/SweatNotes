@@ -61,7 +61,6 @@ class ExerciseTypeWidget extends ConsumerWidget {
 
         messenger?.showSnackBar(
           SnackBar(
-            duration: const Duration(seconds: 3),
             content: Text('Exercise type "${exerciseType.name}" archived'),
             action: SnackBarAction(
               label: 'Undo',

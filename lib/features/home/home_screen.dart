@@ -141,7 +141,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
                         messenger?.showSnackBar(
                           SnackBar(
-                            duration: const Duration(seconds: 3),
                             content: Text('Training block "${trainingBlock.dbModel.name}" archived'),
                             action: SnackBarAction(
                               label: 'Undo',

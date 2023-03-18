@@ -60,6 +60,8 @@ class WidgetParams {
   double get exerciseTypesVerticalSpacing => 8.0;
 
   double getExerciseTypesListHeight(int exerciseTypesCount) {
+    if (exerciseTypesCount == 0) return 0;
+
     return (exerciseTypeHeight) * exerciseTypesCount + exerciseTypesVerticalSpacing * (exerciseTypesCount - 1);
   }
 

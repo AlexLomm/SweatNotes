@@ -11,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      leading: GoBackButton(onPressed: () => context.go('/')),
+      leading: GoBackButton(onPressed: () => context.pop()),
       appBarTitle: Text(
         'Settings',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
@@ -23,26 +23,26 @@ class SettingsScreen extends StatelessWidget {
             id: '/settings/account',
             label: 'Account',
             right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => context.go('/settings/account'),
+            onPressed: () => context.push('/settings/account'),
           ),
-          DismissibleButton(
-            id: '/settings/unit',
-            label: 'Unit',
-            right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => context.go('/settings/unit'),
-          ),
+          // DismissibleButton(
+          //   id: '/settings/unit',
+          //   label: 'Unit',
+          //   right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
+          //   onPressed: () => context.push('/settings/unit'),
+          // ),
           DismissibleButton(
             id: '/settings/theme',
             label: 'Theme',
             right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => context.go('/settings/theme'),
+            onPressed: () => context.push('/settings/theme'),
           ),
-          DismissibleButton(
-            id: '/settings/contact-us-on-discord',
-            label: 'Contact us on Discord',
-            right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => context.go('/settings/contact-us-on-discord'),
-          ),
+          // DismissibleButton(
+          //   id: '/settings/contact-us-on-discord',
+          //   label: 'Contact us on Discord',
+          //   right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
+          //   onPressed: () => context.push('/settings/contact-us-on-discord'),
+          // ),
         ],
       ),
     );

@@ -10,7 +10,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      leading: GoBackButton(onPressed: () => context.go('/settings')),
+      leading: GoBackButton(onPressed: () => context.pop()),
       appBarTitle: Text(
         'Account',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),

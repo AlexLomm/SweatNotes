@@ -98,7 +98,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
           ),
           tooltip: 'Settings',
           splashRadius: 20,
-          onPressed: () => context.go('/settings'),
+          onPressed: () => context.push('/settings'),
         ),
         // IconButton(
         //   icon: Icon(
@@ -143,7 +143,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
                         Icons.arrow_forward,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                      onPressed: () => context.go('/${trainingBlock.dbModel.id}'),
+                      onPressed: () => context.push('/${trainingBlock.dbModel.id}'),
                       onDismissed: (_) {
                         trainingBlocksService.archive(trainingBlock, true);
 

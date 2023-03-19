@@ -138,7 +138,7 @@ class Matrix extends ConsumerWidget {
         shadowColor: Colors.transparent,
         centerTitle: false,
         pinned: true,
-        leading: GoBackButton(onPressed: () => context.go('/')),
+        leading: GoBackButton(onPressed: () => context.pop()),
         flexibleSpace: CustomFlexibleSpaceBar(
           centerTitle: false,
           title: AnimatedContainer(
@@ -228,6 +228,10 @@ class Matrix extends ConsumerWidget {
               animationDuration: WidgetParams.animationDuration,
               animationCurve: WidgetParams.animationCurve,
               items: [
+                ButtonDropdownMenuItem(
+                  onTap: () => context.push('/settings'),
+                  child: Text('Settings', style: menuItemTheme),
+                ),
                 ButtonDropdownMenuItem(
                   onTap: compactModeSwitcher.toggle,
                   child: RichText(

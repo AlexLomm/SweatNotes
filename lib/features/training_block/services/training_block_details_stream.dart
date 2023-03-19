@@ -135,26 +135,29 @@ TrainingBlockClient? _getNormalizedData(
     ///                compared to
     for (var i = 1; i < exerciseType.exercises.length; i++) {
       for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
-        final prExerciseSet = personalRecords[j];
         final nearestExerciseSet = nearestPopulatedExerciseSets[j];
-        final currentExerciseSetWithPreviousPr = exerciseType.exercises[i].sets[j].copyWith(
-          previousPersonalRecord: prExerciseSet,
-        );
 
-        if (currentExerciseSetWithPreviousPr.isFiller) continue;
-
-        if (currentExerciseSetWithPreviousPr.reps.isEmpty || currentExerciseSetWithPreviousPr.load.isEmpty) continue;
-
-        final progressAgainstNearest = currentExerciseSetWithPreviousPr.compareProgress(nearestExerciseSet);
-
-        exerciseType.exercises[i].sets[j] = currentExerciseSetWithPreviousPr.copyWith(
+        final exerciseSetWithPreviousPr = exerciseType.exercises[i].sets[j].copyWith(
           previousPersonalRecord: personalRecords[j],
-          progressFactor: progressAgainstNearest,
         );
 
-        nearestPopulatedExerciseSets[j] = currentExerciseSetWithPreviousPr;
+        // add previous pr
+        exerciseType.exercises[i].sets[j] = exerciseSetWithPreviousPr;
 
-        if (currentExerciseSetWithPreviousPr.isPersonalRecord) personalRecords[j] = currentExerciseSetWithPreviousPr;
+        if (exerciseSetWithPreviousPr.isFiller) continue;
+
+        if (exerciseSetWithPreviousPr.reps == 0 || exerciseSetWithPreviousPr.load == 0) continue;
+
+        final progressAgainstNearestSet = exerciseSetWithPreviousPr.compareProgress(nearestExerciseSet);
+
+        // add progress against nearest neighbour
+        exerciseType.exercises[i].sets[j] = exerciseSetWithPreviousPr.copyWith(
+          progressFactor: progressAgainstNearestSet,
+        );
+
+        nearestPopulatedExerciseSets[j] = exerciseSetWithPreviousPr;
+
+        if (exerciseSetWithPreviousPr.isPersonalRecord) personalRecords[j] = exerciseSetWithPreviousPr;
       }
     }
 
@@ -198,13 +201,13 @@ TrainingBlockClient? _getNormalizedData(
           predictedReps: [
             nearestExerciseSet.reps,
             currentExerciseSet.reps,
-            neighboringExerciseSet?.predictedReps ?? '0',
-          ].firstWhere((element) => element.isNotEmpty, orElse: () => '0'),
+            neighboringExerciseSet?.predictedReps ?? 0,
+          ].firstWhere((element) => element != 0, orElse: () => 0),
           predictedLoad: [
             nearestExerciseSet.load,
             currentExerciseSet.load,
-            neighboringExerciseSet?.predictedLoad ?? '0',
-          ].firstWhere((element) => element.isNotEmpty, orElse: () => '0'),
+            neighboringExerciseSet?.predictedLoad ?? 0,
+          ].firstWhere((element) => element != 0, orElse: () => 0),
         );
 
         nearestPopulatedExerciseSets[j] = currentExerciseSet;

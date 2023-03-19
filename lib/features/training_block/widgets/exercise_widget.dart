@@ -39,8 +39,8 @@ class ExerciseWidget extends ConsumerWidget {
         children: exercise.sets.asMap().entries.map((entry) {
           final set = entry.value;
 
-          final repsInitial = set.reps.isEmpty ? int.parse(set.predictedReps) : int.parse(set.reps);
-          final loadInitial = set.load.isEmpty ? double.parse(set.predictedLoad) : double.parse(set.load);
+          final repsInitial = set.reps == 0 ? set.predictedReps : set.reps;
+          final loadInitial = set.load == 0 ? set.predictedLoad : set.load;
 
           return ExerciseSetWidget(
             key: UniqueKey(),

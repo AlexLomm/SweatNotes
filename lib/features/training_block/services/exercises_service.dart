@@ -21,8 +21,8 @@ class ExercisesService {
     required ExerciseTypeClient exerciseType,
     required ExerciseClient exercise,
     required int exerciseSetIndex,
-    required String reps,
-    required String load,
+    required int reps,
+    required double load,
   }) async {
     final exerciseIndex = exerciseType.exercises.indexOf(exercise);
 

@@ -16,13 +16,11 @@ class ExerciseSetClient with _$ExerciseSetClient {
     required ExerciseSetClient? previousPersonalRecord,
     int? progressFactor,
     required String unit,
-    // TODO: change to int
-    required String reps,
-    // TODO: change to double
-    required String load,
+    required int reps,
+    required double load,
     required bool isFiller,
-    @Default('0') String predictedReps,
-    @Default('0') String predictedLoad,
+    @Default(0) int predictedReps,
+    @Default(0.0) double predictedLoad,
   }) = _ExerciseSetClient;
 
   factory ExerciseSetClient.empty() {
@@ -32,8 +30,8 @@ class ExerciseSetClient with _$ExerciseSetClient {
       progressFactor: null,
       isFiller: true,
       unit: '',
-      reps: '',
-      load: '',
+      reps: 0,
+      load: 0.0,
     );
   }
 
@@ -42,27 +40,19 @@ class ExerciseSetClient with _$ExerciseSetClient {
   }
 
   int? compareProgress(ExerciseSetClient? other) {
-    if (isFiller || (reps.isEmpty && load.isEmpty)) return null;
-
     if (other == null) return null;
 
-    final repA = reps.isEmpty ? 0 : double.parse(reps);
-    final loadA = load.isEmpty ? 0 : double.parse(load);
+    if (load > other.load && reps > other.reps) return 4;
+    if (load > other.load && reps == other.reps) return 3;
+    if (load > other.load && reps < other.reps) return 2;
 
-    final repB = other.reps.isEmpty ? 0 : double.parse(other.reps);
-    final loadB = other.load.isEmpty ? 0 : double.parse(other.load);
+    if (load == other.load && reps > other.reps) return 1;
+    if (load == other.load && reps == other.reps) return 0;
+    if (load == other.load && reps < other.reps) return -1;
 
-    if (loadA > loadB && repA > repB) return 4;
-    if (loadA > loadB && repA == repB) return 3;
-    if (loadA > loadB && repA < repB) return 2;
-
-    if (loadA == loadB && repA > repB) return 1;
-    if (loadA == loadB && repA == repB) return 0;
-    if (loadA == loadB && repA < repB) return -1;
-
-    if (loadA < loadB && repA > repB) return -2;
-    if (loadA < loadB && repA == repB) return -3;
-    if (loadA < loadB && repA < repB) return -4;
+    if (load < other.load && reps > other.reps) return -2;
+    if (load < other.load && reps == other.reps) return -3;
+    if (load < other.load && reps < other.reps) return -4;
 
     return null;
   }

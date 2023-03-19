@@ -8,10 +8,8 @@ part 'exercise_set.g.dart';
 @Freezed(equal: false)
 class ExerciseSet with _$ExerciseSet {
   const factory ExerciseSet({
-    // TODO: change to double
-    @Default('') String load,
-    // TODO: change to int
-    @Default('') String reps,
+    @Default(0.0) double load,
+    @Default(0) int reps,
   }) = _ExerciseSet;
 
   factory ExerciseSet.fromJson(Map<String, Object?> json) => _$ExerciseSetFromJson(json);

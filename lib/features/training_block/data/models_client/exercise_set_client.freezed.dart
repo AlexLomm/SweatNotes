@@ -20,13 +20,12 @@ mixin _$ExerciseSetClient {
   ExerciseSetClient? get previousPersonalRecord =>
       throw _privateConstructorUsedError;
   int? get progressFactor => throw _privateConstructorUsedError;
-  String get unit => throw _privateConstructorUsedError; // TODO: change to int
-  String get reps =>
-      throw _privateConstructorUsedError; // TODO: change to double
-  String get load => throw _privateConstructorUsedError;
+  String get unit => throw _privateConstructorUsedError;
+  int get reps => throw _privateConstructorUsedError;
+  double get load => throw _privateConstructorUsedError;
   bool get isFiller => throw _privateConstructorUsedError;
-  String get predictedReps => throw _privateConstructorUsedError;
-  String get predictedLoad => throw _privateConstructorUsedError;
+  int get predictedReps => throw _privateConstructorUsedError;
+  double get predictedLoad => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ExerciseSetClientCopyWith<ExerciseSetClient> get copyWith =>
@@ -44,11 +43,11 @@ abstract class $ExerciseSetClientCopyWith<$Res> {
       ExerciseSetClient? previousPersonalRecord,
       int? progressFactor,
       String unit,
-      String reps,
-      String load,
+      int reps,
+      double load,
       bool isFiller,
-      String predictedReps,
-      String predictedLoad});
+      int predictedReps,
+      double predictedLoad});
 
   $ExerciseSetCopyWith<$Res>? get dbModel;
   $ExerciseSetClientCopyWith<$Res>? get previousPersonalRecord;
@@ -97,11 +96,11 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
       reps: null == reps
           ? _value.reps
           : reps // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       load: null == load
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       isFiller: null == isFiller
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
@@ -109,11 +108,11 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
       predictedReps: null == predictedReps
           ? _value.predictedReps
           : predictedReps // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       predictedLoad: null == predictedLoad
           ? _value.predictedLoad
           : predictedLoad // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ) as $Val);
   }
 
@@ -156,11 +155,11 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
       ExerciseSetClient? previousPersonalRecord,
       int? progressFactor,
       String unit,
-      String reps,
-      String load,
+      int reps,
+      double load,
       bool isFiller,
-      String predictedReps,
-      String predictedLoad});
+      int predictedReps,
+      double predictedLoad});
 
   @override
   $ExerciseSetCopyWith<$Res>? get dbModel;
@@ -209,11 +208,11 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
       reps: null == reps
           ? _value.reps
           : reps // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       load: null == load
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       isFiller: null == isFiller
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
@@ -221,11 +220,11 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
       predictedReps: null == predictedReps
           ? _value.predictedReps
           : predictedReps // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       predictedLoad: null == predictedLoad
           ? _value.predictedLoad
           : predictedLoad // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ));
   }
 }
@@ -242,8 +241,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
       required this.reps,
       required this.load,
       required this.isFiller,
-      this.predictedReps = '0',
-      this.predictedLoad = '0'})
+      this.predictedReps = 0,
+      this.predictedLoad = 0.0})
       : super._();
 
   @override
@@ -254,20 +253,18 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   final int? progressFactor;
   @override
   final String unit;
-// TODO: change to int
   @override
-  final String reps;
-// TODO: change to double
+  final int reps;
   @override
-  final String load;
+  final double load;
   @override
   final bool isFiller;
   @override
   @JsonKey()
-  final String predictedReps;
+  final int predictedReps;
   @override
   @JsonKey()
-  final String predictedLoad;
+  final double predictedLoad;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -305,11 +302,11 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
       required final ExerciseSetClient? previousPersonalRecord,
       final int? progressFactor,
       required final String unit,
-      required final String reps,
-      required final String load,
+      required final int reps,
+      required final double load,
       required final bool isFiller,
-      final String predictedReps,
-      final String predictedLoad}) = _$_ExerciseSetClient;
+      final int predictedReps,
+      final double predictedLoad}) = _$_ExerciseSetClient;
   _ExerciseSetClient._() : super._();
 
   @override
@@ -320,16 +317,16 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   int? get progressFactor;
   @override
   String get unit;
-  @override // TODO: change to int
-  String get reps;
-  @override // TODO: change to double
-  String get load;
+  @override
+  int get reps;
+  @override
+  double get load;
   @override
   bool get isFiller;
   @override
-  String get predictedReps;
+  int get predictedReps;
   @override
-  String get predictedLoad;
+  double get predictedLoad;
   @override
   @JsonKey(ignore: true)
   _$$_ExerciseSetClientCopyWith<_$_ExerciseSetClient> get copyWith =>

@@ -86,7 +86,7 @@ class _RepsText extends StatelessWidget {
   final TextStyle labelSmallTheme;
   final TextStyle labelLargeTheme;
 
-  bool get _shouldShowPredictedReps => exerciseSet.reps.isEmpty;
+  bool get _shouldShowPredictedReps => exerciseSet.reps == 0;
 
   const _RepsText({
     Key? key,
@@ -102,7 +102,7 @@ class _RepsText extends StatelessWidget {
     final color = _shouldShowPredictedReps ? textColor.withOpacity(0.32) : textColor;
 
     return AutoSizeText(
-      reps,
+      '$reps',
       maxLines: 1,
       minFontSize: labelSmallTheme.fontSize!,
       style: labelLargeTheme.copyWith(color: color),
@@ -116,7 +116,7 @@ class _LoadText extends StatelessWidget {
   final TextStyle labelSmallTheme;
   final TextStyle labelLargeTheme;
 
-  bool get _shouldShowPredictedLoad => exerciseSet.load.isEmpty;
+  bool get _shouldShowPredictedLoad => exerciseSet.load == 0;
 
   const _LoadText({
     Key? key,
@@ -133,10 +133,10 @@ class _LoadText extends StatelessWidget {
 
     return AutoSizeText.rich(
       TextSpan(
-        text: load,
+        text: '$load',
         children: [
           TextSpan(
-            text: load.isEmpty ? '' : ' ${exerciseSet.unit}',
+            text: load == 0 ? '' : ' ${exerciseSet.unit}',
             style: labelSmallTheme.copyWith(color: color),
           ),
         ],

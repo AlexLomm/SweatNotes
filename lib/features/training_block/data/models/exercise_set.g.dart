@@ -8,8 +8,8 @@ part of 'exercise_set.dart';
 
 _$_ExerciseSet _$$_ExerciseSetFromJson(Map<String, dynamic> json) =>
     _$_ExerciseSet(
-      load: json['load'] as String? ?? '',
-      reps: json['reps'] as String? ?? '',
+      load: (json['load'] as num?)?.toDouble() ?? 0.0,
+      reps: json['reps'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$_ExerciseSetToJson(_$_ExerciseSet instance) =>

@@ -20,9 +20,8 @@ ExerciseSet _$ExerciseSetFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExerciseSet {
-// TODO: change to double
-  String get load => throw _privateConstructorUsedError; // TODO: change to int
-  String get reps => throw _privateConstructorUsedError;
+  double get load => throw _privateConstructorUsedError;
+  int get reps => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $ExerciseSetCopyWith<$Res> {
           ExerciseSet value, $Res Function(ExerciseSet) then) =
       _$ExerciseSetCopyWithImpl<$Res, ExerciseSet>;
   @useResult
-  $Res call({String load, String reps});
+  $Res call({double load, int reps});
 }
 
 /// @nodoc
@@ -59,11 +58,11 @@ class _$ExerciseSetCopyWithImpl<$Res, $Val extends ExerciseSet>
       load: null == load
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       reps: null == reps
           ? _value.reps
           : reps // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ) as $Val);
   }
 }
@@ -76,7 +75,7 @@ abstract class _$$_ExerciseSetCopyWith<$Res>
       __$$_ExerciseSetCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String load, String reps});
+  $Res call({double load, int reps});
 }
 
 /// @nodoc
@@ -97,11 +96,11 @@ class __$$_ExerciseSetCopyWithImpl<$Res>
       load: null == load
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       reps: null == reps
           ? _value.reps
           : reps // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
     ));
   }
 }
@@ -109,19 +108,17 @@ class __$$_ExerciseSetCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
-  const _$_ExerciseSet({this.load = '', this.reps = ''});
+  const _$_ExerciseSet({this.load = 0.0, this.reps = 0});
 
   factory _$_ExerciseSet.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseSetFromJson(json);
 
-// TODO: change to double
   @override
   @JsonKey()
-  final String load;
-// TODO: change to int
+  final double load;
   @override
   @JsonKey()
-  final String reps;
+  final int reps;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -152,16 +149,16 @@ class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
 }
 
 abstract class _ExerciseSet implements ExerciseSet {
-  const factory _ExerciseSet({final String load, final String reps}) =
+  const factory _ExerciseSet({final double load, final int reps}) =
       _$_ExerciseSet;
 
   factory _ExerciseSet.fromJson(Map<String, dynamic> json) =
       _$_ExerciseSet.fromJson;
 
-  @override // TODO: change to double
-  String get load;
-  @override // TODO: change to int
-  String get reps;
+  @override
+  double get load;
+  @override
+  int get reps;
   @override
   @JsonKey(ignore: true)
   _$$_ExerciseSetCopyWith<_$_ExerciseSet> get copyWith =>

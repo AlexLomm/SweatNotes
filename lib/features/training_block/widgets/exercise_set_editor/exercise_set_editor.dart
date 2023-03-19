@@ -11,7 +11,7 @@ class ExerciseSetEditor extends StatefulWidget {
 
   final int reps;
   final double load;
-  final Function({required String reps, required String load}) onChange;
+  final Function({required int reps, required double load}) onChange;
 
   const ExerciseSetEditor({
     Key? key,
@@ -67,10 +67,7 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
             const SizedBox(height: 24),
             Button(
               label: 'Save',
-              onPressed: () => widget.onChange(
-                reps: _reps.toString(),
-                load: _load.toString(),
-              ),
+              onPressed: () => widget.onChange(reps: _reps, load: _load),
             ),
           ],
         ),

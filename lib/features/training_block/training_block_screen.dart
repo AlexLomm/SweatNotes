@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,10 +14,12 @@ import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';
 import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
-import 'widget_params.dart';
+import 'custom_flexible_space_bar.dart';
 import 'data/models_client/training_block_client.dart';
-import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
 import 'services/training_block_details_stream.dart';
+import 'services/training_blocks_service.dart';
+import 'widget_params.dart';
+import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
 import 'widgets/horizontally_scrollable_exercises.dart';
 
 class TrainingBlockScreen extends ConsumerStatefulWidget {
@@ -79,20 +82,6 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   Widget build(BuildContext context) {
     final authService = ref.watch(authServiceProvider);
     final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
-    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
-
-    final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
-    final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
-
-    final isCompactMode = ref.watch(compactModeSwitcherProvider);
-    final isEditMode = ref.watch(editModeSwitcherProvider);
-
-    final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
-        );
-    final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: isCompactMode ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
-        );
 
     return data.when(
       error: (Object error, StackTrace stackTrace) {
@@ -110,95 +99,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
 
         return Layout(
           isScrollable: false,
-          onGoBackButtonTap: () => context.go('/'),
-          actions: [
-            AnimatedOpacity(
-              opacity: isEditMode ? 0 : 1,
-              duration: WidgetParams.animationDuration,
-              curve: WidgetParams.animationCurve,
-              child: IconButton(
-                icon: Icon(
-                  Icons.add,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                tooltip: 'Add new entry',
-                splashRadius: 20,
-                onPressed: isEditMode
-                    ? null
-                    : () => CustomBottomSheet(
-                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                          title: 'Add exercise day',
-                          child: TextEditorSingleLine(
-                            value: '',
-                            onSubmitted: (String text) {
-                              exerciseDaysService.create(
-                                trainingBlock: trainingBlock,
-                                name: text,
-                              );
-
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ).show(context),
-              ),
-            ),
-            AnimatedOpacity(
-              opacity: isEditMode ? 0 : 1,
-              duration: WidgetParams.animationDuration,
-              curve: WidgetParams.animationCurve,
-              child: IconButton(
-                icon: Icon(
-                  Icons.edit_outlined,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-                tooltip: 'Turn on edit mode',
-                splashRadius: 20,
-                onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
-              ),
-            ),
-            AnimatedCrossFade(
-              alignment: Alignment.center,
-              crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-              duration: WidgetParams.animationDuration,
-              firstCurve: WidgetParams.animationCurve,
-              secondCurve: WidgetParams.animationCurve,
-              firstChild: ButtonDropdownMenu(
-                icon: Icons.more_vert,
-                animationDuration: WidgetParams.animationDuration,
-                animationCurve: WidgetParams.animationCurve,
-                items: [
-                  ButtonDropdownMenuItem(
-                    onTap: compactModeSwitcher.toggle,
-                    child: RichText(
-                      softWrap: false,
-                      text: TextSpan(
-                        text: 'Compact mode',
-                        style: menuItemTheme,
-                        children: [
-                          WidgetSpan(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 24.0),
-                              padding: const EdgeInsets.only(bottom: 1.0),
-                              child: Text(isCompactMode ? 'On' : 'Off', style: menuItemSubTextTheme),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              secondChild: IconButton(
-                icon: Icon(
-                  Icons.check,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                tooltip: 'Turn off edit mode',
-                splashRadius: 20,
-                onPressed: () => editModeSwitcher.toggle(),
-              ),
-            ),
-          ],
+          isAppBarVisible: false,
+          padding: EdgeInsets.zero,
           child: trainingBlock.exerciseDays.isEmpty
               ? const Center(child: EmptyPagePlaceholder())
               : Matrix(trainingBlock: trainingBlock),
@@ -208,14 +110,161 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   }
 }
 
-class Matrix extends StatelessWidget {
+class Matrix extends ConsumerWidget {
   final TrainingBlockClient trainingBlock;
 
   const Matrix({Key? key, required this.trainingBlock}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
+    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+
+    final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
+    final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
+    final isCompactMode = ref.watch(compactModeSwitcherProvider);
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
+    final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
+          color: Theme.of(context).colorScheme.onSurface,
+        );
+    final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: isCompactMode ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+        );
+
     return CustomScrollView(slivers: <Widget>[
+      SliverAppBar(
+        expandedHeight: 152,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        shadowColor: Colors.transparent,
+        centerTitle: false,
+        pinned: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+          tooltip: 'Navigate back',
+          splashRadius: 20,
+          onPressed: () => context.go('/'),
+        ),
+        flexibleSpace: CustomFlexibleSpaceBar(
+          centerTitle: false,
+          title: AnimatedContainer(
+            width: 200,
+            duration: WidgetParams.animationDuration,
+            curve: WidgetParams.animationCurve,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: GestureDetector(
+              onTap: isEditMode
+                  ? () => CustomBottomSheet(
+                        height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                        title: 'Update training block',
+                        child: TextEditorSingleLine(
+                          value: trainingBlock.name,
+                          onSubmitted: (String text) {
+                            trainingBlocksService.updateName(trainingBlock, text);
+
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ).show(context)
+                  : null,
+              child: AutoSizeText(
+                trainingBlock.name,
+                softWrap: false,
+                maxLines: 1,
+                minFontSize: ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) * 0.9).roundToDouble(),
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          AnimatedOpacity(
+            opacity: isEditMode ? 0 : 1,
+            duration: WidgetParams.animationDuration,
+            curve: WidgetParams.animationCurve,
+            child: IconButton(
+              icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
+              tooltip: 'Add new entry',
+              splashRadius: 20,
+              onPressed: isEditMode
+                  ? null
+                  : () => CustomBottomSheet(
+                        height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                        title: 'Add exercise day',
+                        child: TextEditorSingleLine(
+                          value: '',
+                          onSubmitted: (String text) {
+                            exerciseDaysService.create(trainingBlock: trainingBlock, name: text);
+
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ).show(context),
+            ),
+          ),
+          AnimatedOpacity(
+            opacity: isEditMode ? 0 : 1,
+            duration: WidgetParams.animationDuration,
+            curve: WidgetParams.animationCurve,
+            child: IconButton(
+              icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
+              tooltip: 'Turn on edit mode',
+              splashRadius: 20,
+              onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+            ),
+          ),
+          AnimatedCrossFade(
+            alignment: Alignment.center,
+            crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            duration: WidgetParams.animationDuration,
+            firstCurve: WidgetParams.animationCurve,
+            secondCurve: WidgetParams.animationCurve,
+            firstChild: ButtonDropdownMenu(
+              icon: Icons.more_vert,
+              animationDuration: WidgetParams.animationDuration,
+              animationCurve: WidgetParams.animationCurve,
+              items: [
+                ButtonDropdownMenuItem(
+                  onTap: compactModeSwitcher.toggle,
+                  child: RichText(
+                    softWrap: false,
+                    text: TextSpan(
+                      text: 'Compact mode',
+                      style: menuItemTheme,
+                      children: [
+                        WidgetSpan(
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 24.0),
+                            padding: const EdgeInsets.only(bottom: 1.0),
+                            child: Text(isCompactMode ? 'On' : 'Off', style: menuItemSubTextTheme),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            secondChild: IconButton(
+              icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
+              tooltip: 'Turn off edit mode',
+              splashRadius: 20,
+              onPressed: () => editModeSwitcher.toggle(),
+            ),
+          ),
+        ],
+      ),
+      const SliverPadding(padding: EdgeInsets.only(top: 24)),
       SliverList(
         delegate: SliverChildBuilderDelegate(
           childCount: trainingBlock.exerciseDays.length,

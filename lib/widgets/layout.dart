@@ -20,6 +20,7 @@ class Layout extends ConsumerStatefulWidget {
   final bool isAppBarVisible;
   final Function()? onGoBackButtonTap;
   final Widget? appBarTitle;
+  final EdgeInsets? padding;
 
   const Layout({
     super.key,
@@ -32,6 +33,7 @@ class Layout extends ConsumerStatefulWidget {
     this.isAppBarVisible = true,
     this.onGoBackButtonTap,
     this.appBarTitle,
+    this.padding = const EdgeInsets.only(top: spacingTop),
   });
 
   @override
@@ -62,7 +64,7 @@ class _LayoutState extends ConsumerState<Layout> {
             Icons.arrow_back,
             color: Theme.of(context).colorScheme.onSurface,
           ),
-          tooltip: 'Navigate to home screen',
+          tooltip: 'Navigate back',
           splashRadius: 20,
           onPressed: widget.onGoBackButtonTap,
         );
@@ -91,7 +93,7 @@ class _LayoutState extends ConsumerState<Layout> {
               body: SafeArea(
                 bottom: false,
                 child: Container(
-                  padding: const EdgeInsets.only(top: Layout.spacingTop),
+                  padding: widget.padding,
                   // TODO: replace with ListView.builder https://www.youtube.com/watch?v=YY-_yrZdjGc&t=6s
                   child: widget.isScrollable ? SingleChildScrollView(child: widget.child) : widget.child,
                 ),

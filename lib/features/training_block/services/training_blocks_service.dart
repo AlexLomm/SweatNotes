@@ -34,6 +34,12 @@ class TrainingBlocksService {
     trainingBlocksRepository.create(TrainingBlock(id: '', name: name));
   }
 
+  Future<void> updateName(TrainingBlockClient trainingBlock, String name) {
+    return trainingBlocksRepository.update(
+      trainingBlock.copyWith(name: name).toDbModel(),
+    );
+  }
+
   Future<void> moveExerciseDay({
     required TrainingBlockClient trainingBlock,
     required ExerciseDayClient exerciseDay,

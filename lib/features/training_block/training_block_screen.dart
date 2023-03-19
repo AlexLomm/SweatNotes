@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:journal_flutter/widgets/go_back_button.dart';
 
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
@@ -139,12 +140,7 @@ class Matrix extends ConsumerWidget {
         shadowColor: Colors.transparent,
         centerTitle: false,
         pinned: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
-          tooltip: 'Navigate back',
-          splashRadius: 20,
-          onPressed: () => context.go('/'),
-        ),
+        leading: GoBackButton(onPressed: () => context.go('/')),
         flexibleSpace: CustomFlexibleSpaceBar(
           centerTitle: false,
           title: AnimatedContainer(

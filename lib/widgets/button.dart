@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
-  final String label;
+  final String? label;
   final double borderRadius;
   final EdgeInsets padding;
   final Color? backgroundColor;
@@ -11,7 +11,7 @@ class Button extends StatelessWidget {
 
   const Button({
     Key? key,
-    required this.label,
+    this.label,
     this.borderRadius = 100,
     this.padding = const EdgeInsets.symmetric(vertical: 12),
     this.backgroundColor,
@@ -54,7 +54,7 @@ class Button extends StatelessWidget {
           },
         ),
       ),
-      child: child ?? Text(label, style: labelLarge?.copyWith(color: onPrimaryColor)),
+      child: child ?? Text(label ?? '', style: labelLarge?.copyWith(color: onPrimaryColor)),
     );
   }
 }

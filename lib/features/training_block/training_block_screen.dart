@@ -102,9 +102,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
           isScrollable: false,
           isAppBarVisible: false,
           padding: EdgeInsets.zero,
-          child: trainingBlock.exerciseDays.isEmpty
-              ? const Center(child: EmptyPagePlaceholder())
-              : Matrix(trainingBlock: trainingBlock),
+          child: Matrix(trainingBlock: trainingBlock),
         );
       },
     );
@@ -260,33 +258,35 @@ class Matrix extends ConsumerWidget {
           ),
         ],
       ),
-      const SliverPadding(padding: EdgeInsets.only(top: 24)),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          childCount: trainingBlock.exerciseDays.length,
-          (BuildContext context, int i) {
-            final exerciseDay = trainingBlock.exerciseDays[i];
+      if (trainingBlock.exerciseDays.isNotEmpty) const SliverPadding(padding: EdgeInsets.only(top: 24)),
+      trainingBlock.exerciseDays.isEmpty
+          ? const SliverToBoxAdapter(child: Center(child: EmptyPagePlaceholder()))
+          : SliverList(
+              delegate: SliverChildBuilderDelegate(
+                childCount: trainingBlock.exerciseDays.length,
+                (BuildContext context, int i) {
+                  final exerciseDay = trainingBlock.exerciseDays[i];
 
-            return Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: HorizontallyScrollableExercises(
-                    exerciseDay: exerciseDay,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: HorizontallyScrollableExerciseLabels(
-                    exerciseDay: exerciseDay,
-                    trainingBlock: trainingBlock,
-                  ),
-                )
-              ],
-            );
-          },
-        ),
-      ),
+                  return Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: HorizontallyScrollableExercises(
+                          exerciseDay: exerciseDay,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: HorizontallyScrollableExerciseLabels(
+                          exerciseDay: exerciseDay,
+                          trainingBlock: trainingBlock,
+                        ),
+                      )
+                    ],
+                  );
+                },
+              ),
+            ),
     ]);
   }
 }

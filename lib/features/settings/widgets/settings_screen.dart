@@ -11,6 +11,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
+      centerTitle: false,
       leading: GoBackButton(onPressed: () => context.pop()),
       appBarTitle: Text(
         'Settings',

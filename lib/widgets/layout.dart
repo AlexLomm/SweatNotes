@@ -21,6 +21,7 @@ class Layout extends ConsumerStatefulWidget {
   final Function()? onGoBackButtonTap;
   final Widget? appBarTitle;
   final EdgeInsets? padding;
+  final bool? centerTitle;
 
   const Layout({
     super.key,
@@ -34,6 +35,7 @@ class Layout extends ConsumerStatefulWidget {
     this.onGoBackButtonTap,
     this.appBarTitle,
     this.padding = const EdgeInsets.only(top: spacingTop),
+    this.centerTitle = true,
   });
 
   @override
@@ -83,7 +85,7 @@ class _LayoutState extends ConsumerState<Layout> {
                   ? AppBar(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
-                      centerTitle: true,
+                      centerTitle: widget.centerTitle,
                       title: widget.appBarTitle ?? SvgPicture.asset(height: 48, 'assets/logo.svg'),
                       leading: leadingOrGoBackButton,
                       actions: widget.actions,

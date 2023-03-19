@@ -17,13 +17,14 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ExerciseSetClient {
   ExerciseSet? get dbModel => throw _privateConstructorUsedError;
+  ExerciseSetClient? get previousPersonalRecord =>
+      throw _privateConstructorUsedError;
   int? get progressFactor => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError; // TODO: change to int
   String get reps =>
       throw _privateConstructorUsedError; // TODO: change to double
   String get load => throw _privateConstructorUsedError;
   bool get isFiller => throw _privateConstructorUsedError;
-  bool get isPersonalRecord => throw _privateConstructorUsedError;
   String get predictedReps => throw _privateConstructorUsedError;
   String get predictedLoad => throw _privateConstructorUsedError;
 
@@ -40,16 +41,17 @@ abstract class $ExerciseSetClientCopyWith<$Res> {
   @useResult
   $Res call(
       {ExerciseSet? dbModel,
+      ExerciseSetClient? previousPersonalRecord,
       int? progressFactor,
       String unit,
       String reps,
       String load,
       bool isFiller,
-      bool isPersonalRecord,
       String predictedReps,
       String predictedLoad});
 
   $ExerciseSetCopyWith<$Res>? get dbModel;
+  $ExerciseSetClientCopyWith<$Res>? get previousPersonalRecord;
 }
 
 /// @nodoc
@@ -66,12 +68,12 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
   @override
   $Res call({
     Object? dbModel = freezed,
+    Object? previousPersonalRecord = freezed,
     Object? progressFactor = freezed,
     Object? unit = null,
     Object? reps = null,
     Object? load = null,
     Object? isFiller = null,
-    Object? isPersonalRecord = null,
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
@@ -80,6 +82,10 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as ExerciseSet?,
+      previousPersonalRecord: freezed == previousPersonalRecord
+          ? _value.previousPersonalRecord
+          : previousPersonalRecord // ignore: cast_nullable_to_non_nullable
+              as ExerciseSetClient?,
       progressFactor: freezed == progressFactor
           ? _value.progressFactor
           : progressFactor // ignore: cast_nullable_to_non_nullable
@@ -99,10 +105,6 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
       isFiller: null == isFiller
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isPersonalRecord: null == isPersonalRecord
-          ? _value.isPersonalRecord
-          : isPersonalRecord // ignore: cast_nullable_to_non_nullable
               as bool,
       predictedReps: null == predictedReps
           ? _value.predictedReps
@@ -126,6 +128,19 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
       return _then(_value.copyWith(dbModel: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExerciseSetClientCopyWith<$Res>? get previousPersonalRecord {
+    if (_value.previousPersonalRecord == null) {
+      return null;
+    }
+
+    return $ExerciseSetClientCopyWith<$Res>(_value.previousPersonalRecord!,
+        (value) {
+      return _then(_value.copyWith(previousPersonalRecord: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -138,17 +153,19 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
   @useResult
   $Res call(
       {ExerciseSet? dbModel,
+      ExerciseSetClient? previousPersonalRecord,
       int? progressFactor,
       String unit,
       String reps,
       String load,
       bool isFiller,
-      bool isPersonalRecord,
       String predictedReps,
       String predictedLoad});
 
   @override
   $ExerciseSetCopyWith<$Res>? get dbModel;
+  @override
+  $ExerciseSetClientCopyWith<$Res>? get previousPersonalRecord;
 }
 
 /// @nodoc
@@ -163,12 +180,12 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? dbModel = freezed,
+    Object? previousPersonalRecord = freezed,
     Object? progressFactor = freezed,
     Object? unit = null,
     Object? reps = null,
     Object? load = null,
     Object? isFiller = null,
-    Object? isPersonalRecord = null,
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
@@ -177,6 +194,10 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as ExerciseSet?,
+      previousPersonalRecord: freezed == previousPersonalRecord
+          ? _value.previousPersonalRecord
+          : previousPersonalRecord // ignore: cast_nullable_to_non_nullable
+              as ExerciseSetClient?,
       progressFactor: freezed == progressFactor
           ? _value.progressFactor
           : progressFactor // ignore: cast_nullable_to_non_nullable
@@ -197,10 +218,6 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
               as bool,
-      isPersonalRecord: null == isPersonalRecord
-          ? _value.isPersonalRecord
-          : isPersonalRecord // ignore: cast_nullable_to_non_nullable
-              as bool,
       predictedReps: null == predictedReps
           ? _value.predictedReps
           : predictedReps // ignore: cast_nullable_to_non_nullable
@@ -219,18 +236,20 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
     with DiagnosticableTreeMixin {
   _$_ExerciseSetClient(
       {required this.dbModel,
+      required this.previousPersonalRecord,
       this.progressFactor,
       required this.unit,
       required this.reps,
       required this.load,
       required this.isFiller,
-      required this.isPersonalRecord,
       this.predictedReps = '0',
       this.predictedLoad = '0'})
       : super._();
 
   @override
   final ExerciseSet? dbModel;
+  @override
+  final ExerciseSetClient? previousPersonalRecord;
   @override
   final int? progressFactor;
   @override
@@ -244,8 +263,6 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   @override
   final bool isFiller;
   @override
-  final bool isPersonalRecord;
-  @override
   @JsonKey()
   final String predictedReps;
   @override
@@ -254,7 +271,7 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseSetClient(dbModel: $dbModel, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load, isFiller: $isFiller, isPersonalRecord: $isPersonalRecord, predictedReps: $predictedReps, predictedLoad: $predictedLoad)';
+    return 'ExerciseSetClient(dbModel: $dbModel, previousPersonalRecord: $previousPersonalRecord, progressFactor: $progressFactor, unit: $unit, reps: $reps, load: $load, isFiller: $isFiller, predictedReps: $predictedReps, predictedLoad: $predictedLoad)';
   }
 
   @override
@@ -263,12 +280,13 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseSetClient'))
       ..add(DiagnosticsProperty('dbModel', dbModel))
+      ..add(
+          DiagnosticsProperty('previousPersonalRecord', previousPersonalRecord))
       ..add(DiagnosticsProperty('progressFactor', progressFactor))
       ..add(DiagnosticsProperty('unit', unit))
       ..add(DiagnosticsProperty('reps', reps))
       ..add(DiagnosticsProperty('load', load))
       ..add(DiagnosticsProperty('isFiller', isFiller))
-      ..add(DiagnosticsProperty('isPersonalRecord', isPersonalRecord))
       ..add(DiagnosticsProperty('predictedReps', predictedReps))
       ..add(DiagnosticsProperty('predictedLoad', predictedLoad));
   }
@@ -284,18 +302,20 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
 abstract class _ExerciseSetClient extends ExerciseSetClient {
   factory _ExerciseSetClient(
       {required final ExerciseSet? dbModel,
+      required final ExerciseSetClient? previousPersonalRecord,
       final int? progressFactor,
       required final String unit,
       required final String reps,
       required final String load,
       required final bool isFiller,
-      required final bool isPersonalRecord,
       final String predictedReps,
       final String predictedLoad}) = _$_ExerciseSetClient;
   _ExerciseSetClient._() : super._();
 
   @override
   ExerciseSet? get dbModel;
+  @override
+  ExerciseSetClient? get previousPersonalRecord;
   @override
   int? get progressFactor;
   @override
@@ -306,8 +326,6 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   String get load;
   @override
   bool get isFiller;
-  @override
-  bool get isPersonalRecord;
   @override
   String get predictedReps;
   @override

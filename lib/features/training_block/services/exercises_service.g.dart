@@ -6,7 +6,7 @@ part of 'exercises_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$exercisesServiceHash() => r'958e1c694908473a2928b96472b169d06d4368f6';
+String _$exercisesServiceHash() => r'9c4aaf29ed10f20fc9ed962435689297d1f8d985';
 
 /// See also [exercisesService].
 @ProviderFor(exercisesService)
@@ -16,8 +16,8 @@ final exercisesServiceProvider = AutoDisposeProvider<ExercisesService>.internal(
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$exercisesServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[confettiControllerProvider],
+  allTransitiveDependencies: <ProviderOrFamily>[confettiControllerProvider],
 );
 
 typedef ExercisesServiceRef = AutoDisposeProviderRef<ExercisesService>;

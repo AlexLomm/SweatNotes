@@ -9,8 +9,11 @@ part 'exercise_set_client.freezed.dart';
 class ExerciseSetClient with _$ExerciseSetClient {
   ExerciseSetClient._();
 
+  bool get isPersonalRecord => (compareProgress(previousPersonalRecord) ?? 0) > 0;
+
   factory ExerciseSetClient({
     required ExerciseSet? dbModel,
+    required ExerciseSetClient? previousPersonalRecord,
     int? progressFactor,
     required String unit,
     // TODO: change to int
@@ -18,7 +21,6 @@ class ExerciseSetClient with _$ExerciseSetClient {
     // TODO: change to double
     required String load,
     required bool isFiller,
-    required bool isPersonalRecord,
     @Default('0') String predictedReps,
     @Default('0') String predictedLoad,
   }) = _ExerciseSetClient;
@@ -26,9 +28,9 @@ class ExerciseSetClient with _$ExerciseSetClient {
   factory ExerciseSetClient.empty() {
     return ExerciseSetClient(
       dbModel: null,
+      previousPersonalRecord: null,
       progressFactor: null,
       isFiller: true,
-      isPersonalRecord: false,
       unit: '',
       reps: '',
       load: '',

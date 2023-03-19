@@ -56,7 +56,10 @@ Stream<TrainingBlockClient?> trainingBlockDetailsStream(
   }
 }
 
-TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<ExerciseType> exerciseTypes) {
+TrainingBlockClient? _getNormalizedData(
+  TrainingBlock? trainingBlock,
+  List<ExerciseType> exerciseTypes,
+) {
   if (trainingBlock == null) {
     return null;
   }
@@ -85,8 +88,8 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
               ...exercise.sets.map(
                 (exerciseSet) => ExerciseSetClient(
                   dbModel: exerciseSet,
+                  previousPersonalRecord: null,
                   isFiller: false,
-                  isPersonalRecord: false,
                   unit: exerciseType.unit,
                   load: exerciseSet.load,
                   reps: exerciseSet.reps,
@@ -134,25 +137,24 @@ TrainingBlockClient? _getNormalizedData(TrainingBlock? trainingBlock, List<Exerc
       for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
         final prExerciseSet = personalRecords[j];
         final nearestExerciseSet = nearestPopulatedExerciseSets[j];
-        final currentExerciseSet = exerciseType.exercises[i].sets[j];
-
-        if (currentExerciseSet.isFiller) continue;
-
-        if (currentExerciseSet.reps.isEmpty || currentExerciseSet.load.isEmpty) continue;
-
-        final progressFactorAgainstPr = currentExerciseSet.compareProgress(prExerciseSet) ?? 0;
-        final progressFactorAgainstNearest = currentExerciseSet.compareProgress(nearestExerciseSet);
-
-        final isPersonalRecord = progressFactorAgainstPr > 0;
-
-        exerciseType.exercises[i].sets[j] = exerciseType.exercises[i].sets[j].copyWith(
-          isPersonalRecord: isPersonalRecord,
-          progressFactor: progressFactorAgainstNearest,
+        final currentExerciseSetWithPreviousPr = exerciseType.exercises[i].sets[j].copyWith(
+          previousPersonalRecord: prExerciseSet,
         );
 
-        if (isPersonalRecord) personalRecords[j] = currentExerciseSet;
+        if (currentExerciseSetWithPreviousPr.isFiller) continue;
 
-        nearestPopulatedExerciseSets[j] = currentExerciseSet;
+        if (currentExerciseSetWithPreviousPr.reps.isEmpty || currentExerciseSetWithPreviousPr.load.isEmpty) continue;
+
+        final progressAgainstNearest = currentExerciseSetWithPreviousPr.compareProgress(nearestExerciseSet);
+
+        exerciseType.exercises[i].sets[j] = currentExerciseSetWithPreviousPr.copyWith(
+          previousPersonalRecord: personalRecords[j],
+          progressFactor: progressAgainstNearest,
+        );
+
+        nearestPopulatedExerciseSets[j] = currentExerciseSetWithPreviousPr;
+
+        if (currentExerciseSetWithPreviousPr.isPersonalRecord) personalRecords[j] = currentExerciseSetWithPreviousPr;
       }
     }
 

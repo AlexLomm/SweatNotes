@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../data/models_client/exercise_client.dart';
 import '../data/models_client/exercise_type_client.dart';
 import '../services/exercises_service.dart';
-import '../data/models_client/exercise_client.dart';
-import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../widget_params.dart';
-import 'exercise_set_widget.dart';
 import 'exercise_set_editor/exercise_set_editor.dart';
+import 'exercise_set_widget.dart';
 
 class ExerciseWidget extends ConsumerWidget {
   final ExerciseTypeClient exerciseType;
@@ -39,16 +39,16 @@ class ExerciseWidget extends ConsumerWidget {
         children: exercise.sets.asMap().entries.map((entry) {
           final set = entry.value;
 
-          final repsNum = set.reps.isEmpty ? int.parse(set.predictedReps) : int.parse(set.reps);
-          final loadNum = set.load.isEmpty ? double.parse(set.predictedLoad) : double.parse(set.load);
+          final repsInitial = set.reps.isEmpty ? int.parse(set.predictedReps) : int.parse(set.reps);
+          final loadInitial = set.load.isEmpty ? double.parse(set.predictedLoad) : double.parse(set.load);
 
           return ExerciseSetWidget(
             key: UniqueKey(),
             onTap: () => CustomBottomSheet(
               title: 'Edit exercise set',
               child: ExerciseSetEditor(
-                reps: repsNum,
-                load: loadNum,
+                reps: repsInitial,
+                load: loadInitial,
                 onChange: ({required reps, required load}) {
                   exercisesService.setExerciseSet(
                     exerciseType: exerciseType,

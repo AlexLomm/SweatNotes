@@ -168,9 +168,6 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
                 animationCurve: WidgetParams.animationCurve,
                 items: [
                   ButtonDropdownMenuItem(
-                    child: Text('View archived items', style: menuItemTheme),
-                  ),
-                  ButtonDropdownMenuItem(
                     onTap: compactModeSwitcher.toggle,
                     child: RichText(
                       softWrap: false,

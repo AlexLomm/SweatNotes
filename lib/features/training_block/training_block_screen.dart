@@ -272,6 +272,10 @@ class Matrix extends ConsumerWidget {
                   final exerciseDay = trainingBlock.exerciseDays[i];
 
                   return Stack(
+                    // this key is needed in order for the archival of the exercise
+                    // days to work properly and for the list not to become "confused"
+                    // by its items being removed
+                    key: ValueKey(exerciseDay.hashCode),
                     children: [
                       Align(
                         alignment: Alignment.topLeft,

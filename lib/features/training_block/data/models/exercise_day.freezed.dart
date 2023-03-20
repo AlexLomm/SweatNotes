@@ -20,6 +20,7 @@ ExerciseDay _$ExerciseDayFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExerciseDay {
+  String get pseudoId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
@@ -39,7 +40,8 @@ abstract class $ExerciseDayCopyWith<$Res> {
       _$ExerciseDayCopyWithImpl<$Res, ExerciseDay>;
   @useResult
   $Res call(
-      {String name,
+      {String pseudoId,
+      String name,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       Map<String, int> exerciseTypesOrdering});
@@ -58,11 +60,16 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? pseudoId = null,
     Object? name = null,
     Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
     return _then(_value.copyWith(
+      pseudoId: null == pseudoId
+          ? _value.pseudoId
+          : pseudoId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -88,7 +95,8 @@ abstract class _$$_ExerciseDayCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name,
+      {String pseudoId,
+      String name,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       Map<String, int> exerciseTypesOrdering});
@@ -105,11 +113,16 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? pseudoId = null,
     Object? name = null,
     Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
     return _then(_$_ExerciseDay(
+      pseudoId: null == pseudoId
+          ? _value.pseudoId
+          : pseudoId // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -130,7 +143,8 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
   const _$_ExerciseDay(
-      {required this.name,
+      {required this.pseudoId,
+      required this.name,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           this.archivedAt,
       final Map<String, int> exerciseTypesOrdering = const {}})
@@ -140,6 +154,8 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
   factory _$_ExerciseDay.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseDayFromJson(json);
 
+  @override
+  final String pseudoId;
   @override
   final String name;
   @override
@@ -157,7 +173,7 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDay(name: $name, archivedAt: $archivedAt, exerciseTypesOrdering: $exerciseTypesOrdering)';
+    return 'ExerciseDay(pseudoId: $pseudoId, name: $name, archivedAt: $archivedAt, exerciseTypesOrdering: $exerciseTypesOrdering)';
   }
 
   @override
@@ -165,6 +181,7 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDay'))
+      ..add(DiagnosticsProperty('pseudoId', pseudoId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(
@@ -187,7 +204,8 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
 
 abstract class _ExerciseDay extends ExerciseDay {
   const factory _ExerciseDay(
-      {required final String name,
+      {required final String pseudoId,
+      required final String name,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           final Timestamp? archivedAt,
       final Map<String, int> exerciseTypesOrdering}) = _$_ExerciseDay;
@@ -196,6 +214,8 @@ abstract class _ExerciseDay extends ExerciseDay {
   factory _ExerciseDay.fromJson(Map<String, dynamic> json) =
       _$_ExerciseDay.fromJson;
 
+  @override
+  String get pseudoId;
   @override
   String get name;
   @override

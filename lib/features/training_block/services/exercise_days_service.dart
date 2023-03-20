@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
-import 'package:journal_flutter/features/training_block/data/training_blocks_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../firebase.dart';
 import '../data/models_client/exercise_day_client.dart';
+import '../data/models_client/training_block_client.dart';
+import '../data/training_blocks_repository.dart';
 
 part 'exercise_days_service.g.dart';
 
@@ -42,10 +42,9 @@ class ExerciseDaysService {
     required TrainingBlockClient trainingBlock,
     required String name,
   }) async {
-    final updatedTrainingBlock = trainingBlock.addExerciseDay(ExerciseDayClient(
-      name: name,
-      exerciseTypes: [],
-    ));
+    final updatedTrainingBlock = trainingBlock.addExerciseDay(
+      ExerciseDayClient.empty().copyWith(name: name),
+    );
 
     return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }

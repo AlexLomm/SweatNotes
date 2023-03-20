@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../utils/generate_hash.dart';
 import '../models/exercise_day.dart';
 import 'exercise_type_client.dart';
 
@@ -17,23 +18,29 @@ class ExerciseDayClient with _$ExerciseDayClient {
       .map((key, value) => MapEntry(value.dbModel.id, key));
 
   const factory ExerciseDayClient({
-    ExerciseDay? dbModel,
+    required ExerciseDay dbModel,
     Timestamp? archivedAt,
     required String name,
     required List<ExerciseTypeClient> exerciseTypes,
   }) = _ExerciseDayClient;
 
+  factory ExerciseDayClient.empty() {
+    final dbModel = ExerciseDay(
+      pseudoId: generateHash(),
+      name: '',
+      archivedAt: null,
+      exerciseTypesOrdering: {},
+    );
+
+    return ExerciseDayClient(
+      dbModel: dbModel,
+      name: dbModel.name,
+      archivedAt: dbModel.archivedAt,
+      exerciseTypes: [],
+    );
+  }
+
   ExerciseDay toDbModel() {
-    final dbModel = this.dbModel;
-
-    if (dbModel == null) {
-      return ExerciseDay(
-        name: name,
-        archivedAt: archivedAt,
-        exerciseTypesOrdering: _exerciseTypesNewOrdering,
-      );
-    }
-
     return dbModel.copyWith(
       name: name,
       archivedAt: archivedAt,

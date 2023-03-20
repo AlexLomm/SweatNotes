@@ -20,10 +20,15 @@ class TrainingBlockClient with _$TrainingBlockClient {
   }) = _TrainingBlockClient;
 
   TrainingBlock toDbModel() {
+    // toDbModel is generating a new pseudoId for each exercise day so it's
+    // crucial for these same pseudoIds to be used in the `exerciseDaysOrdering` map
+    final exerciseDayDbModels = exerciseDays.map<ExerciseDay>((e) => e.toDbModel()).toList();
+
     return dbModel.copyWith(
       name: name,
       archivedAt: archivedAt,
-      exerciseDays: exerciseDays.map<ExerciseDay>((e) => e.toDbModel()).toList(),
+      exerciseDays: exerciseDayDbModels,
+      exerciseDaysOrdering: exerciseDayDbModels.asMap().map((key, value) => MapEntry(value.pseudoId, key)),
     );
   }
 
@@ -48,7 +53,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
     required ExerciseDayClient exerciseDay,
     required int moveBy,
   }) {
-    final oldIndex = exerciseDays.indexWhere((e) => e == exerciseDay);
+    final oldIndex = indexOfExerciseDayByPseudoId(exerciseDay.dbModel.pseudoId);
 
     if (oldIndex == -1) throw Exception('Exercise day not found');
 
@@ -65,8 +70,8 @@ class TrainingBlockClient with _$TrainingBlockClient {
     return copyWith(exerciseDays: newList);
   }
 
-  int indexOfExerciseDay(ExerciseDayClient exerciseDayClient) {
-    final index = exerciseDays.indexWhere((e) => e == exerciseDayClient);
+  int indexOfExerciseDayByPseudoId(String pseudoId) {
+    final index = exerciseDays.indexWhere((e) => e.dbModel.pseudoId == pseudoId);
 
     if (index == -1) throw Exception('Exercise day not found');
 
@@ -74,7 +79,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
   }
 
   TrainingBlockClient archiveExerciseDay(ExerciseDayClient exerciseDayClient, bool archive) {
-    final index = indexOfExerciseDay(exerciseDayClient);
+    final index = indexOfExerciseDayByPseudoId(exerciseDayClient.dbModel.pseudoId);
 
     final exerciseDaysUpdated = [...exerciseDays];
 

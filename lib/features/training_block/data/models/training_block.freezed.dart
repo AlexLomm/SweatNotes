@@ -24,6 +24,8 @@ mixin _$TrainingBlock {
   String get id => throw _privateConstructorUsedError;
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
+  Map<String, int> get exerciseDaysOrdering =>
+      throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseDay> get exerciseDays => throw _privateConstructorUsedError;
 
@@ -44,6 +46,7 @@ abstract class $TrainingBlockCopyWith<$Res> {
           String id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
+      Map<String, int> exerciseDaysOrdering,
       String name,
       List<ExerciseDay> exerciseDays});
 }
@@ -63,6 +66,7 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
   $Res call({
     Object? id = null,
     Object? archivedAt = freezed,
+    Object? exerciseDaysOrdering = null,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
@@ -75,6 +79,10 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
               as Timestamp?,
+      exerciseDaysOrdering: null == exerciseDaysOrdering
+          ? _value.exerciseDaysOrdering
+          : exerciseDaysOrdering // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -100,6 +108,7 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
           String id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
+      Map<String, int> exerciseDaysOrdering,
       String name,
       List<ExerciseDay> exerciseDays});
 }
@@ -117,6 +126,7 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? archivedAt = freezed,
+    Object? exerciseDaysOrdering = null,
     Object? name = null,
     Object? exerciseDays = null,
   }) {
@@ -129,6 +139,10 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
               as Timestamp?,
+      exerciseDaysOrdering: null == exerciseDaysOrdering
+          ? _value._exerciseDaysOrdering
+          : exerciseDaysOrdering // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -149,9 +163,11 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
           required this.id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           this.archivedAt,
+      final Map<String, int> exerciseDaysOrdering = const {},
       required this.name,
       final List<ExerciseDay> exerciseDays = const []})
-      : _exerciseDays = exerciseDays;
+      : _exerciseDaysOrdering = exerciseDaysOrdering,
+        _exerciseDays = exerciseDays;
 
   factory _$_TrainingBlock.fromJson(Map<String, dynamic> json) =>
       _$$_TrainingBlockFromJson(json);
@@ -162,6 +178,16 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   @override
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   final Timestamp? archivedAt;
+  final Map<String, int> _exerciseDaysOrdering;
+  @override
+  @JsonKey()
+  Map<String, int> get exerciseDaysOrdering {
+    if (_exerciseDaysOrdering is EqualUnmodifiableMapView)
+      return _exerciseDaysOrdering;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_exerciseDaysOrdering);
+  }
+
   @override
   final String name;
   final List<ExerciseDay> _exerciseDays;
@@ -175,7 +201,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlock(id: $id, archivedAt: $archivedAt, name: $name, exerciseDays: $exerciseDays)';
+    return 'TrainingBlock(id: $id, archivedAt: $archivedAt, exerciseDaysOrdering: $exerciseDaysOrdering, name: $name, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -185,6 +211,7 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
       ..add(DiagnosticsProperty('type', 'TrainingBlock'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('archivedAt', archivedAt))
+      ..add(DiagnosticsProperty('exerciseDaysOrdering', exerciseDaysOrdering))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
@@ -209,6 +236,7 @@ abstract class _TrainingBlock implements TrainingBlock {
           required final String id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           final Timestamp? archivedAt,
+      final Map<String, int> exerciseDaysOrdering,
       required final String name,
       final List<ExerciseDay> exerciseDays}) = _$_TrainingBlock;
 
@@ -221,6 +249,8 @@ abstract class _TrainingBlock implements TrainingBlock {
   @override
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt;
+  @override
+  Map<String, int> get exerciseDaysOrdering;
   @override
   String get name;
   @override

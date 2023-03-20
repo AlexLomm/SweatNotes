@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:rxdart/rxdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../data/exercise_types_repository.dart';
 import '../data/models/exercise_type.dart';
@@ -79,6 +79,7 @@ TrainingBlockClient? _getNormalizedData(
       dbModel: exerciseType,
       name: exerciseType.name,
       unit: exerciseType.unit,
+      archivedAt: exerciseType.archivedAt,
       exercises: [
         ...exerciseType.exercises.map(
           (exercise) => ExerciseClient(
@@ -219,6 +220,7 @@ TrainingBlockClient? _getNormalizedData(
 
   final trainingBlockClient = TrainingBlockClient(
     dbModel: trainingBlock,
+    archivedAt: trainingBlock.archivedAt,
     name: trainingBlock.name,
     exerciseDays: trainingBlock.exerciseDays
         .where((exerciseDay) => exerciseDay.isNotArchived)
@@ -226,6 +228,7 @@ TrainingBlockClient? _getNormalizedData(
           (exerciseDay) => ExerciseDayClient(
             dbModel: exerciseDay,
             name: exerciseDay.name,
+            archivedAt: exerciseDay.archivedAt,
             exerciseTypes: exerciseTypesClient
                 .where((exerciseType) => exerciseDay.exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
                 .toList()
@@ -237,7 +240,13 @@ TrainingBlockClient? _getNormalizedData(
               }),
           ),
         )
-        .toList(),
+        .toList()
+      ..sort((a, b) {
+        final orderingA = trainingBlock.exerciseDaysOrdering[a.dbModel.pseudoId] ?? double.maxFinite;
+        final orderingB = trainingBlock.exerciseDaysOrdering[b.dbModel.pseudoId] ?? double.maxFinite;
+
+        return orderingA.compareTo(orderingB);
+      }),
   );
 
   return trainingBlockClient;

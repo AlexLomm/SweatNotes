@@ -31,7 +31,7 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
     final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay);
+    final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDayByPseudoId(widget.exerciseDay.dbModel.pseudoId);
     final isFirst = indexOfExerciseDay == 0;
     final isLast = indexOfExerciseDay == widget.trainingBlock.exerciseDays.length - 1;
 
@@ -52,7 +52,6 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
             AnimatedOpacity(
               duration: WidgetParams.animationDuration,
               curve: WidgetParams.animationCurve,
-              // TODO: ??
               opacity: isEditMode ? 1.0 : 0.0,
               child: AnimatedContainer(
                 duration: WidgetParams.animationDuration,

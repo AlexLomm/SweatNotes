@@ -73,7 +73,7 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                   Align(
                     alignment: Alignment.topLeft,
                     child: _Background(
-                      id: '${widget.exerciseDay.hashCode}',
+                      id: widget.exerciseDay.dbModel.pseudoId,
                       width: widgetParams.exerciseLabelsListWidth,
                       height: heightWithoutButton,
                       borderRadius: widgetParams.borderRadius,
@@ -85,6 +85,7 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                           archive: true,
                         );
 
+                        messenger?.clearSnackBars();
                         messenger?.showSnackBar(
                           SnackBar(
                             content: Text('Exercise day "${widget.exerciseDay.name}" archived'),
@@ -122,7 +123,6 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: AnimatedOpacity(
-                      // TODO: extract?
                       opacity: isEditMode ? 0.0 : 1.0,
                       duration: WidgetParams.animationDuration,
                       curve: WidgetParams.animationCurve,

@@ -18,6 +18,7 @@ class ExerciseDay with _$ExerciseDay {
   const ExerciseDay._();
 
   const factory ExerciseDay({
+    required String pseudoId,
     required String name,
     @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? archivedAt,
     @Default({}) Map<String, int> exerciseTypesOrdering,

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../settings/edit_mode_switcher.dart';
-import '../../widget_params.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
+import '../../widget_params.dart';
 import '../exercise_type_widget.dart';
 
 class ExerciseTypesList extends ConsumerStatefulWidget {
@@ -65,7 +64,9 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
         child: ReorderableListView(
           physics: const NeverScrollableScrollPhysics(),
           onReorder: (int fromIndex, int toIndex) async {
-            final exerciseDayIndex = widget.trainingBlock.indexOfExerciseDay(widget.exerciseDay);
+            final exerciseDayIndex = widget.trainingBlock.indexOfExerciseDayByPseudoId(
+              widget.exerciseDay.dbModel.pseudoId,
+            );
 
             final exerciseTypesCount = _exerciseDayClientCached.exerciseTypes.length;
 

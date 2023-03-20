@@ -8,6 +8,7 @@ part of 'exercise_day.dart';
 
 _$_ExerciseDay _$$_ExerciseDayFromJson(Map<String, dynamic> json) =>
     _$_ExerciseDay(
+      pseudoId: json['pseudoId'] as String,
       name: json['name'] as String,
       archivedAt: timestampFromJson(json['archivedAt'] as int?),
       exerciseTypesOrdering:
@@ -19,6 +20,7 @@ _$_ExerciseDay _$$_ExerciseDayFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_ExerciseDayToJson(_$_ExerciseDay instance) =>
     <String, dynamic>{
+      'pseudoId': instance.pseudoId,
       'name': instance.name,
       'archivedAt': timestampToJson(instance.archivedAt),
       'exerciseTypesOrdering': instance.exerciseTypesOrdering,

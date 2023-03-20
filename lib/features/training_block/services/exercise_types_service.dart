@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
-import 'package:journal_flutter/features/training_block/data/training_blocks_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../firebase.dart';
 import '../data/exercise_types_repository.dart';
 import '../data/models/exercise_type.dart';
+import '../data/models_client/exercise_day_client.dart';
 import '../data/models_client/exercise_type_client.dart';
+import '../data/models_client/training_block_client.dart';
+import '../data/training_blocks_repository.dart';
 
 part 'exercise_types_service.g.dart';
 
@@ -41,7 +41,7 @@ class ExerciseTypesService {
   }) async {
     final batch = firestore.batch();
 
-    final exerciseDayIndex = trainingBlock.indexOfExerciseDay(exerciseDay);
+    final exerciseDayIndex = trainingBlock.indexOfExerciseDayByPseudoId(exerciseDay.dbModel.pseudoId);
 
     final newExerciseTypeRef = exerciseTypesRepository.collectionRef.doc();
     final trainingBlockRef = trainingBlocksRepository.getDocumentRefById(trainingBlock.dbModel.id);

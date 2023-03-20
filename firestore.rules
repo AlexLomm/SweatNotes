@@ -22,8 +22,9 @@ service cloud.firestore {
 
       match /training-blocks/{trainingBlockId} {
         function isCorrectSchema() {
-          return onlyHasAttrs(request.resource.data, ['name', 'exerciseDays', 'archivedAt'])
+          return onlyHasAttrs(request.resource.data, ['name', 'exerciseDays', 'archivedAt', 'exerciseDaysOrdering'])
               && incoming().name is string
+              && incoming().exerciseDaysOrdering is map
               && incoming().exerciseDays is list
               && incoming().archivedAt is number || incoming().archivedAt == null;
         }

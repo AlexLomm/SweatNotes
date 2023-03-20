@@ -5,6 +5,7 @@ class Button extends StatelessWidget {
   final double borderRadius;
   final EdgeInsets padding;
   final Color? backgroundColor;
+  final Color? foregroundColor;
   final Widget? child;
   final bool isLoading;
   final void Function()? onPressed;
@@ -15,6 +16,7 @@ class Button extends StatelessWidget {
     this.borderRadius = 100,
     this.padding = const EdgeInsets.symmetric(vertical: 12),
     this.backgroundColor,
+    this.foregroundColor,
     this.child,
     this.onPressed,
     this.isLoading = false,
@@ -29,32 +31,14 @@ class Button extends StatelessWidget {
 
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
-      style: ButtonStyle(
-        iconColor: MaterialStateProperty.resolveWith((_) => onPrimaryColor),
-        shape: MaterialStateProperty.resolveWith(
-          (_) => RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-          ),
-        ),
-        padding: MaterialStateProperty.resolveWith(
-          (_) => padding,
-        ),
-        textStyle: MaterialStateProperty.resolveWith(
-          (_) => labelLarge?.copyWith(color: onPrimaryColor),
-        ),
-        backgroundColor: MaterialStateProperty.resolveWith(
-          (state) {
-            final color = backgroundColor ?? primaryColor;
-
-            if (state.contains(MaterialState.disabled)) {
-              return color.withOpacity(0.32);
-            }
-
-            return color;
-          },
-        ),
+      style: ElevatedButton.styleFrom(
+        padding: padding,
+        foregroundColor: foregroundColor ?? onPrimaryColor,
+        backgroundColor: backgroundColor ?? primaryColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
+        textStyle: labelLarge?.copyWith(color: onPrimaryColor),
       ),
-      child: child ?? Text(label ?? '', style: labelLarge?.copyWith(color: onPrimaryColor)),
+      child: child ?? Text(label ?? ''),
     );
   }
 }

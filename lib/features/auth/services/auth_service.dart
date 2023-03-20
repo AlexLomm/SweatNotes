@@ -87,6 +87,21 @@ class AuthService {
     }
   }
 
+  Future<void> updateDisplayName(String displayName) async {
+    try {
+      await authRepository.updateDisplayName(displayName);
+
+      goRouter.go('/settings');
+
+      messenger?.clearSnackBars();
+      messenger?.showSnackBar(const SnackBar(content: Text('Display name updated successfully!')));
+    } on FirebaseAuthException catch (e) {
+      _showError(e.message);
+    } catch (e) {
+      _showError(e.toString());
+    }
+  }
+
   void _showError(String? error) {
     error ??= _defaultErrorMessage;
 

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/features/auth/password_field.dart';
 import 'package:journal_flutter/features/auth/regular_text_field.dart';
+import 'package:journal_flutter/widgets/display_name_field.dart';
 
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
@@ -50,11 +51,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 24.0),
-            RegularTextField(
-              controller: _displayNameController,
-              labelText: 'Display name',
-              hintText: 'Enter your display name',
-            ),
+            DisplayNameField(controller: _displayNameController),
             const SizedBox(height: 24.0),
             RegularTextField(
               controller: _emailController,

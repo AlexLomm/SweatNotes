@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "587872278204",
-    "project_id": "journal-j-dev",
-    "storage_bucket": "journal-j-dev.appspot.com"
+    "project_number": "428214340562",
+    "project_id": "journal-j-prod",
+    "storage_bucket": "journal-j-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:587872278204:android:8cb62b22525682075362b9",
+        "mobilesdk_app_id": "1:428214340562:android:fc1c17a28e268ccc49560b",
         "android_client_info": {
           "package_name": "com.example.journal_flutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "587872278204-6ptqmcs7pc8mdhn5t7esstliirb4mtqf.apps.googleusercontent.com",
+          "client_id": "428214340562-2cjhlev91m8mh1e6i9mhuinnfjq7rvjl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBWHR-BX_N6Mkqr9x3TP0PHV2w6RLZNdEg"
+          "current_key": "AIzaSyDuB1gytdWHb22jv6M5GRGWwVwA6nwN06s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "587872278204-6ptqmcs7pc8mdhn5t7esstliirb4mtqf.apps.googleusercontent.com",
+              "client_id": "428214340562-2cjhlev91m8mh1e6i9mhuinnfjq7rvjl.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "587872278204-8jqcrtd1ifuha5nhcstmsa1bifkj44c8.apps.googleusercontent.com",
+              "client_id": "428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.journalFlutter"

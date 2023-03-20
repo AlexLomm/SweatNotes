@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBWHR-BX_N6Mkqr9x3TP0PHV2w6RLZNdEg',
-    appId: '1:587872278204:android:8cb62b22525682075362b9',
-    messagingSenderId: '587872278204',
-    projectId: 'journal-j-dev',
-    storageBucket: 'journal-j-dev.appspot.com',
+    apiKey: 'AIzaSyDuB1gytdWHb22jv6M5GRGWwVwA6nwN06s',
+    appId: '1:428214340562:android:fc1c17a28e268ccc49560b',
+    messagingSenderId: '428214340562',
+    projectId: 'journal-j-prod',
+    storageBucket: 'journal-j-prod.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDh1Sa-eGmBGTeTuD9lda6nXp1VQ0r1erA',
-    appId: '1:587872278204:ios:12d73e966d40694a5362b9',
-    messagingSenderId: '587872278204',
-    projectId: 'journal-j-dev',
-    storageBucket: 'journal-j-dev.appspot.com',
-    iosClientId: '587872278204-8jqcrtd1ifuha5nhcstmsa1bifkj44c8.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAaRFz49VdYMvsQ_GXXhJkeVTr5EPqMlu0',
+    appId: '1:428214340562:ios:4bc7c0e62289ac9e49560b',
+    messagingSenderId: '428214340562',
+    projectId: 'journal-j-prod',
+    storageBucket: 'journal-j-prod.appspot.com',
+    iosClientId: '428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj.apps.googleusercontent.com',
     iosBundleId: 'com.example.journalFlutter',
   );
 }

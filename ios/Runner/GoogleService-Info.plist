@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>587872278204-8jqcrtd1ifuha5nhcstmsa1bifkj44c8.apps.googleusercontent.com</string>
+	<string>428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.587872278204-8jqcrtd1ifuha5nhcstmsa1bifkj44c8</string>
+	<string>com.googleusercontent.apps.428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDh1Sa-eGmBGTeTuD9lda6nXp1VQ0r1erA</string>
+	<string>AIzaSyAaRFz49VdYMvsQ_GXXhJkeVTr5EPqMlu0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>587872278204</string>
+	<string>428214340562</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.journalFlutter</string>
 	<key>PROJECT_ID</key>
-	<string>journal-j-dev</string>
+	<string>journal-j-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>journal-j-dev.appspot.com</string>
+	<string>journal-j-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:587872278204:ios:12d73e966d40694a5362b9</string>
+	<string>1:428214340562:ios:4bc7c0e62289ac9e49560b</string>
 </dict>
 </plist>

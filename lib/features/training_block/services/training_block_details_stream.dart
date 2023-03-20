@@ -165,7 +165,6 @@ TrainingBlockClient? _getNormalizedData(
     return exerciseType;
   }).map((exerciseType) {
     final exerciseSetsPerExerciseCount = exerciseType.exercises[0].sets.length;
-    var nearestPopulatedExerciseSets = [...exerciseType.exercises[0].sets];
 
     ///       get prediction from
     ///         ┌─────────────┐
@@ -194,24 +193,22 @@ TrainingBlockClient? _getNormalizedData(
     ///   └───┴───┴───┘ └───┴───┴───┘
     for (var i = 0; i < exerciseType.exercises.length; i++) {
       for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
-        final nearestExerciseSet = nearestPopulatedExerciseSets[j];
         final currentExerciseSet = exerciseType.exercises[i].sets[j];
-        final neighboringExerciseSet = j > 0 ? exerciseType.exercises[i].sets[j - 1] : null;
+        final neighboringExerciseSet = i > 0 ? exerciseType.exercises[i - 1].sets[j] : null;
+        final neighborSet = j > 0 ? exerciseType.exercises[i].sets[j - 1] : null;
 
-        exerciseType.exercises[i].sets[j] = exerciseType.exercises[i].sets[j].copyWith(
+        exerciseType.exercises[i].sets[j] = currentExerciseSet.copyWith(
           predictedReps: [
-            nearestExerciseSet.reps,
             currentExerciseSet.reps,
             neighboringExerciseSet?.predictedReps ?? 0,
+            neighborSet?.predictedReps ?? 0,
           ].firstWhere((element) => element != 0, orElse: () => 0),
           predictedLoad: [
-            nearestExerciseSet.load,
             currentExerciseSet.load,
             neighboringExerciseSet?.predictedLoad ?? 0,
+            neighborSet?.predictedLoad ?? 0,
           ].firstWhere((element) => element != 0, orElse: () => 0),
         );
-
-        nearestPopulatedExerciseSets[j] = currentExerciseSet;
       }
     }
 

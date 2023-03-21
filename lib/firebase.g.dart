@@ -34,4 +34,18 @@ final firestoreProvider = AutoDisposeProvider<FirebaseFirestore>.internal(
 );
 
 typedef FirestoreRef = AutoDisposeProviderRef<FirebaseFirestore>;
+String _$crashlyticsHash() => r'6fe9a0320818fb0a4614dc89a47b853216426d9d';
+
+/// See also [crashlytics].
+@ProviderFor(crashlytics)
+final crashlyticsProvider = AutoDisposeProvider<FirebaseCrashlytics>.internal(
+  crashlytics,
+  name: r'crashlyticsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$crashlyticsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CrashlyticsRef = AutoDisposeProviderRef<FirebaseCrashlytics>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

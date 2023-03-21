@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase.g.dart';
@@ -12,4 +13,9 @@ FirebaseAuth firebaseAuth(FirebaseAuthRef ref) {
 @riverpod
 FirebaseFirestore firestore(FirestoreRef ref) {
   return FirebaseFirestore.instance;
+}
+
+@riverpod
+FirebaseCrashlytics crashlytics(CrashlyticsRef ref) {
+  return FirebaseCrashlytics.instance;
 }

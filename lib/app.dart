@@ -20,15 +20,21 @@ class App extends ConsumerWidget {
     final goRouter = ref.watch(goRouterProvider);
     final theme = ref.watch(themeProvider);
     final crashlytics = ref.watch(crashlyticsProvider);
+    final analytics = ref.watch(analyticsProvider);
 
-    if (kCrashlyticsEnabled) {
-      ref.listen(
-        userProvider,
-        (_, user) => user.whenData((value) async {
-          if (value == null) await crashlytics.setUserIdentifier(value!.uid);
-        }),
-      );
-    }
+    ref.listen(
+      userProvider,
+      (_, user) => user.whenData((value) async {
+        if (value == null) await crashlytics.setUserIdentifier(value!.uid);
+      }),
+    );
+
+    ref.listen(
+      userProvider,
+      (_, user) => user.whenData((value) async {
+        if (value == null) await analytics.setUserId(id: value!.uid);
+      }),
+    );
 
     return MaterialApp.router(
       scaffoldMessengerKey: _snackBarKey,

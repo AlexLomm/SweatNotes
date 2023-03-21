@@ -1,6 +1,7 @@
 import 'dart:isolate';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -16,6 +17,7 @@ import 'env.dart';
 import 'firebase_options.dart';
 
 const kCrashlyticsEnabled = kReleaseMode;
+const kAnalyticsEnabled = kReleaseMode;
 const kFirebaseEmulatorsEnabled = kDebugMode || kProfileMode;
 
 Future<void> main() async {
@@ -24,28 +26,27 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kCrashlyticsEnabled);
+  FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kAnalyticsEnabled);
 
-  if (kCrashlyticsEnabled) {
-    // catch errors that happen outside of the Flutter context
-    Isolate.current.addErrorListener(RawReceivePort((pair) async {
-      final List<dynamic> errorAndStacktrace = pair;
-      await FirebaseCrashlytics.instance.recordError(
-        errorAndStacktrace.first,
-        errorAndStacktrace.last,
-        fatal: true,
-      );
-    }).sendPort);
+  // catch errors that happen outside of the Flutter context
+  Isolate.current.addErrorListener(RawReceivePort((pair) async {
+    final List<dynamic> errorAndStacktrace = pair;
+    await FirebaseCrashlytics.instance.recordError(
+      errorAndStacktrace.first,
+      errorAndStacktrace.last,
+      fatal: true,
+    );
+  }).sendPort);
 
-    // pass all uncaught "fatal" errors from the framework to Crashlytics
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  // pass all uncaught "fatal" errors from the framework to Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-    // pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-    PlatformDispatcher.instance.onError = (error, stack) {
-      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  // pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
 
-      return true;
-    };
-  }
+    return true;
+  };
 
   if (kFirebaseEmulatorsEnabled) {
     try {
@@ -71,13 +72,11 @@ Future<void> main() async {
     ),
   );
 
-  if (kCrashlyticsEnabled) {
-    // must be called after runApp
-    final packageInfo = await PackageInfo.fromPlatform();
+  // must be called after runApp
+  final packageInfo = await PackageInfo.fromPlatform();
 
-    FirebaseCrashlytics.instance.setCustomKey(
-      'version',
-      '${packageInfo.version}+${packageInfo.buildNumber}',
-    );
-  }
+  FirebaseCrashlytics.instance.setCustomKey(
+    'version',
+    '${packageInfo.version}+${packageInfo.buildNumber}',
+  );
 }

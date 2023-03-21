@@ -9,14 +9,14 @@ import '../../widgets/layout.dart';
 import 'password_field.dart';
 import 'services/auth_service.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class LogInScreen extends ConsumerStatefulWidget {
+  const LogInScreen({Key? key}) : super(key: key);
 
   @override
-  SignInScreenState createState() => SignInScreenState();
+  LogInScreenState createState() => LogInScreenState();
 }
 
-class SignInScreenState extends ConsumerState<SignInScreen> {
+class LogInScreenState extends ConsumerState<LogInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -91,6 +91,7 @@ class SignInScreenState extends ConsumerState<SignInScreen> {
                 setState(() => _isLoading = false);
               },
             ),
+            // TODO: remove for now
             const SizedBox(height: 36),
             const _FadedDividerHorizontal(),
             const SizedBox(height: 36),

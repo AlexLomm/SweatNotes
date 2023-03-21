@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../shared/services/firebase.dart';
 import '../../shared/services/shared_preferences.dart';
 
 part 'theme_switcher.g.dart';
@@ -31,9 +32,14 @@ class ThemeSwitcher extends _$ThemeSwitcher {
 
   void setThemeMode(ThemeMode themeMode) {
     final prefs = ref.watch(prefsProvider);
+    final analytics = ref.watch(analyticsProvider);
 
     state = themeMode;
 
-    prefs.setString(key, themeMode.toString().split('.').last);
+    final themeModeString = themeMode.toString().split('.').last;
+
+    prefs.setString(key, themeModeString);
+
+    analytics.logEvent(name: 'set_theme_mode', parameters: {'theme_mode': themeModeString});
   }
 }

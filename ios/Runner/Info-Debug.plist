@@ -62,5 +62,7 @@
 	<string>Allow Flutter tools on your computer to connect and debug your application. (This prompt won&apos;t appear on release builds.)</string>
 	<key>FLTEnableImpeller</key>
 	<true/>
+	<key>GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED</key>
+	<false/>
 </dict>
 </plist>

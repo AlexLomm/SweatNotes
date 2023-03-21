@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/features/settings/widgets/account_screen.dart';
+import 'package:journal_flutter/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../features/settings/widgets/account_screen.dart';
 import '../features/settings/widgets/settings_screen.dart';
 import '../features/settings/widgets/theme_screen.dart';
 import '../shared/services/firebase.dart';
@@ -21,9 +22,10 @@ GoRouter goRouter(GoRouterRef ref) {
   final firebaseAuth = ref.read(firebaseAuthProvider);
   final prefs = ref.read(prefsProvider);
   final routeObserver = ref.read(routeObserverProvider);
+  final analyticsObserver = ref.read(analyticsObserverProvider);
 
   return GoRouter(
-    observers: [routeObserver],
+    observers: kAnalyticsEnabled ? [routeObserver, analyticsObserver] : [routeObserver],
     initialLocation: prefs.getString('initialLocation') ?? '/auth',
     redirect: (context, state) {
       final isLoggedIn = firebaseAuth.currentUser != null;
@@ -44,42 +46,51 @@ GoRouter goRouter(GoRouterRef ref) {
     },
     routes: [
       GoRoute(
+        name: 'log-in',
         path: '/auth',
-        builder: (_, __) => const SignInScreen(),
+        builder: (_, __) => const LogInScreen(),
         routes: [
           GoRoute(
+            name: 'sign-up',
             path: 'sign-up',
             builder: (_, __) => const SignUpScreen(),
           ),
           GoRoute(
+            name: 'reset-password',
             path: 'reset-password',
             builder: (_, __) => const ResetPasswordScreen(),
           ),
           GoRoute(
+            name: 'reset-password-finished',
             path: 'reset-password-finished',
             builder: (_, __) => const ResetPasswordFinishedScreen(),
           ),
         ],
       ),
       GoRoute(
+        name: 'home',
         path: '/',
         builder: (_, __) => const HomeScreen(),
         routes: [
           GoRoute(
+            name: 'settings',
             path: 'settings',
             builder: (_, __) => const SettingsScreen(),
             routes: [
               GoRoute(
+                name: 'account',
                 path: 'account',
                 builder: (_, __) => const AccountScreen(),
               ),
               GoRoute(
+                name: 'theme',
                 path: 'theme',
                 builder: (_, __) => const ThemeScreen(),
               ),
             ],
           ),
           GoRoute(
+            name: 'training-block',
             path: ':trainingBlockId',
             builder: (_, routerState) => TrainingBlockScreen(
               trainingBlockId: routerState.params['trainingBlockId'] ?? '',

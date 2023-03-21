@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class AuthService {
   final GoRouter goRouter;
   final ScaffoldMessengerState? messenger;
   final FirebaseCrashlytics crashlytics;
+  final FirebaseAnalytics analytics;
 
   final _defaultErrorMessage = 'Something went wrong.. Please try again later.';
 
@@ -26,6 +28,7 @@ class AuthService {
     this.goRouter,
     this.messenger,
     this.crashlytics,
+    this.analytics,
   );
 
   Future<void> signIn({
@@ -37,6 +40,8 @@ class AuthService {
         email: email,
         password: password,
       );
+
+      analytics.logLogin(loginMethod: 'email');
 
       goRouter.go('/');
     } on FirebaseAuthException catch (e) {
@@ -62,6 +67,8 @@ class AuthService {
 
       await authRepository.updateDisplayName(displayName);
 
+      analytics.logSignUp(signUpMethod: 'email');
+
       goRouter.go('/');
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
@@ -77,6 +84,8 @@ class AuthService {
     try {
       await authRepository.sendPasswordResetEmail(email: email);
 
+      analytics.logEvent(name: 'reset_password_email_sent');
+
       goRouter.go('/auth/reset-password-finished');
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
@@ -91,6 +100,8 @@ class AuthService {
     try {
       await authRepository.signOut();
 
+      analytics.logEvent(name: 'sign_out');
+
       goRouter.go('/auth');
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
@@ -104,6 +115,8 @@ class AuthService {
   Future<void> updateDisplayName(String displayName) async {
     try {
       await authRepository.updateDisplayName(displayName);
+
+      analytics.logEvent(name: 'update_display_name');
 
       goRouter.go('/settings');
 
@@ -132,11 +145,13 @@ AuthService authService(AuthServiceRef ref) {
   final goRouter = ref.watch(goRouterProvider);
   final messenger = ref.watch(messengerProvider);
   final crashlytics = ref.watch(crashlyticsProvider);
+  final analytics = ref.watch(analyticsProvider);
 
   return AuthService(
     authRepository,
     goRouter,
     messenger,
     crashlytics,
+    analytics,
   );
 }

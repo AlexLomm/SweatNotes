@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 
 import '../../../widgets/button.dart';
+import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../training_block/widget_params.dart';
 import '../seed_color_switcher.dart';
 
@@ -15,24 +15,16 @@ class ColorSwitcherWidget extends ConsumerWidget {
     final seedColorSwitcher = ref.watch(seedColorSwitcherProvider.notifier);
     final seedColor = ref.watch(seedColorSwitcherProvider);
 
-    final colors = [
-      const Color.fromRGBO(103, 80, 164, 1),
-      const Color.fromRGBO(47, 88, 205, 1),
-      const Color.fromRGBO(83, 145, 101, 1),
-      const Color.fromRGBO(255, 184, 76, 1),
-      const Color.fromRGBO(223, 46, 56, 1),
-    ];
-
     return Wrap(
       runSpacing: 16.0,
       spacing: 16.0,
       children: [
         _RainbowCircle(
           color: seedColor,
-          isSelected: !colors.contains(seedColor),
+          isSelected: !SeedColorSwitcher.presetColors.contains(seedColor),
           onColorChanged: (color) => seedColorSwitcher.setSeedColor(color),
         ),
-        for (final color in colors)
+        for (final color in SeedColorSwitcher.presetColors)
           _ColorCircle(
             color: color,
             isSelected: color == seedColor,
@@ -70,15 +62,11 @@ class _RainbowCircleState extends State<_RainbowCircle> {
 
   @override
   Widget build(BuildContext context) {
-    const rainbowBoxDecoration = BoxDecoration(
+    final rainbowBoxDecoration = BoxDecoration(
       shape: BoxShape.circle,
       gradient: SweepGradient(colors: [
-        Color.fromRGBO(103, 80, 164, 1),
-        Color.fromRGBO(47, 88, 205, 1),
-        Color.fromRGBO(83, 145, 101, 1),
-        Color.fromRGBO(255, 184, 76, 1),
-        Color.fromRGBO(223, 46, 56, 1),
-        Color.fromRGBO(103, 80, 164, 1),
+        ...SeedColorSwitcher.presetColors,
+        SeedColorSwitcher.presetColors.first,
       ]),
     );
 

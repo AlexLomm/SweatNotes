@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/shared_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
@@ -18,10 +21,20 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (kReleaseMode) {
-    // Pass all uncaught "fatal" errors from the framework to Crashlytics
+    // catch errors that happen outside of the Flutter context
+    Isolate.current.addErrorListener(RawReceivePort((pair) async {
+      final List<dynamic> errorAndStacktrace = pair;
+      await FirebaseCrashlytics.instance.recordError(
+        errorAndStacktrace.first,
+        errorAndStacktrace.last,
+        fatal: true,
+      );
+    }).sendPort);
+
+    // pass all uncaught "fatal" errors from the framework to Crashlytics
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
-    // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+    // pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
 
@@ -43,7 +56,7 @@ Future<void> main() async {
   // get the instance of shared preferences
   final prefs = await SharedPreferences.getInstance();
 
-  return runApp(
+  runApp(
     ProviderScope(
       // override the unimplemented providers
       overrides: [
@@ -52,4 +65,14 @@ Future<void> main() async {
       child: const App(),
     ),
   );
+
+  if (kReleaseMode) {
+    // must be called after runApp
+    final packageInfo = await PackageInfo.fromPlatform();
+
+    FirebaseCrashlytics.instance.setCustomKey(
+      'version',
+      '${packageInfo.version}+${packageInfo.buildNumber}',
+    );
+  }
 }

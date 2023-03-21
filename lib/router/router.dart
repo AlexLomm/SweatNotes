@@ -5,14 +5,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/settings/widgets/settings_screen.dart';
 import '../features/settings/widgets/theme_screen.dart';
-import '../firebase.dart';
+import '../shared/services/firebase.dart';
 import '../features/auth/sign_up_screen.dart';
 import '../features/auth/reset_password_screen.dart';
 import '../features/auth/reset_password_finished_screen.dart';
 import '../features/auth/sign_in_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/training_block/training_block_screen.dart';
-import '../shared_preferences.dart';
+import '../shared/services/shared_preferences.dart';
 
 part 'router.g.dart';
 

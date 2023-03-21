@@ -6,7 +6,7 @@ import 'package:journal_flutter/widgets/go_back_button.dart';
 
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
-import '../../shared_preferences.dart';
+import '../../shared/services/shared_preferences.dart';
 import '../../widgets/button_dropdown_menu.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:journal_flutter/features/auth/services/user.dart';
+import 'package:journal_flutter/main.dart';
+import 'package:journal_flutter/shared/services/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'router/router.dart';
@@ -16,6 +19,16 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
     final theme = ref.watch(themeProvider);
+    final crashlytics = ref.watch(crashlyticsProvider);
+
+    if (kCrashlyticsEnabled) {
+      ref.listen(
+        userProvider,
+        (_, user) => user.whenData((value) async {
+          if (value == null) await crashlytics.setUserIdentifier(value!.uid);
+        }),
+      );
+    }
 
     return MaterialApp.router(
       scaffoldMessengerKey: _snackBarKey,

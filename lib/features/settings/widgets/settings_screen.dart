@@ -9,7 +9,7 @@ import '../../../widgets/dismissible_button.dart';
 import '../../../widgets/go_back_button.dart';
 import '../../../widgets/layout.dart';
 import '../../auth/services/auth_service.dart';
-import '../../auth/services/user_stream.dart';
+import '../../auth/services/user.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({Key? key}) : super(key: key);

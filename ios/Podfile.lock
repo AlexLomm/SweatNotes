@@ -96,6 +96,8 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - package_info_plus (0.4.5):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -115,6 +117,7 @@ DEPENDENCIES:
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.6.0`)
   - Flutter (from `Flutter`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - rive_common (from `.symlinks/plugins/rive_common/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
@@ -150,6 +153,8 @@ EXTERNAL SOURCES:
     :tag: 10.6.0
   Flutter:
     :path: Flutter
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
   rive_common:
@@ -181,6 +186,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   GTMSessionFetcher: c9e714f7eec91a55641e2bab9f45fd83a219b882
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959

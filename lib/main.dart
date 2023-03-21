@@ -7,7 +7,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/shared_preferences.dart';
+import 'package:journal_flutter/shared/services/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,12 +15,17 @@ import 'app.dart';
 import 'env.dart';
 import 'firebase_options.dart';
 
+const kCrashlyticsEnabled = kReleaseMode;
+const kFirebaseEmulatorsEnabled = kDebugMode || kProfileMode;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  if (kReleaseMode) {
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kCrashlyticsEnabled);
+
+  if (kCrashlyticsEnabled) {
     // catch errors that happen outside of the Flutter context
     Isolate.current.addErrorListener(RawReceivePort((pair) async {
       final List<dynamic> errorAndStacktrace = pair;
@@ -42,7 +47,7 @@ Future<void> main() async {
     };
   }
 
-  if (kDebugMode || kProfileMode) {
+  if (kFirebaseEmulatorsEnabled) {
     try {
       FirebaseFirestore.instance.useFirestoreEmulator(Env.localIp, 8080);
       await FirebaseAuth.instance.useAuthEmulator(Env.localIp, 9099);
@@ -66,7 +71,7 @@ Future<void> main() async {
     ),
   );
 
-  if (kReleaseMode) {
+  if (kCrashlyticsEnabled) {
     // must be called after runApp
     final packageInfo = await PackageInfo.fromPlatform();
 

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:journal_flutter/app.dart';
 
 import '../../router/router.dart';
-import '../../shared_preferences.dart';
+import '../../shared/services/shared_preferences.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/dismissible_button.dart';
 import '../../widgets/empty_page_placeholder.dart';

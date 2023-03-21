@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../shared_preferences.dart';
+import '../../shared/services/shared_preferences.dart';
 
 part 'compact_mode_switcher.g.dart';
 

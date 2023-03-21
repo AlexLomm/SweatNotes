@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../firebase.dart';
+import '../../../shared/services/firebase.dart';
 import '../data/exercise_types_repository.dart';
 import '../data/models/exercise_type.dart';
 import '../data/models_client/exercise_day_client.dart';

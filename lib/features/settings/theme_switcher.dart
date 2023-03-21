@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../shared_preferences.dart';
+import '../../shared/services/shared_preferences.dart';
 
 part 'theme_switcher.g.dart';
 

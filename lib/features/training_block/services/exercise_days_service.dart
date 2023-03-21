@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../firebase.dart';
+import '../../../shared/services/firebase.dart';
 import '../data/models_client/exercise_day_client.dart';
 import '../data/models_client/training_block_client.dart';
 import '../data/training_blocks_repository.dart';

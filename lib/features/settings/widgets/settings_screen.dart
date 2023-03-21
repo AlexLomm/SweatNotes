@@ -2,53 +2,99 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../firebase.dart';
+import '../../../shared/services/firebase.dart';
+import '../../../shared/services/package_info.dart';
+import '../../../widgets/button.dart';
 import '../../../widgets/dismissible_button.dart';
 import '../../../widgets/go_back_button.dart';
 import '../../../widgets/layout.dart';
+import '../../auth/services/auth_service.dart';
 import '../../auth/services/user_stream.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authService = ref.watch(authServiceProvider);
+    final packageInfo = ref.watch(packageInfoProvider);
+
     return Layout(
       centerTitle: false,
+      isScrollable: false,
       leading: GoBackButton(onPressed: () => context.pop()),
       appBarTitle: Text(
         'Settings',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const _UserAvatarWithInfo(),
-          const SizedBox(height: 24.0),
-          DismissibleButton(
-            id: '/settings/account',
-            label: 'Account',
-            right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => context.push('/settings/account'),
+      child: CustomScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([
+              const _UserAvatarWithInfo(),
+              const SizedBox(height: 24.0),
+              DismissibleButton(
+                id: '/settings/account',
+                label: 'Account',
+                right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () => context.push('/settings/account'),
+              ),
+              // DismissibleButton(
+              //   id: '/settings/unit',
+              //   label: 'Unit',
+              //   right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
+              //   onPressed: () => context.push('/settings/unit'),
+              // ),
+              DismissibleButton(
+                id: '/settings/theme',
+                label: 'Theme',
+                right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () => context.push('/settings/theme'),
+              ),
+              // DismissibleButton(
+              //   id: '/settings/contact-us-on-discord',
+              //   label: 'Contact us on Discord',
+              //   right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
+              //   onPressed: () => context.push('/settings/contact-us-on-discord'),
+              // ),
+              // const Spacer(),
+            ]),
           ),
-          // DismissibleButton(
-          //   id: '/settings/unit',
-          //   label: 'Unit',
-          //   right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
-          //   onPressed: () => context.push('/settings/unit'),
-          // ),
-          DismissibleButton(
-            id: '/settings/theme',
-            label: 'Theme',
-            right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => context.push('/settings/theme'),
-          ),
-          // DismissibleButton(
-          //   id: '/settings/contact-us-on-discord',
-          //   label: 'Contact us on Discord',
-          //   right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
-          //   onPressed: () => context.push('/settings/contact-us-on-discord'),
-          // ),
+          SliverFillRemaining(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        packageInfo.when(
+                          data: (value) => 'App version: ${value.version}+${value.buildNumber}',
+                          error: (error, stackTrace) => '',
+                          loading: () => '',
+                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      ),
+                      SizedBox(
+                        width: 96.0,
+                        child: Button(
+                          label: 'Log out',
+                          onPressed: () => authService.signOut(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );

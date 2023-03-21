@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../firebase.dart';
+import '../../../shared/services/firebase.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/display_name_field.dart';
 import '../../../widgets/go_back_button.dart';

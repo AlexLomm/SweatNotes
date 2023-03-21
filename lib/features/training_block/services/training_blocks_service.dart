@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:journal_flutter/features/training_block/data/exercise_types_repository.dart';
 import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
 import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
-import 'package:journal_flutter/firebase.dart';
+import 'package:journal_flutter/shared/services/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../data/models/training_block.dart';

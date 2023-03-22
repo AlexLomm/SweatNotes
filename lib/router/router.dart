@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../features/settings/widgets/account_screen.dart';
 import '../features/settings/widgets/settings_screen.dart';
 import '../features/settings/widgets/theme_screen.dart';
+import '../main.dart';
 import '../shared/services/firebase.dart';
 import '../features/auth/sign_up_screen.dart';
 import '../features/auth/reset_password_screen.dart';

@@ -1,4 +1,4 @@
-# journal_flutter
+# SweatNotes
 
 A new Flutter project.
 

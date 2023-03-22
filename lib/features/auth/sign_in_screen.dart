@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/features/auth/regular_text_field.dart';
-import 'package:journal_flutter/widgets/button.dart';
 
+import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
 import 'password_field.dart';
+import 'regular_text_field.dart';
 import 'services/auth_service.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {

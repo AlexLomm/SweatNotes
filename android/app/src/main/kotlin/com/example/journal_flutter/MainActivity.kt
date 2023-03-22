@@ -1,4 +1,4 @@
-package com.example.journal_flutter
+package com.sweatnotes.sweatnotes
 
 import io.flutter.embedding.android.FlutterActivity
 

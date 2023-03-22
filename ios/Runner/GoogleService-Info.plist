@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj.apps.googleusercontent.com</string>
+	<string>428214340562-jsviuo2vjhs2j33atuh13u5ist18gvlq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj</string>
+	<string>com.googleusercontent.apps.428214340562-jsviuo2vjhs2j33atuh13u5ist18gvlq</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAaRFz49VdYMvsQ_GXXhJkeVTr5EPqMlu0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.journalFlutter</string>
+	<string>com.sweatnotes.sweatnotes</string>
 	<key>PROJECT_ID</key>
 	<string>journal-j-prod</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:428214340562:ios:4bc7c0e62289ac9e49560b</string>
+	<string>1:428214340562:ios:8471f81b4cbf4ce849560b</string>
 </dict>
 </plist>

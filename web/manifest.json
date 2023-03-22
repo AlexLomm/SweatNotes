@@ -1,6 +1,6 @@
 {
-    "name": "journal_flutter",
-    "short_name": "journal_flutter",
+    "name": "SweatNotes: Workout Progress Tracker",
+    "short_name": "SweatNotes",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

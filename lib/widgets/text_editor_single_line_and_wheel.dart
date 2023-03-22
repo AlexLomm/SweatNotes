@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/widgets/wheel_selector/models/wheel_selector_value.dart';
-import 'package:journal_flutter/widgets/wheel_selector/wheel_selector.dart';
 
 import 'button.dart';
+import 'wheel_selector/models/wheel_selector_value.dart';
+import 'wheel_selector/wheel_selector.dart';
 
 class TextEditorSingleLineAndWheel extends StatefulWidget {
   static const height = 144.0;

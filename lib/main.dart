@@ -9,13 +9,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/shared/services/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'env.dart';
 import 'firebase_options.dart';
+import 'shared/services/shared_preferences.dart';
 
 const kAppCheckEnabled = kReleaseMode;
 const kCrashlyticsEnabled = kReleaseMode;

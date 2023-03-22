@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/features/settings/edit_mode_switcher.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../settings/compact_mode_switcher.dart';
+import '../settings/edit_mode_switcher.dart';
 
 part 'widget_params.g.dart';
 

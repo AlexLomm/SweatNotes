@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/auth/services/user.dart';
-import 'package:journal_flutter/shared/services/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'features/auth/services/user.dart';
 import 'router/router.dart';
+import 'shared/services/firebase.dart';
 import 'theme.dart';
 
 part 'app.g.dart';
@@ -38,7 +38,7 @@ class App extends ConsumerWidget {
     return MaterialApp.router(
       scaffoldMessengerKey: _snackBarKey,
       debugShowCheckedModeBanner: false,
-      title: 'Journal',
+      title: 'SweatNotes',
       theme: theme,
       routerConfig: goRouter,
     );

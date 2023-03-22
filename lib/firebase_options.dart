@@ -24,7 +24,10 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
@@ -49,21 +52,13 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDuB1gytdWHb22jv6M5GRGWwVwA6nwN06s',
-    appId: '1:428214340562:android:fc1c17a28e268ccc49560b',
-    messagingSenderId: '428214340562',
-    projectId: 'journal-j-prod',
-    storageBucket: 'journal-j-prod.appspot.com',
-  );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAaRFz49VdYMvsQ_GXXhJkeVTr5EPqMlu0',
-    appId: '1:428214340562:ios:4bc7c0e62289ac9e49560b',
+    appId: '1:428214340562:ios:8471f81b4cbf4ce849560b',
     messagingSenderId: '428214340562',
     projectId: 'journal-j-prod',
     storageBucket: 'journal-j-prod.appspot.com',
-    iosClientId: '428214340562-bbrs0g45edl6m8maegmfll86jckiv3nj.apps.googleusercontent.com',
-    iosBundleId: 'com.example.journalFlutter',
+    iosClientId: '428214340562-jsviuo2vjhs2j33atuh13u5ist18gvlq.apps.googleusercontent.com',
+    iosBundleId: 'com.sweatnotes.sweatnotes',
   );
 }

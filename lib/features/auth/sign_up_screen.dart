@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/features/auth/password_field.dart';
-import 'package:journal_flutter/features/auth/regular_text_field.dart';
-import 'package:journal_flutter/widgets/display_name_field.dart';
 
 import '../../widgets/button.dart';
+import '../../widgets/display_name_field.dart';
 import '../../widgets/layout.dart';
+import 'password_field.dart';
+import 'regular_text_field.dart';
 import 'services/auth_service.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journal_flutter/widgets/text_area.dart';
 
 import 'button.dart';
+import 'text_area.dart';
 
 class TextEditorMultiLine extends StatefulWidget {
   static const height = 268.0;

@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:journal_flutter/widgets/go_back_button.dart';
 
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
@@ -10,6 +9,7 @@ import '../../shared/services/shared_preferences.dart';
 import '../../widgets/button_dropdown_menu.dart';
 import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
+import '../../widgets/go_back_button.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';

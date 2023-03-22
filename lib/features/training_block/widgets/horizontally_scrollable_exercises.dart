@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:journal_flutter/features/settings/edit_mode_switcher.dart';
 
+import '../../settings/edit_mode_switcher.dart';
 import '../widget_params.dart';
 import '../data/models_client/exercise_day_client.dart';
 import 'exercise_widget.dart';

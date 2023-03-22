@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:journal_flutter/features/training_block/data/exercise_types_repository.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/exercise_day_client.dart';
-import 'package:journal_flutter/features/training_block/data/models_client/training_block_client.dart';
-import 'package:journal_flutter/shared/services/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../shared/services/firebase.dart';
+import '../data/exercise_types_repository.dart';
 import '../data/models/training_block.dart';
+import '../data/models_client/exercise_day_client.dart';
+import '../data/models_client/training_block_client.dart';
 import '../data/training_blocks_repository.dart';
 
 part 'training_blocks_service.g.dart';

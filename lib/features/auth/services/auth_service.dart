@@ -31,6 +31,23 @@ class AuthService {
     this.analytics,
   );
 
+  Future<void> signInWithApple() async {
+    try {
+      await authRepository.signInWithApple();
+
+      analytics.logLogin(loginMethod: 'apple');
+
+      goRouter.go('/');
+    } on FirebaseAuthException catch (e) {
+      _showError(e.message);
+    } catch (e) {
+      // "reason" will append the word "thrown" in the Crashlytics console
+      crashlytics.recordError(e, StackTrace.current, reason: 'when logging in with apple');
+
+      _showError(e.toString());
+    }
+  }
+
   Future<void> signIn({
     required String email,
     required String password,
@@ -65,7 +82,9 @@ class AuthService {
         password: password,
       );
 
-      await authRepository.updateDisplayName(displayName);
+      // update the display name after the user
+      // has been created but don't wait for it
+      authRepository.updateDisplayName(displayName);
 
       analytics.logSignUp(signUpMethod: 'email');
 

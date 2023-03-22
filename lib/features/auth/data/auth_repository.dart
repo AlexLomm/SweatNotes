@@ -10,6 +10,10 @@ class AuthRepository {
 
   AuthRepository(this._auth);
 
+  Future<void> signInWithApple() {
+    return _auth.signInWithProvider(AppleAuthProvider());
+  }
+
   Future<UserCredential> signInWithEmailAndPassword({
     required String email,
     required String password,

@@ -98,9 +98,7 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
             Row(
               children: [
                 _MaterialButtonWrapper(
-                  // TODO: implement
-                  // onTap: () => authService.signInWithApple(),
-                  onTap: () {},
+                  onTap: () => authService.signInWithApple(),
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: SvgPicture.asset('assets/apple-logo.svg'),
                 ),
@@ -110,13 +108,6 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
                   onTap: () {},
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: SvgPicture.asset('assets/google-logo.svg'),
-                ),
-                _MaterialButtonWrapper(
-                  // TODO: implement
-                  // onTap: () => authService.signInWithFacebook(),
-                  onTap: () {},
-                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: SvgPicture.asset('assets/facebook-logo.svg'),
                 ),
               ],
             ),

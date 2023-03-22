@@ -20,7 +20,9 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  bool _isLoading = false;
+  bool _signInWithEmailAndPasswordLoading = false;
+  bool _signInWithAppleLoading = false;
+  bool _signInWithGoogleLoading = false;
 
   @override
   void dispose() {
@@ -79,33 +81,49 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
             const SizedBox(height: 24.0),
             Button(
               label: 'Log in',
-              isLoading: _isLoading,
+              isLoading: _signInWithEmailAndPasswordLoading,
               onPressed: () async {
-                setState(() => _isLoading = true);
+                setState(() => _signInWithEmailAndPasswordLoading = true);
 
                 await authService.signIn(
                   email: _emailController.text,
                   password: _passwordController.text,
                 );
 
-                setState(() => _isLoading = false);
+                setState(() => _signInWithEmailAndPasswordLoading = false);
               },
             ),
-            // TODO: remove for now
             const SizedBox(height: 36),
             const _FadedDividerHorizontal(),
             const SizedBox(height: 36),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _MaterialButtonWrapper(
-                  onTap: () => authService.signInWithApple(),
+                  isLoading: _signInWithAppleLoading,
+                  onTap: _signInWithAppleLoading
+                      ? null
+                      : () async {
+                          setState(() => _signInWithAppleLoading = true);
+
+                          await authService.signInWithApple();
+
+                          setState(() => _signInWithAppleLoading = false);
+                        },
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: SvgPicture.asset('assets/apple-logo.svg'),
                 ),
                 _MaterialButtonWrapper(
-                  // TODO: implement
-                  // onTap: () => authService.signInWithGoogle(),
-                  onTap: () {},
+                  isLoading: _signInWithGoogleLoading,
+                  onTap: _signInWithGoogleLoading
+                      ? null
+                      : () async {
+                          setState(() => _signInWithGoogleLoading = true);
+
+                          await authService.signInWithGoogle();
+
+                          setState(() => _signInWithGoogleLoading = false);
+                        },
                   margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: SvgPicture.asset('assets/google-logo.svg'),
                 ),
@@ -142,13 +160,15 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
 }
 
 class _MaterialButtonWrapper extends StatelessWidget {
-  final void Function() onTap;
+  final bool isLoading;
+  final void Function()? onTap;
   final Widget child;
   final EdgeInsets margin;
 
   const _MaterialButtonWrapper({
     Key? key,
-    required this.onTap,
+    this.isLoading = false,
+    this.onTap,
     required this.child,
     required this.margin,
   }) : super(key: key);
@@ -162,7 +182,7 @@ class _MaterialButtonWrapper extends StatelessWidget {
         shape: const CircleBorder(),
         color: Theme.of(context).colorScheme.secondaryContainer,
         padding: const EdgeInsets.all(12.0),
-        child: child,
+        child: isLoading ? CircularProgressIndicator(color: Theme.of(context).colorScheme.onSecondaryContainer) : child,
       ),
     );
   }

@@ -14,6 +14,10 @@ class AuthRepository {
     return _auth.signInWithProvider(AppleAuthProvider());
   }
 
+  Future<void> signInWithGoogle() {
+    return _auth.signInWithProvider(GoogleAuthProvider());
+  }
+
   Future<UserCredential> signInWithEmailAndPassword({
     required String email,
     required String password,

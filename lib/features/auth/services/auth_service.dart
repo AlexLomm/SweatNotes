@@ -48,6 +48,23 @@ class AuthService {
     }
   }
 
+  Future<void> signInWithGoogle() async {
+    try {
+      await authRepository.signInWithGoogle();
+
+      analytics.logLogin(loginMethod: 'google');
+
+      goRouter.go('/');
+    } on FirebaseAuthException catch (e) {
+      _showError(e.message);
+    } catch (e) {
+      // "reason" will append the word "thrown" in the Crashlytics console
+      crashlytics.recordError(e, StackTrace.current, reason: 'when logging in with google');
+
+      _showError(e.toString());
+    }
+  }
+
   Future<void> signIn({
     required String email,
     required String password,

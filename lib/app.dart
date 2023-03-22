@@ -24,14 +24,14 @@ class App extends ConsumerWidget {
     ref.listen(
       userProvider,
       (_, user) => user.whenData((value) async {
-        if (value == null) await crashlytics.setUserIdentifier(value!.uid);
+        if (value != null) await crashlytics.setUserIdentifier(value.uid);
       }),
     );
 
     ref.listen(
       userProvider,
       (_, user) => user.whenData((value) async {
-        if (value == null) await analytics.setUserId(id: value!.uid);
+        if (value != null) await analytics.setUserId(id: value.uid);
       }),
     );
 

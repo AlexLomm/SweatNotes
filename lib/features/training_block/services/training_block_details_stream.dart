@@ -67,11 +67,11 @@ TrainingBlockClient? _getNormalizedData(
   final maxExercisesCount = exerciseTypes
       //
       .map((exerciseType) => exerciseType.exercises.length)
-      .fold<int>(0, max);
+      .fold<int>(2, max);
 
   final maxExerciseSetsCount = exerciseTypes
       .expand((exerciseType) => exerciseType.exercises.map((exercise) => exercise.sets.length))
-      .fold<int>(0, max);
+      .fold<int>(2, max);
 
   final List<ExerciseTypeClient> exerciseTypesClient = exerciseTypes
       .map(

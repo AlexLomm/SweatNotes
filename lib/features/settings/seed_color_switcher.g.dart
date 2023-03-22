@@ -6,7 +6,7 @@ part of 'seed_color_switcher.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$seedColorSwitcherHash() => r'd82392569635bbe6be4da0a40f4e4658a981bd9a';
+String _$seedColorSwitcherHash() => r'7b8b1c0056ce25d01c22c330fd4b014dde1599a7';
 
 /// See also [SeedColorSwitcher].
 @ProviderFor(SeedColorSwitcher)

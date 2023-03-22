@@ -6,7 +6,7 @@ part of 'edit_mode_switcher.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$editModeSwitcherHash() => r'6f0fd36744947e394c3b97441347cd4da2f131ca';
+String _$editModeSwitcherHash() => r'190b4df011de5c4b380b7126ed7475163d48bd7c';
 
 /// See also [EditModeSwitcher].
 @ProviderFor(EditModeSwitcher)

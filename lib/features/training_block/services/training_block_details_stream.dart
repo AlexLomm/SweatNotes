@@ -79,6 +79,7 @@ TrainingBlockClient? _getNormalizedData(
       dbModel: exerciseType,
       name: exerciseType.name,
       unit: exerciseType.unit,
+      notes: exerciseType.notes,
       archivedAt: exerciseType.archivedAt,
       exercises: [
         ...exerciseType.exercises.map(

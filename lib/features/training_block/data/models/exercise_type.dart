@@ -18,6 +18,7 @@ class ExerciseType with _$ExerciseType {
     required String trainingBlockId,
     required String name,
     required String unit,
+    required String notes,
     @Default([]) List<Exercise> exercises,
   }) = _ExerciseType;
 

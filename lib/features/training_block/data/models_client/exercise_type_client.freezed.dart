@@ -20,6 +20,7 @@ mixin _$ExerciseTypeClient {
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
+  String get notes => throw _privateConstructorUsedError;
   List<ExerciseClient> get exercises => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,6 +39,7 @@ abstract class $ExerciseTypeClientCopyWith<$Res> {
       Timestamp? archivedAt,
       String name,
       String unit,
+      String notes,
       List<ExerciseClient> exercises});
 
   $ExerciseTypeCopyWith<$Res> get dbModel;
@@ -60,6 +62,7 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
     Object? archivedAt = freezed,
     Object? name = null,
     Object? unit = null,
+    Object? notes = null,
     Object? exercises = null,
   }) {
     return _then(_value.copyWith(
@@ -78,6 +81,10 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
       unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
+              as String,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
               as String,
       exercises: null == exercises
           ? _value.exercises
@@ -108,6 +115,7 @@ abstract class _$$_ExerciseTypeClientCopyWith<$Res>
       Timestamp? archivedAt,
       String name,
       String unit,
+      String notes,
       List<ExerciseClient> exercises});
 
   @override
@@ -129,6 +137,7 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
     Object? archivedAt = freezed,
     Object? name = null,
     Object? unit = null,
+    Object? notes = null,
     Object? exercises = null,
   }) {
     return _then(_$_ExerciseTypeClient(
@@ -148,6 +157,10 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as String,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
       exercises: null == exercises
           ? _value._exercises
           : exercises // ignore: cast_nullable_to_non_nullable
@@ -165,6 +178,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
       this.archivedAt,
       required this.name,
       required this.unit,
+      required this.notes,
       required final List<ExerciseClient> exercises})
       : _exercises = exercises,
         super._();
@@ -177,6 +191,8 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
   final String name;
   @override
   final String unit;
+  @override
+  final String notes;
   final List<ExerciseClient> _exercises;
   @override
   List<ExerciseClient> get exercises {
@@ -187,7 +203,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseTypeClient(dbModel: $dbModel, archivedAt: $archivedAt, name: $name, unit: $unit, exercises: $exercises)';
+    return 'ExerciseTypeClient(dbModel: $dbModel, archivedAt: $archivedAt, name: $name, unit: $unit, notes: $notes, exercises: $exercises)';
   }
 
   @override
@@ -199,6 +215,7 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
       ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('unit', unit))
+      ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('exercises', exercises));
   }
 
@@ -216,6 +233,7 @@ abstract class _ExerciseTypeClient extends ExerciseTypeClient {
       final Timestamp? archivedAt,
       required final String name,
       required final String unit,
+      required final String notes,
       required final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
   const _ExerciseTypeClient._() : super._();
 
@@ -227,6 +245,8 @@ abstract class _ExerciseTypeClient extends ExerciseTypeClient {
   String get name;
   @override
   String get unit;
+  @override
+  String get notes;
   @override
   List<ExerciseClient> get exercises;
   @override

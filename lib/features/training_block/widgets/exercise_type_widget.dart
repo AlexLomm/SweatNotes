@@ -6,6 +6,7 @@ import '../../../app.dart';
 import '../../../widgets/button_dropdown_menu.dart';
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../../widgets/custom_dismissible.dart';
+import '../../../widgets/text_editor_multi_line.dart';
 import '../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../settings/edit_mode_switcher.dart';
 import '../widget_params.dart';
@@ -90,7 +91,6 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   child: AnimatedOpacity(
                     duration: WidgetParams.animationDuration,
                     curve: WidgetParams.animationCurve,
-                    // TODO: should extract ???
                     opacity: isEditMode ? 1 : 0,
                     child: ReorderableDragStartListener(
                       index: index,
@@ -126,7 +126,6 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   child: AnimatedOpacity(
                     duration: WidgetParams.animationDuration,
                     curve: WidgetParams.animationCurve,
-                    // TODO: should extract ???
                     opacity: isEditMode ? 1 : 0,
                     child: IgnorePointerEditMode(
                       child: AnimatedContainer(
@@ -160,11 +159,83 @@ class ExerciseTypeWidget extends ConsumerWidget {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: AnimatedOpacity(
+                    duration: WidgetParams.animationDuration,
+                    curve: WidgetParams.animationCurve,
+                    opacity: isEditMode ? 0 : 1,
+                    child: IgnorePointerEditMode(
+                      ignoreWhenEditMode: true,
+                      child: AnimatedContainer(
+                        duration: WidgetParams.animationDuration,
+                        curve: WidgetParams.animationCurve,
+                        height: 22,
+                        width: widgetParams.exerciseTypeWidth,
+                        padding: const EdgeInsets.only(bottom: 4, right: 4),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: AutoSizeText(
+                                exerciseType.notes,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall
+                                    ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.48)),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => CustomBottomSheet(
+                                height: 324,
+                                title: 'Edit exercise type',
+                                child: _TextEditorMultiLineWrapper(exerciseType: exerciseType),
+                              ).show(context),
+                              child: Icon(
+                                Icons.edit_note,
+                                color: exerciseType.notes.isEmpty
+                                    ? Theme.of(context).colorScheme.outline.withOpacity(0.72)
+                                    : Theme.of(context).colorScheme.tertiary,
+                                size: 18,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TextEditorMultiLineWrapper extends ConsumerWidget {
+  final ExerciseTypeClient exerciseType;
+
+  const _TextEditorMultiLineWrapper({
+    Key? key,
+    required this.exerciseType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exerciseTypesService = ref.watch(exerciseTypesServiceProvider);
+
+    return TextEditorMultiLine(
+      value: exerciseType.notes,
+      hintText: 'Add notes',
+      onSubmitted: (String notes) {
+        exerciseTypesService.updateNotes(exerciseType, notes);
+
+        Navigator.of(context).pop();
+      },
     );
   }
 }

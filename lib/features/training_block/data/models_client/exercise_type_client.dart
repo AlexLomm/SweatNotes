@@ -17,6 +17,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     Timestamp? archivedAt,
     required String name,
     required String unit,
+    required String notes,
     required List<ExerciseClient> exercises,
   }) = _ExerciseTypeClient;
 
@@ -24,6 +25,7 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
     return dbModel.copyWith(
       name: name,
       unit: unit,
+      notes: notes,
       archivedAt: archivedAt,
       exercises: _exercisesWithNoTrailingFillers.map<Exercise>((e) => e.toDbModel()).toList(),
     );

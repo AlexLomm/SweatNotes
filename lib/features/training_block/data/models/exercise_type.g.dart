@@ -13,6 +13,7 @@ _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
       trainingBlockId: json['trainingBlockId'] as String,
       name: json['name'] as String,
       unit: json['unit'] as String,
+      notes: json['notes'] as String,
       exercises: (json['exercises'] as List<dynamic>?)
               ?.map((e) => Exercise.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -25,5 +26,6 @@ Map<String, dynamic> _$$_ExerciseTypeToJson(_$_ExerciseType instance) =>
       'trainingBlockId': instance.trainingBlockId,
       'name': instance.name,
       'unit': instance.unit,
+      'notes': instance.notes,
       'exercises': instance.exercises.map((e) => e.toJson()).toList(),
     };

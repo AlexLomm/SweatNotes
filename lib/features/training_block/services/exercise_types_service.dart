@@ -38,6 +38,7 @@ class ExerciseTypesService {
     required ExerciseDayClient exerciseDay,
     required String name,
     required String unit,
+    String notes = '',
   }) async {
     final batch = firestore.batch();
 
@@ -51,6 +52,7 @@ class ExerciseTypesService {
       trainingBlockId: trainingBlock.dbModel.id,
       name: name,
       unit: unit,
+      notes: notes,
     );
 
     final updatedTrainingBlock = trainingBlock.updateExerciseDayAt(
@@ -60,6 +62,7 @@ class ExerciseTypesService {
           dbModel: dbModel,
           name: dbModel.name,
           unit: dbModel.unit,
+          notes: dbModel.notes,
           exercises: [],
         ),
       ),
@@ -72,6 +75,10 @@ class ExerciseTypesService {
     );
 
     return batch.commit();
+  }
+
+  Future<void> updateNotes(ExerciseTypeClient exerciseTypeClient, String notes) async {
+    return exerciseTypesRepository.update(exerciseTypeClient.copyWith(notes: notes).toDbModel());
   }
 
   Future<void> archive(ExerciseTypeClient exerciseTypeClient, bool archive) async {

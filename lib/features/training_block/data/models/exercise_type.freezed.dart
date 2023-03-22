@@ -27,6 +27,7 @@ mixin _$ExerciseType {
   String get trainingBlockId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
+  String get notes => throw _privateConstructorUsedError;
   List<Exercise> get exercises => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $ExerciseTypeCopyWith<$Res> {
       String trainingBlockId,
       String name,
       String unit,
+      String notes,
       List<Exercise> exercises});
 }
 
@@ -70,6 +72,7 @@ class _$ExerciseTypeCopyWithImpl<$Res, $Val extends ExerciseType>
     Object? trainingBlockId = null,
     Object? name = null,
     Object? unit = null,
+    Object? notes = null,
     Object? exercises = null,
   }) {
     return _then(_value.copyWith(
@@ -92,6 +95,10 @@ class _$ExerciseTypeCopyWithImpl<$Res, $Val extends ExerciseType>
       unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
+              as String,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
               as String,
       exercises: null == exercises
           ? _value.exercises
@@ -117,6 +124,7 @@ abstract class _$$_ExerciseTypeCopyWith<$Res>
       String trainingBlockId,
       String name,
       String unit,
+      String notes,
       List<Exercise> exercises});
 }
 
@@ -136,6 +144,7 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
     Object? trainingBlockId = null,
     Object? name = null,
     Object? unit = null,
+    Object? notes = null,
     Object? exercises = null,
   }) {
     return _then(_$_ExerciseType(
@@ -159,6 +168,10 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as String,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
       exercises: null == exercises
           ? _value._exercises
           : exercises // ignore: cast_nullable_to_non_nullable
@@ -178,6 +191,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
       required this.trainingBlockId,
       required this.name,
       required this.unit,
+      required this.notes,
       final List<Exercise> exercises = const []})
       : _exercises = exercises;
 
@@ -196,6 +210,8 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   final String name;
   @override
   final String unit;
+  @override
+  final String notes;
   final List<Exercise> _exercises;
   @override
   @JsonKey()
@@ -207,7 +223,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseType(id: $id, archivedAt: $archivedAt, trainingBlockId: $trainingBlockId, name: $name, unit: $unit, exercises: $exercises)';
+    return 'ExerciseType(id: $id, archivedAt: $archivedAt, trainingBlockId: $trainingBlockId, name: $name, unit: $unit, notes: $notes, exercises: $exercises)';
   }
 
   @override
@@ -220,6 +236,7 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
       ..add(DiagnosticsProperty('trainingBlockId', trainingBlockId))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('unit', unit))
+      ..add(DiagnosticsProperty('notes', notes))
       ..add(DiagnosticsProperty('exercises', exercises));
   }
 
@@ -246,6 +263,7 @@ abstract class _ExerciseType implements ExerciseType {
       required final String trainingBlockId,
       required final String name,
       required final String unit,
+      required final String notes,
       final List<Exercise> exercises}) = _$_ExerciseType;
 
   factory _ExerciseType.fromJson(Map<String, dynamic> json) =
@@ -263,6 +281,8 @@ abstract class _ExerciseType implements ExerciseType {
   String get name;
   @override
   String get unit;
+  @override
+  String get notes;
   @override
   List<Exercise> get exercises;
   @override

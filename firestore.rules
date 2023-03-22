@@ -34,9 +34,10 @@ service cloud.firestore {
 
       match /exercise-types/{exerciseTypeId} {
         function isCorrectSchema() {
-          return onlyHasAttrs(request.resource.data, ['name', 'unit', 'trainingBlockId', 'exercises', 'archivedAt'])
+          return onlyHasAttrs(request.resource.data, ['name', 'unit', 'notes', 'trainingBlockId', 'exercises', 'archivedAt'])
               && incoming().name is string
               && incoming().unit is string
+              && incoming().notes is string
               && incoming().trainingBlockId is string
               && incoming().exercises is list
               && incoming().archivedAt is number || incoming().archivedAt == null;

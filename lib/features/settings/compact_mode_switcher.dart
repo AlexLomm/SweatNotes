@@ -26,6 +26,6 @@ class CompactModeSwitcher extends _$CompactModeSwitcher {
 
     prefs.setBool(key, newState);
 
-    analytics.logEvent(name: 'toggle_compact_mode', parameters: {'compact_mode': newState});
+    analytics.logEvent(name: 'toggle_compact_mode', parameters: {'compact_mode': newState.toString()});
   }
 }

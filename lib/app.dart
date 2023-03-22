@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:journal_flutter/features/auth/services/user.dart';
-import 'package:journal_flutter/main.dart';
 import 'package:journal_flutter/shared/services/firebase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

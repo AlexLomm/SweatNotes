@@ -39,7 +39,7 @@ class SeedColorSwitcher extends _$SeedColorSwitcher {
     analytics.logEvent(name: 'set_seed_color', parameters: {
       'seed_color': color.value,
       'seed_color_hex': color.value.toRadixString(16),
-      'is_preset': presetColors.contains(color),
+      'is_preset': presetColors.contains(color).toString(),
     });
   }
 }

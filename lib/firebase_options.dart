@@ -53,12 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAaRFz49VdYMvsQ_GXXhJkeVTr5EPqMlu0',
-    appId: '1:428214340562:ios:8471f81b4cbf4ce849560b',
-    messagingSenderId: '428214340562',
-    projectId: 'journal-j-prod',
-    storageBucket: 'journal-j-prod.appspot.com',
-    iosClientId: '428214340562-jsviuo2vjhs2j33atuh13u5ist18gvlq.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBwHjWhY8ppFcNp-wNtcXVDoGvljJ4XvNQ',
+    appId: '1:763329225930:ios:9c5203c03a8b9c79598033',
+    messagingSenderId: '763329225930',
+    projectId: 'sweatnotes-sn',
+    storageBucket: 'sweatnotes-sn.appspot.com',
+    iosClientId: '763329225930-lgnrk0l8mbnvhb281u05t79h001mquen.apps.googleusercontent.com',
     iosBundleId: 'com.sweatnotes.sweatnotes',
   );
 }

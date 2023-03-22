@@ -2,6 +2,7 @@ import 'dart:isolate';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -16,6 +17,7 @@ import 'app.dart';
 import 'env.dart';
 import 'firebase_options.dart';
 
+const kAppCheckEnabled = kReleaseMode;
 const kCrashlyticsEnabled = kReleaseMode;
 const kAnalyticsEnabled = kReleaseMode;
 const kFirebaseEmulatorsEnabled = kDebugMode || kProfileMode;
@@ -24,6 +26,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await FirebaseAppCheck.instance.activate(
+    appleProvider: kAppCheckEnabled ? AppleProvider.appAttestWithDeviceCheckFallback : AppleProvider.debug,
+  );
 
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kCrashlyticsEnabled);
   FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kAnalyticsEnabled);

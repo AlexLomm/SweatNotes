@@ -74,55 +74,46 @@ class _RainbowCircleState extends State<_RainbowCircle> {
       onTap: () => CustomBottomSheet(
         title: 'Select color',
         height: 537.0,
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            textTheme: TextTheme(
-              bodyText1: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-              bodyText2: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ColorPicker(
-                  pickerAreaHeightPercent: 0.75,
-                  enableAlpha: false,
-                  portraitOnly: false,
-                  paletteType: PaletteType.hueWheel,
-                  pickerColor: widget.color,
-                  onColorChanged: (color) => setState(() => _color = color),
-                ),
-                const SizedBox(height: 24.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.primary),
-                        child: const Text('Cancel'),
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ColorPicker(
+                pickerAreaHeightPercent: 0.75,
+                enableAlpha: false,
+                portraitOnly: false,
+                paletteType: PaletteType.hueWheel,
+                pickerColor: widget.color,
+                onColorChanged: (color) => setState(() => _color = color),
+                labelTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
-                    Expanded(
-                      child: Button(
-                        onPressed: () {
-                          widget.onColorChanged(_color);
+              ),
+              const SizedBox(height: 24.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.primary),
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  Expanded(
+                    child: Button(
+                      onPressed: () {
+                        widget.onColorChanged(_color);
 
-                          Navigator.of(context).pop();
-                        },
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        child: Text('Set', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
-                      ),
+                        Navigator.of(context).pop();
+                      },
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: Text('Set', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ).show(context),

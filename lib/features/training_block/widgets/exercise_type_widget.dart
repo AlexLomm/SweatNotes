@@ -190,7 +190,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                             GestureDetector(
                               onTap: () => CustomBottomSheet(
                                 height: 324,
-                                title: 'Edit exercise type',
+                                title: 'Add notes',
                                 child: _TextEditorMultiLineWrapper(exerciseType: exerciseType),
                               ).show(context),
                               child: Icon(
@@ -287,8 +287,10 @@ class _ExerciseTypeName extends ConsumerWidget {
 
     return Align(
       alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.only(right: 8.0),
+      child: AnimatedContainer(
+        duration: WidgetParams.animationDuration,
+        curve: WidgetParams.animationCurve,
+        padding: EdgeInsets.only(right: 8.0, bottom: isEditMode ? 0 : 16.0),
         width: width,
         height: double.infinity,
         child: Align(
@@ -306,7 +308,7 @@ class _ExerciseTypeName extends ConsumerWidget {
             ),
             child: AutoSizeText(
               name,
-              maxLines: 3,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               minFontSize: Theme.of(context).textTheme.labelSmall!.fontSize!,
               style: Theme.of(context).textTheme.labelMedium!.copyWith(

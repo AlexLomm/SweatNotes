@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../router/router.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
 import 'password_field.dart';
@@ -68,7 +69,7 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                onPressed: () => context.go('/auth/reset-password'),
+                onPressed: () => context.goNamed(RouteNames.resetPassword),
                 child: Text(
                   'Forgot password?',
                   textAlign: TextAlign.right,
@@ -142,7 +143,7 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
                           ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
                 ),
                 TextButton(
-                  onPressed: () => context.go('/auth/sign-up'),
+                  onPressed: () => context.goNamed(RouteNames.signUp),
                   child: Text('Sign up',
                       style: Theme.of(context)
                           .textTheme

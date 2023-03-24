@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../router/router.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
 
@@ -73,7 +74,7 @@ class ResetPasswordFinishedScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8.0),
             TextButton(
-              onPressed: () => context.go('/auth/reset-password'),
+              onPressed: () => context.goNamed(RouteNames.resetPassword),
               child: Text(
                 'try a different email address',
                 textAlign: TextAlign.center,

@@ -93,7 +93,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (trainingBlock) {
         if (trainingBlock == null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => context.go('/'));
+          WidgetsBinding.instance.addPostFrameCallback((_) => context.goNamed(RouteNames.home));
 
           return const Center(child: CircularProgressIndicator());
         }

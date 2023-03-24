@@ -37,7 +37,7 @@ class AuthService {
 
       analytics.logLogin(loginMethod: 'apple');
 
-      goRouter.go('/');
+      goRouter.goNamed(RouteNames.home);
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
@@ -54,7 +54,7 @@ class AuthService {
 
       analytics.logLogin(loginMethod: 'google');
 
-      goRouter.go('/');
+      goRouter.goNamed(RouteNames.home);
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
@@ -77,7 +77,7 @@ class AuthService {
 
       analytics.logLogin(loginMethod: 'email');
 
-      goRouter.go('/');
+      goRouter.goNamed(RouteNames.home);
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
@@ -105,7 +105,7 @@ class AuthService {
 
       analytics.logSignUp(signUpMethod: 'email');
 
-      goRouter.go('/');
+      goRouter.goNamed(RouteNames.home);
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
@@ -122,7 +122,7 @@ class AuthService {
 
       analytics.logEvent(name: 'reset_password_email_sent');
 
-      goRouter.go('/auth/reset-password-finished');
+      goRouter.goNamed(RouteNames.resetPasswordFinished);
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
@@ -182,7 +182,7 @@ class AuthService {
 
       analytics.logEvent(name: 'update_display_name');
 
-      goRouter.go('/settings');
+      goRouter.goNamed(RouteNames.settings);
 
       messenger?.clearSnackBars();
       messenger?.showSnackBar(const SnackBar(content: Text('Display name updated successfully!')));

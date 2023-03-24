@@ -138,11 +138,11 @@ class _DeactivateAccountAlertDialog extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       title: Text(
         'Danger!',
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       content: Text(
         'Are you sure you want to deactivate your account? This action cannot be undone.',
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       actions: [
         TextButton(

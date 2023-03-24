@@ -148,15 +148,15 @@ class AuthService {
     }
   }
 
-  Future<void> deactivate() async {
+  Future<void> deleteAccount() async {
     try {
-      await authRepository.deactivate();
+      await authRepository.deleteAccount();
 
-      analytics.logEvent(name: 'deactivate_account');
+      analytics.logEvent(name: 'delete_account');
 
       goRouter.goNamed('log-in');
 
-      messenger?.showSnackBar(const SnackBar(content: Text('Account deactivated successfully!')));
+      messenger?.showSnackBar(const SnackBar(content: Text('Account deleted successfully!')));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
         goRouter.goNamed('log-in', queryParams: {'requiresReauthentication': 'true'});

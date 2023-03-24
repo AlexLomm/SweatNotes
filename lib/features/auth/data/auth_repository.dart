@@ -46,7 +46,7 @@ class AuthRepository {
     return user.updateDisplayName(displayName);
   }
 
-  Future<void> deactivate() {
+  Future<void> deleteAccount() {
     final user = _auth.currentUser;
 
     if (user == null) {

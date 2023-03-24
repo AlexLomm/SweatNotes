@@ -84,23 +84,20 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 96.0,
-                            child: TextButton(
-                              onPressed: () => showDialog(
-                                context: context,
-                                builder: (context) => _DeactivateAccountAlertDialog(
-                                  onCancel: context.pop,
-                                  onConfirm: authService.deactivate,
-                                ),
+                          TextButton(
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) => _DeleteAccountAlertDialog(
+                                onCancel: context.pop,
+                                onConfirm: authService.deleteAccount,
                               ),
-                              child: Text(
-                                'Deactivate',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge
-                                    ?.copyWith(color: Theme.of(context).colorScheme.error),
-                              ),
+                            ),
+                            child: Text(
+                              'Delete account',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge
+                                  ?.copyWith(color: Theme.of(context).colorScheme.error),
                             ),
                           ),
                           const SizedBox(width: 16.0),
@@ -122,11 +119,11 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-class _DeactivateAccountAlertDialog extends StatelessWidget {
+class _DeleteAccountAlertDialog extends StatelessWidget {
   final void Function() onCancel;
   final void Function() onConfirm;
 
-  const _DeactivateAccountAlertDialog({
+  const _DeleteAccountAlertDialog({
     Key? key,
     required this.onCancel,
     required this.onConfirm,
@@ -141,7 +138,7 @@ class _DeactivateAccountAlertDialog extends StatelessWidget {
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       content: Text(
-        'Are you sure you want to deactivate your account? This action cannot be undone.',
+        'Are you sure you want to delete your account? This action cannot be undone.',
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       actions: [

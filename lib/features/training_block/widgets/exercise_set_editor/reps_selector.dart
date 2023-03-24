@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../widgets/wheel_selector/models/wheel_selector_value.dart';
-import '../../../../widgets/wheel_selector/wheel_selector.dart';
+import 'package:selector_wheel/selector_wheel.dart';
 
 class RepsSelector extends StatelessWidget {
   final int value;
@@ -20,29 +18,29 @@ class RepsSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context)
-        .textTheme
-        .bodyLarge
-        ?.copyWith(color: Theme.of(context).colorScheme.onSurface);
+    final textTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface);
 
     return Column(
       children: [
         Text('Reps', style: textTheme),
         const SizedBox(height: 8),
-        WheelSelector(
-          childCount: stepsCount,
-          selectedItemIndex: _convertValueToIndex(value),
-          convertIndexToValue: _convertIndexToValue,
-          onValueChanged: (value) => onChange(value),
+        SizedBox(
+          height: 80,
+          child: SelectorWheel(
+            childCount: stepsCount,
+            selectedItemIndex: _convertValueToIndex(value),
+            convertIndexToValue: _convertIndexToValue,
+            onValueChanged: (value) => onChange(value.value),
+          ),
         ),
       ],
     );
   }
 
-  WheelSelectorValue<int> _convertIndexToValue(int i) {
+  SelectorWheelValue<int> _convertIndexToValue(int i) {
     final value = (i * step).toInt();
 
-    return WheelSelectorValue(label: '$value', value: value);
+    return SelectorWheelValue(label: '$value', value: value, index: i);
   }
 
   int _convertValueToIndex(int value) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../widgets/button.dart';
-import '../../../../widgets/wheel_selector/wheel_selector.dart';
 import 'load_selector.dart';
 import 'reps_selector.dart';
 import 'vertical_divider.dart';
@@ -49,9 +48,7 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 32.0),
-                  child: VerticalDividerWithGradient(
-                    height: WheelSelector.defaultHeight,
-                  ),
+                  child: VerticalDividerWithGradient(height: 128.0),
                 ),
                 LoadSelector(
                   value: widget.load,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../widgets/wheel_selector/models/wheel_selector_value.dart';
-import '../../../../widgets/wheel_selector/wheel_selector.dart';
+import 'package:selector_wheel/selector_wheel.dart';
 
 class LoadSelector extends StatefulWidget {
   final double value;
@@ -35,50 +33,52 @@ class _LoadSelectorState extends State<LoadSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context)
-        .textTheme
-        .bodyLarge
-        ?.copyWith(color: Theme.of(context).colorScheme.onSurface);
+    final textTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface);
 
     return Column(children: [
       Text('Load', style: textTheme),
       const SizedBox(height: 8),
       Row(
         children: [
-          WheelSelector(
-            childCount: widget.stepsCountFirst,
-            selectedItemIndex: _convertFirstValueToIndex(widget.value),
-            convertIndexToValue: _convertFirstIndexToValue,
-            onValueChanged: (int value) {
-              setState(() => firstValue = value);
-              widget.onChange(combinedValue);
-            },
+          SizedBox(
+            height: 128.0,
+            child: SelectorWheel(
+              childCount: widget.stepsCountFirst,
+              selectedItemIndex: _convertFirstValueToIndex(widget.value),
+              convertIndexToValue: _convertFirstIndexToValue,
+              onValueChanged: (value) {
+                setState(() => firstValue = value.value);
+                widget.onChange(combinedValue);
+              },
+            ),
           ),
           const SizedBox(width: 4.0),
-          WheelSelector(
-            childCount: widget.stepsCountSecond,
-            selectedItemIndex: _convertSecondValueToIndex(widget.value),
-            convertIndexToValue: _convertSecondIndexToValue,
-            onValueChanged: (double value) {
-              setState(() => secondValue = value);
-              widget.onChange(combinedValue);
-            },
+          SizedBox(
+            height: 128.0,
+            child: SelectorWheel(
+              selectedItemIndex: _convertSecondValueToIndex(widget.value),
+              convertIndexToValue: _convertSecondIndexToValue,
+              onValueChanged: (value) {
+                setState(() => secondValue = value.value);
+                widget.onChange(combinedValue);
+              },
+            ),
           ),
         ],
       ),
     ]);
   }
 
-  WheelSelectorValue<int> _convertFirstIndexToValue(int i) {
+  SelectorWheelValue<int> _convertFirstIndexToValue(int i) {
     final value = i * widget.stepFirst;
 
-    return WheelSelectorValue(label: '$value', value: value);
+    return SelectorWheelValue(label: '$value', value: value, index: i);
   }
 
-  WheelSelectorValue<double> _convertSecondIndexToValue(int i) {
+  SelectorWheelValue<double> _convertSecondIndexToValue(int i) {
     final value = i * widget.stepSecond;
 
-    return WheelSelectorValue(label: '$value', value: value);
+    return SelectorWheelValue(label: '$value', value: value, index: i);
   }
 
   int _convertFirstValueToIndex(double value) {

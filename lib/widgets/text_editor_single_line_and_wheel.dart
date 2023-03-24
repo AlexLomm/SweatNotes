@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:selector_wheel/selector_wheel.dart';
 
 import 'button.dart';
-import 'wheel_selector/models/wheel_selector_value.dart';
-import 'wheel_selector/wheel_selector.dart';
 
 class TextEditorSingleLineAndWheel extends StatefulWidget {
   static const height = 144.0;
@@ -27,12 +26,10 @@ class TextEditorSingleLineAndWheel extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TextEditorSingleLineAndWheel> createState() =>
-      _TextEditorSingleLineAndWheelState();
+  State<TextEditorSingleLineAndWheel> createState() => _TextEditorSingleLineAndWheelState();
 }
 
-class _TextEditorSingleLineAndWheelState
-    extends State<TextEditorSingleLineAndWheel> {
+class _TextEditorSingleLineAndWheelState extends State<TextEditorSingleLineAndWheel> {
   bool _isEmpty = false;
   String _unit = '';
 
@@ -49,8 +46,7 @@ class _TextEditorSingleLineAndWheelState
     _controller.addListener(_updateIsEmpty);
   }
 
-  _updateIsEmpty() =>
-      setState(() => _isEmpty = _controller.text.isEmpty || _unit.isEmpty);
+  _updateIsEmpty() => setState(() => _isEmpty = _controller.text.isEmpty || _unit.isEmpty);
 
   @override
   void dispose() {
@@ -74,8 +70,8 @@ class _TextEditorSingleLineAndWheelState
                   controller: _controller,
                   maxLength: widget.maxLength,
                   keyboardType: TextInputType.text,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface),
+                  style:
+                      Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
                   decoration: InputDecoration(
                     hintText: widget.hintText,
                     fillColor: Theme.of(context).colorScheme.surfaceVariant,
@@ -85,14 +81,17 @@ class _TextEditorSingleLineAndWheelState
                 ),
               ),
               const SizedBox(width: 24),
-              WheelSelector(
+              SizedBox(
                 height: 80,
-                selectedItemIndex: widget.options.indexOf(_unit),
-                childCount: widget.options.length,
-                onValueChanged: (unit) => setState(() => _unit = unit),
-                convertIndexToValue: (index) => WheelSelectorValue(
-                  value: widget.options[index],
-                  label: widget.options[index],
+                child: SelectorWheel(
+                  selectedItemIndex: widget.options.indexOf(_unit),
+                  childCount: widget.options.length,
+                  onValueChanged: (value) => setState(() => _unit = value.value),
+                  convertIndexToValue: (index) => SelectorWheelValue(
+                    index: index,
+                    value: widget.options[index],
+                    label: widget.options[index],
+                  ),
                 ),
               ),
             ],
@@ -100,9 +99,7 @@ class _TextEditorSingleLineAndWheelState
           const SizedBox(height: 16),
           Button(
             label: widget.buttonLabel,
-            onPressed: _isEmpty
-                ? null
-                : () => widget.onSubmitted(_controller.text, _unit),
+            onPressed: _isEmpty ? null : () => widget.onSubmitted(_controller.text, _unit),
           ),
         ],
       ),

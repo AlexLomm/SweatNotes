@@ -11,7 +11,7 @@ class AuthRepository {
   AuthRepository(this._auth);
 
   Future<void> signInWithApple() {
-    return _auth.signInWithProvider(AppleAuthProvider());
+    return _auth.signInWithProvider(AppleAuthProvider().addScope('email'));
   }
 
   Future<void> signInWithGoogle() {

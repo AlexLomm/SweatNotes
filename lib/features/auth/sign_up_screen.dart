@@ -38,7 +38,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final authService = ref.watch(authServiceProvider);
 
     return Layout(
-      onGoBackButtonTap: () => context.go('/auth'),
+      onGoBackButtonTap: () => context.goNamed('log-in'),
       appBarTitle: Text(
         'Sign Up',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(

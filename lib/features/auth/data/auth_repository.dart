@@ -46,6 +46,16 @@ class AuthRepository {
     return user.updateDisplayName(displayName);
   }
 
+  Future<void> deactivate() {
+    final user = _auth.currentUser;
+
+    if (user == null) {
+      throw Exception('User is unauthenticated!');
+    }
+
+    return user.delete();
+  }
+
   Future<void> signOut() {
     return _auth.signOut();
   }

@@ -138,11 +138,39 @@ class AuthService {
 
       analytics.logEvent(name: 'sign_out');
 
-      goRouter.go('/auth');
+      goRouter.goNamed('log-in');
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
       crashlytics.recordError(e, StackTrace.current, reason: 'when logging out');
+
+      _showError(e.toString());
+    }
+  }
+
+  Future<void> deactivate() async {
+    try {
+      await authRepository.deactivate();
+
+      analytics.logEvent(name: 'deactivate_account');
+
+      goRouter.goNamed('log-in');
+
+      messenger?.showSnackBar(const SnackBar(content: Text('Account deactivated successfully!')));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        goRouter.goNamed('log-in', queryParams: {'requiresReauthentication': 'true'});
+
+        messenger?.showSnackBar(
+          const SnackBar(content: Text('For your security please log in and try deactivating again!')),
+        );
+
+        return;
+      }
+
+      _showError(e.message);
+    } catch (e) {
+      crashlytics.recordError(e, StackTrace.current, reason: 'when deactivating account');
 
       _showError(e.toString());
     }

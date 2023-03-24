@@ -43,7 +43,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     final authService = ref.watch(authServiceProvider);
 
     return Layout(
-      onGoBackButtonTap: () => context.go('/auth'),
+      onGoBackButtonTap: () => context.goNamed('log-in'),
       appBarTitle: Text(
         'Reset Password',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(

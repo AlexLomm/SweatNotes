@@ -73,7 +73,7 @@ class SettingsScreen extends ConsumerWidget {
                     children: [
                       Text(
                         packageInfo.when(
-                          data: (value) => 'App version: ${value.version}+${value.buildNumber}',
+                          data: (value) => 'Version ${value.version}+${value.buildNumber}',
                           error: (error, stackTrace) => '',
                           loading: () => '',
                         ),
@@ -82,12 +82,33 @@ class SettingsScreen extends ConsumerWidget {
                             .labelMedium
                             ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                       ),
-                      SizedBox(
-                        width: 96.0,
-                        child: Button(
-                          label: 'Log out',
-                          onPressed: () => authService.signOut(),
-                        ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 96.0,
+                            child: TextButton(
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (context) => _DeactivateAccountAlertDialog(
+                                  onCancel: context.pop,
+                                  onConfirm: authService.deactivate,
+                                ),
+                              ),
+                              child: Text(
+                                'Deactivate',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(color: Theme.of(context).colorScheme.error),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                          SizedBox(
+                            width: 96.0,
+                            child: Button(label: 'Log out', onPressed: authService.signOut),
+                          )
+                        ],
                       ),
                     ],
                   ),
@@ -97,6 +118,48 @@ class SettingsScreen extends ConsumerWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _DeactivateAccountAlertDialog extends StatelessWidget {
+  final void Function() onCancel;
+  final void Function() onConfirm;
+
+  const _DeactivateAccountAlertDialog({
+    Key? key,
+    required this.onCancel,
+    required this.onConfirm,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      title: Text(
+        'Danger!',
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+      ),
+      content: Text(
+        'Are you sure you want to deactivate your account? This action cannot be undone.',
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+      ),
+      actions: [
+        TextButton(
+          onPressed: onCancel,
+          child: Text(
+            'Cancel',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
+        TextButton(
+          onPressed: onConfirm,
+          child: Text(
+            'Confirm',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+          ),
+        ),
+      ],
     );
   }
 }

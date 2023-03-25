@@ -159,7 +159,7 @@ class AuthService {
       messenger?.showSnackBar(const SnackBar(content: Text('Account deleted successfully!')));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
-        goRouter.goNamed('log-in', queryParams: {'requiresReauthentication': 'true'});
+        await signOut();
 
         messenger?.showSnackBar(
           const SnackBar(content: Text('For your security please log in and try deactivating again!')),

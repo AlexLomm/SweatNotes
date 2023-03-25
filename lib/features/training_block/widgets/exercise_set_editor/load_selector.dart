@@ -56,6 +56,7 @@ class _LoadSelectorState extends State<LoadSelector> {
           SizedBox(
             height: 128.0,
             child: SelectorWheel(
+              childCount: widget.stepsCountSecond,
               selectedItemIndex: _convertSecondValueToIndex(widget.value),
               convertIndexToValue: _convertSecondIndexToValue,
               onValueChanged: (value) {

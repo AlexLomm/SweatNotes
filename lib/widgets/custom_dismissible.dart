@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+
+import '../features/training_block/widget_params.dart';
 
 class CustomDismissible extends StatefulWidget {
   final bool isEnabled;
@@ -26,17 +31,26 @@ class CustomDismissible extends StatefulWidget {
 }
 
 class _CustomDismissibleState extends State<CustomDismissible> {
-  bool _isConfirmed = false;
+  Timer? _timerToReset;
   int _counter = 0;
+
+  bool _isConfirmed = false;
 
   @override
   void didUpdateWidget(CustomDismissible oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     // reset the widget's state if the isEnabled property has changed.
-    // this is useful, when the swipe is action is cancelled mid-swipe.
+    // this is useful, when the swipe action is cancelled mid-swipe.
     if (oldWidget.isEnabled != widget.isEnabled && !widget.isEnabled) {
-      setState(() => _counter++);
+      _timerToReset?.cancel();
+
+      // the timer is needed for the "reset" not to interfere with the animations.
+      // I.e the reset should happen after the animations have finished.
+      //
+      // Also, the timer takes `timeDilation` into consideration in order
+      // for it to work seamlessly with the debugger "Slow Animations" mode
+      _timerToReset = Timer(WidgetParams.animationDuration * timeDilation, () => setState(() => _counter++));
     }
   }
 
@@ -65,7 +79,9 @@ class _CustomDismissibleState extends State<CustomDismissible> {
           }
         },
         onDismissed: widget.onDismissed,
-        background: Container(
+        background: AnimatedContainer(
+          duration: WidgetParams.animationDuration,
+          curve: WidgetParams.animationCurve,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.tertiaryContainer,
           ),

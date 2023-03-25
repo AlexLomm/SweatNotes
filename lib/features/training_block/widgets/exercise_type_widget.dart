@@ -74,141 +74,136 @@ class ExerciseTypeWidget extends ConsumerWidget {
         elevation: 2,
         shape: const RoundedRectangleBorder(),
         color: Theme.of(context).colorScheme.surfaceVariant,
-        child: SizedBox(
-          // the height is set outside of the AnimatedContainer
-          // in order to prevent newly created widgets' heights
-          // from being animated
+        child: AnimatedContainer(
+          duration: WidgetParams.animationDuration,
+          curve: WidgetParams.animationCurve,
+          padding: EdgeInsets.only(left: widgetParams.exerciseTypePaddingLeft),
+          width: widgetParams.exerciseTypeWidth,
           height: widgetParams.exerciseTypeHeight,
-          child: AnimatedContainer(
-            duration: WidgetParams.animationDuration,
-            curve: WidgetParams.animationCurve,
-            padding: EdgeInsets.only(left: widgetParams.exerciseTypePaddingLeft),
-            width: widgetParams.exerciseTypeWidth,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: AnimatedOpacity(
-                    duration: WidgetParams.animationDuration,
-                    curve: WidgetParams.animationCurve,
-                    opacity: isEditMode ? 1 : 0,
-                    child: ReorderableDragStartListener(
-                      index: index,
-                      child: ExerciseDayIconWrapper(
-                        icon: Icons.drag_indicator,
-                        width: widgetParams.exerciseTypeDragHandleWidth,
-                      ),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: AnimatedOpacity(
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  opacity: isEditMode ? 1 : 0,
+                  child: ReorderableDragStartListener(
+                    index: index,
+                    child: ExerciseDayIconWrapper(
+                      icon: Icons.drag_indicator,
+                      width: widgetParams.exerciseTypeDragHandleWidth,
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: AnimatedContainer(
-                    duration: WidgetParams.animationDuration,
-                    curve: WidgetParams.animationCurve,
-                    margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
-                    child: IgnorePointerEditMode(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => CustomBottomSheet(
-                        height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
-                        title: 'Edit exercise type',
-                        child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
-                      ).show(context),
-                      child: _ExerciseTypeName(
-                        width: widgetParams.exerciseTypeLabelWidth,
-                        name: exerciseType.name,
-                      ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: AnimatedContainer(
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
+                  child: IgnorePointerEditMode(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => CustomBottomSheet(
+                      height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                      title: 'Edit exercise type',
+                      child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
+                    ).show(context),
+                    child: _ExerciseTypeName(
+                      width: widgetParams.exerciseTypeLabelWidth,
+                      name: exerciseType.name,
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: AnimatedOpacity(
-                    duration: WidgetParams.animationDuration,
-                    curve: WidgetParams.animationCurve,
-                    opacity: isEditMode ? 1 : 0,
-                    child: IgnorePointerEditMode(
-                      child: AnimatedContainer(
-                        duration: WidgetParams.animationDuration,
-                        curve: WidgetParams.animationCurve,
-                        child: ButtonDropdownMenu(
-                          icon: Icons.keyboard_arrow_down,
-                          animationDuration: WidgetParams.animationDuration,
-                          animationCurve: WidgetParams.animationCurve,
-                          items: toExerciseDay
-                              .map(
-                                (exerciseDay) => ButtonDropdownMenuItem(
-                                  onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
-                                    trainingBlock: trainingBlock,
-                                    fromExerciseDay: fromExerciseDay,
-                                    toExerciseDay: exerciseDay,
-                                    exerciseTypeId: exerciseType.dbModel.id,
-                                  ),
-                                  child: Text(
-                                    exerciseDay.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                                  ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AnimatedOpacity(
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  opacity: isEditMode ? 1 : 0,
+                  child: IgnorePointerEditMode(
+                    child: AnimatedContainer(
+                      duration: WidgetParams.animationDuration,
+                      curve: WidgetParams.animationCurve,
+                      child: ButtonDropdownMenu(
+                        icon: Icons.keyboard_arrow_down,
+                        animationDuration: WidgetParams.animationDuration,
+                        animationCurve: WidgetParams.animationCurve,
+                        items: toExerciseDay
+                            .map(
+                              (exerciseDay) => ButtonDropdownMenuItem(
+                                onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
+                                  trainingBlock: trainingBlock,
+                                  fromExerciseDay: fromExerciseDay,
+                                  toExerciseDay: exerciseDay,
+                                  exerciseTypeId: exerciseType.dbModel.id,
                                 ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: AnimatedOpacity(
-                    duration: WidgetParams.animationDuration,
-                    curve: WidgetParams.animationCurve,
-                    opacity: isEditMode ? 0 : 1,
-                    child: IgnorePointerEditMode(
-                      ignoreWhenEditMode: true,
-                      child: AnimatedContainer(
-                        duration: WidgetParams.animationDuration,
-                        curve: WidgetParams.animationCurve,
-                        height: 22,
-                        width: widgetParams.exerciseTypeWidth,
-                        padding: const EdgeInsets.only(bottom: 4, right: 4),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                              child: AutoSizeText(
-                                exerciseType.notes,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.48)),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => CustomBottomSheet(
-                                height: 324,
-                                title: 'Add notes',
-                                child: _TextEditorMultiLineWrapper(exerciseType: exerciseType),
-                              ).show(context),
-                              child: Icon(
-                                Icons.edit_note,
-                                color: exerciseType.notes.isEmpty
-                                    ? Theme.of(context).colorScheme.outline.withOpacity(0.72)
-                                    : Theme.of(context).colorScheme.tertiary,
-                                size: 18,
+                                child: Text(
+                                  exerciseDay.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                ),
                               ),
                             )
-                          ],
-                        ),
+                            .toList(),
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: AnimatedOpacity(
+                  duration: WidgetParams.animationDuration,
+                  curve: WidgetParams.animationCurve,
+                  opacity: isEditMode ? 0 : 1,
+                  child: IgnorePointerEditMode(
+                    ignoreWhenEditMode: true,
+                    child: AnimatedContainer(
+                      duration: WidgetParams.animationDuration,
+                      curve: WidgetParams.animationCurve,
+                      height: 22,
+                      width: widgetParams.exerciseTypeWidth,
+                      padding: const EdgeInsets.only(bottom: 4, right: 4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: AutoSizeText(
+                              exerciseType.notes,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.48)),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => CustomBottomSheet(
+                              height: 324,
+                              title: 'Add notes',
+                              child: _TextEditorMultiLineWrapper(exerciseType: exerciseType),
+                            ).show(context),
+                            child: Icon(
+                              Icons.edit_note,
+                              color: exerciseType.notes.isEmpty
+                                  ? Theme.of(context).colorScheme.outline.withOpacity(0.72)
+                                  : Theme.of(context).colorScheme.tertiary,
+                              size: 18,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

@@ -29,7 +29,9 @@ class TappableArrow extends ConsumerWidget {
       // even when disabled, the gesture detector should still prevent
       // the user from interacting with the underlying widget
       behavior: HitTestBehavior.opaque,
-      child: Container(
+      child: AnimatedContainer(
+        duration: WidgetParams.animationDuration,
+        curve: WidgetParams.animationCurve,
         height: 24.0,
         width: widgetParams.exerciseTypeDragHandleWidth,
         color: Colors.white.withOpacity(0.0001),

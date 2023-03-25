@@ -37,7 +37,9 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
       curve: WidgetParams.animationCurve,
       child: IgnorePointerEditMode(
         ignoreWhenEditMode: true,
-        child: Container(
+        child: AnimatedContainer(
+          duration: WidgetParams.animationDuration,
+          curve: WidgetParams.animationCurve,
           height: widgetParams.getExercisesHeight(exerciseTypesCount),
           margin: EdgeInsets.only(
             left: widgetParams.exercisesMarginLeft,

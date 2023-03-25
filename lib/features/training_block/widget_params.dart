@@ -119,7 +119,7 @@ class WidgetParams {
 
   double get exercisesTitleHeight => 56.0;
 
-  double get exercisesTitlePaddingLeft => 8.0;
+  double get exercisesTitlePaddingLeft => isEditMode ? 0.0 : 8.0;
 
   double get exercisesTitlePaddingRight => 4.0;
 

@@ -7,7 +7,7 @@ part of 'training_block_details_stream.dart';
 // **************************************************************************
 
 String _$trainingBlockDetailsStreamHash() =>
-    r'29838532389dc48556a47e2865a2d9aeef9aacfb';
+    r'29767176b688d4bfb182a71c5c039e68fa94188a';
 
 /// Copied from Dart SDK
 class _SystemHash {

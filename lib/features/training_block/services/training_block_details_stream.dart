@@ -51,9 +51,7 @@ Stream<TrainingBlockClient?> trainingBlockDetailsStream(
     },
   );
 
-  await for (final data in combinedStream) {
-    yield data;
-  }
+  yield* combinedStream;
 }
 
 TrainingBlockClient? _getNormalizedData(

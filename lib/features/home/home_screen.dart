@@ -11,7 +11,6 @@ import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';
-import '../settings/theme_switcher.dart';
 import '../training_block/services/training_blocks_service.dart';
 import '../training_block/services/training_blocks_stream.dart';
 
@@ -56,8 +55,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
     final trainingBlocks = ref.watch(trainingBlocksStreamProvider);
     final authService = ref.watch(authServiceProvider);
-    final themeSwitcher = ref.watch(themeSwitcherProvider.notifier);
-    final currentTheme = ref.watch(themeSwitcherProvider);
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
 
     return Layout(

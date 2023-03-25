@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../router/router.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
 import 'regular_text_field.dart';
@@ -43,7 +44,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     final authService = ref.watch(authServiceProvider);
 
     return Layout(
-      onGoBackButtonTap: () => context.goNamed('log-in'),
+      onGoBackButtonTap: () => context.goNamed(RouteNames.logIn),
       appBarTitle: Text(
         'Reset Password',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(

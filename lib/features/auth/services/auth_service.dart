@@ -138,7 +138,7 @@ class AuthService {
 
       analytics.logEvent(name: 'sign_out');
 
-      goRouter.goNamed('log-in');
+      goRouter.goNamed(RouteNames.logIn);
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
@@ -154,7 +154,7 @@ class AuthService {
 
       analytics.logEvent(name: 'delete_account');
 
-      goRouter.goNamed('log-in');
+      goRouter.goNamed(RouteNames.logIn);
 
       messenger?.showSnackBar(const SnackBar(content: Text('Account deleted successfully!')));
     } on FirebaseAuthException catch (e) {

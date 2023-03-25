@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../router/router.dart';
 import '../../widgets/button.dart';
 import '../../widgets/display_name_field.dart';
 import '../../widgets/layout.dart';
@@ -38,7 +39,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final authService = ref.watch(authServiceProvider);
 
     return Layout(
-      onGoBackButtonTap: () => context.goNamed('log-in'),
+      onGoBackButtonTap: () => context.goNamed(RouteNames.logIn),
       appBarTitle: Text(
         'Sign Up',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(

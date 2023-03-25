@@ -30,7 +30,5 @@ Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef r
             .toList(),
       );
 
-  await for (final data in trainingBlockStream) {
-    yield data;
-  }
+  yield* trainingBlockStream;
 }

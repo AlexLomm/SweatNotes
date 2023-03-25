@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/services/firebase.dart';
 import '../../../shared/services/package_info.dart';
+import '../../../shared/services/url_launcher.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/dismissible_button.dart';
 import '../../../widgets/go_back_button.dart';
@@ -18,6 +19,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authService = ref.watch(authServiceProvider);
     final packageInfo = ref.watch(packageInfoProvider);
+    final urlLauncher = ref.watch(urlLauncherProvider);
 
     return Layout(
       centerTitle: false,
@@ -51,6 +53,24 @@ class SettingsScreen extends ConsumerWidget {
                 label: 'Theme',
                 right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => context.push('/settings/theme'),
+              ),
+              DismissibleButton(
+                id: 'https://sweatnotes.com/support',
+                label: 'Support',
+                right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () => urlLauncher.launch('https://sweatnotes.com/support'),
+              ),
+              DismissibleButton(
+                id: 'https://sweatnotes.com/privacy-policy',
+                label: 'Privacy Policy',
+                right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () => urlLauncher.launch('https://sweatnotes.com/privacy-policy'),
+              ),
+              DismissibleButton(
+                id: 'https://sweatnotes.com/terms-of-service',
+                label: 'Terms of Service',
+                right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () => urlLauncher.launch('https://sweatnotes.com/terms-of-service'),
               ),
               // DismissibleButton(
               //   id: '/settings/contact-us-on-discord',

@@ -119,6 +119,6 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
       print(e);
     }
 
-    setState(() => isLoading = false);
+    if (mounted) setState(() => isLoading = false);
   }
 }

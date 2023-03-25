@@ -79,7 +79,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   password: _passwordController.text,
                 );
 
-                setState(() => _isLoading = false);
+                if (mounted) setState(() => _isLoading = false);
               },
             ),
           ],

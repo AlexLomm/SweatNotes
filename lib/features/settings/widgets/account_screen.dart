@@ -65,7 +65,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
                   await authService.updateDisplayName(_displayNameController.text);
 
-                  setState(() => _isLoading = false);
+                  if (mounted) setState(() => _isLoading = false);
                 },
               ),
             ),

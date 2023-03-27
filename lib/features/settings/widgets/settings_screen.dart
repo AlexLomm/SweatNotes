@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -93,7 +94,16 @@ class SettingsScreen extends ConsumerWidget {
                     children: [
                       Text(
                         packageInfo.when(
-                          data: (value) => 'Version ${value.version}+${value.buildNumber}',
+                          data: (value) {
+                            // the `value.version == value.buildNumber` is needed because when the
+                            // build number is not specified, the version is used as the build number
+                            // @see https://github.com/fluttercommunity/plus_plugins/issues/1644
+                            final versionString = kReleaseMode || value.version == value.buildNumber
+                                ? value.version
+                                : '${value.version}+${value.buildNumber}';
+
+                            return 'Version $versionString';
+                          },
                           error: (error, stackTrace) => '',
                           loading: () => '',
                         ),

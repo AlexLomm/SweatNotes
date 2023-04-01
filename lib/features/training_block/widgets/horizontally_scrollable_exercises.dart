@@ -45,6 +45,7 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
             left: widgetParams.exercisesMarginLeft,
           ),
           child: ListView.builder(
+            key: PageStorageKey(exerciseDay.dbModel.pseudoId),
             padding: EdgeInsets.only(
               right: widgetParams.exercisesSideSpacing,
               left: widgetParams.exercisesScrollInwardsDepth,

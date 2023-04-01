@@ -121,17 +121,30 @@ class Matrix extends ConsumerStatefulWidget {
 }
 
 class _MatrixState extends ConsumerState<Matrix> {
-  late LinkedScrollControllerGroup _controllers;
-  final Map<String, ScrollController> _scrollControllersMap = {};
+  late ScrollController _verticalScrollController;
+  late LinkedScrollControllerGroup _horizontalScrollControllersGroup;
+  final Map<String, ScrollController> _horizontalScrollControllersMap = {};
+  double _horizontalScrollOffset = 0;
 
   @override
   void initState() {
     super.initState();
 
-    _controllers = LinkedScrollControllerGroup();
+    _horizontalScrollControllersGroup = LinkedScrollControllerGroup()
+      ..addOffsetChangedListener(() {
+        _horizontalScrollOffset = _horizontalScrollControllersGroup.offset;
+      });
+
+    // this is needed to reset the horizontal scroll offset for the lists that have been
+    // scrolled out of the viewport and became de-synchronized with the currently-visible
+    // horizontal lists
+    _verticalScrollController = ScrollController()
+      ..addListener(() {
+        _horizontalScrollControllersGroup.jumpTo(_horizontalScrollOffset);
+      });
 
     for (final pseudoId in _nonEmptyDayPseudoIds) {
-      _scrollControllersMap[pseudoId] = _controllers.addAndGet();
+      _horizontalScrollControllersMap[pseudoId] = _horizontalScrollControllersGroup.addAndGet();
     }
   }
 
@@ -140,19 +153,19 @@ class _MatrixState extends ConsumerState<Matrix> {
     super.didUpdateWidget(oldWidget);
 
     final setOfNonEmptyDayPseudoIds = _nonEmptyDayPseudoIds;
-    final setOfScrollAttachedDayPseudoIds = _scrollControllersMap.keys.toSet();
+    final setOfScrollAttachedDayPseudoIds = _horizontalScrollControllersMap.keys.toSet();
 
     if (setEquals(setOfNonEmptyDayPseudoIds, setOfScrollAttachedDayPseudoIds)) return;
 
     // remove controllers that are no longer needed (for example, if an exercise day was archived)
     for (final pseudoId in setOfScrollAttachedDayPseudoIds.difference(setOfNonEmptyDayPseudoIds)) {
-      _scrollControllersMap[pseudoId]!.dispose();
-      _scrollControllersMap.remove(pseudoId);
+      _horizontalScrollControllersMap[pseudoId]!.dispose();
+      _horizontalScrollControllersMap.remove(pseudoId);
     }
 
     // add controllers for new exercise days
     for (final pseudoId in setOfNonEmptyDayPseudoIds.difference(setOfScrollAttachedDayPseudoIds)) {
-      _scrollControllersMap[pseudoId] = _controllers.addAndGet();
+      _horizontalScrollControllersMap[pseudoId] = _horizontalScrollControllersGroup.addAndGet();
     }
   }
 
@@ -167,9 +180,11 @@ class _MatrixState extends ConsumerState<Matrix> {
 
   @override
   void dispose() {
-    for (final controller in _scrollControllersMap.values) {
+    for (final controller in _horizontalScrollControllersMap.values) {
       controller.dispose();
     }
+
+    _verticalScrollController.dispose();
 
     super.dispose();
   }
@@ -191,171 +206,174 @@ class _MatrixState extends ConsumerState<Matrix> {
           color: isCompactMode ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
         );
 
-    return CustomScrollView(slivers: <Widget>[
-      SliverAppBar(
-        expandedHeight: 152,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        shadowColor: Colors.transparent,
-        centerTitle: false,
-        pinned: true,
-        leading: GoBackButton(onPressed: () => context.pop()),
-        flexibleSpace: CustomFlexibleSpaceBar(
+    return CustomScrollView(
+      controller: _verticalScrollController,
+      slivers: <Widget>[
+        SliverAppBar(
+          expandedHeight: 152,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          shadowColor: Colors.transparent,
           centerTitle: false,
-          title: AnimatedContainer(
-            width: 200,
-            duration: WidgetParams.animationDuration,
-            curve: WidgetParams.animationCurve,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
-                  width: 1,
-                ),
-              ),
-            ),
-            child: GestureDetector(
-              onTap: isEditMode
-                  ? () => CustomBottomSheet(
-                        height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                        title: 'Update training block',
-                        child: TextEditorSingleLine(
-                          value: widget.trainingBlock.name,
-                          onSubmitted: (String text) {
-                            trainingBlocksService.updateName(widget.trainingBlock, text);
-
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ).show(context)
-                  : null,
-              child: AutoSizeText(
-                widget.trainingBlock.name,
-                softWrap: false,
-                maxLines: 1,
-                minFontSize: ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) * 0.9).roundToDouble(),
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-              ),
-            ),
-          ),
-        ),
-        actions: [
-          AnimatedOpacity(
-            opacity: isEditMode ? 0 : 1,
-            duration: WidgetParams.animationDuration,
-            curve: WidgetParams.animationCurve,
-            child: IconButton(
-              icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
-              tooltip: 'Add new entry',
-              splashRadius: 20,
-              onPressed: isEditMode
-                  ? null
-                  : () => CustomBottomSheet(
-                        height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                        title: 'Add exercise day',
-                        child: TextEditorSingleLine(
-                          value: '',
-                          onSubmitted: (String text) {
-                            exerciseDaysService.create(trainingBlock: widget.trainingBlock, name: text);
-
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ).show(context),
-            ),
-          ),
-          AnimatedOpacity(
-            opacity: isEditMode ? 0 : 1,
-            duration: WidgetParams.animationDuration,
-            curve: WidgetParams.animationCurve,
-            child: IconButton(
-              icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
-              tooltip: 'Turn on edit mode',
-              splashRadius: 20,
-              onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
-            ),
-          ),
-          AnimatedCrossFade(
-            alignment: Alignment.center,
-            crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            duration: WidgetParams.animationDuration,
-            firstCurve: WidgetParams.animationCurve,
-            secondCurve: WidgetParams.animationCurve,
-            firstChild: ButtonDropdownMenu(
-              icon: Icons.more_vert,
-              animationDuration: WidgetParams.animationDuration,
-              animationCurve: WidgetParams.animationCurve,
-              items: [
-                ButtonDropdownMenuItem(
-                  onTap: () => context.push('/settings'),
-                  child: Text('Settings', style: menuItemTheme),
-                ),
-                ButtonDropdownMenuItem(
-                  onTap: compactModeSwitcher.toggle,
-                  child: RichText(
-                    softWrap: false,
-                    text: TextSpan(
-                      text: 'Compact mode',
-                      style: menuItemTheme,
-                      children: [
-                        WidgetSpan(
-                          child: Container(
-                            margin: const EdgeInsets.only(left: 24.0),
-                            padding: const EdgeInsets.only(bottom: 1.0),
-                            child: Text(isCompactMode ? 'On' : 'Off', style: menuItemSubTextTheme),
-                          ),
-                        ),
-                      ],
-                    ),
+          pinned: true,
+          leading: GoBackButton(onPressed: () => context.pop()),
+          flexibleSpace: CustomFlexibleSpaceBar(
+            centerTitle: false,
+            title: AnimatedContainer(
+              width: 200,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                    width: 1,
                   ),
                 ),
-              ],
-            ),
-            secondChild: IconButton(
-              icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
-              tooltip: 'Turn off edit mode',
-              splashRadius: 20,
-              onPressed: () => editModeSwitcher.toggle(),
-            ),
-          ),
-        ],
-      ),
-      if (widget.trainingBlock.exerciseDays.isNotEmpty) const SliverPadding(padding: EdgeInsets.only(top: 24)),
-      widget.trainingBlock.exerciseDays.isEmpty
-          ? const SliverToBoxAdapter(child: Center(child: EmptyPagePlaceholder()))
-          : SliverList(
-              delegate: SliverChildBuilderDelegate(
-                childCount: widget.trainingBlock.exerciseDays.length,
-                (BuildContext context, int i) {
-                  final exerciseDay = widget.trainingBlock.exerciseDays[i];
+              ),
+              child: GestureDetector(
+                onTap: isEditMode
+                    ? () => CustomBottomSheet(
+                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                          title: 'Update training block',
+                          child: TextEditorSingleLine(
+                            value: widget.trainingBlock.name,
+                            onSubmitted: (String text) {
+                              trainingBlocksService.updateName(widget.trainingBlock, text);
 
-                  return Stack(
-                    // this key is needed in order for the archival of the exercise
-                    // days to work properly and for the list not to become "confused"
-                    // by its items being removed
-                    key: ValueKey(exerciseDay.dbModel.pseudoId),
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: HorizontallyScrollableExercises(
-                          scrollController: _scrollControllersMap[exerciseDay.dbModel.pseudoId],
-                          exerciseDay: exerciseDay,
-                        ),
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ).show(context)
+                    : null,
+                child: AutoSizeText(
+                  widget.trainingBlock.name,
+                  softWrap: false,
+                  maxLines: 1,
+                  minFontSize: ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) * 0.9).roundToDouble(),
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: HorizontallyScrollableExerciseLabels(
-                          exerciseDay: exerciseDay,
-                          trainingBlock: widget.trainingBlock,
-                        ),
-                      )
-                    ],
-                  );
-                },
+                ),
               ),
             ),
-    ]);
+          ),
+          actions: [
+            AnimatedOpacity(
+              opacity: isEditMode ? 0 : 1,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              child: IconButton(
+                icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
+                tooltip: 'Add new entry',
+                splashRadius: 20,
+                onPressed: isEditMode
+                    ? null
+                    : () => CustomBottomSheet(
+                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
+                          title: 'Add exercise day',
+                          child: TextEditorSingleLine(
+                            value: '',
+                            onSubmitted: (String text) {
+                              exerciseDaysService.create(trainingBlock: widget.trainingBlock, name: text);
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ).show(context),
+              ),
+            ),
+            AnimatedOpacity(
+              opacity: isEditMode ? 0 : 1,
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              child: IconButton(
+                icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
+                tooltip: 'Turn on edit mode',
+                splashRadius: 20,
+                onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+              ),
+            ),
+            AnimatedCrossFade(
+              alignment: Alignment.center,
+              crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: WidgetParams.animationDuration,
+              firstCurve: WidgetParams.animationCurve,
+              secondCurve: WidgetParams.animationCurve,
+              firstChild: ButtonDropdownMenu(
+                icon: Icons.more_vert,
+                animationDuration: WidgetParams.animationDuration,
+                animationCurve: WidgetParams.animationCurve,
+                items: [
+                  ButtonDropdownMenuItem(
+                    onTap: () => context.push('/settings'),
+                    child: Text('Settings', style: menuItemTheme),
+                  ),
+                  ButtonDropdownMenuItem(
+                    onTap: compactModeSwitcher.toggle,
+                    child: RichText(
+                      softWrap: false,
+                      text: TextSpan(
+                        text: 'Compact mode',
+                        style: menuItemTheme,
+                        children: [
+                          WidgetSpan(
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 24.0),
+                              padding: const EdgeInsets.only(bottom: 1.0),
+                              child: Text(isCompactMode ? 'On' : 'Off', style: menuItemSubTextTheme),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              secondChild: IconButton(
+                icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
+                tooltip: 'Turn off edit mode',
+                splashRadius: 20,
+                onPressed: () => editModeSwitcher.toggle(),
+              ),
+            ),
+          ],
+        ),
+        if (widget.trainingBlock.exerciseDays.isNotEmpty) const SliverPadding(padding: EdgeInsets.only(top: 24)),
+        widget.trainingBlock.exerciseDays.isEmpty
+            ? const SliverToBoxAdapter(child: Center(child: EmptyPagePlaceholder()))
+            : SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  childCount: widget.trainingBlock.exerciseDays.length,
+                  (BuildContext context, int i) {
+                    final exerciseDay = widget.trainingBlock.exerciseDays[i];
+
+                    return Stack(
+                      // this key is needed in order for the archival of the exercise
+                      // days to work properly and for the list not to become "confused"
+                      // by its items being removed
+                      key: ValueKey(exerciseDay.dbModel.pseudoId),
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: HorizontallyScrollableExercises(
+                            scrollController: _horizontalScrollControllersMap[exerciseDay.dbModel.pseudoId],
+                            exerciseDay: exerciseDay,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: HorizontallyScrollableExerciseLabels(
+                            exerciseDay: exerciseDay,
+                            trainingBlock: widget.trainingBlock,
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                ),
+              ),
+      ],
+    );
   }
 }

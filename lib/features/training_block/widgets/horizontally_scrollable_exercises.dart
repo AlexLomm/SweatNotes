@@ -8,21 +8,56 @@ import 'exercise_widget.dart';
 import '../services/exercises_service.dart';
 import 'ignore_pointer_edit_mode.dart';
 
-class HorizontallyScrollableExercises extends ConsumerWidget {
+class HorizontallyScrollableExercises extends ConsumerStatefulWidget {
+  final ScrollController? scrollController;
   final ExerciseDayClient exerciseDay;
 
   const HorizontallyScrollableExercises({
     Key? key,
+    this.scrollController,
     required this.exerciseDay,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HorizontallyScrollableExercises> createState() => _HorizontallyScrollableExercisesState();
+}
+
+class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallyScrollableExercises> {
+  late String _key;
+  int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _updateKey();
+  }
+
+  @override
+  void didUpdateWidget(HorizontallyScrollableExercises oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.scrollController == widget.scrollController) return;
+
+    _updateKey();
+  }
+
+  // this is needed to force the list to rebuild when the scroll controller
+  // changes from null to not null. Otherwise, the list will throw an error
+  void _updateKey() {
+    setState(() {
+      _counter++;
+      _key = '${widget.exerciseDay.dbModel.pseudoId}#$_counter';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final widgetParams = ref.watch(widgetParamsProvider);
     final exercisesService = ref.watch(exercisesServiceProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    final exerciseTypes = exerciseDay.exerciseTypes.isEmpty ? [] : exerciseDay.exerciseTypes;
+    final exerciseTypes = widget.exerciseDay.exerciseTypes.isEmpty ? [] : widget.exerciseDay.exerciseTypes;
 
     final exerciseTypesCount = exerciseTypes.length;
 
@@ -45,7 +80,8 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
             left: widgetParams.exercisesMarginLeft,
           ),
           child: ListView.builder(
-            key: PageStorageKey(exerciseDay.dbModel.pseudoId),
+            key: PageStorageKey(_key),
+            controller: widget.scrollController,
             padding: EdgeInsets.only(
               right: widgetParams.exercisesSideSpacing,
               left: widgetParams.exercisesScrollInwardsDepth,

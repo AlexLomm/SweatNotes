@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
@@ -109,13 +111,71 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   }
 }
 
-class Matrix extends ConsumerWidget {
+class Matrix extends ConsumerStatefulWidget {
   final TrainingBlockClient trainingBlock;
 
   const Matrix({Key? key, required this.trainingBlock}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Matrix> createState() => _MatrixState();
+}
+
+class _MatrixState extends ConsumerState<Matrix> {
+  late LinkedScrollControllerGroup _controllers;
+  final Map<String, ScrollController> _scrollControllersMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controllers = LinkedScrollControllerGroup();
+
+    for (final pseudoId in _nonEmptyDayPseudoIds) {
+      _scrollControllersMap[pseudoId] = _controllers.addAndGet();
+    }
+  }
+
+  @override
+  void didUpdateWidget(Matrix oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final setOfNonEmptyDayPseudoIds = _nonEmptyDayPseudoIds;
+    final setOfScrollAttachedDayPseudoIds = _scrollControllersMap.keys.toSet();
+
+    if (setEquals(setOfNonEmptyDayPseudoIds, setOfScrollAttachedDayPseudoIds)) return;
+
+    // remove controllers that are no longer needed (for example, if an exercise day was archived)
+    for (final pseudoId in setOfScrollAttachedDayPseudoIds.difference(setOfNonEmptyDayPseudoIds)) {
+      _scrollControllersMap[pseudoId]!.dispose();
+      _scrollControllersMap.remove(pseudoId);
+    }
+
+    // add controllers for new exercise days
+    for (final pseudoId in setOfNonEmptyDayPseudoIds.difference(setOfScrollAttachedDayPseudoIds)) {
+      _scrollControllersMap[pseudoId] = _controllers.addAndGet();
+    }
+  }
+
+  // we only want to attach scroll controllers to the non-empty exercise days, because
+  // otherwise the other scroll controllers are "reset" to the 0 position when the
+  // empty exercise day is scrolled into view, because it doesn't have any horizontal size
+  Set<String> get _nonEmptyDayPseudoIds => widget.trainingBlock.exerciseDays
+      //
+      .where((e) => e.exerciseTypes.isNotEmpty)
+      .map((e) => e.dbModel.pseudoId)
+      .toSet();
+
+  @override
+  void dispose() {
+    for (final controller in _scrollControllersMap.values) {
+      controller.dispose();
+    }
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
@@ -159,9 +219,9 @@ class Matrix extends ConsumerWidget {
                         height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
                         title: 'Update training block',
                         child: TextEditorSingleLine(
-                          value: trainingBlock.name,
+                          value: widget.trainingBlock.name,
                           onSubmitted: (String text) {
-                            trainingBlocksService.updateName(trainingBlock, text);
+                            trainingBlocksService.updateName(widget.trainingBlock, text);
 
                             Navigator.of(context).pop();
                           },
@@ -169,7 +229,7 @@ class Matrix extends ConsumerWidget {
                       ).show(context)
                   : null,
               child: AutoSizeText(
-                trainingBlock.name,
+                widget.trainingBlock.name,
                 softWrap: false,
                 maxLines: 1,
                 minFontSize: ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) * 0.9).roundToDouble(),
@@ -198,7 +258,7 @@ class Matrix extends ConsumerWidget {
                         child: TextEditorSingleLine(
                           value: '',
                           onSubmitted: (String text) {
-                            exerciseDaysService.create(trainingBlock: trainingBlock, name: text);
+                            exerciseDaysService.create(trainingBlock: widget.trainingBlock, name: text);
 
                             Navigator.of(context).pop();
                           },
@@ -262,14 +322,14 @@ class Matrix extends ConsumerWidget {
           ),
         ],
       ),
-      if (trainingBlock.exerciseDays.isNotEmpty) const SliverPadding(padding: EdgeInsets.only(top: 24)),
-      trainingBlock.exerciseDays.isEmpty
+      if (widget.trainingBlock.exerciseDays.isNotEmpty) const SliverPadding(padding: EdgeInsets.only(top: 24)),
+      widget.trainingBlock.exerciseDays.isEmpty
           ? const SliverToBoxAdapter(child: Center(child: EmptyPagePlaceholder()))
           : SliverList(
               delegate: SliverChildBuilderDelegate(
-                childCount: trainingBlock.exerciseDays.length,
+                childCount: widget.trainingBlock.exerciseDays.length,
                 (BuildContext context, int i) {
-                  final exerciseDay = trainingBlock.exerciseDays[i];
+                  final exerciseDay = widget.trainingBlock.exerciseDays[i];
 
                   return Stack(
                     // this key is needed in order for the archival of the exercise
@@ -280,6 +340,7 @@ class Matrix extends ConsumerWidget {
                       Align(
                         alignment: Alignment.topLeft,
                         child: HorizontallyScrollableExercises(
+                          scrollController: _scrollControllersMap[exerciseDay.dbModel.pseudoId],
                           exerciseDay: exerciseDay,
                         ),
                       ),
@@ -287,7 +348,7 @@ class Matrix extends ConsumerWidget {
                         alignment: Alignment.topLeft,
                         child: HorizontallyScrollableExerciseLabels(
                           exerciseDay: exerciseDay,
-                          trainingBlock: trainingBlock,
+                          trainingBlock: widget.trainingBlock,
                         ),
                       )
                     ],

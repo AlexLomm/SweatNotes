@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:confetti/confetti.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:upgrader/upgrader.dart';
 
 part 'layout.g.dart';
 
@@ -92,12 +93,14 @@ class _LayoutState extends ConsumerState<Layout> {
                     )
                   : null,
               endDrawer: widget.endDrawer,
-              body: SafeArea(
-                bottom: false,
-                child: Container(
-                  padding: widget.padding,
-                  // TODO: replace with ListView.builder https://www.youtube.com/watch?v=YY-_yrZdjGc&t=6s
-                  child: widget.isScrollable ? SingleChildScrollView(child: widget.child) : widget.child,
+              body: UpgradeAlert(
+                child: SafeArea(
+                  bottom: false,
+                  child: Container(
+                    padding: widget.padding,
+                    // TODO: replace with ListView.builder https://www.youtube.com/watch?v=YY-_yrZdjGc&t=6s
+                    child: widget.isScrollable ? SingleChildScrollView(child: widget.child) : widget.child,
+                  ),
                 ),
               ),
             ),

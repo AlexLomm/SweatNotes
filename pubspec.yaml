@@ -61,6 +61,7 @@ dependencies:
   selector_wheel: ^1.0.3
   url_launcher: ^6.1.10
   firebase_app_check: ^0.1.2
+  upgrader: ^6.2.0
 
 dev_dependencies:
   flutter_test:

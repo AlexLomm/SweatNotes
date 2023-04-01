@@ -25,7 +25,7 @@ class RepsSelector extends StatelessWidget {
         Text('Reps', style: textTheme),
         const SizedBox(height: 8),
         SizedBox(
-          height: 80,
+          height: 128,
           child: SelectorWheel(
             childCount: stepsCount,
             selectedItemIndex: _convertValueToIndex(value),

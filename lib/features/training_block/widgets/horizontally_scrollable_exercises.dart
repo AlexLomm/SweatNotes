@@ -49,6 +49,7 @@ class HorizontallyScrollableExercises extends ConsumerWidget {
               right: widgetParams.exercisesSideSpacing,
               left: widgetParams.exercisesScrollInwardsDepth,
             ),
+            // +1 is needed for the "add button" to be shown
             itemCount: numberOfExercisesPerExerciseType + 1,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, j) {

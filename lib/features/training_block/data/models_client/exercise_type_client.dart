@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../models/exercise.dart';
 import '../models/exercise_type.dart';
 import 'exercise_client.dart';
+import 'exercise_set_client.dart';
 
 part 'exercise_type_client.freezed.dart';
 
@@ -59,14 +60,12 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
   }
 
   ExerciseTypeClient enlargeExercisesRow() {
-    // the last exercise is always a filler
-    final lastExercise = exercises.last;
+    final emptyExercise = ExerciseClient.empty().copyWith(
+      isFiller: false,
+      sets: [ExerciseSetClient.empty().copyWith(isFiller: false)],
+    );
 
-    final updatedExercises = [...exercises];
-
-    updatedExercises[exercises.length - 1] = lastExercise.copyWith(isFiller: false);
-
-    return copyWith(exercises: updatedExercises);
+    return copyWith(exercises: [...exercises, emptyExercise]);
   }
 
   ExerciseTypeClient archive(bool archive) {

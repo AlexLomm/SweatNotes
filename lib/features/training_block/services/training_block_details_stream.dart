@@ -105,7 +105,7 @@ TrainingBlockClient? _getNormalizedData(
         ),
         // add filler exercises
         ...List.generate(
-          maxExercisesCount - exerciseType.exercises.length + 1,
+          maxExercisesCount - exerciseType.exercises.length,
           (index) => ExerciseClient.empty().copyWith(
             sets: List.generate(
               maxExerciseSetsCount + 1,

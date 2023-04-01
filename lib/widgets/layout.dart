@@ -158,7 +158,7 @@ class _ConfettiWidgetConfigured extends StatelessWidget {
   }
 }
 
-@riverpod
+@Riverpod(dependencies: [])
 ConfettiController confettiController(ConfettiControllerRef ref) {
   // going to be provided through ProviderScope override
   throw UnimplementedError();

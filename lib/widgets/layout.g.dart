@@ -7,7 +7,7 @@ part of 'layout.dart';
 // **************************************************************************
 
 String _$confettiControllerHash() =>
-    r'0793f8a4fbea0d7001e70a7d0ae29033f5648d89';
+    r'7171687206735aa64ba3053009cf395d8e816a97';
 
 /// See also [confettiController].
 @ProviderFor(confettiController)
@@ -18,8 +18,8 @@ final confettiControllerProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$confettiControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[],
+  allTransitiveDependencies: <ProviderOrFamily>[],
 );
 
 typedef ConfettiControllerRef = AutoDisposeProviderRef<ConfettiController>;

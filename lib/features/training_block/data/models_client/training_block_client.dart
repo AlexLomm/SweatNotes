@@ -15,6 +15,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
   const factory TrainingBlockClient({
     required TrainingBlock dbModel,
     Timestamp? archivedAt,
+    Timestamp? startedAt,
     required String name,
     required List<ExerciseDayClient> exerciseDays,
   }) = _TrainingBlockClient;
@@ -27,6 +28,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
     return dbModel.copyWith(
       name: name,
       archivedAt: archivedAt,
+      startedAt: startedAt,
       exerciseDays: exerciseDayDbModels,
       exerciseDaysOrdering: exerciseDayDbModels.asMap().map((key, value) => MapEntry(value.pseudoId, key)),
     );

@@ -10,6 +10,7 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
     _$_TrainingBlock(
       id: json['id'] as String,
       archivedAt: timestampFromJson(json['archivedAt'] as int?),
+      startedAt: timestampFromJson(json['startedAt'] as int?),
       exerciseDaysOrdering:
           (json['exerciseDaysOrdering'] as Map<String, dynamic>?)?.map(
                 (k, e) => MapEntry(k, e as int),
@@ -25,6 +26,7 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_TrainingBlockToJson(_$_TrainingBlock instance) =>
     <String, dynamic>{
       'archivedAt': timestampToJson(instance.archivedAt),
+      'startedAt': timestampToJson(instance.startedAt),
       'exerciseDaysOrdering': instance.exerciseDaysOrdering,
       'name': instance.name,
       'exerciseDays': instance.exerciseDays.map((e) => e.toJson()).toList(),

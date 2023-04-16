@@ -15,6 +15,7 @@ class TrainingBlock with _$TrainingBlock {
   const factory TrainingBlock({
     @JsonKey(includeToJson: false) required String id,
     @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? archivedAt,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? startedAt,
     @Default({}) Map<String, int> exerciseDaysOrdering,
     required String name,
     @Default([]) List<ExerciseDay> exerciseDays,

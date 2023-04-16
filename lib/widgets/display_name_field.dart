@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../features/auth/regular_text_field.dart';
+import '../shared/widgets/regular_text_field.dart';
 
 class DisplayNameField extends StatelessWidget {
   final TextEditingController controller;

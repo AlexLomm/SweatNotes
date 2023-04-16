@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../router/router.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
-import 'password_field.dart';
-import 'regular_text_field.dart';
+import '../../shared/widgets/password_field.dart';
+import '../../shared/widgets/regular_text_field.dart';
 import 'services/auth_service.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {

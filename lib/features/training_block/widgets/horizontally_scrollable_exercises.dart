@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../settings/edit_mode_switcher.dart';
+import '../data/models_client/exercise_type_client.dart';
 import '../widget_params.dart';
 import '../data/models_client/exercise_day_client.dart';
 import 'exercise_widget.dart';
@@ -54,10 +55,10 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
   @override
   Widget build(BuildContext context) {
     final widgetParams = ref.watch(widgetParamsProvider);
-    final exercisesService = ref.watch(exercisesServiceProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    final exerciseTypes = widget.exerciseDay.exerciseTypes.isEmpty ? [] : widget.exerciseDay.exerciseTypes;
+    final List<ExerciseTypeClient> exerciseTypes =
+        widget.exerciseDay.exerciseTypes.isEmpty ? [] : widget.exerciseDay.exerciseTypes;
 
     final exerciseTypesCount = exerciseTypes.length;
 
@@ -89,59 +90,102 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
             // +1 is needed for the "add button" to be shown
             itemCount: numberOfExercisesPerExerciseType + 1,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, j) {
+            itemBuilder: (context, horizontalIndex) {
               // the alignment is needed to prevent the underlying container
               // from being stretched to the `exerciseWithMargin` width (and
               // thereby losing border radius on the right) instead of being
               // of the `exerciseWithoutMargin` width
-              return j == numberOfExercisesPerExerciseType && j > 0
+              return horizontalIndex == numberOfExercisesPerExerciseType && horizontalIndex > 0
                   ? Align(
                       alignment: Alignment.topLeft,
-                      child: GestureDetector(
-                        onTap: () => exercisesService.addEmptyExercise(exerciseType: exerciseTypes.first),
-                        child: Container(
-                          width: 48,
-                          height: widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
-                          margin: EdgeInsets.only(
-                            top: widgetParams.exercisesTitleHeight,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondaryContainer,
-                            borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Theme.of(context).colorScheme.onSecondaryContainer,
-                          ),
-                        ),
+                      child: AddExerciseButton(
+                        exerciseType: exerciseTypes.first,
+                        exerciseTypesCount: exerciseTypesCount,
                       ),
                     )
                   : Align(
                       alignment: Alignment.topLeft,
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          top: widgetParams.exercisesTitleHeight,
-                        ),
-                        child: Column(
-                          children: [
-                            for (var verticalIndex = 0; verticalIndex < exerciseTypesCount; verticalIndex++)
-                              Container(
-                                margin: EdgeInsets.only(
-                                  right: widgetParams.exercisesSideSpacing,
-                                  bottom: widgetParams.exercisesMarginBottomNotLast,
-                                ),
-                                child: ExerciseWidget(
-                                  exerciseType: exerciseTypes[verticalIndex],
-                                  exercise: exerciseTypes[verticalIndex].exercises[j],
-                                ),
-                              ),
-                          ],
-                        ),
+                      child: ExercisesColumn(
+                        exerciseTypes: exerciseTypes,
+                        horizontalIndex: horizontalIndex,
                       ),
                     );
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class AddExerciseButton extends ConsumerWidget {
+  final ExerciseTypeClient exerciseType;
+  final int exerciseTypesCount;
+
+  const AddExerciseButton({
+    Key? key,
+    required this.exerciseType,
+    required this.exerciseTypesCount,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
+    final exercisesService = ref.watch(exercisesServiceProvider);
+
+    return GestureDetector(
+      onTap: () => exercisesService.addEmptyExercise(exerciseType: exerciseType),
+      child: Container(
+        width: 48,
+        height: widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
+        margin: EdgeInsets.only(
+          top: widgetParams.exercisesTitleHeight,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+        ),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
+        ),
+      ),
+    );
+  }
+}
+
+class ExercisesColumn extends ConsumerWidget {
+  final List<ExerciseTypeClient> exerciseTypes;
+  final int horizontalIndex;
+
+  const ExercisesColumn({
+    Key? key,
+    required this.exerciseTypes,
+    required this.horizontalIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
+
+    return Container(
+      margin: EdgeInsets.only(
+        top: widgetParams.exercisesTitleHeight,
+      ),
+      child: Column(
+        children: [
+          for (var verticalIndex = 0; verticalIndex < exerciseTypes.length; verticalIndex++)
+            Container(
+              margin: EdgeInsets.only(
+                right: widgetParams.exercisesSideSpacing,
+                bottom: widgetParams.exercisesMarginBottomNotLast,
+              ),
+              child: ExerciseWidget(
+                exerciseType: exerciseTypes[verticalIndex],
+                exercise: exerciseTypes[verticalIndex].exercises[horizontalIndex],
+              ),
+            ),
+        ],
       ),
     );
   }

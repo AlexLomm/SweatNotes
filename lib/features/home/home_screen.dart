@@ -60,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
         icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
         tooltip: 'Add new training block',
         splashRadius: 20,
-        onPressed: () => context.pushNamed(RouteNames.trainingBlockCreate),
+        onPressed: () => context.pushNamed(RouteNames.trainingBlockCreateUpdate),
       ),
       actions: [
         IconButton(

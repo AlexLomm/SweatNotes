@@ -232,18 +232,7 @@ class _MatrixState extends ConsumerState<Matrix> {
               ),
               child: GestureDetector(
                 onTap: isEditMode
-                    ? () => CustomBottomSheet(
-                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                          title: 'Update training block',
-                          child: TextEditorSingleLine(
-                            value: widget.trainingBlock.name,
-                            onSubmitted: (String text) {
-                              trainingBlocksService.updateName(widget.trainingBlock, text);
-
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ).show(context)
+                    ? () => context.pushNamed(RouteNames.trainingBlockCreateUpdate, extra: widget.trainingBlock)
                     : null,
                 child: AutoSizeText(
                   widget.trainingBlock.name,

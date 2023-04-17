@@ -45,9 +45,13 @@ class TrainingBlocksService {
     ));
   }
 
-  Future<void> updateName(TrainingBlockClient trainingBlock, String name) {
+  Future<void> update(
+    TrainingBlockClient trainingBlock, {
+    required String name,
+    required Timestamp startedAt,
+  }) {
     return trainingBlocksRepository.update(
-      trainingBlock.copyWith(name: name).toDbModel(),
+      trainingBlock.copyWith(name: name, startedAt: startedAt).toDbModel(),
     );
   }
 

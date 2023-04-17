@@ -217,6 +217,7 @@ TrainingBlockClient? _getNormalizedData(
   final trainingBlockClient = TrainingBlockClient(
     dbModel: trainingBlock,
     archivedAt: trainingBlock.archivedAt,
+    startedAt: trainingBlock.startedAt,
     name: trainingBlock.name,
     exerciseDays: trainingBlock.exerciseDays
         .where((exerciseDay) => exerciseDay.isNotArchived)

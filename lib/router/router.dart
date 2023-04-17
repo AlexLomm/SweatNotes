@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sweatnotes/features/home/training_block_create_screen.dart';
+import 'package:sweatnotes/features/home/training_block_create_update_screen.dart';
 
 import '../features/settings/widgets/account_screen.dart';
 import '../features/settings/widgets/settings_screen.dart';
 import '../features/settings/widgets/theme_screen.dart';
+import '../features/training_block/data/models_client/training_block_client.dart';
 import '../main.dart';
 import '../shared/services/firebase.dart';
 import '../features/auth/sign_up_screen.dart';
@@ -28,7 +29,7 @@ class RouteNames {
   static const account = 'account';
   static const theme = 'theme';
   static const trainingBlock = 'training-block';
-  static const trainingBlockCreate = 'training-block-create';
+  static const trainingBlockCreateUpdate = 'training-block-create-update';
 }
 
 @riverpod
@@ -104,9 +105,14 @@ GoRouter goRouter(GoRouterRef ref) {
             ],
           ),
           GoRoute(
-            name: RouteNames.trainingBlockCreate,
-            path: 'create',
-            builder: (_, routerState) => const TrainingBlockCreateScreen(),
+            name: RouteNames.trainingBlockCreateUpdate,
+            path: 'create-update',
+            builder: (_, routerState) {
+              final trainingBlock =
+                  routerState.extra is TrainingBlockClient ? routerState.extra as TrainingBlockClient : null;
+
+              return TrainingBlockCreateUpdateScreen(trainingBlock: trainingBlock);
+            },
           ),
           GoRoute(
             name: RouteNames.trainingBlock,

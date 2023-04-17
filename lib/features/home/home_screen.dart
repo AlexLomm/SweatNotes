@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../app.dart';
 import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
-import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/dismissible_button.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
-import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';
 import '../training_block/services/training_blocks_service.dart';
 import '../training_block/services/training_blocks_stream.dart';
@@ -58,34 +56,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
 
     return Layout(
-      // leading: IconButton(
-      //   icon: Transform.rotate(
-      //     angle: pi,
-      //     child: Icon(Icons.logout, color: Theme.of(context).colorScheme.onSurface),
-      //   ),
-      //   tooltip: 'Logout',
-      //   splashRadius: 20,
-      //   onPressed: () => authService.signOut(),
-      // ),
       leading: IconButton(
-        icon: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
+        icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
         tooltip: 'Add new training block',
         splashRadius: 20,
-        onPressed: () => CustomBottomSheet(
-          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-          title: 'Add training block',
-          child: TextEditorSingleLine(
-            value: '',
-            onSubmitted: (String text) {
-              trainingBlocksService.create(name: text);
-
-              Navigator.of(context).pop();
-            },
-          ),
-        ).show(context),
+        onPressed: () => context.pushNamed(RouteNames.trainingBlockCreate),
       ),
       actions: [
         IconButton(
@@ -97,17 +72,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
           splashRadius: 20,
           onPressed: () => context.push('/settings'),
         ),
-        // IconButton(
-        //   icon: Icon(
-        //     Icons.wb_sunny_outlined,
-        //     color: Theme.of(context).colorScheme.onSurface,
-        //   ),
-        //   tooltip: 'Switch theme',
-        //   splashRadius: 20,
-        //   onPressed: () => themeSwitcher.setThemeMode(
-        //     currentTheme == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark,
-        //   ),
-        // ),
       ],
       child: trainingBlocks.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -132,28 +96,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
               child: ListView(
                 children: [
                   for (final trainingBlock in data)
-                    DismissibleButton(
-                      key: Key(trainingBlock.dbModel.id),
-                      id: trainingBlock.dbModel.id,
-                      label: trainingBlock.dbModel.name,
-                      right: Icon(
-                        Icons.arrow_forward,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
-                      onPressed: () => context.push('/${trainingBlock.dbModel.id}'),
-                      onDismissed: (_) {
-                        trainingBlocksService.archive(trainingBlock, true);
-
-                        messenger?.showSnackBar(
-                          SnackBar(
-                            content: Text('Training block "${trainingBlock.dbModel.name}" archived'),
-                            action: SnackBarAction(
-                              label: 'Undo',
-                              onPressed: () => trainingBlocksService.archive(trainingBlock, false),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16, top: 16),
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              trainingBlock.startedAtFormatted,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                  ),
                             ),
                           ),
-                        );
-                      },
+                        ),
+                        DismissibleButton(
+                          key: Key(trainingBlock.dbModel.id),
+                          id: trainingBlock.dbModel.id,
+                          label: trainingBlock.dbModel.name,
+                          right: Icon(
+                            Icons.arrow_forward,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                          onPressed: () => context.push('/${trainingBlock.dbModel.id}'),
+                          onDismissed: (_) {
+                            trainingBlocksService.archive(trainingBlock, true);
+
+                            messenger?.showSnackBar(
+                              SnackBar(
+                                content: Text('Training block "${trainingBlock.dbModel.name}" archived'),
+                                action: SnackBarAction(
+                                  label: 'Undo',
+                                  onPressed: () => trainingBlocksService.archive(trainingBlock, false),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                 ],
               ),

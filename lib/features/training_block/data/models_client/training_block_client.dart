@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 import '../models/exercise_day.dart';
 import '../models/training_block.dart';
@@ -11,6 +12,9 @@ part 'training_block_client.freezed.dart';
 @Freezed(equal: false)
 class TrainingBlockClient with _$TrainingBlockClient {
   const TrainingBlockClient._();
+
+  get startedAtFormatted =>
+      startedAt == null ? 'No start date' : DateFormat.yMMMMd('en_US').format(startedAt!.toDate());
 
   const factory TrainingBlockClient({
     required TrainingBlock dbModel,

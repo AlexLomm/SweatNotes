@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:sweatnotes/features/home/training_block_create_screen.dart';
 
 import '../features/settings/widgets/account_screen.dart';
 import '../features/settings/widgets/settings_screen.dart';
@@ -27,6 +28,7 @@ class RouteNames {
   static const account = 'account';
   static const theme = 'theme';
   static const trainingBlock = 'training-block';
+  static const trainingBlockCreate = 'training-block-create';
 }
 
 @riverpod
@@ -100,6 +102,11 @@ GoRouter goRouter(GoRouterRef ref) {
                 builder: (_, __) => const ThemeScreen(),
               ),
             ],
+          ),
+          GoRoute(
+            name: RouteNames.trainingBlockCreate,
+            path: 'create',
+            builder: (_, routerState) => const TrainingBlockCreateScreen(),
           ),
           GoRoute(
             name: RouteNames.trainingBlock,

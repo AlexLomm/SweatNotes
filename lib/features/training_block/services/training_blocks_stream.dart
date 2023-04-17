@@ -23,6 +23,7 @@ Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef r
               (trainingBlock) => TrainingBlockClient(
                 dbModel: trainingBlock,
                 archivedAt: trainingBlock.archivedAt,
+                startedAt: trainingBlock.startedAt,
                 name: trainingBlock.name,
                 exerciseDays: [],
               ),

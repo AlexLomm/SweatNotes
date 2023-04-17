@@ -25,7 +25,8 @@ class TrainingBlocksRepository {
 
   Query<TrainingBlock> get queryRef => _collectionRef
       //
-      .where('archivedAt', isNull: true);
+      .where('archivedAt', isNull: true)
+      .orderBy('startedAt', descending: true);
 
   DocumentReference<TrainingBlock> getDocumentRefById(String id) {
     return _collectionRef.doc(id);

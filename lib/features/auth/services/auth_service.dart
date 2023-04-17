@@ -21,8 +21,6 @@ class AuthService {
   final FirebaseCrashlytics crashlytics;
   final FirebaseAnalytics analytics;
 
-  final _defaultErrorMessage = 'Something went wrong.. Please try again later.';
-
   AuthService(
     this.authRepository,
     this.goRouter,
@@ -196,7 +194,9 @@ class AuthService {
   }
 
   void _showError(String? error) {
-    error ??= _defaultErrorMessage;
+    const defaultErrorMessage = 'Something went wrong.. Please try again later.';
+
+    error ??= defaultErrorMessage;
 
     messenger?.clearSnackBars();
     messenger?.showSnackBar(SnackBar(content: Text(error)));

@@ -22,11 +22,12 @@ service cloud.firestore {
 
       match /training-blocks/{trainingBlockId} {
         function isCorrectSchema() {
-          return onlyHasAttrs(request.resource.data, ['name', 'exerciseDays', 'archivedAt', 'exerciseDaysOrdering'])
+          return onlyHasAttrs(request.resource.data, ['name', 'exerciseDays', 'archivedAt', 'startedAt', 'exerciseDaysOrdering'])
               && incoming().name is string
               && incoming().exerciseDaysOrdering is map
               && incoming().exerciseDays is list
-              && incoming().archivedAt is number || incoming().archivedAt == null;
+              && incoming().archivedAt is number || incoming().archivedAt == null
+              && incoming().startedAt is number;
         }
 
         allow write: if isCorrectSchema();

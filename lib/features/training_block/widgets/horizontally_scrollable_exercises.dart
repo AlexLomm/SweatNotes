@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -168,24 +169,66 @@ class ExercisesColumn extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final widgetParams = ref.watch(widgetParamsProvider);
 
-    return Container(
-      margin: EdgeInsets.only(
-        top: widgetParams.exercisesTitleHeight,
-      ),
-      child: Column(
-        children: [
-          for (var verticalIndex = 0; verticalIndex < exerciseTypes.length; verticalIndex++)
-            Container(
-              margin: EdgeInsets.only(
-                right: widgetParams.exercisesSideSpacing,
-                bottom: widgetParams.exercisesMarginBottomNotLast,
-              ),
-              child: ExerciseWidget(
-                exerciseType: exerciseTypes[verticalIndex],
-                exercise: exerciseTypes[verticalIndex].exercises[horizontalIndex],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ExerciseColumnLabel(
+          text: horizontalIndex == 0 ? 'Previous PRs' : '',
+          exerciseTypes: exerciseTypes,
+        ),
+        for (var verticalIndex = 0; verticalIndex < exerciseTypes.length; verticalIndex++)
+          Container(
+            margin: EdgeInsets.only(
+              right: widgetParams.exercisesSideSpacing,
+              bottom: widgetParams.exercisesMarginBottomNotLast,
             ),
-        ],
+            child: ExerciseWidget(
+              exerciseType: exerciseTypes[verticalIndex],
+              exercise: exerciseTypes[verticalIndex].exercises[horizontalIndex],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class ExerciseColumnLabel extends ConsumerWidget {
+  final String text;
+  final List<ExerciseTypeClient> exerciseTypes;
+
+  const ExerciseColumnLabel({
+    Key? key,
+    required this.text,
+    required this.exerciseTypes,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final widgetParams = ref.watch(widgetParamsProvider);
+
+    final labelWidth =
+        exerciseTypes.isEmpty ? 0.0 : exerciseTypes[0].exercises[0].sets.length * widgetParams.exerciseSetWidth;
+
+    return Container(
+      width: labelWidth,
+      height: widgetParams.exercisesTitleHeight - widgetParams.exercisesMarginBottomNotLast,
+      margin: EdgeInsets.only(bottom: widgetParams.exercisesMarginBottomNotLast),
+      child: Material(
+        elevation: 1.0,
+        surfaceTintColor: Theme.of(context).colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+        ),
+        child: Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 10),
+          child: AutoSizeText(
+            text,
+            maxLines: 1,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+          ),
+        ),
       ),
     );
   }

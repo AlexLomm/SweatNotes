@@ -104,7 +104,7 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                       child: IgnorePointerInEditMode(
                         onTap: () => context.pushNamed(
                           RouteNames.exerciseDayCreateUpdate,
-                          extra: Tuple2(widget.trainingBlock, widget.exerciseDay),
+                          extra: Tuple2(widget.trainingBlock.dbModel.id, widget.exerciseDay),
                         ),
                         child: ExerciseDayWidget(
                           exerciseDay: widget.exerciseDay,

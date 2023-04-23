@@ -84,12 +84,12 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
     final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
 
     return data.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (Object error, StackTrace stackTrace) {
         WidgetsBinding.instance.addPostFrameCallback((_) => authService.signOut());
 
         return Center(child: Text(error.toString()));
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
       data: (trainingBlock) {
         if (trainingBlock == null) {
           WidgetsBinding.instance.addPostFrameCallback((_) => context.goNamed(RouteNames.home));
@@ -254,7 +254,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                     ? null
                     : () => context.pushNamed(
                           RouteNames.exerciseDayCreateUpdate,
-                          extra: Tuple2(widget.trainingBlock, null),
+                          extra: Tuple2(widget.trainingBlock.dbModel.id, null),
                         ),
               ),
             ),

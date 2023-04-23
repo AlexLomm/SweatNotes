@@ -215,6 +215,7 @@ class ExerciseColumnLabel extends ConsumerWidget {
       margin: EdgeInsets.only(bottom: widgetParams.exercisesMarginBottomNotLast),
       child: Material(
         elevation: 1.0,
+        shadowColor: Colors.transparent,
         surfaceTintColor: Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),

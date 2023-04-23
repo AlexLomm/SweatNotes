@@ -23,11 +23,9 @@ class ExerciseDaysService {
     required String name,
     required int? weekDay,
   }) async {
-    final index = trainingBlock.exerciseDays.indexOf(exerciseDay);
-
-    if (index == -1) {
-      throw Exception('Exercise day not found');
-    }
+    final index = trainingBlock.exerciseDays.indexWhere(
+      (value) => value.dbModel.pseudoId == exerciseDay.dbModel.pseudoId,
+    );
 
     trainingBlocksRepository.update(
       trainingBlock

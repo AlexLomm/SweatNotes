@@ -122,12 +122,12 @@ GoRouter goRouter(GoRouterRef ref) {
             name: RouteNames.exerciseDayCreateUpdate,
             path: 'exercise-day-create-update',
             builder: (_, routerState) {
-              assert(routerState.extra is Tuple2<TrainingBlockClient, ExerciseDayClient?>);
+              assert(routerState.extra is Tuple2<String, ExerciseDayClient?>);
 
-              final tuple = routerState.extra as Tuple2<TrainingBlockClient, ExerciseDayClient?>;
+              final tuple = routerState.extra as Tuple2<String, ExerciseDayClient?>;
 
               return ExerciseDayCreateUpdateScreen(
-                trainingBlock: tuple.item1,
+                trainingBlockId: tuple.item1,
                 exerciseDay: tuple.item2,
               );
             },

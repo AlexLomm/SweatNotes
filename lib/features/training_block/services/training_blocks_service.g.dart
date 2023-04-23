@@ -7,7 +7,7 @@ part of 'training_blocks_service.dart';
 // **************************************************************************
 
 String _$trainingBlocksServiceHash() =>
-    r'a8b6fb866ae1a0e564907cd92dae0b7f5e59acb5';
+    r'cd6e6d43ce51b8a09ce47cb1f6390bae37c9ef3f';
 
 /// See also [trainingBlocksService].
 @ProviderFor(trainingBlocksService)

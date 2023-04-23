@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ExerciseDayClient {
   ExerciseDay get dbModel => throw _privateConstructorUsedError;
+  List<DateTime> get dates => throw _privateConstructorUsedError;
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<ExerciseTypeClient> get exerciseTypes =>
@@ -35,6 +36,7 @@ abstract class $ExerciseDayClientCopyWith<$Res> {
   @useResult
   $Res call(
       {ExerciseDay dbModel,
+      List<DateTime> dates,
       Timestamp? archivedAt,
       String name,
       List<ExerciseTypeClient> exerciseTypes});
@@ -56,6 +58,7 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
   @override
   $Res call({
     Object? dbModel = null,
+    Object? dates = null,
     Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseTypes = null,
@@ -65,6 +68,10 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as ExerciseDay,
+      dates: null == dates
+          ? _value.dates
+          : dates // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -99,6 +106,7 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
   @useResult
   $Res call(
       {ExerciseDay dbModel,
+      List<DateTime> dates,
       Timestamp? archivedAt,
       String name,
       List<ExerciseTypeClient> exerciseTypes});
@@ -119,6 +127,7 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
   @override
   $Res call({
     Object? dbModel = null,
+    Object? dates = null,
     Object? archivedAt = freezed,
     Object? name = null,
     Object? exerciseTypes = null,
@@ -128,6 +137,10 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
               as ExerciseDay,
+      dates: null == dates
+          ? _value._dates
+          : dates // ignore: cast_nullable_to_non_nullable
+              as List<DateTime>,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -150,14 +163,24 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
     with DiagnosticableTreeMixin {
   const _$_ExerciseDayClient(
       {required this.dbModel,
+      required final List<DateTime> dates,
       this.archivedAt,
       required this.name,
       required final List<ExerciseTypeClient> exerciseTypes})
-      : _exerciseTypes = exerciseTypes,
+      : _dates = dates,
+        _exerciseTypes = exerciseTypes,
         super._();
 
   @override
   final ExerciseDay dbModel;
+  final List<DateTime> _dates;
+  @override
+  List<DateTime> get dates {
+    if (_dates is EqualUnmodifiableListView) return _dates;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_dates);
+  }
+
   @override
   final Timestamp? archivedAt;
   @override
@@ -172,7 +195,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDayClient(dbModel: $dbModel, archivedAt: $archivedAt, name: $name, exerciseTypes: $exerciseTypes)';
+    return 'ExerciseDayClient(dbModel: $dbModel, dates: $dates, archivedAt: $archivedAt, name: $name, exerciseTypes: $exerciseTypes)';
   }
 
   @override
@@ -181,6 +204,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
     properties
       ..add(DiagnosticsProperty('type', 'ExerciseDayClient'))
       ..add(DiagnosticsProperty('dbModel', dbModel))
+      ..add(DiagnosticsProperty('dates', dates))
       ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('exerciseTypes', exerciseTypes));
@@ -197,6 +221,7 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
 abstract class _ExerciseDayClient extends ExerciseDayClient {
   const factory _ExerciseDayClient(
           {required final ExerciseDay dbModel,
+          required final List<DateTime> dates,
           final Timestamp? archivedAt,
           required final String name,
           required final List<ExerciseTypeClient> exerciseTypes}) =
@@ -205,6 +230,8 @@ abstract class _ExerciseDayClient extends ExerciseDayClient {
 
   @override
   ExerciseDay get dbModel;
+  @override
+  List<DateTime> get dates;
   @override
   Timestamp? get archivedAt;
   @override

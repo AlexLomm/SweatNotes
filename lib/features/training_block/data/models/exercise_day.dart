@@ -20,8 +20,15 @@ class ExerciseDay with _$ExerciseDay {
   const factory ExerciseDay({
     required String pseudoId,
     required String name,
-    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? archivedAt,
-    @Default({}) Map<String, int> exerciseTypesOrdering,
+    @Assert(
+      'weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+      'weekDay must either be `null` or a valid DateTime.<weekDay> day',
+    )
+        required int? weekDay,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+        Timestamp? archivedAt,
+    @Default({})
+        Map<String, int> exerciseTypesOrdering,
   }) = _ExerciseDay;
 
   factory ExerciseDay.fromJson(Map<String, Object?> json) => _$ExerciseDayFromJson(json);

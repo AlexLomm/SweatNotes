@@ -103,7 +103,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   duration: WidgetParams.animationDuration,
                   curve: WidgetParams.animationCurve,
                   margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
-                  child: IgnorePointerEditMode(
+                  child: IgnorePointerInEditMode(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => CustomBottomSheet(
                       height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
@@ -123,7 +123,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   duration: WidgetParams.animationDuration,
                   curve: WidgetParams.animationCurve,
                   opacity: isEditMode ? 1 : 0,
-                  child: IgnorePointerEditMode(
+                  child: IgnorePointerInEditMode(
                     child: AnimatedContainer(
                       duration: WidgetParams.animationDuration,
                       curve: WidgetParams.animationCurve,
@@ -161,7 +161,7 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   duration: WidgetParams.animationDuration,
                   curve: WidgetParams.animationCurve,
                   opacity: isEditMode ? 0 : 1,
-                  child: IgnorePointerEditMode(
+                  child: IgnorePointerInEditMode(
                     ignoreWhenEditMode: true,
                     child: AnimatedContainer(
                       duration: WidgetParams.animationDuration,

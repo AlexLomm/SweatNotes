@@ -22,6 +22,9 @@ ExerciseDay _$ExerciseDayFromJson(Map<String, dynamic> json) {
 mixin _$ExerciseDay {
   String get pseudoId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+      'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+  int? get weekDay => throw _privateConstructorUsedError;
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
   Map<String, int> get exerciseTypesOrdering =>
@@ -42,6 +45,8 @@ abstract class $ExerciseDayCopyWith<$Res> {
   $Res call(
       {String pseudoId,
       String name,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+          int? weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       Map<String, int> exerciseTypesOrdering});
@@ -62,6 +67,7 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
   $Res call({
     Object? pseudoId = null,
     Object? name = null,
+    Object? weekDay = freezed,
     Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
@@ -74,6 +80,10 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      weekDay: freezed == weekDay
+          ? _value.weekDay
+          : weekDay // ignore: cast_nullable_to_non_nullable
+              as int?,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -97,6 +107,8 @@ abstract class _$$_ExerciseDayCopyWith<$Res>
   $Res call(
       {String pseudoId,
       String name,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+          int? weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           Timestamp? archivedAt,
       Map<String, int> exerciseTypesOrdering});
@@ -115,6 +127,7 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
   $Res call({
     Object? pseudoId = null,
     Object? name = null,
+    Object? weekDay = freezed,
     Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
@@ -127,6 +140,10 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      weekDay: freezed == weekDay
+          ? _value.weekDay
+          : weekDay // ignore: cast_nullable_to_non_nullable
+              as int?,
       archivedAt: freezed == archivedAt
           ? _value.archivedAt
           : archivedAt // ignore: cast_nullable_to_non_nullable
@@ -145,6 +162,8 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
   const _$_ExerciseDay(
       {required this.pseudoId,
       required this.name,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+          required this.weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           this.archivedAt,
       final Map<String, int> exerciseTypesOrdering = const {}})
@@ -158,6 +177,10 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
   final String pseudoId;
   @override
   final String name;
+  @override
+  @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+      'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+  final int? weekDay;
   @override
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   final Timestamp? archivedAt;
@@ -173,7 +196,7 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseDay(pseudoId: $pseudoId, name: $name, archivedAt: $archivedAt, exerciseTypesOrdering: $exerciseTypesOrdering)';
+    return 'ExerciseDay(pseudoId: $pseudoId, name: $name, weekDay: $weekDay, archivedAt: $archivedAt, exerciseTypesOrdering: $exerciseTypesOrdering)';
   }
 
   @override
@@ -183,6 +206,7 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'ExerciseDay'))
       ..add(DiagnosticsProperty('pseudoId', pseudoId))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('weekDay', weekDay))
       ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(
           DiagnosticsProperty('exerciseTypesOrdering', exerciseTypesOrdering));
@@ -206,6 +230,8 @@ abstract class _ExerciseDay extends ExerciseDay {
   const factory _ExerciseDay(
       {required final String pseudoId,
       required final String name,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+          required final int? weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
           final Timestamp? archivedAt,
       final Map<String, int> exerciseTypesOrdering}) = _$_ExerciseDay;
@@ -218,6 +244,10 @@ abstract class _ExerciseDay extends ExerciseDay {
   String get pseudoId;
   @override
   String get name;
+  @override
+  @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+      'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+  int? get weekDay;
   @override
   @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
   Timestamp? get archivedAt;

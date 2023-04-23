@@ -17,10 +17,11 @@ class ExerciseDaysService {
     this.firebaseAuth,
   );
 
-  Future<void> updateName({
+  Future<void> updateNameAndWeekDay({
     required TrainingBlockClient trainingBlock,
     required ExerciseDayClient exerciseDay,
     required String name,
+    required int? weekDay,
   }) async {
     final index = trainingBlock.exerciseDays.indexOf(exerciseDay);
 
@@ -32,7 +33,10 @@ class ExerciseDaysService {
       trainingBlock
           .updateExerciseDayAt(
             index: index,
-            exerciseDay: exerciseDay.copyWith(name: name),
+            exerciseDay: exerciseDay.copyWith(
+              name: name,
+              dbModel: exerciseDay.dbModel.copyWith(weekDay: weekDay),
+            ),
           )
           .toDbModel(),
     );
@@ -41,15 +45,26 @@ class ExerciseDaysService {
   Future<void> create({
     required TrainingBlockClient trainingBlock,
     required String name,
+    required int? weekDay,
   }) async {
+    assert(
+      weekDay == null || (weekDay >= 1 && weekDay <= 7),
+      'Invalid week day $weekDay, must be in range [1, 7]',
+    );
+
+    final emptyExerciseDay = ExerciseDayClient.empty();
+
     final updatedTrainingBlock = trainingBlock.addExerciseDay(
-      ExerciseDayClient.empty().copyWith(name: name),
+      emptyExerciseDay.copyWith(
+        name: name,
+        dbModel: emptyExerciseDay.dbModel.copyWith(weekDay: weekDay),
+      ),
     );
 
     return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }
 
-  Future<void> update({
+  Future<void> updateAt({
     required TrainingBlockClient trainingBlock,
     required ExerciseDayClient exerciseDay,
     required int index,

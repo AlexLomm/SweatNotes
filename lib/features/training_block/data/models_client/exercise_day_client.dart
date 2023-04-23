@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../utils/generate_hash.dart';
 import '../models/exercise_day.dart';
@@ -19,6 +20,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
 
   const factory ExerciseDayClient({
     required ExerciseDay dbModel,
+    required List<DateTime> dates,
     Timestamp? archivedAt,
     required String name,
     required List<ExerciseTypeClient> exerciseTypes,
@@ -28,6 +30,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
     final dbModel = ExerciseDay(
       pseudoId: generateHash(),
       name: '',
+      weekDay: null,
       archivedAt: null,
       exerciseTypesOrdering: {},
     );
@@ -35,6 +38,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
     return ExerciseDayClient(
       dbModel: dbModel,
       name: dbModel.name,
+      dates: [],
       archivedAt: dbModel.archivedAt,
       exerciseTypes: [],
     );
@@ -46,6 +50,17 @@ class ExerciseDayClient with _$ExerciseDayClient {
       archivedAt: archivedAt,
       exerciseTypesOrdering: _exerciseTypesNewOrdering,
     );
+  }
+
+  String getFormattedDateAt(int index) {
+    if (dates.isEmpty) return '...';
+
+    assert(
+      index >= 0 && index < dates.length,
+      'Invalid index $index out of range [0, ${dates.length})',
+    );
+
+    return DateFormat.yMMMd('en_US').format(dates[index]);
   }
 
   ExerciseDayClient reorderExerciseType({

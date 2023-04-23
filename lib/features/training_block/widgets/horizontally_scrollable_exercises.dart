@@ -72,7 +72,7 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
       opacity: isEditMode ? 0.32 : 1.0,
       duration: WidgetParams.animationDuration,
       curve: WidgetParams.animationCurve,
-      child: IgnorePointerEditMode(
+      child: IgnorePointerInEditMode(
         ignoreWhenEditMode: true,
         child: AnimatedContainer(
           duration: WidgetParams.animationDuration,
@@ -107,7 +107,7 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
                   : Align(
                       alignment: Alignment.topLeft,
                       child: ExercisesColumn(
-                        exerciseTypes: exerciseTypes,
+                        exerciseDayClient: widget.exerciseDay,
                         horizontalIndex: horizontalIndex,
                       ),
                     );
@@ -156,12 +156,12 @@ class AddExerciseButton extends ConsumerWidget {
 }
 
 class ExercisesColumn extends ConsumerWidget {
-  final List<ExerciseTypeClient> exerciseTypes;
+  final ExerciseDayClient exerciseDayClient;
   final int horizontalIndex;
 
   const ExercisesColumn({
     Key? key,
-    required this.exerciseTypes,
+    required this.exerciseDayClient,
     required this.horizontalIndex,
   }) : super(key: key);
 
@@ -173,18 +173,18 @@ class ExercisesColumn extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ExerciseColumnLabel(
-          text: horizontalIndex == 0 ? 'Previous PRs' : '',
-          exerciseTypes: exerciseTypes,
+          text: horizontalIndex == 0 ? 'Previous PRs' : exerciseDayClient.getFormattedDateAt(horizontalIndex - 1),
+          exerciseTypes: exerciseDayClient.exerciseTypes,
         ),
-        for (var verticalIndex = 0; verticalIndex < exerciseTypes.length; verticalIndex++)
+        for (var verticalIndex = 0; verticalIndex < exerciseDayClient.exerciseTypes.length; verticalIndex++)
           Container(
             margin: EdgeInsets.only(
               right: widgetParams.exercisesSideSpacing,
               bottom: widgetParams.exercisesMarginBottomNotLast,
             ),
             child: ExerciseWidget(
-              exerciseType: exerciseTypes[verticalIndex],
-              exercise: exerciseTypes[verticalIndex].exercises[horizontalIndex],
+              exerciseType: exerciseDayClient.exerciseTypes[verticalIndex],
+              exercise: exerciseDayClient.exerciseTypes[verticalIndex].exercises[horizontalIndex],
             ),
           ),
       ],
@@ -220,7 +220,7 @@ class ExerciseColumnLabel extends ConsumerWidget {
           borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
         ),
         child: Container(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 10),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12.0),
           child: AutoSizeText(
             text,
             maxLines: 1,

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sweatnotes/router/router.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../../app.dart';
 import '../../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../../../widgets/custom_dismissible.dart';
 import '../../../../widgets/rounded_icon_button.dart';
-import '../../../../widgets/text_editor_single_line.dart';
 import '../../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../../settings/edit_mode_switcher.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
-import '../../services/exercise_days_service.dart';
 import '../../services/exercise_types_service.dart';
 import '../../services/training_blocks_service.dart';
 import '../../widget_params.dart';
@@ -100,15 +101,11 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                           ),
                         );
                       },
-                      child: IgnorePointerEditMode(
-                        onTap: () => CustomBottomSheet(
-                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                          title: 'Edit exercise day',
-                          child: _TextEditorSingleLineWrapper(
-                            trainingBlock: widget.trainingBlock,
-                            exerciseDay: widget.exerciseDay,
-                          ),
-                        ).show(context),
+                      child: IgnorePointerInEditMode(
+                        onTap: () => context.pushNamed(
+                          RouteNames.exerciseDayCreateUpdate,
+                          extra: Tuple2(widget.trainingBlock, widget.exerciseDay),
+                        ),
                         child: ExerciseDayWidget(
                           exerciseDay: widget.exerciseDay,
                           trainingBlock: widget.trainingBlock,
@@ -212,35 +209,6 @@ class _Background extends ConsumerWidget {
           child: child,
         ),
       ),
-    );
-  }
-}
-
-class _TextEditorSingleLineWrapper extends ConsumerWidget {
-  final TrainingBlockClient trainingBlock;
-  final ExerciseDayClient exerciseDay;
-
-  const _TextEditorSingleLineWrapper({
-    Key? key,
-    required this.trainingBlock,
-    required this.exerciseDay,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
-
-    return TextEditorSingleLine(
-      value: exerciseDay.name,
-      onSubmitted: (String text) {
-        exerciseDaysService.updateName(
-          trainingBlock: trainingBlock,
-          exerciseDay: exerciseDay,
-          name: text,
-        );
-
-        Navigator.of(context).pop();
-      },
     );
   }
 }

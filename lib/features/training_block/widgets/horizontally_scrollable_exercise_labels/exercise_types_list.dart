@@ -86,7 +86,7 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
             });
 
             try {
-              await exerciseDaysService.update(
+              await exerciseDaysService.updateAt(
                 trainingBlock: widget.trainingBlock,
                 exerciseDay: _exerciseDayClientCached,
                 index: exerciseDayIndex,

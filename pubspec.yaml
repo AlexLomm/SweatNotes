@@ -65,6 +65,7 @@ dependencies:
   linked_scroll_controller: ^0.2.0
   date_field: ^3.0.3
   intl: ^0.17.0
+  tuple: ^2.0.1
 
 dev_dependencies:
   flutter_test:

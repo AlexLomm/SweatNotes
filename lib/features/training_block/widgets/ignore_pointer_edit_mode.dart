@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../settings/edit_mode_switcher.dart';
 
-class IgnorePointerEditMode extends ConsumerWidget {
+class IgnorePointerInEditMode extends ConsumerWidget {
   final bool ignoreWhenEditMode;
   final HitTestBehavior? behavior;
   final Function()? onTap;
   final Widget child;
 
-  const IgnorePointerEditMode({
+  const IgnorePointerInEditMode({
     Key? key,
     this.ignoreWhenEditMode = false,
     this.behavior,

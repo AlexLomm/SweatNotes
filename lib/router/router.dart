@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sweatnotes/features/home/training_block_create_update_screen.dart';
+import 'package:sweatnotes/features/training_block/data/models_client/exercise_day_client.dart';
+import 'package:sweatnotes/features/training_block/exercise_day_create_update_screen.dart';
+import 'package:tuple/tuple.dart';
 
 import '../features/settings/widgets/account_screen.dart';
 import '../features/settings/widgets/settings_screen.dart';
@@ -30,6 +33,7 @@ class RouteNames {
   static const theme = 'theme';
   static const trainingBlock = 'training-block';
   static const trainingBlockCreateUpdate = 'training-block-create-update';
+  static const exerciseDayCreateUpdate = 'exercise-day-create-update';
 }
 
 @riverpod
@@ -106,12 +110,26 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             name: RouteNames.trainingBlockCreateUpdate,
-            path: 'create-update',
+            path: 'training-block-create-update',
             builder: (_, routerState) {
               final trainingBlock =
                   routerState.extra is TrainingBlockClient ? routerState.extra as TrainingBlockClient : null;
 
               return TrainingBlockCreateUpdateScreen(trainingBlock: trainingBlock);
+            },
+          ),
+          GoRoute(
+            name: RouteNames.exerciseDayCreateUpdate,
+            path: 'exercise-day-create-update',
+            builder: (_, routerState) {
+              assert(routerState.extra is Tuple2<TrainingBlockClient, ExerciseDayClient?>);
+
+              final tuple = routerState.extra as Tuple2<TrainingBlockClient, ExerciseDayClient?>;
+
+              return ExerciseDayCreateUpdateScreen(
+                trainingBlock: tuple.item1,
+                exerciseDay: tuple.item2,
+              );
             },
           ),
           GoRoute(

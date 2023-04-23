@@ -219,25 +219,41 @@ TrainingBlockClient? _getNormalizedData(
     archivedAt: trainingBlock.archivedAt,
     startedAt: trainingBlock.startedAt,
     name: trainingBlock.name,
-    exerciseDays: trainingBlock.exerciseDays
-        .where((exerciseDay) => exerciseDay.isNotArchived)
-        .map(
-          (exerciseDay) => ExerciseDayClient(
-            dbModel: exerciseDay,
-            name: exerciseDay.name,
-            archivedAt: exerciseDay.archivedAt,
-            exerciseTypes: exerciseTypesClient
-                .where((exerciseType) => exerciseDay.exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
-                .toList()
-              ..sort((a, b) {
-                final orderingA = exerciseDay.exerciseTypesOrdering[a.dbModel.id] ?? double.maxFinite;
-                final orderingB = exerciseDay.exerciseTypesOrdering[b.dbModel.id] ?? double.maxFinite;
+    exerciseDays: trainingBlock.exerciseDays.where((exerciseDay) => exerciseDay.isNotArchived).map(
+      (exerciseDay) {
+        final exerciseTypes = exerciseTypesClient
+            .where((exerciseType) => exerciseDay.exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
+            .toList()
+          ..sort((a, b) {
+            final orderingA = exerciseDay.exerciseTypesOrdering[a.dbModel.id] ?? double.maxFinite;
+            final orderingB = exerciseDay.exerciseTypesOrdering[b.dbModel.id] ?? double.maxFinite;
 
-                return orderingA.compareTo(orderingB);
-              }),
-          ),
-        )
-        .toList()
+            return orderingA.compareTo(orderingB);
+          });
+
+        final List<DateTime> dates = [];
+        final startedAtDate = trainingBlock.startedAt?.toDate();
+        final weekDay = exerciseDay.weekDay;
+
+        if (exerciseTypes.isNotEmpty && startedAtDate != null && weekDay != null) {
+          final daysDifference = (weekDay - startedAtDate.weekday) % DateTime.daysPerWeek;
+          final firstDate = startedAtDate.add(Duration(days: daysDifference));
+
+          // -1, because we don't want to include a date for the "Previous PRs" column
+          for (var i = 0; i < exerciseTypes[0].exercises.length - 1; i++) {
+            dates.add(firstDate.add(Duration(days: i * DateTime.daysPerWeek)));
+          }
+        }
+
+        return ExerciseDayClient(
+          dbModel: exerciseDay,
+          name: exerciseDay.name,
+          dates: dates,
+          archivedAt: exerciseDay.archivedAt,
+          exerciseTypes: exerciseTypes,
+        );
+      },
+    ).toList()
       ..sort((a, b) {
         final orderingA = trainingBlock.exerciseDaysOrdering[a.dbModel.pseudoId] ?? double.maxFinite;
         final orderingB = trainingBlock.exerciseDaysOrdering[b.dbModel.pseudoId] ?? double.maxFinite;

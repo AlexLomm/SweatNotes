@@ -4,23 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
+import 'package:tuple/tuple.dart';
 
-import '../../features/training_block/services/exercise_days_service.dart';
 import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
 import '../../widgets/button_dropdown_menu.dart';
-import '../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/go_back_button.dart';
 import '../../widgets/layout.dart';
-import '../../widgets/text_editor_single_line.dart';
 import '../auth/services/auth_service.dart';
 import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
 import 'custom_flexible_space_bar.dart';
 import 'data/models_client/training_block_client.dart';
 import 'services/training_block_details_stream.dart';
-import 'services/training_blocks_service.dart';
 import 'widget_params.dart';
 import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
 import 'widgets/horizontally_scrollable_exercises.dart';
@@ -191,9 +188,6 @@ class _MatrixState extends ConsumerState<Matrix> {
 
   @override
   Widget build(BuildContext context) {
-    final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
-    final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
-
     final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
     final isCompactMode = ref.watch(compactModeSwitcherProvider);
@@ -258,18 +252,10 @@ class _MatrixState extends ConsumerState<Matrix> {
                 splashRadius: 20,
                 onPressed: isEditMode
                     ? null
-                    : () => CustomBottomSheet(
-                          height: CustomBottomSheet.allSpacing + TextEditorSingleLine.height,
-                          title: 'Add exercise day',
-                          child: TextEditorSingleLine(
-                            value: '',
-                            onSubmitted: (String text) {
-                              exerciseDaysService.create(trainingBlock: widget.trainingBlock, name: text);
-
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ).show(context),
+                    : () => context.pushNamed(
+                          RouteNames.exerciseDayCreateUpdate,
+                          extra: Tuple2(widget.trainingBlock, null),
+                        ),
               ),
             ),
             AnimatedOpacity(

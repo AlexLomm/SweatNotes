@@ -10,6 +10,7 @@ _$_ExerciseDay _$$_ExerciseDayFromJson(Map<String, dynamic> json) =>
     _$_ExerciseDay(
       pseudoId: json['pseudoId'] as String,
       name: json['name'] as String,
+      weekDay: json['weekDay'] as int?,
       archivedAt: timestampFromJson(json['archivedAt'] as int?),
       exerciseTypesOrdering:
           (json['exerciseTypesOrdering'] as Map<String, dynamic>?)?.map(
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$_ExerciseDayToJson(_$_ExerciseDay instance) =>
     <String, dynamic>{
       'pseudoId': instance.pseudoId,
       'name': instance.name,
+      'weekDay': instance.weekDay,
       'archivedAt': timestampToJson(instance.archivedAt),
       'exerciseTypesOrdering': instance.exerciseTypesOrdering,
     };

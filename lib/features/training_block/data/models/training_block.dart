@@ -14,8 +14,8 @@ part 'training_block.g.dart';
 class TrainingBlock with _$TrainingBlock {
   const factory TrainingBlock({
     @JsonKey(includeToJson: false) required String id,
-    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? archivedAt,
-    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? startedAt,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null) Timestamp? archivedAt,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null) Timestamp? startedAt,
     @Default({}) Map<String, int> exerciseDaysOrdering,
     required String name,
     @Default([]) List<ExerciseDay> exerciseDays,

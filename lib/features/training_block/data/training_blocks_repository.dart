@@ -23,10 +23,13 @@ class TrainingBlocksRepository {
         toFirestore: toFirestore,
       );
 
+  // NOTE: Adding orderBy to nullable fields will cause training
+  // blocks without that field missing be excluded from the list.
+  // i.e if you add orderBy('startedAt') to the query, training
+  // blocks without startedAt will be excluded from the list.
   Query<TrainingBlock> get queryRef => _collectionRef
       //
-      .where('archivedAt', isNull: true)
-      .orderBy('startedAt', descending: true);
+      .where('archivedAt', isNull: true);
 
   DocumentReference<TrainingBlock> getDocumentRefById(String id) {
     return _collectionRef.doc(id);

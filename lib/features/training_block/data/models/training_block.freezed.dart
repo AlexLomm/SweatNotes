@@ -22,9 +22,11 @@ TrainingBlock _$TrainingBlockFromJson(Map<String, dynamic> json) {
 mixin _$TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  @JsonKey(
+      fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  @JsonKey(
+      fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
   Timestamp? get startedAt => throw _privateConstructorUsedError;
   Map<String, int> get exerciseDaysOrdering =>
       throw _privateConstructorUsedError;
@@ -46,9 +48,9 @@ abstract class $TrainingBlockCopyWith<$Res> {
   $Res call(
       {@JsonKey(includeToJson: false)
           String id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           Timestamp? archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           Timestamp? startedAt,
       Map<String, int> exerciseDaysOrdering,
       String name,
@@ -115,9 +117,9 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
   $Res call(
       {@JsonKey(includeToJson: false)
           String id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           Timestamp? archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           Timestamp? startedAt,
       Map<String, int> exerciseDaysOrdering,
       String name,
@@ -177,9 +179,9 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   const _$_TrainingBlock(
       {@JsonKey(includeToJson: false)
           required this.id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           this.archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           this.startedAt,
       final Map<String, int> exerciseDaysOrdering = const {},
       required this.name,
@@ -194,10 +196,12 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   @JsonKey(includeToJson: false)
   final String id;
   @override
-  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  @JsonKey(
+      fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
   final Timestamp? archivedAt;
   @override
-  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  @JsonKey(
+      fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
   final Timestamp? startedAt;
   final Map<String, int> _exerciseDaysOrdering;
   @override
@@ -256,9 +260,9 @@ abstract class _TrainingBlock implements TrainingBlock {
   const factory _TrainingBlock(
       {@JsonKey(includeToJson: false)
           required final String id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           final Timestamp? archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
           final Timestamp? startedAt,
       final Map<String, int> exerciseDaysOrdering,
       required final String name,
@@ -271,10 +275,12 @@ abstract class _TrainingBlock implements TrainingBlock {
   @JsonKey(includeToJson: false)
   String get id;
   @override
-  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  @JsonKey(
+      fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
   Timestamp? get archivedAt;
   @override
-  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+  @JsonKey(
+      fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
   Timestamp? get startedAt;
   @override
   Map<String, int> get exerciseDaysOrdering;

@@ -129,7 +129,7 @@ class WidgetParams {
 
   double get exercisesSideSpacing => isCompactMode ? 4.0 : 8.0;
 
-  double get exercisesScrollInwardsDepth => 16.0;
+  double get exercisesScrollInwardsDepth => _exerciseLabelsListRightInsetSize + exercisesSideSpacing + 8.0;
 
   double get exercisesMarginBottomNotLast => exerciseTypesVerticalSpacing;
 }

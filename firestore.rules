@@ -27,7 +27,7 @@ service cloud.firestore {
               && incoming().exerciseDaysOrdering is map
               && incoming().exerciseDays is list
               && incoming().archivedAt is number || incoming().archivedAt == null
-              && incoming().startedAt is number || incoming().archivedAt == null;
+              && incoming().startedAt is number || incoming().startedAt == null;
         }
 
         allow write: if isCorrectSchema();

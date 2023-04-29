@@ -53,7 +53,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
   }
 
   String getFormattedDateAt(int index) {
-    if (dates.isEmpty) return '...';
+    if (areDatesEmpty) return '...';
 
     assert(
       index >= 0 && index < dates.length,
@@ -62,6 +62,8 @@ class ExerciseDayClient with _$ExerciseDayClient {
 
     return DateFormat.yMMMd('en_US').format(dates[index]);
   }
+
+  bool get areDatesEmpty => dates.isEmpty;
 
   ExerciseDayClient reorderExerciseType({
     required int from,

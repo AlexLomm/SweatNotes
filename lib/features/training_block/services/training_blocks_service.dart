@@ -45,13 +45,31 @@ class TrainingBlocksService {
     ));
   }
 
-  Future<void> update(
+  Future<void> updateNameAndStartedAtDate(
     TrainingBlockClient trainingBlock, {
     required String name,
     required Timestamp startedAt,
   }) {
     return trainingBlocksRepository.update(
       trainingBlock.copyWith(name: name, startedAt: startedAt).toDbModel(),
+    );
+  }
+
+  Future<void> collapsePastExercisesAt(
+    TrainingBlockClient trainingBlock, {
+    required int index,
+  }) {
+    assert(trainingBlock.exerciseDays.isNotEmpty);
+    assert(index >= 0 && index < trainingBlock.exerciseDays[0].exerciseTypes[0].exercises.length);
+
+    return trainingBlocksRepository.update(
+      trainingBlock.copyWith(exercisesCollapsedIncludingIndex: index).toDbModel(),
+    );
+  }
+
+  Future<void> expandExercises(TrainingBlockClient trainingBlock) {
+    return trainingBlocksRepository.update(
+      trainingBlock.copyWith(exercisesCollapsedIncludingIndex: -1).toDbModel(),
     );
   }
 

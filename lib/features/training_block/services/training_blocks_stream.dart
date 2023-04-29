@@ -42,6 +42,7 @@ Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef r
             startedAt: trainingBlock.startedAt,
             name: trainingBlock.name,
             exerciseDays: [],
+            exercisesCollapsedIncludingIndex: trainingBlock.exercisesCollapsedIncludingIndex,
           ),
         )
         .toList(),

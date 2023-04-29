@@ -16,6 +16,8 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
                 (k, e) => MapEntry(k, e as int),
               ) ??
               const {},
+      exercisesCollapsedIncludingIndex:
+          json['exercisesCollapsedIncludingIndex'] as int? ?? -1,
       name: json['name'] as String,
       exerciseDays: (json['exerciseDays'] as List<dynamic>?)
               ?.map((e) => ExerciseDay.fromJson(e as Map<String, dynamic>))
@@ -28,6 +30,8 @@ Map<String, dynamic> _$$_TrainingBlockToJson(_$_TrainingBlock instance) =>
       'archivedAt': timestampToJson(instance.archivedAt),
       'startedAt': timestampToJson(instance.startedAt),
       'exerciseDaysOrdering': instance.exerciseDaysOrdering,
+      'exercisesCollapsedIncludingIndex':
+          instance.exercisesCollapsedIncludingIndex,
       'name': instance.name,
       'exerciseDays': instance.exerciseDays.map((e) => e.toJson()).toList(),
     };

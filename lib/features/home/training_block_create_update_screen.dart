@@ -87,7 +87,7 @@ class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdate
 
                       setState(() => _isLoading = true);
 
-                      await trainingBlocksService.update(
+                      await trainingBlocksService.updateNameAndStartedAtDate(
                         widget.trainingBlock!,
                         name: _trainingBlockNameController.text,
                         startedAt: Timestamp.fromDate(_selectedDate),

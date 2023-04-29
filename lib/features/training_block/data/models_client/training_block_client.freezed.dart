@@ -20,6 +20,8 @@ mixin _$TrainingBlockClient {
   Timestamp? get archivedAt => throw _privateConstructorUsedError;
   Timestamp? get startedAt => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  int get exercisesCollapsedIncludingIndex =>
+      throw _privateConstructorUsedError;
   List<ExerciseDayClient> get exerciseDays =>
       throw _privateConstructorUsedError;
 
@@ -39,6 +41,7 @@ abstract class $TrainingBlockClientCopyWith<$Res> {
       Timestamp? archivedAt,
       Timestamp? startedAt,
       String name,
+      int exercisesCollapsedIncludingIndex,
       List<ExerciseDayClient> exerciseDays});
 
   $TrainingBlockCopyWith<$Res> get dbModel;
@@ -61,6 +64,7 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
     Object? archivedAt = freezed,
     Object? startedAt = freezed,
     Object? name = null,
+    Object? exercisesCollapsedIncludingIndex = null,
     Object? exerciseDays = null,
   }) {
     return _then(_value.copyWith(
@@ -80,6 +84,10 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      exercisesCollapsedIncludingIndex: null == exercisesCollapsedIncludingIndex
+          ? _value.exercisesCollapsedIncludingIndex
+          : exercisesCollapsedIncludingIndex // ignore: cast_nullable_to_non_nullable
+              as int,
       exerciseDays: null == exerciseDays
           ? _value.exerciseDays
           : exerciseDays // ignore: cast_nullable_to_non_nullable
@@ -109,6 +117,7 @@ abstract class _$$_TrainingBlockClientCopyWith<$Res>
       Timestamp? archivedAt,
       Timestamp? startedAt,
       String name,
+      int exercisesCollapsedIncludingIndex,
       List<ExerciseDayClient> exerciseDays});
 
   @override
@@ -130,6 +139,7 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
     Object? archivedAt = freezed,
     Object? startedAt = freezed,
     Object? name = null,
+    Object? exercisesCollapsedIncludingIndex = null,
     Object? exerciseDays = null,
   }) {
     return _then(_$_TrainingBlockClient(
@@ -149,6 +159,10 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      exercisesCollapsedIncludingIndex: null == exercisesCollapsedIncludingIndex
+          ? _value.exercisesCollapsedIncludingIndex
+          : exercisesCollapsedIncludingIndex // ignore: cast_nullable_to_non_nullable
+              as int,
       exerciseDays: null == exerciseDays
           ? _value._exerciseDays
           : exerciseDays // ignore: cast_nullable_to_non_nullable
@@ -166,6 +180,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
       this.archivedAt,
       this.startedAt,
       required this.name,
+      required this.exercisesCollapsedIncludingIndex,
       required final List<ExerciseDayClient> exerciseDays})
       : _exerciseDays = exerciseDays,
         super._();
@@ -178,6 +193,8 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
   final Timestamp? startedAt;
   @override
   final String name;
+  @override
+  final int exercisesCollapsedIncludingIndex;
   final List<ExerciseDayClient> _exerciseDays;
   @override
   List<ExerciseDayClient> get exerciseDays {
@@ -188,7 +205,7 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TrainingBlockClient(dbModel: $dbModel, archivedAt: $archivedAt, startedAt: $startedAt, name: $name, exerciseDays: $exerciseDays)';
+    return 'TrainingBlockClient(dbModel: $dbModel, archivedAt: $archivedAt, startedAt: $startedAt, name: $name, exercisesCollapsedIncludingIndex: $exercisesCollapsedIncludingIndex, exerciseDays: $exerciseDays)';
   }
 
   @override
@@ -200,6 +217,8 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
       ..add(DiagnosticsProperty('archivedAt', archivedAt))
       ..add(DiagnosticsProperty('startedAt', startedAt))
       ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty(
+          'exercisesCollapsedIncludingIndex', exercisesCollapsedIncludingIndex))
       ..add(DiagnosticsProperty('exerciseDays', exerciseDays));
   }
 
@@ -217,6 +236,7 @@ abstract class _TrainingBlockClient extends TrainingBlockClient {
           final Timestamp? archivedAt,
           final Timestamp? startedAt,
           required final String name,
+          required final int exercisesCollapsedIncludingIndex,
           required final List<ExerciseDayClient> exerciseDays}) =
       _$_TrainingBlockClient;
   const _TrainingBlockClient._() : super._();
@@ -229,6 +249,8 @@ abstract class _TrainingBlockClient extends TrainingBlockClient {
   Timestamp? get startedAt;
   @override
   String get name;
+  @override
+  int get exercisesCollapsedIncludingIndex;
   @override
   List<ExerciseDayClient> get exerciseDays;
   @override

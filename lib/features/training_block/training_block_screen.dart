@@ -333,6 +333,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                           alignment: Alignment.topLeft,
                           child: HorizontallyScrollableExercises(
                             scrollController: _horizontalScrollControllersMap[exerciseDay.dbModel.pseudoId],
+                            trainingBlock: widget.trainingBlock,
                             exerciseDay: exerciseDay,
                           ),
                         ),

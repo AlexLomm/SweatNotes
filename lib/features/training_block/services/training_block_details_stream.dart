@@ -219,6 +219,7 @@ TrainingBlockClient? _getNormalizedData(
     archivedAt: trainingBlock.archivedAt,
     startedAt: trainingBlock.startedAt,
     name: trainingBlock.name,
+    exercisesCollapsedIncludingIndex: trainingBlock.exercisesCollapsedIncludingIndex,
     exerciseDays: trainingBlock.exerciseDays.where((exerciseDay) => exerciseDay.isNotArchived).map(
       (exerciseDay) {
         final exerciseTypes = exerciseTypesClient

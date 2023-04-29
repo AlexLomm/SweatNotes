@@ -7,7 +7,7 @@ part of 'training_blocks_stream.dart';
 // **************************************************************************
 
 String _$trainingBlocksStreamHash() =>
-    r'90e9933e736d1ba7258064b4080dfe2495d0bb63';
+    r'29f2ab27d5e3d1e549021b1b165cec278a10e874';
 
 /// See also [trainingBlocksStream].
 @ProviderFor(trainingBlocksStream)

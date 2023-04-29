@@ -21,6 +21,7 @@ class TrainingBlockClient with _$TrainingBlockClient {
     Timestamp? archivedAt,
     Timestamp? startedAt,
     required String name,
+    required int exercisesCollapsedIncludingIndex,
     required List<ExerciseDayClient> exerciseDays,
   }) = _TrainingBlockClient;
 
@@ -30,9 +31,10 @@ class TrainingBlockClient with _$TrainingBlockClient {
     final exerciseDayDbModels = exerciseDays.map<ExerciseDay>((e) => e.toDbModel()).toList();
 
     return dbModel.copyWith(
-      name: name,
       archivedAt: archivedAt,
       startedAt: startedAt,
+      name: name,
+      exercisesCollapsedIncludingIndex: exercisesCollapsedIncludingIndex,
       exerciseDays: exerciseDayDbModels,
       exerciseDaysOrdering: exerciseDayDbModels.asMap().map((key, value) => MapEntry(value.pseudoId, key)),
     );

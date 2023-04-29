@@ -420,7 +420,7 @@ class ExerciseColumnLabel extends ConsumerWidget {
               Expanded(
                 child: areDatesEmpty
                     ? Tooltip(
-                        showDuration: const Duration(seconds: 2),
+                        showDuration: const Duration(seconds: 3),
                         padding: const EdgeInsets.all(16.0),
                         textAlign: TextAlign.left,
                         triggerMode: TooltipTriggerMode.tap,

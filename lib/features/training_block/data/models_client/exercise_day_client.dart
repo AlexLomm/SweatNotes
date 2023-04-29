@@ -60,7 +60,7 @@ class ExerciseDayClient with _$ExerciseDayClient {
       'Invalid index $index out of range [0, ${dates.length})',
     );
 
-    return DateFormat.yMMMd('en_US').format(dates[index]);
+    return DateFormat('EEE, dd MMM yyyy').format(dates[index]);
   }
 
   bool get areDatesEmpty => dates.isEmpty;

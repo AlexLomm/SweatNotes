@@ -12,10 +12,14 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/setup-gcloud@main
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
-          service_account_key: ${{ secrets.SWEATNOTES_BACKUP_SERVICE_KEY }}
-          export_default_credentials: true
+          service_account_json: ${{ secrets.SWEATNOTES_BACKUP_SERVICE_ACCOUNT_CREDENTIALS_JSON }}
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
       - run: gcloud info
       - run: gcloud config set project $PROJECT_ID
       - run: gcloud firestore export $BUCKET

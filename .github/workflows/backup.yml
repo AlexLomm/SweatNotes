@@ -3,6 +3,8 @@ name: Backup Firestore
 on:
   schedule:
     - cron:  '0 0 * * *'
+  # enables manual triggering of the workflow
+  workflow_dispatch:
 
 env:
   PROJECT_ID: sweatnotes-sn
@@ -15,7 +17,7 @@ jobs:
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
-          service_account_json: ${{ secrets.SWEATNOTES_BACKUP_SERVICE_ACCOUNT_CREDENTIALS_JSON }}
+          credentials_json: ${{ secrets.SWEATNOTES_BACKUP_SERVICE_ACCOUNT_CREDENTIALS_JSON }}
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'

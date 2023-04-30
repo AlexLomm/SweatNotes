@@ -12,7 +12,7 @@ To bump a version, run the following command:
 
 ## Automatic backups
 
-Followed this guide: https://fireship.io/snippets/firestore-automated-backups/
+Followed this [guide](https://fireship.io/snippets/firestore-automated-backups/), and made some changes to it according to the [official docs](https://github.com/google-github-actions/setup-gcloud).
 
 TLDR: There's a Github action that performs automatic backups once a day (using Google cloud's service account) and stores them in a Google Cloud Storage bucket. The bucket is configured to delete backups older than 30 days.
 

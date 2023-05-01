@@ -93,13 +93,26 @@ class _LayoutState extends ConsumerState<Layout> {
                     )
                   : null,
               endDrawer: widget.endDrawer,
-              body: UpgradeAlert(
-                child: SafeArea(
-                  bottom: false,
-                  child: Container(
-                    padding: widget.padding,
-                    // TODO: replace with ListView.builder https://www.youtube.com/watch?v=YY-_yrZdjGc&t=6s
-                    child: widget.isScrollable ? SingleChildScrollView(child: widget.child) : widget.child,
+              body: Theme(
+                data: Theme.of(context).copyWith(
+                  // style the auto-updater dialog
+                  dialogTheme: DialogTheme(
+                    titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                    contentTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                  ),
+                ),
+                child: UpgradeAlert(
+                  child: SafeArea(
+                    bottom: false,
+                    child: Container(
+                      padding: widget.padding,
+                      child: widget.isScrollable ? SingleChildScrollView(child: widget.child) : widget.child,
+                    ),
                   ),
                 ),
               ),

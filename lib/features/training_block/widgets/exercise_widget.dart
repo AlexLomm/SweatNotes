@@ -34,11 +34,12 @@ class ExerciseWidget extends ConsumerWidget {
     final exercisesService = ref.watch(exercisesServiceProvider);
 
     final allExerciseSetsWidth = widgetParams.exerciseSetWidth * exercise.sets.length;
+    final exerciseReactionsAddedWidth = widgetParams.reactionCircleSize / 2;
 
-    return AnimatedContainer(
-      duration: WidgetParams.animationDuration,
+    return SizedBox(
       width: isExerciseReactionsEnabled
-          ? allExerciseSetsWidth + widgetParams.reactionCircleSize / 2
+          //
+          ? allExerciseSetsWidth + exerciseReactionsAddedWidth
           : allExerciseSetsWidth,
       height: widgetParams.exerciseTypeHeight,
       child: Stack(
@@ -88,21 +89,35 @@ class ExerciseWidget extends ConsumerWidget {
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: IgnorePointer(
-              ignoring: !isExerciseReactionsEnabled,
-              child: AnimatedOpacity(
-                opacity: isExerciseReactionsEnabled ? 1 : 0,
-                duration: WidgetParams.animationDuration,
-                curve: WidgetParams.animationCurve,
-                child: ReactionMenu(
-                  selectedReaction: exercise.reactionScore,
-                  onSelect: (int? reactionScore) {
-                    exercisesService.setExerciseReaction(
-                      exerciseType: exerciseType,
-                      exercise: exercise,
-                      reactionScore: reactionScore,
-                    );
-                  },
+            // `Transform.translate` prevents the jumpiness when switching between
+            // compact and normal modes. The jumpiness is caused by the ExerciseWidget
+            // changing its width instantly (without animations)
+            child: Transform.translate(
+              offset: Offset(
+                isExerciseReactionsEnabled ? 0 : allExerciseSetsWidth,
+                0,
+              ),
+              child: IgnorePointer(
+                ignoring: !isExerciseReactionsEnabled,
+                child: AnimatedScale(
+                  duration: ReactionMenu.animationDuration,
+                  curve: ReactionMenu.animationCurve,
+                  scale: isExerciseReactionsEnabled ? 1 : 0,
+                  child: AnimatedOpacity(
+                    opacity: isExerciseReactionsEnabled ? 1 : 0,
+                    duration: ReactionMenu.animationDuration,
+                    curve: ReactionMenu.animationCurve,
+                    child: ReactionMenu(
+                      selectedReaction: exercise.reactionScore,
+                      onSelect: (int? reactionScore) {
+                        exercisesService.setExerciseReaction(
+                          exerciseType: exerciseType,
+                          exercise: exercise,
+                          reactionScore: reactionScore,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -13,7 +13,7 @@ class CompactModeSwitcher extends _$CompactModeSwitcher {
   bool build() {
     final prefs = ref.watch(prefsProvider);
 
-    return prefs.getBool(key) ?? false;
+    return prefs.getBool(key) ?? true;
   }
 
   void toggle() {

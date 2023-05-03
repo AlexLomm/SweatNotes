@@ -7,7 +7,7 @@ part of 'compact_mode_switcher.dart';
 // **************************************************************************
 
 String _$compactModeSwitcherHash() =>
-    r'3ebceee056985f1657bf2bc073c7e1652ea20dd1';
+    r'36e2405bd1d81b691dc7b1cd97cfdcc8cb927f28';
 
 /// See also [CompactModeSwitcher].
 @ProviderFor(CompactModeSwitcher)

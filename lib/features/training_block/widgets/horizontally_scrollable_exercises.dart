@@ -400,7 +400,9 @@ class ExerciseColumnLabel extends ConsumerWidget {
     final labelWidth =
         exerciseTypes.isEmpty ? 0.0 : exerciseTypes[0].exercises[0].sets.length * widgetParams.exerciseSetWidth;
 
-    return Container(
+    return AnimatedContainer(
+      duration: WidgetParams.animationDuration,
+      curve: WidgetParams.animationCurve,
       width: labelWidth,
       height: widgetParams.exercisesTitleHeight - widgetParams.exercisesMarginBottomNotLast,
       margin: EdgeInsets.only(bottom: widgetParams.exercisesMarginBottomNotLast),

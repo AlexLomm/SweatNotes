@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sweatnotes/widgets/reaction_menu.dart';
 
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
+import '../../settings/exercise_reactions_switcher.dart';
 import '../data/models_client/exercise_client.dart';
 import '../data/models_client/exercise_type_client.dart';
 import '../services/exercises_service.dart';
@@ -23,6 +24,7 @@ class ExerciseWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final widgetParams = ref.watch(widgetParamsProvider);
+    final isExerciseReactionsEnabled = ref.watch(exerciseReactionsSwitcherProvider);
 
     final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String trainingBlockId = routeArgs['trainingBlockId'];
@@ -33,8 +35,11 @@ class ExerciseWidget extends ConsumerWidget {
 
     final allExerciseSetsWidth = widgetParams.exerciseSetWidth * exercise.sets.length;
 
-    return SizedBox(
-      width: allExerciseSetsWidth + widgetParams.reactionCircleSize / 2,
+    return AnimatedContainer(
+      duration: WidgetParams.animationDuration,
+      width: isExerciseReactionsEnabled
+          ? allExerciseSetsWidth + widgetParams.reactionCircleSize / 2
+          : allExerciseSetsWidth,
       height: widgetParams.exerciseTypeHeight,
       child: Stack(
         children: [
@@ -83,15 +88,23 @@ class ExerciseWidget extends ConsumerWidget {
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: ReactionMenu(
-              selectedReaction: exercise.reactionScore,
-              onSelect: (int? reactionScore) {
-                exercisesService.setExerciseReaction(
-                  exerciseType: exerciseType,
-                  exercise: exercise,
-                  reactionScore: reactionScore,
-                );
-              },
+            child: IgnorePointer(
+              ignoring: !isExerciseReactionsEnabled,
+              child: AnimatedOpacity(
+                opacity: isExerciseReactionsEnabled ? 1 : 0,
+                duration: WidgetParams.animationDuration,
+                curve: WidgetParams.animationCurve,
+                child: ReactionMenu(
+                  selectedReaction: exercise.reactionScore,
+                  onSelect: (int? reactionScore) {
+                    exercisesService.setExerciseReaction(
+                      exerciseType: exerciseType,
+                      exercise: exercise,
+                      reactionScore: reactionScore,
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ],

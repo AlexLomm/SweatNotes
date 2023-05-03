@@ -15,6 +15,7 @@ import '../../widgets/layout.dart';
 import '../auth/services/auth_service.dart';
 import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
+import '../settings/exercise_reactions_switcher.dart';
 import 'custom_flexible_space_bar.dart';
 import 'data/models_client/training_block_client.dart';
 import 'services/training_block_details_stream.dart';
@@ -189,15 +190,14 @@ class _MatrixState extends ConsumerState<Matrix> {
   @override
   Widget build(BuildContext context) {
     final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
+    final exerciseReactionsSwitcher = ref.watch(exerciseReactionsSwitcherProvider.notifier);
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
     final isCompactMode = ref.watch(compactModeSwitcherProvider);
+    final isExerciseReactionsEnabled = ref.watch(exerciseReactionsSwitcherProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
     final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
           color: Theme.of(context).colorScheme.onSurface,
-        );
-    final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: isCompactMode ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
         );
 
     return CustomScrollView(
@@ -286,23 +286,20 @@ class _MatrixState extends ConsumerState<Matrix> {
                   ),
                   ButtonDropdownMenuItem(
                     onTap: compactModeSwitcher.toggle,
-                    child: RichText(
-                      softWrap: false,
-                      text: TextSpan(
-                        text: 'Compact mode',
-                        style: menuItemTheme,
-                        children: [
-                          WidgetSpan(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 24.0),
-                              padding: const EdgeInsets.only(bottom: 1.0),
-                              child: Text(isCompactMode ? 'On' : 'Off', style: menuItemSubTextTheme),
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: OnOffText(
+                      title: 'Compact mode',
+                      isEnabled: isCompactMode,
+                      textStyle: menuItemTheme,
                     ),
                   ),
+                  ButtonDropdownMenuItem(
+                    onTap: exerciseReactionsSwitcher.toggle,
+                    child: OnOffText(
+                      title: 'Ex. Reactions',
+                      isEnabled: isExerciseReactionsEnabled,
+                      textStyle: menuItemTheme,
+                    ),
+                  )
                 ],
               ),
               secondChild: IconButton(
@@ -350,6 +347,43 @@ class _MatrixState extends ConsumerState<Matrix> {
                 ),
               ),
       ],
+    );
+  }
+}
+
+class OnOffText extends StatelessWidget {
+  final String title;
+  final bool isEnabled;
+  final TextStyle? textStyle;
+
+  const OnOffText({
+    Key? key,
+    required this.title,
+    required this.isEnabled,
+    required this.textStyle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: isEnabled ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
+        );
+
+    return RichText(
+      softWrap: false,
+      text: TextSpan(
+        text: title,
+        style: textStyle,
+        children: [
+          WidgetSpan(
+            child: Container(
+              margin: const EdgeInsets.only(left: 24.0),
+              padding: const EdgeInsets.only(bottom: 1.0),
+              child: Text(isEnabled ? 'On' : 'Off', style: menuItemSubTextTheme),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

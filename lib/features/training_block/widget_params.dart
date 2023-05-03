@@ -20,6 +20,8 @@ class WidgetParams {
     required this.isCompactMode,
   });
 
+  double get reactionCircleSize => isCompactMode ? 28.0 : 32.0;
+
   double get borderRadius => isCompactMode ? 4.0 : 8.0;
 
   double get exerciseTypeHeight => isCompactMode ? 64.0 : 80.0;

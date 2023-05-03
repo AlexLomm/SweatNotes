@@ -20,6 +20,9 @@ Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Exercise {
+  @Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+      'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+  int? get reactionScore => throw _privateConstructorUsedError;
   List<ExerciseSet> get sets => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -33,7 +36,10 @@ abstract class $ExerciseCopyWith<$Res> {
   factory $ExerciseCopyWith(Exercise value, $Res Function(Exercise) then) =
       _$ExerciseCopyWithImpl<$Res, Exercise>;
   @useResult
-  $Res call({List<ExerciseSet> sets});
+  $Res call(
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+          int? reactionScore,
+      List<ExerciseSet> sets});
 }
 
 /// @nodoc
@@ -49,9 +55,14 @@ class _$ExerciseCopyWithImpl<$Res, $Val extends Exercise>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? reactionScore = freezed,
     Object? sets = null,
   }) {
     return _then(_value.copyWith(
+      reactionScore: freezed == reactionScore
+          ? _value.reactionScore
+          : reactionScore // ignore: cast_nullable_to_non_nullable
+              as int?,
       sets: null == sets
           ? _value.sets
           : sets // ignore: cast_nullable_to_non_nullable
@@ -67,7 +78,10 @@ abstract class _$$_ExerciseCopyWith<$Res> implements $ExerciseCopyWith<$Res> {
       __$$_ExerciseCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ExerciseSet> sets});
+  $Res call(
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+          int? reactionScore,
+      List<ExerciseSet> sets});
 }
 
 /// @nodoc
@@ -81,9 +95,14 @@ class __$$_ExerciseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? reactionScore = freezed,
     Object? sets = null,
   }) {
     return _then(_$_Exercise(
+      reactionScore: freezed == reactionScore
+          ? _value.reactionScore
+          : reactionScore // ignore: cast_nullable_to_non_nullable
+              as int?,
       sets: null == sets
           ? _value._sets
           : sets // ignore: cast_nullable_to_non_nullable
@@ -95,13 +114,20 @@ class __$$_ExerciseCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
-  const _$_Exercise({final List<ExerciseSet> sets = const []})
+  const _$_Exercise(
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+          this.reactionScore,
+      final List<ExerciseSet> sets = const []})
       : _sets = sets,
         super._();
 
   factory _$_Exercise.fromJson(Map<String, dynamic> json) =>
       _$$_ExerciseFromJson(json);
 
+  @override
+  @Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+      'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+  final int? reactionScore;
   final List<ExerciseSet> _sets;
   @override
   @JsonKey()
@@ -113,7 +139,7 @@ class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Exercise(sets: $sets)';
+    return 'Exercise(reactionScore: $reactionScore, sets: $sets)';
   }
 
   @override
@@ -121,6 +147,7 @@ class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Exercise'))
+      ..add(DiagnosticsProperty('reactionScore', reactionScore))
       ..add(DiagnosticsProperty('sets', sets));
   }
 
@@ -139,11 +166,18 @@ class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
 }
 
 abstract class _Exercise extends Exercise {
-  const factory _Exercise({final List<ExerciseSet> sets}) = _$_Exercise;
+  const factory _Exercise(
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+          final int? reactionScore,
+      final List<ExerciseSet> sets}) = _$_Exercise;
   const _Exercise._() : super._();
 
   factory _Exercise.fromJson(Map<String, dynamic> json) = _$_Exercise.fromJson;
 
+  @override
+  @Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+      'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+  int? get reactionScore;
   @override
   List<ExerciseSet> get sets;
   @override

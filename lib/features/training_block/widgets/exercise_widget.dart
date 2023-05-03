@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sweatnotes/widgets/reaction_menu.dart';
 
 import '../../../widgets/custom_bottom_sheet/custom_bottom_sheet.dart';
 import '../data/models_client/exercise_client.dart';
@@ -30,43 +31,70 @@ class ExerciseWidget extends ConsumerWidget {
 
     final exercisesService = ref.watch(exercisesServiceProvider);
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Row(
-        children: exercise.sets.asMap().entries.map((entry) {
-          final set = entry.value;
+    final allExerciseSetsWidth = widgetParams.exerciseSetWidth * exercise.sets.length;
 
-          final repsInitial = set.reps == 0 ? set.predictedReps : set.reps;
-          final loadInitial = set.load == 0 ? set.predictedLoad : set.load;
-
-          return ExerciseSetWidget(
-            key: UniqueKey(),
-            onTap: () => CustomBottomSheet(
-              title: 'Edit exercise set',
-              child: ExerciseSetEditor(
-                reps: repsInitial,
-                load: loadInitial,
-                onChange: ({required reps, required load}) {
-                  exercisesService.setExerciseSet(
-                    exerciseType: exerciseType,
-                    exercise: exercise,
-                    exerciseSetIndex: entry.key,
-                    reps: reps,
-                    load: load,
-                  );
-
-                  Navigator.of(context).pop();
-                },
+    return SizedBox(
+      width: allExerciseSetsWidth + widgetParams.reactionCircleSize / 2,
+      height: widgetParams.exerciseTypeHeight,
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: allExerciseSetsWidth,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
               ),
-            ).show(context),
-            exerciseSet: set,
-            isSingle: exercise.sets.length == 1,
-            isRightmost: entry.key == exercise.sets.length - 1,
-          );
-        }).toList(),
+              child: Row(
+                children: exercise.sets.asMap().entries.map((entry) {
+                  final set = entry.value;
+
+                  final repsInitial = set.reps == 0 ? set.predictedReps : set.reps;
+                  final loadInitial = set.load == 0 ? set.predictedLoad : set.load;
+
+                  return ExerciseSetWidget(
+                    key: UniqueKey(),
+                    onTap: () => CustomBottomSheet(
+                      title: 'Edit exercise set',
+                      child: ExerciseSetEditor(
+                        reps: repsInitial,
+                        load: loadInitial,
+                        onChange: ({required reps, required load}) {
+                          exercisesService.setExerciseSet(
+                            exerciseType: exerciseType,
+                            exercise: exercise,
+                            exerciseSetIndex: entry.key,
+                            reps: reps,
+                            load: load,
+                          );
+
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ).show(context),
+                    exerciseSet: set,
+                    isSingle: exercise.sets.length == 1,
+                    isRightmost: entry.key == exercise.sets.length - 1,
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ReactionMenu(
+              selectedReaction: exercise.reactionScore,
+              onSelect: (int? reactionScore) {
+                exercisesService.setExerciseReaction(
+                  exerciseType: exerciseType,
+                  exercise: exercise,
+                  reactionScore: reactionScore,
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

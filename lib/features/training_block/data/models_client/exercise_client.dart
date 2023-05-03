@@ -17,6 +17,7 @@ class ExerciseClient with _$ExerciseClient {
   const factory ExerciseClient({
     Exercise? dbModel,
     required bool isFiller,
+    required int? reactionScore,
     required List<ExerciseSetClient> sets,
   }) = _ExerciseClient;
 
@@ -24,6 +25,7 @@ class ExerciseClient with _$ExerciseClient {
     return const ExerciseClient(
       dbModel: null,
       isFiller: true,
+      reactionScore: null,
       sets: [],
     );
   }
@@ -34,14 +36,20 @@ class ExerciseClient with _$ExerciseClient {
     final sets = _setsWithNoTrailingFillers
         .map<ExerciseSet>(
           (ExerciseSetClient set) => set.toDbModel(),
-        )
+    )
         .toList();
 
     if (isFiller || dbModel == null) {
-      return Exercise(sets: sets);
+      return Exercise(
+        sets: sets,
+        reactionScore: reactionScore,
+      );
     }
 
-    return dbModel.copyWith(sets: sets);
+    return dbModel.copyWith(
+      sets: sets,
+      reactionScore: reactionScore,
+    );
   }
 
   /// Returns a list of exercise sets, where trailing
@@ -72,5 +80,11 @@ class ExerciseClient with _$ExerciseClient {
     updatedSets[index] = set.copyWith(isFiller: false);
 
     return copyWith(sets: updatedSets);
+  }
+
+  ExerciseClient updateScore(int? reactionScore) {
+    assert(reactionScore == null || [-5, 0, 5].contains(reactionScore));
+
+    return copyWith(reactionScore: reactionScore);
   }
 }

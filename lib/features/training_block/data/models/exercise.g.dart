@@ -7,6 +7,7 @@ part of 'exercise.dart';
 // **************************************************************************
 
 _$_Exercise _$$_ExerciseFromJson(Map<String, dynamic> json) => _$_Exercise(
+      reactionScore: json['reactionScore'] as int?,
       sets: (json['sets'] as List<dynamic>?)
               ?.map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -15,5 +16,6 @@ _$_Exercise _$$_ExerciseFromJson(Map<String, dynamic> json) => _$_Exercise(
 
 Map<String, dynamic> _$$_ExerciseToJson(_$_Exercise instance) =>
     <String, dynamic>{
+      'reactionScore': instance.reactionScore,
       'sets': instance.sets.map((e) => e.toJson()).toList(),
     };

@@ -6,16 +6,15 @@ import '../features/training_block/widget_params.dart';
 import 'reaction.dart';
 
 class ReactionMenu extends ConsumerStatefulWidget {
+  static const animationDuration = Duration(milliseconds: 500);
+  static const animationCurve = Cubic(0.68, -0.55, 0.27, 1.55);
+
   final int? selectedReaction;
-  final Duration animationDuration;
-  final Curve animationCurve;
   final Function(int? value) onSelect;
 
   const ReactionMenu({
     Key? key,
     this.selectedReaction,
-    required this.animationDuration,
-    required this.animationCurve,
     required this.onSelect,
   }) : super(key: key);
 
@@ -62,7 +61,7 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
 
     _animationController = AnimationController(
       vsync: this,
-      duration: widget.animationDuration,
+      duration: ReactionMenu.animationDuration,
     )..addStatusListener((status) {
         if (status == AnimationStatus.dismissed) _removeOverlays();
       });
@@ -70,14 +69,14 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: widget.animationCurve,
+        curve: ReactionMenu.animationCurve,
       ),
     );
 
     _expandAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: widget.animationCurve,
+        curve: ReactionMenu.animationCurve,
       ),
     );
 

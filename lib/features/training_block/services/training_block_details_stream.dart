@@ -84,6 +84,7 @@ TrainingBlockClient? _getNormalizedData(
           (exercise) => ExerciseClient(
             dbModel: exercise,
             isFiller: false,
+            reactionScore: exercise.reactionScore,
             sets: [
               ...exercise.sets.map(
                 (exerciseSet) => ExerciseSetClient(

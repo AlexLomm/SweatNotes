@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ExerciseClient {
   Exercise? get dbModel => throw _privateConstructorUsedError;
   bool get isFiller => throw _privateConstructorUsedError;
+  int? get reactionScore => throw _privateConstructorUsedError;
   List<ExerciseSetClient> get sets => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +32,11 @@ abstract class $ExerciseClientCopyWith<$Res> {
           ExerciseClient value, $Res Function(ExerciseClient) then) =
       _$ExerciseClientCopyWithImpl<$Res, ExerciseClient>;
   @useResult
-  $Res call({Exercise? dbModel, bool isFiller, List<ExerciseSetClient> sets});
+  $Res call(
+      {Exercise? dbModel,
+      bool isFiller,
+      int? reactionScore,
+      List<ExerciseSetClient> sets});
 
   $ExerciseCopyWith<$Res>? get dbModel;
 }
@@ -51,6 +56,7 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
   $Res call({
     Object? dbModel = freezed,
     Object? isFiller = null,
+    Object? reactionScore = freezed,
     Object? sets = null,
   }) {
     return _then(_value.copyWith(
@@ -62,6 +68,10 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
               as bool,
+      reactionScore: freezed == reactionScore
+          ? _value.reactionScore
+          : reactionScore // ignore: cast_nullable_to_non_nullable
+              as int?,
       sets: null == sets
           ? _value.sets
           : sets // ignore: cast_nullable_to_non_nullable
@@ -90,7 +100,11 @@ abstract class _$$_ExerciseClientCopyWith<$Res>
       __$$_ExerciseClientCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Exercise? dbModel, bool isFiller, List<ExerciseSetClient> sets});
+  $Res call(
+      {Exercise? dbModel,
+      bool isFiller,
+      int? reactionScore,
+      List<ExerciseSetClient> sets});
 
   @override
   $ExerciseCopyWith<$Res>? get dbModel;
@@ -109,6 +123,7 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
   $Res call({
     Object? dbModel = freezed,
     Object? isFiller = null,
+    Object? reactionScore = freezed,
     Object? sets = null,
   }) {
     return _then(_$_ExerciseClient(
@@ -120,6 +135,10 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
           ? _value.isFiller
           : isFiller // ignore: cast_nullable_to_non_nullable
               as bool,
+      reactionScore: freezed == reactionScore
+          ? _value.reactionScore
+          : reactionScore // ignore: cast_nullable_to_non_nullable
+              as int?,
       sets: null == sets
           ? _value.sets
           : sets // ignore: cast_nullable_to_non_nullable
@@ -132,7 +151,10 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
 
 class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   const _$_ExerciseClient(
-      {this.dbModel, required this.isFiller, required this.sets})
+      {this.dbModel,
+      required this.isFiller,
+      required this.reactionScore,
+      required this.sets})
       : super._();
 
   @override
@@ -140,11 +162,13 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   @override
   final bool isFiller;
   @override
+  final int? reactionScore;
+  @override
   final List<ExerciseSetClient> sets;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExerciseClient(dbModel: $dbModel, isFiller: $isFiller, sets: $sets)';
+    return 'ExerciseClient(dbModel: $dbModel, isFiller: $isFiller, reactionScore: $reactionScore, sets: $sets)';
   }
 
   @override
@@ -154,6 +178,7 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'ExerciseClient'))
       ..add(DiagnosticsProperty('dbModel', dbModel))
       ..add(DiagnosticsProperty('isFiller', isFiller))
+      ..add(DiagnosticsProperty('reactionScore', reactionScore))
       ..add(DiagnosticsProperty('sets', sets));
   }
 
@@ -168,6 +193,7 @@ abstract class _ExerciseClient extends ExerciseClient {
   const factory _ExerciseClient(
       {final Exercise? dbModel,
       required final bool isFiller,
+      required final int? reactionScore,
       required final List<ExerciseSetClient> sets}) = _$_ExerciseClient;
   const _ExerciseClient._() : super._();
 
@@ -175,6 +201,8 @@ abstract class _ExerciseClient extends ExerciseClient {
   Exercise? get dbModel;
   @override
   bool get isFiller;
+  @override
+  int? get reactionScore;
   @override
   List<ExerciseSetClient> get sets;
   @override

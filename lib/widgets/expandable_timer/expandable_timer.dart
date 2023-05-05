@@ -147,6 +147,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
       builder: (context, child) => !_animationController.isAnimating && isDismissed
           ? TimerFloatingButton(
               key: _key,
+              seconds: isPlaying ? seconds : null,
               onTap: () {
                 // only handle opening the menu, closing is handled separately.
                 // Also, `isDismissed` check is needed to cover an edge case when
@@ -315,7 +316,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
                       alignment: Alignment.bottomRight,
                       child: Opacity(
                         opacity: 1.0 - _containerExpandAnimation.value.clamp(0, 1.0),
-                        child: const TimerFloatingButton(isPlaceholder: true),
+                        child: TimerFloatingButton(
+                          isPlaceholder: true,
+                          seconds: isPlaying ? seconds : null,
+                        ),
                       ),
                     ),
                     Align(

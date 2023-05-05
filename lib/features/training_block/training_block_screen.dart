@@ -10,12 +10,14 @@ import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
 import '../../widgets/button_dropdown_menu.dart';
 import '../../widgets/empty_page_placeholder.dart';
+import '../../widgets/expandable_timer/expandable_timer.dart';
 import '../../widgets/go_back_button.dart';
 import '../../widgets/layout.dart';
 import '../auth/services/auth_service.dart';
 import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
 import '../settings/exercise_reactions_switcher.dart';
+import '../settings/timer_switcher.dart';
 import 'custom_flexible_space_bar.dart';
 import 'data/models_client/training_block_client.dart';
 import 'services/training_block_details_stream.dart';
@@ -83,6 +85,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   Widget build(BuildContext context) {
     final authService = ref.watch(authServiceProvider);
     final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
+    final isTimerEnabled = ref.watch(timerSwitcherProvider);
 
     return data.when(
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -102,6 +105,15 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
           isScrollable: false,
           isAppBarVisible: false,
           padding: EdgeInsets.zero,
+          floatingActionButton: IgnorePointer(
+            ignoring: !isTimerEnabled,
+            child: AnimatedOpacity(
+              duration: WidgetParams.animationDuration,
+              curve: WidgetParams.animationCurve,
+              opacity: isTimerEnabled ? 1 : 0,
+              child: const ExpandableTimer(),
+            ),
+          ),
           child: Matrix(trainingBlock: trainingBlock),
         );
       },
@@ -192,9 +204,12 @@ class _MatrixState extends ConsumerState<Matrix> {
     final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
     final exerciseReactionsSwitcher = ref.watch(exerciseReactionsSwitcherProvider.notifier);
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
+    final isTimerEnabledSwitcher = ref.watch(timerSwitcherProvider.notifier);
+
     final isCompactMode = ref.watch(compactModeSwitcherProvider);
     final isExerciseReactionsEnabled = ref.watch(exerciseReactionsSwitcherProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
+    final isTimerEnabled = ref.watch(timerSwitcherProvider);
 
     final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
           color: Theme.of(context).colorScheme.onSurface,
@@ -299,7 +314,15 @@ class _MatrixState extends ConsumerState<Matrix> {
                       isEnabled: isExerciseReactionsEnabled,
                       textStyle: menuItemTheme,
                     ),
-                  )
+                  ),
+                  ButtonDropdownMenuItem(
+                    onTap: isTimerEnabledSwitcher.toggle,
+                    child: OnOffText(
+                      title: 'Timer',
+                      isEnabled: isTimerEnabled,
+                      textStyle: menuItemTheme,
+                    ),
+                  ),
                 ],
               ),
               secondChild: IconButton(

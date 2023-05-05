@@ -1,23 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'theme.dart';
+part of 'timer_switcher.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeHash() => r'0d00a7d9009847ace876165527ff8d2fbb517143';
+String _$timerSwitcherHash() => r'f34d0b95823686ef2e32205feff222a97271738c';
 
-/// See also [theme].
-@ProviderFor(theme)
-final themeProvider = AutoDisposeProvider<ThemeData>.internal(
-  theme,
-  name: r'themeProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$themeHash,
+/// See also [TimerSwitcher].
+@ProviderFor(TimerSwitcher)
+final timerSwitcherProvider =
+    AutoDisposeNotifierProvider<TimerSwitcher, bool>.internal(
+  TimerSwitcher.new,
+  name: r'timerSwitcherProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$timerSwitcherHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef ThemeRef = AutoDisposeProviderRef<ThemeData>;
+typedef _$TimerSwitcher = AutoDisposeNotifier<bool>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

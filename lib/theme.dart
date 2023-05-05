@@ -133,6 +133,11 @@ ThemeData theme(ThemeRef ref) {
     useMaterial3: true,
     textTheme: textTheme,
     colorScheme: colorScheme,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      elevation: 3.0,
+      backgroundColor: colorScheme.surface,
+      foregroundColor: colorScheme.onSurface,
+    ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: colorScheme.inverseSurface,
       contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),

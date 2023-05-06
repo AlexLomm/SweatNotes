@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ import 'timer_stop_button.dart';
 import 'timer_time_modifier_button.dart';
 
 class ExpandableTimer extends ConsumerStatefulWidget {
-  static const animationDuration = Duration(milliseconds: 400);
+  static const animationDuration = Duration(milliseconds: 600);
   static const animationCurve = Cubic(0.9, 0.03, 0.69, 0.22);
 
   const ExpandableTimer({Key? key}) : super(key: key);
@@ -26,23 +25,23 @@ class ExpandableTimer extends ConsumerStatefulWidget {
   ConsumerState createState() => _ExpandableTimerState();
 }
 
-class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTickerProviderStateMixin {
-  late int seconds;
-
-  bool isPlaying = false;
-  bool isReset = true;
+class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerProviderStateMixin {
   bool isCustomInputMode = false;
-
-  Timer? timer;
 
   late GlobalKey _key;
   late Offset _buttonPosition;
   late Size _buttonSize;
   OverlayEntry? _menuOverlayEntry;
   OverlayEntry? _backdropOverlayEntry;
+
   late AnimationController _animationController;
   late Animation<double> _contentOpacityAnimation;
   late Animation<double> _containerExpandAnimation;
+  late Animation<double> _timerProgressBorderOpacityAnimation;
+
+  late AnimationController _timerController;
+  late Animation<int> _timerCountdownAnimation;
+  late Animation<double> _timerProgressAnimation;
 
   get isCompletedOrAnimatingForward =>
       _animationController.status == AnimationStatus.completed ||
@@ -54,13 +53,19 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
 
   get isDismissed => _animationController.status == AnimationStatus.dismissed;
 
+  get isTimerPlaying => _timerController.isAnimating;
+
+  get isTimerReset => _timerController.status == AnimationStatus.dismissed;
+
+  get isTimerFinished => _timerController.status == AnimationStatus.completed || _timerCountdownAnimation.value <= 0;
+
+  get areIncrementButtonsEnabled => !isCustomInputMode && isTimerReset;
+
   @override
   void initState() {
     super.initState();
 
     final timerSettings = ref.read(timerSettingsProvider);
-
-    setState(() => seconds = timerSettings.initialSeconds);
 
     _animationController = AnimationController(
       vsync: this,
@@ -68,6 +73,17 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
     )..addStatusListener((status) {
         if (status == AnimationStatus.dismissed) _removeOverlays();
       });
+
+    _timerProgressBorderOpacityAnimation = Tween<double>(begin: 1.0, end: 0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(
+          0,
+          0.33,
+          curve: ExpandableTimer.animationCurve,
+        ),
+      ),
+    );
 
     _contentOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
@@ -83,7 +99,31 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
     _containerExpandAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: ExpandableTimer.animationCurve,
+        curve: const Interval(
+          0.33,
+          1.0,
+          curve: ExpandableTimer.animationCurve,
+        ),
+      ),
+    );
+
+    _timerController = AnimationController(
+      vsync: this,
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) _resetTimer();
+      });
+
+    _timerCountdownAnimation = IntTween(begin: timerSettings.initialSeconds, end: 0).animate(
+      CurvedAnimation(
+        parent: _timerController,
+        curve: Curves.linear,
+      ),
+    );
+
+    _timerProgressAnimation = Tween<double>(begin: 0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _timerController,
+        curve: Curves.linear,
       ),
     );
 
@@ -145,15 +185,20 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) => !_animationController.isAnimating && isDismissed
-          ? TimerFloatingButton(
-              key: _key,
-              seconds: isPlaying ? seconds : null,
-              onTap: () {
-                // only handle opening the menu, closing is handled separately.
-                // Also, `isDismissed` check is needed to cover an edge case when
-                // the button is clicked through the backdrop
-                if (isDismissed) _openMenu();
-              },
+          ? AnimatedBuilder(
+              animation: _timerController,
+              builder: (context, child) => TimerFloatingButton(
+                key: _key,
+                seconds: _timerController.isAnimating ? _timerCountdownAnimation.value : null,
+                progress: _timerProgressAnimation.value,
+                progressOpacity: _timerProgressBorderOpacityAnimation.value,
+                onTap: () {
+                  // only handle opening the menu, closing is handled separately.
+                  // Also, `isDismissed` check is needed to cover an edge case when
+                  // the button is clicked through the backdrop
+                  if (isDismissed) _openMenu();
+                },
+              ),
             )
           : Container(),
     );
@@ -227,27 +272,30 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
                             children: [
                               TimerTimeModifierButton(
                                 text: '-15',
-                                onTap: isCustomInputMode ? null : _decrementTimer,
+                                onTap: areIncrementButtonsEnabled ? _decrementTimer : null,
                               ),
-                              AnimatedCrossFade(
-                                duration: WidgetParams.animationDuration,
-                                firstCurve: WidgetParams.animationCurve,
-                                secondCurve: WidgetParams.animationCurve,
-                                crossFadeState:
-                                    isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                                firstChild: TimerCustomInput(
-                                  isActive: isCustomInputMode,
-                                  initialValue: seconds,
-                                  onChange: _setInitialSecondsTo,
-                                ),
-                                secondChild: TimerDisplay(
-                                  seconds: seconds,
-                                  onTap: _switchToCustomInputMode,
+                              AnimatedBuilder(
+                                animation: _timerController,
+                                builder: (context, child) => AnimatedCrossFade(
+                                  duration: WidgetParams.animationDuration,
+                                  firstCurve: WidgetParams.animationCurve,
+                                  secondCurve: WidgetParams.animationCurve,
+                                  crossFadeState:
+                                      isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  firstChild: TimerCustomInput(
+                                    isActive: isCustomInputMode,
+                                    initialValue: _timerCountdownAnimation.value,
+                                    onChange: _setInitialSecondsTo,
+                                  ),
+                                  secondChild: TimerDisplay(
+                                    seconds: _timerCountdownAnimation.value,
+                                    onTap: _switchToCustomInputMode,
+                                  ),
                                 ),
                               ),
                               TimerTimeModifierButton(
                                 text: '+15',
-                                onTap: isCustomInputMode ? null : _incrementTimer,
+                                onTap: areIncrementButtonsEnabled ? _incrementTimer : null,
                               )
                             ],
                           ),
@@ -297,14 +345,14 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
                                 Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: TimerPlayPauseButton(
-                                    isPlaying: isPlaying,
-                                    isDisabled: seconds == 0,
+                                    isPlaying: isTimerPlaying,
+                                    isDisabled: isTimerFinished,
                                     onTapPlay: _startTimer,
                                     onTapPause: _pauseTimer,
                                   ),
                                 ),
                                 TimerStopButton(
-                                  onTap: isReset || seconds == timerSettings.initialSeconds ? null : _resetTimer,
+                                  onTap: isTimerReset ? null : _resetTimer,
                                 ),
                               ],
                             ),
@@ -318,7 +366,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
                         opacity: 1.0 - _containerExpandAnimation.value.clamp(0, 1.0),
                         child: TimerFloatingButton(
                           isPlaceholder: true,
-                          seconds: isPlaying ? seconds : null,
+                          seconds: isTimerPlaying ? _timerCountdownAnimation.value : null,
+                          progress: _timerProgressAnimation.value,
+                          progressOpacity: _timerProgressBorderOpacityAnimation.value,
                         ),
                       ),
                     ),
@@ -349,7 +399,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
   }
 
   void _switchToCustomInputMode() {
-    if (isPlaying) return;
+    if (isTimerPlaying) return;
 
     setState(() => isCustomInputMode = true);
 
@@ -357,46 +407,23 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
   }
 
   void _pauseTimer() {
-    timer?.cancel();
-
-    setState(() {
-      isPlaying = false;
-      isReset = false;
-    });
+    _timerController.stop();
 
     _menuOverlayEntry?.markNeedsBuild();
   }
 
   void _startTimer() {
-    setState(() {
-      isPlaying = true;
-      isReset = false;
-    });
+    if (isTimerReset) {
+      final timerSettings = ref.read(timerSettingsProvider);
 
-    _menuOverlayEntry?.markNeedsBuild();
+      _timerCountdownAnimation = IntTween(begin: timerSettings.initialSeconds, end: 0).animate(
+        CurvedAnimation(parent: _timerController, curve: Curves.linear),
+      );
 
-    timer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        setState(() => seconds--);
+      _timerController.duration = Duration(seconds: timerSettings.initialSeconds);
+    }
 
-        if (seconds < 1) _resetTimer();
-
-        _menuOverlayEntry?.markNeedsBuild();
-      },
-    );
-  }
-
-  void _resetTimer() {
-    final timerSettings = ref.read(timerSettingsProvider);
-
-    timer?.cancel();
-
-    setState(() {
-      isPlaying = false;
-      isReset = true;
-      seconds = timerSettings.initialSeconds;
-    });
+    _timerController.forward();
 
     _menuOverlayEntry?.markNeedsBuild();
   }
@@ -406,19 +433,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
 
     const delta = 15;
 
-    if (isPlaying) {
-      final modifiedSeconds = seconds + delta;
+    final updatedSeconds = timerSettingsNotifier.incrementInitialSecondsBy(delta);
 
-      setState(
-        () => seconds = modifiedSeconds > TimerSettings.maxSeconds ? TimerSettings.maxSeconds : modifiedSeconds,
-      );
-    } else {
-      final updatedSeconds = timerSettingsNotifier.incrementInitialSecondsBy(delta);
-
-      setState(() => seconds = updatedSeconds);
-    }
-
-    _menuOverlayEntry?.markNeedsBuild();
+    _resetTimerTo(updatedSeconds);
   }
 
   void _decrementTimer() {
@@ -426,19 +443,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
 
     const delta = 15;
 
-    if (isPlaying) {
-      final modifiedSeconds = seconds - delta;
+    final updatedSeconds = timerSettingsNotifier.decrementInitialSecondsBy(delta);
 
-      setState(
-        () => seconds = modifiedSeconds < TimerSettings.minSeconds ? TimerSettings.minSeconds : modifiedSeconds,
-      );
-    } else {
-      final updatedSeconds = timerSettingsNotifier.decrementInitialSecondsBy(delta);
-
-      setState(() => seconds = updatedSeconds);
-    }
-
-    _menuOverlayEntry?.markNeedsBuild();
+    _resetTimerTo(updatedSeconds);
   }
 
   void _setInitialSecondsTo(int value) {
@@ -446,7 +453,20 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with SingleTi
 
     final updatedSeconds = timerSettingsNotifier.setInitialSeconds(value);
 
-    setState(() => seconds = updatedSeconds);
+    _resetTimerTo(updatedSeconds);
+  }
+
+  void _resetTimerTo(int seconds) {
+    _resetTimer();
+
+    _timerController.duration = Duration(seconds: seconds);
+    _timerCountdownAnimation = IntTween(begin: seconds, end: 0).animate(
+      CurvedAnimation(parent: _timerController, curve: Curves.linear),
+    );
+  }
+
+  void _resetTimer() {
+    _timerController.reset();
 
     _menuOverlayEntry?.markNeedsBuild();
   }

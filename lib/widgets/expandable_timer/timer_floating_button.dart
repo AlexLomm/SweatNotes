@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:progress_border/progress_border.dart';
 
 import '../../utils/format_seconds_into_timer_string.dart';
 
@@ -10,12 +11,16 @@ class TimerFloatingButton extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isPlaceholder;
   final int? seconds;
+  final double progress;
+  final double progressOpacity;
 
   const TimerFloatingButton({
     Key? key,
     this.onTap,
     this.isPlaceholder = false,
     this.seconds,
+    required this.progress,
+    required this.progressOpacity,
   }) : super(key: key);
 
   @override
@@ -43,17 +48,27 @@ class TimerFloatingButton extends StatelessWidget {
             color: Colors.transparent,
             shape: shape,
             onPressed: onTap ?? () {},
-            child: Center(
-              child: seconds == null
-                  ? const Icon(Icons.timer_outlined)
-                  : Text(
-                      formatSecondsIntoTimerString(seconds),
-                      softWrap: false,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontFamily: GoogleFonts.robotoMono().fontFamily,
-                          ),
-                    ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                border: ProgressBorder.all(
+                  width: 2,
+                  color: Theme.of(context).colorScheme.primary.withOpacity(progressOpacity),
+                  progress: progress,
+                ),
+              ),
+              child: Center(
+                child: seconds == null
+                    ? const Icon(Icons.timer_outlined)
+                    : Text(
+                        formatSecondsIntoTimerString(seconds),
+                        softWrap: false,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                            ),
+                      ),
+              ),
             ),
           ),
         ),

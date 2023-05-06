@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/format_seconds_into_timer_string.dart';
 
@@ -50,6 +51,7 @@ class TimerFloatingButton extends StatelessWidget {
                       softWrap: false,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
+                            fontFamily: GoogleFonts.robotoMono().fontFamily,
                           ),
                     ),
             ),

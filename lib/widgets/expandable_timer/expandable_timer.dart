@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sound_mode/sound_mode.dart';
+import 'package:sound_mode/utils/ringer_mode_statuses.dart';
+import 'package:sweatnotes/shared/services/audio.dart';
 import 'package:sweatnotes/widgets/button.dart';
 
 import '../../features/settings/timer_settings.dart';
@@ -26,7 +29,10 @@ class ExpandableTimer extends ConsumerStatefulWidget {
 }
 
 class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerProviderStateMixin {
-  bool isCustomInputMode = false;
+  bool _isCustomInputMode = false;
+  late int _secondsLeft;
+  bool _isTimerPastMidPoint = false;
+  RingerModeStatus _ringerMode = RingerModeStatus.vibrate;
 
   late GlobalKey _key;
   late Offset _buttonPosition;
@@ -43,23 +49,23 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   late Animation<int> _timerCountdownAnimation;
   late Animation<double> _timerProgressAnimation;
 
-  get isCompletedOrAnimatingForward =>
+  get _isCompletedOrAnimatingForward =>
       _animationController.status == AnimationStatus.completed ||
       _animationController.status == AnimationStatus.forward;
 
-  get isDismissedOrAnimatingReverse =>
+  get _isDismissedOrAnimatingReverse =>
       _animationController.status == AnimationStatus.dismissed ||
       _animationController.status == AnimationStatus.reverse;
 
-  get isDismissed => _animationController.status == AnimationStatus.dismissed;
+  get _isDismissed => _animationController.status == AnimationStatus.dismissed;
 
-  get isTimerPlaying => _timerController.isAnimating;
+  get _isTimerPlaying => _timerController.isAnimating;
 
-  get isTimerReset => _timerController.status == AnimationStatus.dismissed;
+  get _isTimerReset => _timerController.status == AnimationStatus.dismissed;
 
-  get isTimerFinished => _timerController.status == AnimationStatus.completed || _timerCountdownAnimation.value <= 0;
+  get _isTimerFinished => _timerController.status == AnimationStatus.completed || _timerCountdownAnimation.value <= 0;
 
-  get areIncrementButtonsEnabled => !isCustomInputMode && isTimerReset;
+  get _areIncrementButtonsEnabled => !_isCustomInputMode && _isTimerReset;
 
   @override
   void initState() {
@@ -147,7 +153,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   }
 
   void _closeMenu({bool giveHapticFeedback = false}) {
-    if (isDismissedOrAnimatingReverse) return;
+    if (_isDismissedOrAnimatingReverse) return;
 
     if (giveHapticFeedback) {
       HapticFeedback.mediumImpact();
@@ -157,7 +163,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   }
 
   void _openMenu() {
-    if (isCompletedOrAnimatingForward) return;
+    if (_isCompletedOrAnimatingForward) return;
 
     final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
 
@@ -184,7 +190,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (context, child) => !_animationController.isAnimating && isDismissed
+      builder: (context, child) => !_animationController.isAnimating && _isDismissed
           ? AnimatedBuilder(
               animation: _timerController,
               builder: (context, child) => TimerFloatingButton(
@@ -196,7 +202,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                   // only handle opening the menu, closing is handled separately.
                   // Also, `isDismissed` check is needed to cover an edge case when
                   // the button is clicked through the backdrop
-                  if (isDismissed) _openMenu();
+                  if (_isDismissed) _openMenu();
                 },
               ),
             )
@@ -220,8 +226,6 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   OverlayEntry _menuOverlayEntryBuilder() {
     return OverlayEntry(
       builder: (context) {
-        final timerSettings = ref.watch(timerSettingsProvider);
-
         final mq = MediaQuery.of(context);
 
         const containerHeightBase = 224.0;
@@ -272,7 +276,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                             children: [
                               TimerTimeModifierButton(
                                 text: '-15',
-                                onTap: areIncrementButtonsEnabled ? _decrementTimer : null,
+                                onTap: _areIncrementButtonsEnabled ? _decrementTimer : null,
                               ),
                               AnimatedBuilder(
                                 animation: _timerController,
@@ -281,9 +285,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                                   firstCurve: WidgetParams.animationCurve,
                                   secondCurve: WidgetParams.animationCurve,
                                   crossFadeState:
-                                      isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                      _isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                                   firstChild: TimerCustomInput(
-                                    isActive: isCustomInputMode,
+                                    isActive: _isCustomInputMode,
                                     initialValue: _timerCountdownAnimation.value,
                                     onChange: _setInitialSecondsTo,
                                   ),
@@ -295,7 +299,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                               ),
                               TimerTimeModifierButton(
                                 text: '+15',
-                                onTap: areIncrementButtonsEnabled ? _incrementTimer : null,
+                                onTap: _areIncrementButtonsEnabled ? _incrementTimer : null,
                               )
                             ],
                           ),
@@ -310,7 +314,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                           duration: WidgetParams.animationDuration,
                           firstCurve: WidgetParams.animationCurve,
                           secondCurve: WidgetParams.animationCurve,
-                          crossFadeState: isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                          crossFadeState: _isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                           firstChild: Padding(
                             padding: const EdgeInsets.only(
                               bottom: 8.0,
@@ -345,14 +349,14 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                                 Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: TimerPlayPauseButton(
-                                    isPlaying: isTimerPlaying,
-                                    isDisabled: isTimerFinished,
+                                    isPlaying: _isTimerPlaying,
+                                    isDisabled: _isTimerFinished,
                                     onTapPlay: _startTimer,
                                     onTapPause: _pauseTimer,
                                   ),
                                 ),
                                 TimerStopButton(
-                                  onTap: isTimerReset ? null : _resetTimer,
+                                  onTap: _isTimerReset ? null : _resetTimer,
                                 ),
                               ],
                             ),
@@ -366,7 +370,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
                         opacity: 1.0 - _containerExpandAnimation.value.clamp(0, 1.0),
                         child: TimerFloatingButton(
                           isPlaceholder: true,
-                          seconds: isTimerPlaying ? _timerCountdownAnimation.value : null,
+                          seconds: _isTimerPlaying ? _timerCountdownAnimation.value : null,
                           progress: _timerProgressAnimation.value,
                           progressOpacity: _timerProgressBorderOpacityAnimation.value,
                         ),
@@ -393,15 +397,15 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   }
 
   void _switchToNormalInputMode() {
-    setState(() => isCustomInputMode = false);
+    setState(() => _isCustomInputMode = false);
 
     _menuOverlayEntry?.markNeedsBuild();
   }
 
   void _switchToCustomInputMode() {
-    if (isTimerPlaying) return;
+    if (_isTimerPlaying) return;
 
-    setState(() => isCustomInputMode = true);
+    setState(() => _isCustomInputMode = true);
 
     _menuOverlayEntry?.markNeedsBuild();
   }
@@ -412,11 +416,11 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
     _menuOverlayEntry?.markNeedsBuild();
   }
 
-  void _startTimer() {
-    if (isTimerReset) {
+  Future<void> _startTimer() async {
+    if (_isTimerReset) {
       final timerSettings = ref.read(timerSettingsProvider);
 
-      _resetTimerTo(timerSettings.initialSeconds);
+      await _resetTimerTo(timerSettings.initialSeconds);
     }
 
     _timerController.forward();
@@ -424,41 +428,85 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
     _menuOverlayEntry?.markNeedsBuild();
   }
 
-  void _incrementTimer() {
+  Future<void> _incrementTimer() async {
     final timerSettingsNotifier = ref.read(timerSettingsProvider.notifier);
 
     const delta = 15;
 
     final updatedSeconds = timerSettingsNotifier.incrementInitialSecondsBy(delta);
 
-    _resetTimerTo(updatedSeconds);
+    return _resetTimerTo(updatedSeconds);
   }
 
-  void _decrementTimer() {
+  Future<void> _decrementTimer() async {
     final timerSettingsNotifier = ref.read(timerSettingsProvider.notifier);
 
     const delta = 15;
 
     final updatedSeconds = timerSettingsNotifier.decrementInitialSecondsBy(delta);
 
-    _resetTimerTo(updatedSeconds);
+    return _resetTimerTo(updatedSeconds);
   }
 
-  void _setInitialSecondsTo(int value) {
+  Future<void> _setInitialSecondsTo(int value) async {
     final timerSettingsNotifier = ref.read(timerSettingsProvider.notifier);
 
     final updatedSeconds = timerSettingsNotifier.setInitialSeconds(value);
 
-    _resetTimerTo(updatedSeconds);
+    return _resetTimerTo(updatedSeconds);
   }
 
-  void _resetTimerTo(int seconds) {
+  Future<void> _resetTimerTo(int seconds) async {
     _resetTimer();
 
+    _ringerMode = await SoundMode.ringerModeStatus;
+
     _timerController.duration = Duration(seconds: seconds);
+
+    _secondsLeft = seconds + 1;
+    _isTimerPastMidPoint = false;
+
+    _timerCountdownAnimation.removeListener(_timerCountdownAnimationListener);
     _timerCountdownAnimation = IntTween(begin: seconds, end: 0).animate(
       CurvedAnimation(parent: _timerController, curve: Curves.linear),
-    );
+    )..addListener(_timerCountdownAnimationListener);
+  }
+
+  void _timerCountdownAnimationListener() {
+    final audio = ref.read(audioTimerProvider);
+
+    if (_timerCountdownAnimation.value >= _secondsLeft) return;
+
+    _secondsLeft = _timerCountdownAnimation.value;
+
+    final timerDuration = _timerController.duration!.inSeconds;
+    final isMidPointFeedbackEnabled = timerDuration > 10 && _secondsLeft < timerDuration / 2;
+    const isLastSecondsFeedbackEnabled = true;
+
+    if (!_isTimerPastMidPoint && isMidPointFeedbackEnabled) {
+      _isTimerPastMidPoint = true;
+
+      audio.item1.seek(const Duration(milliseconds: 0));
+      audio.item1.play();
+    }
+
+    if (isLastSecondsFeedbackEnabled && _secondsLeft < 4 && _secondsLeft >= 1) {
+      HapticFeedback.heavyImpact();
+
+      if (_ringerMode == RingerModeStatus.normal) {
+        audio.item1.seek(const Duration(milliseconds: 0));
+        audio.item1.play();
+      }
+    }
+
+    if (isLastSecondsFeedbackEnabled && _secondsLeft < 1) {
+      HapticFeedback.vibrate();
+
+      if (_ringerMode == RingerModeStatus.normal) {
+        audio.item2.seek(const Duration(milliseconds: 0));
+        audio.item2.play();
+      }
+    }
   }
 
   void _resetTimer() {

@@ -9,8 +9,11 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sweatnotes/shared/services/audio.dart';
+import 'package:tuple/tuple.dart';
 
 import 'app.dart';
 import 'env.dart';
@@ -68,11 +71,20 @@ Future<void> main() async {
   // get the instance of shared preferences
   final prefs = await SharedPreferences.getInstance();
 
+  final audioTimer0 = AudioPlayer();
+  final audioTimer1 = AudioPlayer();
+
+  await Future.wait([
+    audioTimer0.setAsset('assets/audio/timer_beep_0.mp3'),
+    audioTimer1.setAsset('assets/audio/timer_beep_1.mp3'),
+  ]);
+
   runApp(
     ProviderScope(
       // override the unimplemented providers
       overrides: [
         prefsProvider.overrideWithValue(prefs),
+        audioTimerProvider.overrideWithValue(Tuple2(audioTimer0, audioTimer1))
       ],
       child: const App(),
     ),

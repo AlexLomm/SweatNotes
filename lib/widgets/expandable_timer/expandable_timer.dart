@@ -416,11 +416,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
     if (isTimerReset) {
       final timerSettings = ref.read(timerSettingsProvider);
 
-      _timerCountdownAnimation = IntTween(begin: timerSettings.initialSeconds, end: 0).animate(
-        CurvedAnimation(parent: _timerController, curve: Curves.linear),
-      );
-
-      _timerController.duration = Duration(seconds: timerSettings.initialSeconds);
+      _resetTimerTo(timerSettings.initialSeconds);
     }
 
     _timerController.forward();

@@ -9,6 +9,8 @@ class DismissibleButton extends StatelessWidget {
   final VoidCallback onPressed;
   final DismissDirectionCallback? onDismissed;
   final Widget? right;
+  final Color? textColor;
+  final Color? backgroundColor;
 
   const DismissibleButton({
     Key? key,
@@ -17,6 +19,8 @@ class DismissibleButton extends StatelessWidget {
     required this.onPressed,
     this.onDismissed,
     this.right,
+    this.textColor,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -31,7 +35,7 @@ class DismissibleButton extends StatelessWidget {
         onDismissed: onDismissed ?? (_) {},
         child: Button(
           borderRadius: 0,
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primaryContainer,
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
             horizontal: 24.0,
@@ -44,7 +48,7 @@ class DismissibleButton extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      color: textColor ?? Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
               ),
               if (right != null) right!,

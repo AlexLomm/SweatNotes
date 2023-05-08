@@ -22,6 +22,14 @@ class SettingsScreen extends ConsumerWidget {
     final packageInfo = ref.watch(packageInfoProvider);
     final urlLauncher = ref.watch(urlLauncherProvider);
 
+    final backgroundColor = ElevationOverlay.applySurfaceTint(
+      Theme.of(context).colorScheme.surface,
+      Theme.of(context).colorScheme.surface,
+      1.0,
+    );
+
+    final textColor = Theme.of(context).colorScheme.onSurface;
+
     return Layout(
       centerTitle: false,
       isScrollable: false,
@@ -38,6 +46,8 @@ class SettingsScreen extends ConsumerWidget {
               const _UserAvatarWithInfo(),
               const SizedBox(height: 24.0),
               DismissibleButton(
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 id: '/settings/account',
                 label: 'Account',
                 right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
@@ -50,24 +60,32 @@ class SettingsScreen extends ConsumerWidget {
               //   onPressed: () => context.push('/settings/unit'),
               // ),
               DismissibleButton(
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 id: '/settings/theme',
                 label: 'Theme',
                 right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => context.push('/settings/theme'),
               ),
               DismissibleButton(
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 id: 'https://sweatnotes.com/support',
                 label: 'Support',
                 right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => urlLauncher.launch('https://sweatnotes.com/support'),
               ),
               DismissibleButton(
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 id: 'https://sweatnotes.com/privacy-policy',
                 label: 'Privacy Policy',
                 right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => urlLauncher.launch('https://sweatnotes.com/privacy-policy'),
               ),
               DismissibleButton(
+                backgroundColor: backgroundColor,
+                textColor: textColor,
                 id: 'https://sweatnotes.com/terms-of-service',
                 label: 'Terms of Service',
                 right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
@@ -133,7 +151,17 @@ class SettingsScreen extends ConsumerWidget {
                           const SizedBox(width: 16.0),
                           SizedBox(
                             width: 96.0,
-                            child: Button(label: 'Log out', onPressed: authService.signOut),
+                            child: Button(
+                              onPressed: authService.signOut,
+                              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                              child: Text(
+                                'Log out',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
+                              ),
+                            ),
                           )
                         ],
                       ),

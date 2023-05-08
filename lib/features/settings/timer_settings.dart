@@ -23,7 +23,7 @@ class TimerSettingsState with _$TimerSettingsState {
 class TimerSettings extends _$TimerSettings {
   static const key = 'timerSettings';
 
-  static const maxSeconds = 60 * 60 - 1;
+  static const maxSeconds = Duration.secondsPerHour - 1;
   static const minSeconds = 0;
 
   @override

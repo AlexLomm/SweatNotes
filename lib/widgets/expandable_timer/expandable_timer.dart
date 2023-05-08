@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -28,11 +29,13 @@ class ExpandableTimer extends ConsumerStatefulWidget {
   ConsumerState createState() => _ExpandableTimerState();
 }
 
-class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerProviderStateMixin {
+class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   bool _isCustomInputMode = false;
   late int _secondsLeft;
   bool _isTimerPastMidPoint = false;
   RingerModeStatus _ringerMode = RingerModeStatus.vibrate;
+  Timer? _timer;
 
   late GlobalKey _key;
   late Offset _buttonPosition;
@@ -68,8 +71,47 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   get _areIncrementButtonsEnabled => !_isCustomInputMode && _isTimerReset;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _timer?.cancel();
+    }
+
+    if (state == AppLifecycleState.paused && !_isTimerFinished) {
+      final totalDurationUntilCountdownFinishes =
+          (_timerController.duration ?? Duration.zero) - (_timerController.lastElapsedDuration ?? Duration.zero);
+
+      final millisecondsTillNextSecond = totalDurationUntilCountdownFinishes.inMilliseconds -
+          totalDurationUntilCountdownFinishes.inSeconds * Duration.millisecondsPerSecond;
+
+      Timer(Duration(milliseconds: millisecondsTillNextSecond), () {
+        _secondsLeft--;
+        _maybeBeep(
+          secondsLeft: _secondsLeft,
+          timerDurationInSeconds: _timerController.duration?.inSeconds ?? 0,
+          isDrivenByTimerController: false,
+        );
+
+        _timer?.cancel();
+        _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          if (_secondsLeft <= 0) _timer?.cancel();
+
+          _secondsLeft--;
+
+          _maybeBeep(
+            secondsLeft: _secondsLeft,
+            timerDurationInSeconds: _timerController.duration?.inSeconds ?? 0,
+            isDrivenByTimerController: false,
+          );
+        });
+      });
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
 
     final timerSettings = ref.read(timerSettingsProvider);
 
@@ -146,6 +188,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
     _removeOverlays();
     _animationController.dispose();
 
@@ -473,24 +517,32 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
   }
 
   void _timerCountdownAnimationListener() {
-    final audio = ref.read(audioTimerProvider);
-
     if (_timerCountdownAnimation.value >= _secondsLeft) return;
 
     _secondsLeft = _timerCountdownAnimation.value;
 
-    final timerDuration = _timerController.duration!.inSeconds;
-    final isMidPointFeedbackEnabled = timerDuration > 10 && _secondsLeft < timerDuration / 2;
+    _maybeBeep(
+      secondsLeft: _secondsLeft,
+      timerDurationInSeconds: _timerController.duration?.inSeconds ?? 0,
+      isDrivenByTimerController: true,
+    );
+  }
+
+  void _maybeBeep({
+    required int secondsLeft,
+    required int timerDurationInSeconds,
+    // determines whether this beep is driven by the timer controller (when the app is
+    // in the foreground) or by the Timer.periodic (when the app is in the background)
+    required bool isDrivenByTimerController,
+  }) {
+    final audio = ref.read(audioTimerProvider);
+
+    final isMidPointFeedbackEnabled = timerDurationInSeconds > 10 && secondsLeft < timerDurationInSeconds / 2;
     const isLastSecondsFeedbackEnabled = true;
 
     if (!_isTimerPastMidPoint && isMidPointFeedbackEnabled) {
       _isTimerPastMidPoint = true;
 
-      audio.item1.seek(const Duration(milliseconds: 0));
-      audio.item1.play();
-    }
-
-    if (isLastSecondsFeedbackEnabled && _secondsLeft < 4 && _secondsLeft >= 1) {
       HapticFeedback.heavyImpact();
 
       if (_ringerMode == RingerModeStatus.normal) {
@@ -499,7 +551,25 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
       }
     }
 
-    if (isLastSecondsFeedbackEnabled && _secondsLeft < 1) {
+    if (isLastSecondsFeedbackEnabled && secondsLeft < 4 && secondsLeft >= 1) {
+      if (!isDrivenByTimerController) {
+        HapticFeedback.vibrate();
+      } else {
+        HapticFeedback.heavyImpact();
+      }
+
+      if (_ringerMode == RingerModeStatus.normal) {
+        audio.item1.seek(const Duration(milliseconds: 0));
+        audio.item1.play();
+      }
+    }
+
+    // the `AnimationStatus.completed` check prevents the feedback from being played when
+    // the animation finishes when the app is in the background (minimized) and is brought
+    // back into the foreground
+    if (isLastSecondsFeedbackEnabled && secondsLeft < 1) {
+      if (isDrivenByTimerController && _timerController.status == AnimationStatus.completed) return;
+
       HapticFeedback.vibrate();
 
       if (_ringerMode == RingerModeStatus.normal) {

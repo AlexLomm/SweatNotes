@@ -95,7 +95,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer> with TickerPr
       CurvedAnimation(
         parent: _animationController,
         curve: const Interval(
-          0.33,
+          0.8,
           1.0,
           curve: ExpandableTimer.animationCurve,
         ),

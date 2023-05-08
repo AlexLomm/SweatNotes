@@ -4,7 +4,7 @@ import 'package:selector_wheel/selector_wheel.dart';
 
 class TimerCustomInput extends StatefulWidget {
   static const height = 144.0;
-  static const width = 172.0;
+  static const width = 144.0;
 
   final bool isActive;
   final int initialValue;
@@ -50,7 +50,7 @@ class _TimerCustomInputState extends State<TimerCustomInput> {
   @override
   Widget build(BuildContext context) {
     final titleLargeTheme = Theme.of(context).textTheme.titleLarge?.copyWith(
-          fontSize: 57.0,
+          fontSize: 45.0,
           color: Theme.of(context).colorScheme.primary,
           fontFamily: GoogleFonts.robotoMono().fontFamily,
         );
@@ -70,19 +70,20 @@ class _TimerCustomInputState extends State<TimerCustomInput> {
       child: SizedBox(
         width: TimerCustomInput.width,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // the offset is needed to correctly align the wheel selector
             // texts with the regular timer display text
             Transform.translate(
-              offset: const Offset(0, -1.5),
+              offset: const Offset(-0.5, 0.5),
               child: SizedBox(
                 height: TimerCustomInput.height,
                 child: SelectorWheel<int>(
                   highlightWidth: 0,
                   highlightHeight: 0,
                   childCount: 60,
-                  childHeight: 68.0,
-                  width: 66.0,
+                  childHeight: 60.0,
+                  width: 56.0,
                   selectedItemIndex: _minutes,
                   enableHapticFeedback: widget.isActive,
                   convertIndexToValue: (index) => SelectorWheelValue(
@@ -100,20 +101,29 @@ class _TimerCustomInputState extends State<TimerCustomInput> {
                 ),
               ),
             ),
-            Transform.translate(
-              offset: const Offset(2.0, 0.5),
-              child: Text(':', style: titleLargeTheme),
+            SizedBox(
+              width: 25,
+              child: ClipRect(
+                child: Transform.translate(
+                  offset: const Offset(-1.5, 0.5),
+                  child: Text(
+                    ':',
+                    textAlign: TextAlign.center,
+                    style: titleLargeTheme,
+                  ),
+                ),
+              ),
             ),
             Transform.translate(
-              offset: const Offset(0, -1.5),
+              offset: const Offset(-0.5, 0.5),
               child: SizedBox(
                 height: TimerCustomInput.height,
                 child: SelectorWheel<int>(
                   highlightWidth: 0,
                   highlightHeight: 0,
                   childCount: 60,
-                  childHeight: 68.0,
-                  width: 71.0,
+                  childHeight: 60.0,
+                  width: 56.0,
                   selectedItemIndex: _seconds,
                   enableHapticFeedback: widget.isActive,
                   convertIndexToValue: (index) => SelectorWheelValue(

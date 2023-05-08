@@ -76,9 +76,11 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
       _timer?.cancel();
     }
 
-    if (state == AppLifecycleState.paused && !_isTimerFinished) {
+    if (state == AppLifecycleState.paused) {
       final totalDurationUntilCountdownFinishes =
           (_timerController.duration ?? Duration.zero) - (_timerController.lastElapsedDuration ?? Duration.zero);
+
+      if (totalDurationUntilCountdownFinishes.inMilliseconds <= 0.0) return;
 
       final millisecondsTillNextSecond = totalDurationUntilCountdownFinishes.inMilliseconds -
           totalDurationUntilCountdownFinishes.inSeconds * Duration.millisecondsPerSecond;
@@ -93,7 +95,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
         _timer?.cancel();
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          if (_secondsLeft <= 0) _timer?.cancel();
+          if (_secondsLeft <= 1) _timer?.cancel();
 
           _secondsLeft--;
 
@@ -273,7 +275,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
         final mq = MediaQuery.of(context);
 
         const containerHeightBase = 224.0;
-        final containerWidthBase = min(400.0, mq.size.width - 2 * 16.0);
+        final containerWidthBase = min(400.0, max(288.0, mq.size.width - 2 * 16.0));
 
         return Positioned(
           top: _buttonPosition.dy + _buttonSize.height - containerHeightBase,
@@ -535,33 +537,23 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     // in the foreground) or by the Timer.periodic (when the app is in the background)
     required bool isDrivenByTimerController,
   }) {
-    final audio = ref.read(audioTimerProvider);
-
     final isMidPointFeedbackEnabled = timerDurationInSeconds > 10 && secondsLeft < timerDurationInSeconds / 2;
     const isLastSecondsFeedbackEnabled = true;
 
     if (!_isTimerPastMidPoint && isMidPointFeedbackEnabled) {
       _isTimerPastMidPoint = true;
 
-      HapticFeedback.heavyImpact();
-
-      if (_ringerMode == RingerModeStatus.normal) {
-        audio.item1.seek(const Duration(milliseconds: 0));
-        audio.item1.play();
-      }
+      _signal(
+        isDrivenByTimerController: isDrivenByTimerController,
+        isLast: false,
+      );
     }
 
     if (isLastSecondsFeedbackEnabled && secondsLeft < 4 && secondsLeft >= 1) {
-      if (!isDrivenByTimerController) {
-        HapticFeedback.vibrate();
-      } else {
-        HapticFeedback.heavyImpact();
-      }
-
-      if (_ringerMode == RingerModeStatus.normal) {
-        audio.item1.seek(const Duration(milliseconds: 0));
-        audio.item1.play();
-      }
+      _signal(
+        isDrivenByTimerController: isDrivenByTimerController,
+        isLast: false,
+      );
     }
 
     // the `AnimationStatus.completed` check prevents the feedback from being played when
@@ -570,12 +562,31 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     if (isLastSecondsFeedbackEnabled && secondsLeft < 1) {
       if (isDrivenByTimerController && _timerController.status == AnimationStatus.completed) return;
 
-      HapticFeedback.vibrate();
+      _signal(
+        isDrivenByTimerController: isDrivenByTimerController,
+        isLast: true,
+      );
+    }
+  }
 
-      if (_ringerMode == RingerModeStatus.normal) {
-        audio.item2.seek(const Duration(milliseconds: 0));
-        audio.item2.play();
-      }
+  _signal({
+    required bool isDrivenByTimerController,
+    required bool isLast,
+  }) {
+    final audio = ref.read(audioTimerProvider);
+
+    if (isLast || !isDrivenByTimerController) {
+      HapticFeedback.vibrate();
+    } else {
+      HapticFeedback.heavyImpact();
+    }
+
+    if (isDrivenByTimerController && _ringerMode == RingerModeStatus.normal && isLast) {
+      audio.item2.seek(const Duration(milliseconds: 0));
+      audio.item2.play();
+    } else if (isDrivenByTimerController && _ringerMode == RingerModeStatus.normal) {
+      audio.item1.seek(const Duration(milliseconds: 0));
+      audio.item1.play();
     }
   }
 

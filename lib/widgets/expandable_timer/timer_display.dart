@@ -28,7 +28,7 @@ class TimerDisplay extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Theme.of(context).colorScheme.primary,
                   fontFamily: GoogleFonts.robotoMono().fontFamily,
-                  fontSize: 57.0,
+                  fontSize: 45.0,
                 ),
           ),
         ),

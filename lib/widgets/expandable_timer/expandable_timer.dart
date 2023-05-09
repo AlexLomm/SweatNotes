@@ -599,10 +599,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     }
 
     if (isDrivenByTimerController && _ringerMode == RingerModeStatus.normal && isLast) {
-      audio.item2.seek(const Duration(milliseconds: 0));
+      audio.item2.seek(Duration.zero);
       audio.item2.play();
     } else if (isDrivenByTimerController && _ringerMode == RingerModeStatus.normal) {
-      audio.item1.seek(const Duration(milliseconds: 0));
+      audio.item1.seek(Duration.zero);
       audio.item1.play();
     }
   }

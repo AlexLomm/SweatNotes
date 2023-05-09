@@ -20,7 +20,7 @@ import 'timer_stop_button.dart';
 import 'timer_time_modifier_button.dart';
 
 class ExpandableTimer extends ConsumerStatefulWidget {
-  static const animationDuration = Duration(milliseconds: 600);
+  static const animationDuration = Duration(milliseconds: 400);
   static const animationCurve = Cubic(0.9, 0.03, 0.69, 0.22);
 
   const ExpandableTimer({Key? key}) : super(key: key);
@@ -139,7 +139,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
       CurvedAnimation(
         parent: _animationController,
         curve: const Interval(
-          0.8,
+          0.66,
           1.0,
           curve: ExpandableTimer.animationCurve,
         ),

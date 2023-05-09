@@ -260,9 +260,22 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     return OverlayEntry(
       builder: (context) {
         return Positioned.fill(
-          child: Listener(
-            behavior: HitTestBehavior.translucent,
-            onPointerDown: (event) => _closeMenu(),
+          child: AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .background
+                      .withOpacity(0.38 * _containerExpandAnimation.value.clamp(0, 1)),
+                ),
+                child: Listener(
+                  behavior: HitTestBehavior.opaque,
+                  onPointerDown: (event) => _closeMenu(),
+                ),
+              );
+            },
           ),
         );
       },

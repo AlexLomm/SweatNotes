@@ -519,6 +519,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   void _timerCountdownAnimationListener() {
+    // this is needed for the beep not to be played when manually
+    // incrementing / decrementing the timer when it's not playing
+    if (!_timerController.isAnimating) return;
+
     if (_timerCountdownAnimation.value >= _secondsLeft) return;
 
     _secondsLeft = _timerCountdownAnimation.value;

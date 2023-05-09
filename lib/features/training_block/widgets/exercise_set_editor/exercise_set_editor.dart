@@ -28,6 +28,27 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
   double _load = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+    _reps = widget.reps;
+    _load = widget.load;
+  }
+
+  @override
+  void didUpdateWidget(ExerciseSetEditor oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.reps != oldWidget.reps) {
+      _reps = widget.reps;
+    }
+
+    if (widget.load != oldWidget.load) {
+      _load = widget.load;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
@@ -40,7 +61,7 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RepsSelector(
-                  value: widget.reps,
+                  value: _reps,
                   onChange: (value) => setState(() => _reps = value),
                   // TODO: pass these from outside
                   step: 1,
@@ -51,7 +72,7 @@ class _ExerciseSetEditorState extends State<ExerciseSetEditor> {
                   child: VerticalDividerWithGradient(height: 128.0),
                 ),
                 LoadSelector(
-                  value: widget.load,
+                  value: _load,
                   onChange: (value) => setState(() => _load = value),
                   // TODO: pass these from outside
                   stepFirst: 5,

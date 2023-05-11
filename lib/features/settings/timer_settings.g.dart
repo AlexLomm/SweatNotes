@@ -10,19 +10,21 @@ _$_TimerSettingsState _$$_TimerSettingsStateFromJson(
         Map<String, dynamic> json) =>
     _$_TimerSettingsState(
       initialSeconds: json['initialSeconds'] as int? ?? 60,
+      isMuted: json['isMuted'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_TimerSettingsStateToJson(
         _$_TimerSettingsState instance) =>
     <String, dynamic>{
       'initialSeconds': instance.initialSeconds,
+      'isMuted': instance.isMuted,
     };
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$timerSettingsHash() => r'9c6907a478824abc1d95b64d45e23b92447b372e';
+String _$timerSettingsHash() => r'17b8f8d1cef4d5f4be27da1f6f8c68d0f9c5b6dd';
 
 /// See also [TimerSettings].
 @ProviderFor(TimerSettings)

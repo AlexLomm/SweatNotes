@@ -14,6 +14,7 @@ part 'timer_settings.g.dart';
 class TimerSettingsState with _$TimerSettingsState {
   factory TimerSettingsState({
     @Default(60) int initialSeconds,
+    @Default(false) bool isMuted,
   }) = _TimerSettingsState;
 
   factory TimerSettingsState.fromJson(Map<String, Object?> json) => _$TimerSettingsStateFromJson(json);
@@ -75,5 +76,15 @@ class TimerSettings extends _$TimerSettings {
     prefs.setString(key, jsonEncode(state.toJson()));
 
     return updatedInitialSeconds;
+  }
+
+  bool setTimerIsMuted(bool value) {
+    final prefs = ref.watch(prefsProvider);
+
+    state = state.copyWith(isMuted: value);
+
+    prefs.setString(key, jsonEncode(state.toJson()));
+
+    return value;
   }
 }

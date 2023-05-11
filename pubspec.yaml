@@ -68,7 +68,6 @@ dependencies:
   tuple: ^2.0.1
   progress_border: ^0.1.0
   just_audio: ^0.9.32
-  sound_mode: ^2.0.2
 
 dev_dependencies:
   flutter_test:

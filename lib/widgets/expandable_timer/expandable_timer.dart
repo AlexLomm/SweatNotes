@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sound_mode/sound_mode.dart';
-import 'package:sound_mode/utils/ringer_mode_statuses.dart';
 import 'package:sweatnotes/shared/services/audio.dart';
 import 'package:sweatnotes/widgets/button.dart';
 
@@ -14,7 +12,7 @@ import '../../features/training_block/widget_params.dart';
 import 'timer_custom_input.dart';
 import 'timer_display.dart';
 import 'timer_floating_button.dart';
-import 'timer_placeholder_button.dart';
+import 'timer_mute_button.dart';
 import 'timer_play_pause_button.dart';
 import 'timer_stop_button.dart';
 import 'timer_time_modifier_button.dart';
@@ -34,7 +32,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   bool _isCustomInputMode = false;
   late int _secondsLeft;
   bool _isTimerPastMidPoint = false;
-  RingerModeStatus _ringerMode = RingerModeStatus.vibrate;
+  late bool _isTimerMuted;
   Timer? _timer;
 
   late GlobalKey _key;
@@ -116,6 +114,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     WidgetsBinding.instance.addObserver(this);
 
     final timerSettings = ref.read(timerSettingsProvider);
+
+    setState(() => _isTimerMuted = timerSettings.isMuted);
 
     _animationController = AnimationController(
       vsync: this,
@@ -404,7 +404,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const TimerPlaceholderButton(),
+                                TimerMuteButton(
+                                  isMuted: _isTimerMuted,
+                                  onTap: _toggleTimerIsMuted,
+                                ),
                                 Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: TimerPlayPauseButton(
@@ -518,8 +521,6 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   Future<void> _resetTimerTo(int seconds) async {
     _resetTimer();
 
-    _ringerMode = await SoundMode.ringerModeStatus;
-
     _timerController.duration = Duration(seconds: seconds);
 
     _secondsLeft = seconds + 1;
@@ -591,6 +592,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     required bool isLast,
   }) {
     final audio = ref.read(audioTimerProvider);
+    final timerSettings = ref.read(timerSettingsProvider);
 
     if (isLast || !isDrivenByTimerController) {
       HapticFeedback.vibrate();
@@ -598,13 +600,32 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
       HapticFeedback.heavyImpact();
     }
 
-    if (isDrivenByTimerController && _ringerMode == RingerModeStatus.normal && isLast) {
+    if (isDrivenByTimerController && !timerSettings.isMuted && isLast) {
       audio.item2.seek(Duration.zero);
       audio.item2.play();
-    } else if (isDrivenByTimerController && _ringerMode == RingerModeStatus.normal) {
+    } else if (isDrivenByTimerController && !timerSettings.isMuted) {
       audio.item1.seek(Duration.zero);
       audio.item1.play();
     }
+  }
+
+  void _toggleTimerIsMuted(bool value) {
+    final audio = ref.read(audioTimerProvider);
+    final timerSettings = ref.read(timerSettingsProvider.notifier);
+
+    if (value) {
+      // TODO: refactor seeking and playing into a single method
+      audio.item2.seek(Duration.zero);
+      audio.item2.play();
+    } else {
+      HapticFeedback.heavyImpact();
+    }
+
+    setState(() => _isTimerMuted = value);
+
+    timerSettings.setTimerIsMuted(value);
+
+    _menuOverlayEntry?.markNeedsBuild();
   }
 
   void _resetTimer() {

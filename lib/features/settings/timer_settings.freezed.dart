@@ -21,6 +21,7 @@ TimerSettingsState _$TimerSettingsStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TimerSettingsState {
   int get initialSeconds => throw _privateConstructorUsedError;
+  bool get isMuted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,7 @@ abstract class $TimerSettingsStateCopyWith<$Res> {
           TimerSettingsState value, $Res Function(TimerSettingsState) then) =
       _$TimerSettingsStateCopyWithImpl<$Res, TimerSettingsState>;
   @useResult
-  $Res call({int initialSeconds});
+  $Res call({int initialSeconds, bool isMuted});
 }
 
 /// @nodoc
@@ -51,12 +52,17 @@ class _$TimerSettingsStateCopyWithImpl<$Res, $Val extends TimerSettingsState>
   @override
   $Res call({
     Object? initialSeconds = null,
+    Object? isMuted = null,
   }) {
     return _then(_value.copyWith(
       initialSeconds: null == initialSeconds
           ? _value.initialSeconds
           : initialSeconds // ignore: cast_nullable_to_non_nullable
               as int,
+      isMuted: null == isMuted
+          ? _value.isMuted
+          : isMuted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -69,7 +75,7 @@ abstract class _$$_TimerSettingsStateCopyWith<$Res>
       __$$_TimerSettingsStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int initialSeconds});
+  $Res call({int initialSeconds, bool isMuted});
 }
 
 /// @nodoc
@@ -84,12 +90,17 @@ class __$$_TimerSettingsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? initialSeconds = null,
+    Object? isMuted = null,
   }) {
     return _then(_$_TimerSettingsState(
       initialSeconds: null == initialSeconds
           ? _value.initialSeconds
           : initialSeconds // ignore: cast_nullable_to_non_nullable
               as int,
+      isMuted: null == isMuted
+          ? _value.isMuted
+          : isMuted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -99,7 +110,7 @@ class __$$_TimerSettingsStateCopyWithImpl<$Res>
 class _$_TimerSettingsState
     with DiagnosticableTreeMixin
     implements _TimerSettingsState {
-  _$_TimerSettingsState({this.initialSeconds = 60});
+  _$_TimerSettingsState({this.initialSeconds = 60, this.isMuted = false});
 
   factory _$_TimerSettingsState.fromJson(Map<String, dynamic> json) =>
       _$$_TimerSettingsStateFromJson(json);
@@ -107,10 +118,13 @@ class _$_TimerSettingsState
   @override
   @JsonKey()
   final int initialSeconds;
+  @override
+  @JsonKey()
+  final bool isMuted;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TimerSettingsState(initialSeconds: $initialSeconds)';
+    return 'TimerSettingsState(initialSeconds: $initialSeconds, isMuted: $isMuted)';
   }
 
   @override
@@ -118,7 +132,8 @@ class _$_TimerSettingsState
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TimerSettingsState'))
-      ..add(DiagnosticsProperty('initialSeconds', initialSeconds));
+      ..add(DiagnosticsProperty('initialSeconds', initialSeconds))
+      ..add(DiagnosticsProperty('isMuted', isMuted));
   }
 
   @override
@@ -127,12 +142,13 @@ class _$_TimerSettingsState
         (other.runtimeType == runtimeType &&
             other is _$_TimerSettingsState &&
             (identical(other.initialSeconds, initialSeconds) ||
-                other.initialSeconds == initialSeconds));
+                other.initialSeconds == initialSeconds) &&
+            (identical(other.isMuted, isMuted) || other.isMuted == isMuted));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, initialSeconds);
+  int get hashCode => Object.hash(runtimeType, initialSeconds, isMuted);
 
   @JsonKey(ignore: true)
   @override
@@ -150,7 +166,7 @@ class _$_TimerSettingsState
 }
 
 abstract class _TimerSettingsState implements TimerSettingsState {
-  factory _TimerSettingsState({final int initialSeconds}) =
+  factory _TimerSettingsState({final int initialSeconds, final bool isMuted}) =
       _$_TimerSettingsState;
 
   factory _TimerSettingsState.fromJson(Map<String, dynamic> json) =
@@ -158,6 +174,8 @@ abstract class _TimerSettingsState implements TimerSettingsState {
 
   @override
   int get initialSeconds;
+  @override
+  bool get isMuted;
   @override
   @JsonKey(ignore: true)
   _$$_TimerSettingsStateCopyWith<_$_TimerSettingsState> get copyWith =>

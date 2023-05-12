@@ -3,12 +3,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sweatnotes/shared/services/audio.dart';
 import 'package:sweatnotes/widgets/button.dart';
+import 'package:timezone/timezone.dart' as timezone;
 
 import '../../features/settings/timer_settings.dart';
 import '../../features/training_block/widget_params.dart';
+import '../../main.dart';
 import 'timer_custom_input.dart';
 import 'timer_display.dart';
 import 'timer_floating_button.dart';
@@ -20,6 +23,7 @@ import 'timer_time_modifier_button.dart';
 class ExpandableTimer extends ConsumerStatefulWidget {
   static const animationDuration = Duration(milliseconds: 400);
   static const animationCurve = Cubic(0.9, 0.03, 0.69, 0.22);
+  static const timerNotificationId = 0;
 
   const ExpandableTimer({Key? key}) : super(key: key);
 
@@ -33,7 +37,6 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   late int _secondsLeft;
   bool _isTimerPastMidPoint = false;
   late bool _isTimerMuted;
-  Timer? _timer;
 
   late GlobalKey _key;
   late Offset _buttonPosition;
@@ -52,11 +55,11 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
   get _isCompletedOrAnimatingForward =>
       _animationController.status == AnimationStatus.completed ||
-      _animationController.status == AnimationStatus.forward;
+          _animationController.status == AnimationStatus.forward;
 
   get _isDismissedOrAnimatingReverse =>
       _animationController.status == AnimationStatus.dismissed ||
-      _animationController.status == AnimationStatus.reverse;
+          _animationController.status == AnimationStatus.reverse;
 
   get _isDismissed => _animationController.status == AnimationStatus.dismissed;
 
@@ -71,39 +74,20 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _timer?.cancel();
+      _cancelTimerFinishedNotification();
     }
 
     if (state == AppLifecycleState.paused) {
-      final totalDurationUntilCountdownFinishes =
-          (_timerController.duration ?? Duration.zero) - (_timerController.lastElapsedDuration ?? Duration.zero);
+      final duration = _timerController.duration ?? Duration.zero;
+      final elapsedDuration = _timerController.lastElapsedDuration ?? Duration.zero;
 
-      if (totalDurationUntilCountdownFinishes.inMilliseconds <= 0.0) return;
+      final remainingDuration = duration - elapsedDuration;
 
-      final millisecondsTillNextSecond = totalDurationUntilCountdownFinishes.inMilliseconds -
-          totalDurationUntilCountdownFinishes.inSeconds * Duration.millisecondsPerSecond;
+      if (remainingDuration == _timerController.duration || remainingDuration == Duration.zero) return;
 
-      Timer(Duration(milliseconds: millisecondsTillNextSecond), () {
-        _secondsLeft--;
-        _maybeBeep(
-          secondsLeft: _secondsLeft,
-          timerDurationInSeconds: _timerController.duration?.inSeconds ?? 0,
-          isDrivenByTimerController: false,
-        );
-
-        _timer?.cancel();
-        _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          if (_secondsLeft <= 1) _timer?.cancel();
-
-          _secondsLeft--;
-
-          _maybeBeep(
-            secondsLeft: _secondsLeft,
-            timerDurationInSeconds: _timerController.duration?.inSeconds ?? 0,
-            isDrivenByTimerController: false,
-          );
-        });
-      });
+      _showTimerFinishedNotification(
+        showAfter: remainingDuration,
+      );
     }
   }
 
@@ -120,7 +104,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     _animationController = AnimationController(
       vsync: this,
       duration: ExpandableTimer.animationDuration,
-    )..addStatusListener((status) {
+    )
+      ..addStatusListener((status) {
         if (status == AnimationStatus.dismissed) _removeOverlays();
       });
 
@@ -159,7 +144,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
     _timerController = AnimationController(
       vsync: this,
-    )..addStatusListener((status) {
+    )
+      ..addStatusListener((status) {
         if (status == AnimationStatus.completed) _resetTimer();
       });
 
@@ -236,22 +222,24 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (context, child) => !_animationController.isAnimating && _isDismissed
+      builder: (context, child) =>
+      !_animationController.isAnimating && _isDismissed
           ? AnimatedBuilder(
-              animation: _timerController,
-              builder: (context, child) => TimerFloatingButton(
-                key: _key,
-                seconds: _timerController.isAnimating ? _timerCountdownAnimation.value : null,
-                progress: _timerProgressAnimation.value,
-                progressOpacity: _timerProgressBorderOpacityAnimation.value,
-                onTap: () {
-                  // only handle opening the menu, closing is handled separately.
-                  // Also, `isDismissed` check is needed to cover an edge case when
-                  // the button is clicked through the backdrop
-                  if (_isDismissed) _openMenu();
-                },
-              ),
-            )
+        animation: _timerController,
+        builder: (context, child) =>
+            TimerFloatingButton(
+              key: _key,
+              seconds: _timerController.isAnimating ? _timerCountdownAnimation.value : null,
+              progress: _timerProgressAnimation.value,
+              progressOpacity: _timerProgressBorderOpacityAnimation.value,
+              onTap: () {
+                // only handle opening the menu, closing is handled separately.
+                // Also, `isDismissed` check is needed to cover an edge case when
+                // the button is clicked through the backdrop
+                if (_isDismissed) _openMenu();
+              },
+            ),
+      )
           : Container(),
     );
   }
@@ -265,7 +253,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
             builder: (context, child) {
               return Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
+                  color: Theme
+                      .of(context)
                       .colorScheme
                       .background
                       .withOpacity(0.38 * _containerExpandAnimation.value.clamp(0, 1)),
@@ -305,8 +294,14 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                       alignment: Alignment.bottomRight,
                       child: Material(
                         elevation: 3.0,
-                        color: Theme.of(context).colorScheme.surface,
-                        surfaceTintColor: Theme.of(context).colorScheme.primary,
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .surface,
+                        surfaceTintColor: Theme
+                            .of(context)
+                            .colorScheme
+                            .primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -339,22 +334,23 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                               ),
                               AnimatedBuilder(
                                 animation: _timerController,
-                                builder: (context, child) => AnimatedCrossFade(
-                                  duration: WidgetParams.animationDuration,
-                                  firstCurve: WidgetParams.animationCurve,
-                                  secondCurve: WidgetParams.animationCurve,
-                                  crossFadeState:
+                                builder: (context, child) =>
+                                    AnimatedCrossFade(
+                                      duration: WidgetParams.animationDuration,
+                                      firstCurve: WidgetParams.animationCurve,
+                                      secondCurve: WidgetParams.animationCurve,
+                                      crossFadeState:
                                       _isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                                  firstChild: TimerCustomInput(
-                                    isActive: _isCustomInputMode,
-                                    initialValue: _timerCountdownAnimation.value,
-                                    onChange: _setInitialSecondsTo,
-                                  ),
-                                  secondChild: TimerDisplay(
-                                    seconds: _timerCountdownAnimation.value,
-                                    onTap: _switchToCustomInputMode,
-                                  ),
-                                ),
+                                      firstChild: TimerCustomInput(
+                                        isActive: _isCustomInputMode,
+                                        initialValue: _timerCountdownAnimation.value,
+                                        onChange: _setInitialSecondsTo,
+                                      ),
+                                      secondChild: TimerDisplay(
+                                        seconds: _timerCountdownAnimation.value,
+                                        onTap: _switchToCustomInputMode,
+                                      ),
+                                    ),
                               ),
                               TimerTimeModifierButton(
                                 text: '+15',
@@ -389,9 +385,16 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                   onPressed: _switchToNormalInputMode,
                                   child: Text(
                                     'Done',
-                                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                          color: Theme.of(context).colorScheme.onPrimary,
-                                        ),
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .labelLarge
+                                        ?.copyWith(
+                                      color: Theme
+                                          .of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -443,7 +446,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                       child: Opacity(
                         opacity: _contentOpacityAnimation.value.clamp(0, 1.0),
                         child: IconButton(
-                          icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurface),
+                          icon: Icon(Icons.close, color: Theme
+                              .of(context)
+                              .colorScheme
+                              .onSurface),
                           onPressed: () => _closeMenu(giveHapticFeedback: true),
                         ),
                       ),
@@ -529,7 +535,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     _timerCountdownAnimation.removeListener(_timerCountdownAnimationListener);
     _timerCountdownAnimation = IntTween(begin: seconds, end: 0).animate(
       CurvedAnimation(parent: _timerController, curve: Curves.linear),
-    )..addListener(_timerCountdownAnimationListener);
+    )
+      ..addListener(_timerCountdownAnimationListener);
   }
 
   void _timerCountdownAnimationListener() {
@@ -592,7 +599,6 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     required bool isLast,
   }) {
     final audio = ref.read(audioTimerProvider);
-    final timerSettings = ref.read(timerSettingsProvider);
 
     if (isLast || !isDrivenByTimerController) {
       HapticFeedback.vibrate();
@@ -600,30 +606,30 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
       HapticFeedback.heavyImpact();
     }
 
-    if (isDrivenByTimerController && !timerSettings.isMuted && isLast) {
+    if (isDrivenByTimerController && !_isTimerMuted && isLast) {
       audio.item2.seek(Duration.zero);
       audio.item2.play();
-    } else if (isDrivenByTimerController && !timerSettings.isMuted) {
+    } else if (isDrivenByTimerController && !_isTimerMuted) {
       audio.item1.seek(Duration.zero);
       audio.item1.play();
     }
   }
 
-  void _toggleTimerIsMuted(bool value) {
+  void _toggleTimerIsMuted(bool isMuted) {
     final audio = ref.read(audioTimerProvider);
     final timerSettings = ref.read(timerSettingsProvider.notifier);
 
-    if (value) {
+    if (isMuted) {
       // TODO: refactor seeking and playing into a single method
+      HapticFeedback.heavyImpact();
+    } else {
       audio.item2.seek(Duration.zero);
       audio.item2.play();
-    } else {
-      HapticFeedback.heavyImpact();
     }
 
-    setState(() => _isTimerMuted = value);
+    setState(() => _isTimerMuted = isMuted);
 
-    timerSettings.setTimerIsMuted(value);
+    timerSettings.setTimerIsMuted(isMuted);
 
     _menuOverlayEntry?.markNeedsBuild();
   }
@@ -632,5 +638,31 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     _timerController.reset();
 
     _menuOverlayEntry?.markNeedsBuild();
+  }
+
+  Future<void> _showTimerFinishedNotification({
+    required Duration showAfter,
+  }) {
+    const darwinNotificationDetails = DarwinNotificationDetails(
+      sound: 'timer_beep_1.aiff',
+      interruptionLevel: InterruptionLevel.timeSensitive,
+    );
+
+    const notificationDetails = NotificationDetails(
+      iOS: darwinNotificationDetails,
+    );
+
+    return flutterLocalNotificationsPlugin.zonedSchedule(
+      ExpandableTimer.timerNotificationId,
+      'Time is up!',
+      '',
+      timezone.TZDateTime.now(timezone.local).add(showAfter),
+      notificationDetails,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> _cancelTimerFinishedNotification() {
+    return flutterLocalNotificationsPlugin.cancel(ExpandableTimer.timerNotificationId);
   }
 }

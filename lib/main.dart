@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,16 +9,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweatnotes/shared/services/audio.dart';
+import 'package:timezone/data/latest_all.dart' as timezone;
+import 'package:timezone/timezone.dart' as timezone;
 import 'package:tuple/tuple.dart';
 
 import 'app.dart';
 import 'env.dart';
 import 'firebase_options.dart';
+import 'shared/services/notifications.dart';
 import 'shared/services/shared_preferences.dart';
 
 const kAppCheckEnabled = kReleaseMode;
@@ -28,6 +34,9 @@ const kFirebaseEmulatorsEnabled = kDebugMode || kProfileMode;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // -----------------------------------
+  // FIREBASE
+  // -----------------------------------
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await FirebaseAppCheck.instance.activate(
@@ -68,8 +77,15 @@ Future<void> main() async {
     }
   }
 
-  // get the instance of shared preferences
+  // -----------------------------------
+  // SHARED PREFERENCES
+  // -----------------------------------
+
   final prefs = await SharedPreferences.getInstance();
+
+  // -----------------------------------
+  // AUDIO
+  // -----------------------------------
 
   final audioTimer0 = AudioPlayer();
   final audioTimer1 = AudioPlayer();
@@ -79,22 +95,62 @@ Future<void> main() async {
     audioTimer1.setAsset('assets/audio/timer_beep_1.mp3'),
   ]);
 
+  // -----------------------------------
+  // NOTIFICATIONS
+  // -----------------------------------
+
+  await _configureLocalTimeZone();
+
+  // the permissions will be asked later, whenever required
+  const initializationSettingsDarwin = DarwinInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+  );
+
+  const initializationSettings = InitializationSettings(
+    iOS: initializationSettingsDarwin,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+  );
+
+  // -----------------------------------
+  // APP
+  // -----------------------------------
+
   runApp(
     ProviderScope(
       // override the unimplemented providers
       overrides: [
         prefsProvider.overrideWithValue(prefs),
-        audioTimerProvider.overrideWithValue(Tuple2(audioTimer0, audioTimer1))
+        audioTimerProvider.overrideWithValue(Tuple2(audioTimer0, audioTimer1)),
+        notificationsProvider.overrideWithValue(flutterLocalNotificationsPlugin)
       ],
       child: const App(),
     ),
   );
 
-  // must be called after runApp
+  // -----------------------------------
+  // PACKAGE INFO
+  // -----------------------------------
+
+  // !!! must be called after runApp !!!
   final packageInfo = await PackageInfo.fromPlatform();
 
   FirebaseCrashlytics.instance.setCustomKey(
     'version',
     '${packageInfo.version}+${packageInfo.buildNumber}',
   );
+}
+
+final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+Future<void> _configureLocalTimeZone() async {
+  timezone.initializeTimeZones();
+
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+
+  timezone.setLocalLocation(timezone.getLocation(timeZoneName));
 }

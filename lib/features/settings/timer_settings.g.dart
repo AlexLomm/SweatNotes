@@ -24,7 +24,7 @@ Map<String, dynamic> _$$_TimerSettingsStateToJson(
 // RiverpodGenerator
 // **************************************************************************
 
-String _$timerSettingsHash() => r'17b8f8d1cef4d5f4be27da1f6f8c68d0f9c5b6dd';
+String _$timerSettingsHash() => r'9ebcd80395fa36dc97a8e96309cc6e2e4e8bd60f';
 
 /// See also [TimerSettings].
 @ProviderFor(TimerSettings)

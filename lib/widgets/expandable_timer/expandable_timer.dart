@@ -254,7 +254,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
               animation: _timerController,
               builder: (context, child) => TimerFloatingButton(
                 key: _key,
-                seconds: _timerController.isAnimating ? _timerCountdownAnimation.value : null,
+                seconds: _isTimerReset ? null : _timerCountdownAnimation.value,
                 progress: _timerProgressAnimation.value,
                 progressOpacity: _timerProgressBorderOpacityAnimation.value,
                 onTap: () {
@@ -445,7 +445,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                         opacity: 1.0 - _containerExpandAnimation.value.clamp(0, 1.0),
                         child: TimerFloatingButton(
                           isPlaceholder: true,
-                          seconds: _isTimerPlaying ? _timerCountdownAnimation.value : null,
+                          seconds: _isTimerReset ? null : _timerCountdownAnimation.value,
                           progress: _timerProgressAnimation.value,
                           progressOpacity: _timerProgressBorderOpacityAnimation.value,
                         ),

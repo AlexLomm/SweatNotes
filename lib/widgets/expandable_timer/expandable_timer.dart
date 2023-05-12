@@ -224,7 +224,23 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   void _checkNotificationsPermission() async {
     final status = await Permission.notification.status;
 
-    setState(() => _notificationPermissionStatus = status);
+    if (status == PermissionStatus.denied) {
+      final isGranted = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            sound: true,
+          );
+
+      setState(
+        () => _notificationPermissionStatus = isGranted == true
+            //
+            ? PermissionStatus.granted
+            : PermissionStatus.permanentlyDenied,
+      );
+    } else {
+      setState(() => _notificationPermissionStatus = status);
+    }
 
     _menuOverlayEntry?.markNeedsBuild();
   }
@@ -460,12 +476,11 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                     richMessage: TextSpan(children: [
                                       TextSpan(
                                         text:
-                                            "Please enable notifications to receive a reminder when\nthe timer is done. Otherwise, the timer won't work when\nthe app is closed.",
+                                            "Please enable notifications to receive a reminder when\nthe timer is done. Otherwise, the timer won't work when\nthe app is closed.\n\n",
                                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
                                               color: Theme.of(context).colorScheme.onSurface,
                                             ),
                                       ),
-                                      const TextSpan(text: '\n\n'),
                                       TextSpan(
                                         text: 'To enable notifications navigate to\n',
                                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -495,11 +510,31 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                             ),
                                       ),
                                       TextSpan(
-                                        text: 'option.',
+                                        text: 'option.\n\n',
                                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
                                               color: Theme.of(context).colorScheme.onSurface,
                                             ),
-                                      )
+                                      ),
+                                      TextSpan(
+                                        text: 'Please also make sure that ',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: '"Time Sensitive\nNotifications" and "Sounds" ',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: 'options are checked.',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                      ),
                                     ]),
                                     child: Icon(
                                       Icons.warning_amber_rounded,

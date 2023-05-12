@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sweatnotes/shared/services/audio.dart';
+import 'package:sweatnotes/shared/services/firebase.dart';
 import 'package:sweatnotes/widgets/button.dart';
 import 'package:timezone/timezone.dart' as timezone;
 
@@ -39,7 +40,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   late int _secondsLeft;
   bool _isTimerPastMidPoint = false;
   late bool _isTimerMuted;
-  PermissionStatus _notificationPermissionStatus = PermissionStatus.granted;
+  PermissionStatus? _notificationPermissionStatus;
 
   late GlobalKey _key;
   late Offset _buttonPosition;
@@ -73,6 +74,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   get _isTimerFinished => _timerController.status == AnimationStatus.completed || _timerCountdownAnimation.value <= 0;
 
   get _areIncrementButtonsEnabled => !_isCustomInputMode && _isTimerReset;
+
+  get _shouldShowTimerPermissionsWarning =>
+      _notificationPermissionStatus != null && _notificationPermissionStatus != PermissionStatus.granted;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -459,9 +463,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Opacity(
-                              opacity: _notificationPermissionStatus == PermissionStatus.granted ? 0.0 : 1.0,
+                              opacity: !_shouldShowTimerPermissionsWarning ? 0.0 : 1.0,
                               child: IgnorePointer(
-                                ignoring: _notificationPermissionStatus == PermissionStatus.granted,
+                                ignoring: !_shouldShowTimerPermissionsWarning,
                                 child: Container(
                                   margin: const EdgeInsets.only(right: 4.0),
                                   child: Tooltip(
@@ -577,12 +581,22 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   void _pauseTimer() {
+    ref.read(analyticsProvider).logEvent(name: 'timer_stop', parameters: {
+      'timer_duration_seconds': _timerController.duration?.inSeconds ?? -1,
+      'notification_permission_status': _notificationPermissionStatus.toString(),
+    });
+
     _timerController.stop();
 
     _menuOverlayEntry?.markNeedsBuild();
   }
 
   Future<void> _startTimer() async {
+    ref.read(analyticsProvider).logEvent(name: 'timer_start', parameters: {
+      'timer_duration_seconds': _timerController.duration?.inSeconds ?? -1,
+      'notification_permission_status': _notificationPermissionStatus.toString(),
+    });
+
     if (_isTimerReset) {
       final timerSettings = ref.read(timerSettingsProvider);
 
@@ -595,6 +609,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   Future<void> _incrementTimer() async {
+    ref.read(analyticsProvider).logEvent(name: 'timer_increment');
+
     final timerSettingsNotifier = ref.read(timerSettingsProvider.notifier);
 
     const delta = 15;
@@ -605,6 +621,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   Future<void> _decrementTimer() async {
+    ref.read(analyticsProvider).logEvent(name: 'timer_decrement');
+
     final timerSettingsNotifier = ref.read(timerSettingsProvider.notifier);
 
     const delta = 15;
@@ -615,6 +633,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   Future<void> _setInitialSecondsTo(int value) async {
+    ref.read(analyticsProvider).logEvent(name: 'timer_custom_input');
+
     final timerSettingsNotifier = ref.read(timerSettingsProvider.notifier);
 
     final updatedSeconds = timerSettingsNotifier.setInitialSeconds(value);
@@ -713,6 +733,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   void _toggleTimerIsMuted(bool isMuted) {
+    ref.read(analyticsProvider).logEvent(name: 'timer_toggle_mute', parameters: {
+      'is_muted': isMuted,
+    });
+
     final audio = ref.read(audioTimerProvider);
     final timerSettings = ref.read(timerSettingsProvider.notifier);
 

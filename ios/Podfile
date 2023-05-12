@@ -51,7 +51,11 @@ post_install do |installer|
 
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
-        'AUDIO_SESSION_MICROPHONE=0'
+        'AUDIO_SESSION_MICROPHONE=0',
+
+        # is needed for the package `permission_handler`
+        # @see https://pub.dev/packages/permission_handler
+        'PERMISSION_NOTIFICATIONS=1'
       ]
     end
   end

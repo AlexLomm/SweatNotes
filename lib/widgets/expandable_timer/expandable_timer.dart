@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sweatnotes/shared/services/audio.dart';
 import 'package:sweatnotes/widgets/button.dart';
 import 'package:timezone/timezone.dart' as timezone;
@@ -37,6 +39,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   late int _secondsLeft;
   bool _isTimerPastMidPoint = false;
   late bool _isTimerMuted;
+  PermissionStatus _notificationPermissionStatus = PermissionStatus.granted;
 
   late GlobalKey _key;
   late Offset _buttonPosition;
@@ -55,11 +58,11 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
   get _isCompletedOrAnimatingForward =>
       _animationController.status == AnimationStatus.completed ||
-          _animationController.status == AnimationStatus.forward;
+      _animationController.status == AnimationStatus.forward;
 
   get _isDismissedOrAnimatingReverse =>
       _animationController.status == AnimationStatus.dismissed ||
-          _animationController.status == AnimationStatus.reverse;
+      _animationController.status == AnimationStatus.reverse;
 
   get _isDismissed => _animationController.status == AnimationStatus.dismissed;
 
@@ -104,8 +107,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     _animationController = AnimationController(
       vsync: this,
       duration: ExpandableTimer.animationDuration,
-    )
-      ..addStatusListener((status) {
+    )..addStatusListener((status) {
         if (status == AnimationStatus.dismissed) _removeOverlays();
       });
 
@@ -144,8 +146,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
     _timerController = AnimationController(
       vsync: this,
-    )
-      ..addStatusListener((status) {
+    )..addStatusListener((status) {
         if (status == AnimationStatus.completed) _resetTimer();
       });
 
@@ -197,6 +198,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   void _openMenu() {
     if (_isCompletedOrAnimatingForward) return;
 
+    _checkNotificationsPermission();
+
     final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
 
     _buttonSize = renderBox.size;
@@ -218,28 +221,34 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     _animationController.forward();
   }
 
+  void _checkNotificationsPermission() async {
+    final status = await Permission.notification.status;
+
+    setState(() => _notificationPermissionStatus = status);
+
+    _menuOverlayEntry?.markNeedsBuild();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (context, child) =>
-      !_animationController.isAnimating && _isDismissed
+      builder: (context, child) => !_animationController.isAnimating && _isDismissed
           ? AnimatedBuilder(
-        animation: _timerController,
-        builder: (context, child) =>
-            TimerFloatingButton(
-              key: _key,
-              seconds: _timerController.isAnimating ? _timerCountdownAnimation.value : null,
-              progress: _timerProgressAnimation.value,
-              progressOpacity: _timerProgressBorderOpacityAnimation.value,
-              onTap: () {
-                // only handle opening the menu, closing is handled separately.
-                // Also, `isDismissed` check is needed to cover an edge case when
-                // the button is clicked through the backdrop
-                if (_isDismissed) _openMenu();
-              },
-            ),
-      )
+              animation: _timerController,
+              builder: (context, child) => TimerFloatingButton(
+                key: _key,
+                seconds: _timerController.isAnimating ? _timerCountdownAnimation.value : null,
+                progress: _timerProgressAnimation.value,
+                progressOpacity: _timerProgressBorderOpacityAnimation.value,
+                onTap: () {
+                  // only handle opening the menu, closing is handled separately.
+                  // Also, `isDismissed` check is needed to cover an edge case when
+                  // the button is clicked through the backdrop
+                  if (_isDismissed) _openMenu();
+                },
+              ),
+            )
           : Container(),
     );
   }
@@ -253,8 +262,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
             builder: (context, child) {
               return Container(
                 decoration: BoxDecoration(
-                  color: Theme
-                      .of(context)
+                  color: Theme.of(context)
                       .colorScheme
                       .background
                       .withOpacity(0.38 * _containerExpandAnimation.value.clamp(0, 1)),
@@ -294,14 +302,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                       alignment: Alignment.bottomRight,
                       child: Material(
                         elevation: 3.0,
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .surface,
-                        surfaceTintColor: Theme
-                            .of(context)
-                            .colorScheme
-                            .primary,
+                        color: Theme.of(context).colorScheme.surface,
+                        surfaceTintColor: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -334,23 +336,22 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                               ),
                               AnimatedBuilder(
                                 animation: _timerController,
-                                builder: (context, child) =>
-                                    AnimatedCrossFade(
-                                      duration: WidgetParams.animationDuration,
-                                      firstCurve: WidgetParams.animationCurve,
-                                      secondCurve: WidgetParams.animationCurve,
-                                      crossFadeState:
+                                builder: (context, child) => AnimatedCrossFade(
+                                  duration: WidgetParams.animationDuration,
+                                  firstCurve: WidgetParams.animationCurve,
+                                  secondCurve: WidgetParams.animationCurve,
+                                  crossFadeState:
                                       _isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                                      firstChild: TimerCustomInput(
-                                        isActive: _isCustomInputMode,
-                                        initialValue: _timerCountdownAnimation.value,
-                                        onChange: _setInitialSecondsTo,
-                                      ),
-                                      secondChild: TimerDisplay(
-                                        seconds: _timerCountdownAnimation.value,
-                                        onTap: _switchToCustomInputMode,
-                                      ),
-                                    ),
+                                  firstChild: TimerCustomInput(
+                                    isActive: _isCustomInputMode,
+                                    initialValue: _timerCountdownAnimation.value,
+                                    onChange: _setInitialSecondsTo,
+                                  ),
+                                  secondChild: TimerDisplay(
+                                    seconds: _timerCountdownAnimation.value,
+                                    onTap: _switchToCustomInputMode,
+                                  ),
+                                ),
                               ),
                               TimerTimeModifierButton(
                                 text: '+15',
@@ -385,16 +386,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                   onPressed: _switchToNormalInputMode,
                                   child: Text(
                                     'Done',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .labelLarge
-                                        ?.copyWith(
-                                      color: Theme
-                                          .of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                    ),
+                                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                          color: Theme.of(context).colorScheme.onPrimary,
+                                        ),
                                   ),
                                 ),
                               ],
@@ -445,12 +439,81 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                       alignment: Alignment.topRight,
                       child: Opacity(
                         opacity: _contentOpacityAnimation.value.clamp(0, 1.0),
-                        child: IconButton(
-                          icon: Icon(Icons.close, color: Theme
-                              .of(context)
-                              .colorScheme
-                              .onSurface),
-                          onPressed: () => _closeMenu(giveHapticFeedback: true),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Opacity(
+                              opacity: _notificationPermissionStatus == PermissionStatus.granted ? 0.0 : 1.0,
+                              child: IgnorePointer(
+                                ignoring: _notificationPermissionStatus == PermissionStatus.granted,
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 4.0),
+                                  child: Tooltip(
+                                    enableFeedback: true,
+                                    showDuration: const Duration(seconds: 12),
+                                    padding: const EdgeInsets.all(16.0),
+                                    triggerMode: TooltipTriggerMode.tap,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.surface,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    richMessage: TextSpan(children: [
+                                      TextSpan(
+                                        text:
+                                            "Please enable notifications to receive a reminder when\nthe timer is done. Otherwise, the timer won't work when\nthe app is closed.",
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                      ),
+                                      const TextSpan(text: '\n\n'),
+                                      TextSpan(
+                                        text: 'To enable notifications navigate to\n',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: '"Settings > Notifications > SweatNotes"\n',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: 'and enable the ',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: '"Immediate Delivery" ',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: 'option.',
+                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                              color: Theme.of(context).colorScheme.onSurface,
+                                            ),
+                                      )
+                                    ]),
+                                    child: Icon(
+                                      Icons.warning_amber_rounded,
+                                      color: Theme.of(context).colorScheme.error,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurface),
+                              onPressed: () => _closeMenu(giveHapticFeedback: true),
+                            ),
+                          ],
                         ),
                       ),
                     )
@@ -535,8 +598,7 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     _timerCountdownAnimation.removeListener(_timerCountdownAnimationListener);
     _timerCountdownAnimation = IntTween(begin: seconds, end: 0).animate(
       CurvedAnimation(parent: _timerController, curve: Curves.linear),
-    )
-      ..addListener(_timerCountdownAnimationListener);
+    )..addListener(_timerCountdownAnimationListener);
   }
 
   void _timerCountdownAnimationListener() {

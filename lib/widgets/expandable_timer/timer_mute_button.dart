@@ -16,7 +16,7 @@ class TimerMuteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TimerControlButton(
       dimension: 40.0,
-      icon: isMuted ? Icons.volume_off : Icons.volume_up,
+      icon: isMuted ? Icons.volume_up : Icons.volume_off,
       onTap: () => onTap?.call(!isMuted),
       color: Theme.of(context).colorScheme.secondary,
     );

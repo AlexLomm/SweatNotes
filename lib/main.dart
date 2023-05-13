@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:audio_session/audio_session.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -94,6 +95,13 @@ Future<void> main() async {
     audioTimer0.setAsset('assets/audio/timer_beep_0.mp3'),
     audioTimer1.setAsset('assets/audio/timer_beep_1.mp3'),
   ]);
+
+  final session = await AudioSession.instance;
+
+  await session.configure(const AudioSessionConfiguration(
+    avAudioSessionCategory: AVAudioSessionCategory.ambient,
+    avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.mixWithOthers,
+  ));
 
   // -----------------------------------
   // NOTIFICATIONS

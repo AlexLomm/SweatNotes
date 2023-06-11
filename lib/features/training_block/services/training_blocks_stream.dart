@@ -28,7 +28,7 @@ Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef r
         final timestampA = a.startedAt ?? Timestamp.fromMicrosecondsSinceEpoch(0);
         final timestampB = b.startedAt ?? Timestamp.fromMicrosecondsSinceEpoch(0);
 
-        return timestampA.compareTo(timestampB);
+        return timestampB.compareTo(timestampA);
       });
 
       return trainingBlocks;

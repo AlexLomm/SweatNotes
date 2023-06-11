@@ -24,7 +24,7 @@ class WidgetParams {
 
   double get borderRadius => isCompactMode ? 4.0 : 8.0;
 
-  double get exerciseTypeHeight => isCompactMode ? 64.0 : 80.0;
+  double get exerciseTypeHeight => isCompactMode ? 72.0 : 80.0;
 
   double get exerciseTypeLabelWidth {
     return exerciseTypeWidth - 2 * exerciseTypeDragHandleWidth - exerciseTypePaddingLeft;
@@ -56,7 +56,7 @@ class WidgetParams {
 
   double get exerciseTypeDragHandleWidth => isEditMode ? 48.0 : 0.0;
 
-  double get exerciseSetWidth => isCompactMode ? 64.0 : 80.0;
+  double get exerciseSetWidth => isCompactMode ? 52.0 : 80.0;
 
   double get exerciseDayTitleHeight => 56.0;
 

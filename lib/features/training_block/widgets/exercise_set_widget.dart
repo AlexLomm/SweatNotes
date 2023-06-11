@@ -110,7 +110,7 @@ class _RepsText extends StatelessWidget {
   }
 }
 
-class _LoadText extends StatelessWidget {
+class _LoadText extends ConsumerWidget {
   final ExerciseSetClient exerciseSet;
   final Color textColor;
   final TextStyle labelSmallTheme;
@@ -127,24 +127,46 @@ class _LoadText extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isCompactMode = ref.watch(widgetParamsProvider).isCompactMode;
     final load = _shouldShowPredictedLoad ? exerciseSet.predictedLoad : exerciseSet.load;
     final color = _shouldShowPredictedLoad ? textColor.withOpacity(0.32) : textColor;
 
-    return AutoSizeText.rich(
-      TextSpan(
-        text: '$load',
-        children: [
-          TextSpan(
-            text: load == 0 ? '' : ' ${exerciseSet.unit}',
-            style: labelSmallTheme.copyWith(color: color),
-          ),
-        ],
-      ),
-      maxLines: 1,
-      minFontSize: labelSmallTheme.fontSize!,
-      style: labelLargeTheme.copyWith(color: color),
-    );
+    const maxLines = 1;
+    final minFontSize = labelSmallTheme.fontSize!;
+    final labelLargeStyle = labelLargeTheme.copyWith(color: color);
+    final labelSmallStyle = labelSmallTheme.copyWith(color: color);
+
+    return isCompactMode
+        ? Stack(children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: AutoSizeText(
+                '$load',
+                maxLines: maxLines,
+                minFontSize: minFontSize,
+                style: labelLargeStyle,
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: AutoSizeText(exerciseSet.unit, style: labelSmallStyle),
+            )
+          ])
+        : AutoSizeText.rich(
+            TextSpan(
+              text: '$load',
+              children: [
+                TextSpan(
+                  text: load == 0 ? '' : ' ${exerciseSet.unit}',
+                  style: labelSmallStyle,
+                ),
+              ],
+            ),
+            maxLines: maxLines,
+            minFontSize: minFontSize,
+            style: labelLargeStyle,
+          );
   }
 }
 

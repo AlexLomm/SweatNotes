@@ -115,4 +115,10 @@ class ExerciseDayClient with _$ExerciseDayClient {
   ExerciseDayClient archive(bool archive) {
     return copyWith(archivedAt: archive ? Timestamp.now() : null);
   }
+
+  ExerciseDayClient getWithOnlyPersonalRecords() {
+    return copyWith(
+      exerciseTypes: exerciseTypes.map((e) => e.getWithOnlyPersonalRecords()).toList(),
+    );
+  }
 }

@@ -7,20 +7,24 @@ class DismissibleButton extends StatelessWidget {
   final String id;
   final String label;
   final VoidCallback onPressed;
+  final Future<bool?> Function(DismissDirection direction)? confirmDismiss;
   final DismissDirectionCallback? onDismissed;
   final Widget? right;
   final Color? textColor;
   final Color? backgroundColor;
+  final bool isArchivable;
 
   const DismissibleButton({
     Key? key,
     required this.id,
     required this.label,
     required this.onPressed,
+    this.confirmDismiss,
     this.onDismissed,
     this.right,
     this.textColor,
     this.backgroundColor,
+    this.isArchivable = false,
   }) : super(key: key);
 
   @override
@@ -32,6 +36,8 @@ class DismissibleButton extends StatelessWidget {
         id: id,
         borderRadius: BorderRadius.circular(12.0),
         isEnabled: onDismissed != null,
+        isArchivable: isArchivable,
+        confirmDismiss: confirmDismiss,
         onDismissed: onDismissed ?? (_) {},
         child: Button(
           borderRadius: 0,

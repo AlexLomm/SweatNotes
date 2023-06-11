@@ -5,7 +5,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../app.dart';
 import '../../../shared/services/firebase.dart';
+import '../../../utils/generate_hash.dart';
 import '../data/exercise_types_repository.dart';
+import '../data/models/exercise_type.dart';
 import '../data/models/training_block.dart';
 import '../data/models_client/exercise_day_client.dart';
 import '../data/models_client/training_block_client.dart';
@@ -98,7 +100,7 @@ class TrainingBlocksService {
     final updatedTrainingBlockDbModel = trainingBlock.archiveExerciseDay(exerciseDay, archive).toDbModel();
 
     batch.update(
-      trainingBlocksRepository.getDocumentRefById(updatedTrainingBlockDbModel.id),
+      trainingBlocksRepository.getDocumentRef(updatedTrainingBlockDbModel.id),
       updatedTrainingBlockDbModel.toJson(),
     );
 
@@ -106,7 +108,7 @@ class TrainingBlocksService {
       final updatedExerciseTypeDbModel = exerciseType.archive(archive).toDbModel();
 
       batch.update(
-        exerciseTypesRepository.getDocumentRefById(updatedExerciseTypeDbModel.id),
+        exerciseTypesRepository.getDocumentRef(updatedExerciseTypeDbModel.id),
         updatedExerciseTypeDbModel.toJson(),
       );
     }
@@ -116,6 +118,69 @@ class TrainingBlocksService {
 
   Future<void> archive(TrainingBlockClient trainingBlock, bool archive) {
     return trainingBlocksRepository.update(trainingBlock.archive(archive).toDbModel());
+  }
+
+  Future<void> copyWithPersonalRecords({
+    required TrainingBlockClient trainingBlock,
+    required Timestamp startedAt,
+  }) async {
+    final trainingBlockWithOnlyPersonalRecords = trainingBlock.getWithOnlyPersonalRecords();
+
+    final batch = firestore.batch();
+
+    final trainingBlockDocumentRef = trainingBlocksRepository.getDocumentRef(null);
+    var newTrainingBlock = trainingBlockWithOnlyPersonalRecords.toDbModel().copyWith(
+          id: trainingBlockDocumentRef.id,
+          name: '${trainingBlock.name} copy',
+          startedAt: startedAt,
+          exerciseDaysOrdering: {},
+          exercisesCollapsedIncludingIndex: -1,
+          exerciseDays: [],
+        );
+
+    final Map<String, int> exerciseDaysOrdering = {};
+    for (final exerciseDay in trainingBlockWithOnlyPersonalRecords.exerciseDays) {
+      final clonedExerciseDayPseudoId = generateHash();
+      final clonedExerciseDay = exerciseDay.toDbModel().copyWith(
+        pseudoId: clonedExerciseDayPseudoId,
+        archivedAt: null,
+        exerciseTypesOrdering: {},
+      );
+
+      exerciseDaysOrdering[clonedExerciseDayPseudoId] =
+          trainingBlock.dbModel.exerciseDaysOrdering[exerciseDay.dbModel.pseudoId] ?? 0;
+
+      final Map<String, int> exerciseTypesOrdering = {};
+      for (final exerciseType in exerciseDay.exerciseTypes) {
+        final exerciseTypeDocumentRef = exerciseTypesRepository.getDocumentRef(null);
+        final newExerciseType = exerciseType.toDbModel().copyWith(
+              id: exerciseTypeDocumentRef.id,
+              trainingBlockId: trainingBlockDocumentRef.id,
+            );
+
+        assert(exerciseDay.dbModel.exerciseTypesOrdering[exerciseType.dbModel.id] != null);
+
+        exerciseTypesOrdering[exerciseTypeDocumentRef.id] =
+            exerciseDay.dbModel.exerciseTypesOrdering[exerciseType.dbModel.id] ?? 0;
+
+        batch.set<ExerciseType>(
+          exerciseTypeDocumentRef,
+          newExerciseType,
+        );
+      }
+
+      newTrainingBlock = newTrainingBlock.copyWith(exerciseDays: [
+        ...newTrainingBlock.exerciseDays,
+        clonedExerciseDay.copyWith(exerciseTypesOrdering: exerciseTypesOrdering)
+      ]);
+    }
+
+    batch.set<TrainingBlock>(
+      trainingBlockDocumentRef,
+      newTrainingBlock.copyWith(exerciseDaysOrdering: exerciseDaysOrdering),
+    );
+
+    return batch.commit();
   }
 }
 

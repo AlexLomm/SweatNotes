@@ -71,4 +71,23 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
   ExerciseTypeClient archive(bool archive) {
     return copyWith(archivedAt: archive ? Timestamp.now() : null);
   }
+
+  ExerciseTypeClient getWithOnlyPersonalRecords() {
+    assert(exercises.isNotEmpty);
+    assert(exercises.first.sets.isNotEmpty);
+
+    final List<ExerciseSetClient> prSets = [...exercises.first.sets];
+
+    for (int i = 0; i < exercises.first.sets.length; i++) {
+      for (final exercise in exercises.reversed) {
+        if (exercise.sets[i].isPersonalRecord) {
+          prSets[i] = exercise.sets[i];
+
+          break;
+        }
+      }
+    }
+
+    return copyWith(exercises: [exercises.first.copyWith(sets: prSets)]);
+  }
 }

@@ -70,7 +70,7 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
                       dividerColor: Colors.transparent,
                       padding: const EdgeInsets.all(12.0),
                       content: const Text(
-                        'In order to be able to specify the "week day", the "start date" should be set for the parent training block first.',
+                        'In order to be able to specify a "week day", the "start date" should be set for the parent training block first.',
                       ),
                       contentTextStyle: Theme.of(context)
                           .textTheme
@@ -82,7 +82,7 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
                         TextButton(
                           onPressed: () => context.pushNamed(
                             RouteNames.trainingBlockCreateUpdate,
-                            extra: trainingBlock,
+                            extra: Tuple2(trainingBlock, false),
                           ),
                           child: const Text('SET START DATE'),
                         ),

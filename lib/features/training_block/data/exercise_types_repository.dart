@@ -27,7 +27,7 @@ class ExerciseTypesRepository {
       //
       .where('archivedAt', isNull: true);
 
-  DocumentReference<ExerciseType> getDocumentRefById(String id) {
+  DocumentReference<ExerciseType> getDocumentRef(String? id) {
     return collectionRef.doc(id);
   }
 
@@ -36,7 +36,7 @@ class ExerciseTypesRepository {
   }
 
   Future<void> update(ExerciseType exerciseType) async {
-    return getDocumentRefById(exerciseType.id).update(_toFirestore(exerciseType, null));
+    return getDocumentRef(exerciseType.id).update(_toFirestore(exerciseType, null));
   }
 
   ExerciseType _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {

@@ -29,7 +29,7 @@ class ExerciseTypesService {
   }) async {
     return exerciseTypesRepository
         //
-        .getDocumentRefById(exerciseTypeClient.dbModel.id)
+        .getDocumentRef(exerciseTypeClient.dbModel.id)
         .set(exerciseTypeClient.copyWith(name: name, unit: unit).toDbModel());
   }
 
@@ -45,7 +45,7 @@ class ExerciseTypesService {
     final exerciseDayIndex = trainingBlock.indexOfExerciseDayByPseudoId(exerciseDay.dbModel.pseudoId);
 
     final newExerciseTypeRef = exerciseTypesRepository.collectionRef.doc();
-    final trainingBlockRef = trainingBlocksRepository.getDocumentRefById(trainingBlock.dbModel.id);
+    final trainingBlockRef = trainingBlocksRepository.getDocumentRef(trainingBlock.dbModel.id);
 
     final dbModel = ExerciseType(
       id: newExerciseTypeRef.id,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../app.dart';
 import '../../router/router.dart';
@@ -120,7 +121,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
                             color: Theme.of(context).colorScheme.onPrimaryContainer,
                           ),
                           onPressed: () => context.push('/${trainingBlock.dbModel.id}'),
-                          onDismissed: (_) {
+                          isArchivable: true,
+                          confirmDismiss: (direction) async {
+                            if (direction == DismissDirection.endToStart) return true;
+
+                            context.pushNamed(
+                              RouteNames.trainingBlockCreateUpdate,
+                              extra: Tuple2(trainingBlock, true),
+                            );
+
+                            return false;
+                          },
+                          onDismissed: (direction) {
+                            if (direction != DismissDirection.endToStart) return;
+
                             trainingBlocksService.archive(trainingBlock, true);
 
                             messenger?.showSnackBar(

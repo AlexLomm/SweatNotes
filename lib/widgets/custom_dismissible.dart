@@ -12,8 +12,9 @@ class CustomDismissible extends StatefulWidget {
   final BorderRadius borderRadius;
   final Widget child;
   final DismissDirectionCallback onDismissed;
+  final Future<bool?> Function(DismissDirection direction)? confirmDismiss;
   final DismissUpdateCallback? onUpdate;
-  final Alignment iconAlignment;
+  final bool isArchivable;
 
   const CustomDismissible({
     Key? key,
@@ -22,8 +23,9 @@ class CustomDismissible extends StatefulWidget {
     required this.borderRadius,
     required this.child,
     required this.onDismissed,
-    this.iconAlignment = Alignment.centerRight,
+    this.confirmDismiss,
     this.onUpdate,
+    this.isArchivable = false,
   }) : super(key: key);
 
   @override
@@ -56,15 +58,20 @@ class _CustomDismissibleState extends State<CustomDismissible> {
 
   @override
   Widget build(BuildContext context) {
+    DismissDirection direction = DismissDirection.none;
+
+    if (widget.isEnabled && widget.isArchivable) {
+      direction = DismissDirection.horizontal;
+    } else if (widget.isEnabled && !widget.isArchivable) {
+      direction = DismissDirection.endToStart;
+    }
+
     return ClipRRect(
       key: ValueKey(_counter),
       borderRadius: widget.borderRadius,
       child: Dismissible(
         key: Key(widget.id),
-        direction: widget.isEnabled ? DismissDirection.endToStart : DismissDirection.none,
-        dismissThresholds: const {
-          DismissDirection.endToStart: 0.33,
-        },
+        direction: direction,
         onUpdate: (details) {
           widget.onUpdate?.call(details);
 
@@ -78,35 +85,93 @@ class _CustomDismissibleState extends State<CustomDismissible> {
             setState(() => _isConfirmed = false);
           }
         },
+        confirmDismiss: widget.confirmDismiss,
         onDismissed: widget.onDismissed,
-        background: AnimatedContainer(
-          duration: WidgetParams.animationDuration,
-          curve: WidgetParams.animationCurve,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-          ),
-          child: Align(
-            alignment: widget.iconAlignment,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: widget.iconAlignment == Alignment.topRight ? 18.0 : 0,
-                right: 18.0,
-              ),
-              child: SizedBox(
-                width: 24.0,
-                height: 24.0,
-                child: Center(
-                  child: Icon(
-                    Icons.archive_outlined,
-                    color: Theme.of(context).colorScheme.tertiary,
-                    size: _isConfirmed ? 24.0 : 8.0,
-                  ),
-                ),
-              ),
-            ),
+        background: _Copy(isConfirmed: _isConfirmed),
+        secondaryBackground: _Archive(isConfirmed: _isConfirmed),
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+class _Copy extends StatelessWidget {
+  const _Copy({
+    required bool isConfirmed,
+  }) : _isConfirmed = isConfirmed;
+
+  final bool _isConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+      ),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: _PaddedIcon(
+          iconData: Icons.copy_outlined,
+          isConfirmed: _isConfirmed,
+          iconAlignment: Alignment.topLeft,
+        ),
+      ),
+    );
+  }
+}
+
+class _Archive extends StatelessWidget {
+  const _Archive({
+    required bool isConfirmed,
+  }) : _isConfirmed = isConfirmed;
+
+  final bool _isConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiaryContainer,
+      ),
+      child: Align(
+        alignment: Alignment.topRight,
+        child: _PaddedIcon(
+          iconData: Icons.archive_outlined,
+          isConfirmed: _isConfirmed,
+          iconAlignment: Alignment.topRight,
+        ),
+      ),
+    );
+  }
+}
+
+class _PaddedIcon extends StatelessWidget {
+  final IconData iconData;
+  final bool isConfirmed;
+  final Alignment iconAlignment;
+
+  const _PaddedIcon({
+    required this.iconData,
+    required this.isConfirmed,
+    required this.iconAlignment,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: iconAlignment == Alignment.topRight
+          ? const EdgeInsets.only(top: 18.0, right: 18.0)
+          : const EdgeInsets.only(top: 18.0, left: 18.0),
+      child: SizedBox(
+        width: 24.0,
+        height: 24.0,
+        child: Center(
+          child: Icon(
+            iconData,
+            color: Theme.of(context).colorScheme.tertiary,
+            size: isConfirmed ? 24.0 : 8.0,
           ),
         ),
-        child: widget.child,
       ),
     );
   }

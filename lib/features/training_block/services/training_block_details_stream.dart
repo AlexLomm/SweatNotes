@@ -26,7 +26,7 @@ Stream<TrainingBlockClient?> trainingBlockDetailsStream(
 
   final Stream<TrainingBlock?> trainingBlockStream = trainingBlocksRepository
       //
-      .getDocumentRefById(trainingBlockId)
+      .getDocumentRef(trainingBlockId)
       .snapshots()
       .map((event) => event.data());
 

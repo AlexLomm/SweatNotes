@@ -99,4 +99,10 @@ class TrainingBlockClient with _$TrainingBlockClient {
   TrainingBlockClient archive(bool archive) {
     return copyWith(archivedAt: archive ? Timestamp.now() : null);
   }
+
+  TrainingBlockClient getWithOnlyPersonalRecords() {
+    return copyWith(
+      exerciseDays: exerciseDays.map((e) => e.getWithOnlyPersonalRecords()).toList(),
+    );
+  }
 }

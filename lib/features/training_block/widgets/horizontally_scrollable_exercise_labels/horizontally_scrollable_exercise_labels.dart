@@ -198,7 +198,6 @@ class _Background extends ConsumerWidget {
         ),
         child: CustomDismissible(
           id: id,
-          iconAlignment: Alignment.topRight,
           isEnabled: isEditMode,
           onUpdate: onUpdate,
           onDismissed: onDismissed,

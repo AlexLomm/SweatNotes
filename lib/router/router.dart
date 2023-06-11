@@ -112,10 +112,14 @@ GoRouter goRouter(GoRouterRef ref) {
             name: RouteNames.trainingBlockCreateUpdate,
             path: 'training-block-create-update',
             builder: (_, routerState) {
-              final trainingBlock =
-                  routerState.extra is TrainingBlockClient ? routerState.extra as TrainingBlockClient : null;
+              final tuple = routerState.extra is Tuple2<TrainingBlockClient, bool>
+                  ? routerState.extra as Tuple2<TrainingBlockClient, bool>
+                  : null;
 
-              return TrainingBlockCreateUpdateScreen(trainingBlock: trainingBlock);
+              return TrainingBlockCreateUpdateScreen(
+                trainingBlock: tuple?.item1,
+                isCopy: tuple?.item2 ?? false,
+              );
             },
           ),
           GoRoute(

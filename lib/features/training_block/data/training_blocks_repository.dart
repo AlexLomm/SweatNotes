@@ -31,7 +31,7 @@ class TrainingBlocksRepository {
       //
       .where('archivedAt', isNull: true);
 
-  DocumentReference<TrainingBlock> getDocumentRefById(String id) {
+  DocumentReference<TrainingBlock> getDocumentRef(String? id) {
     return _collectionRef.doc(id);
   }
 
@@ -40,7 +40,7 @@ class TrainingBlocksRepository {
   }
 
   Future<void> update(TrainingBlock trainingBlock) {
-    return getDocumentRefById(trainingBlock.id).update(toFirestore(trainingBlock, null));
+    return getDocumentRef(trainingBlock.id).update(toFirestore(trainingBlock, null));
   }
 
   TrainingBlock _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {

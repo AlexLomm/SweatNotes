@@ -241,7 +241,10 @@ class _MatrixState extends ConsumerState<Matrix> {
               ),
               child: GestureDetector(
                 onTap: isEditMode
-                    ? () => context.pushNamed(RouteNames.trainingBlockCreateUpdate, extra: widget.trainingBlock)
+                    ? () => context.pushNamed(
+                          RouteNames.trainingBlockCreateUpdate,
+                          extra: Tuple2(widget.trainingBlock, false),
+                        )
                     : null,
                 child: AutoSizeText(
                   widget.trainingBlock.name,

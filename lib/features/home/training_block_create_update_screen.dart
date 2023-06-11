@@ -35,8 +35,13 @@ class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdate
   void initState() {
     super.initState();
 
-    _trainingBlockNameController.text = widget.trainingBlock?.name ?? '';
-    _selectedDate = widget.trainingBlock?.startedAt?.toDate() ?? DateTime.now();
+    if (widget.isCopy) {
+      _trainingBlockNameController.text = '${widget.trainingBlock?.name} copy';
+      _selectedDate = DateTime.now();
+    } else {
+      _trainingBlockNameController.text = widget.trainingBlock?.name ?? '';
+      _selectedDate = widget.trainingBlock?.startedAt?.toDate() ?? DateTime.now();
+    }
   }
 
   @override
@@ -117,7 +122,8 @@ class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdate
                     setState(() => _isLoading = true);
 
                     await trainingBlocksService.copyWithPersonalRecords(
-                      trainingBlock: trainingBlockWithPersonalRecords!,
+                      trainingBlockWithPersonalRecords!,
+                      trainingBlockName: _trainingBlockNameController.text,
                       startedAt: Timestamp.fromDate(_selectedDate),
                     );
 

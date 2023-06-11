@@ -120,8 +120,9 @@ class TrainingBlocksService {
     return trainingBlocksRepository.update(trainingBlock.archive(archive).toDbModel());
   }
 
-  Future<void> copyWithPersonalRecords({
-    required TrainingBlockClient trainingBlock,
+  Future<void> copyWithPersonalRecords(
+    TrainingBlockClient trainingBlock, {
+    required String trainingBlockName,
     required Timestamp startedAt,
   }) async {
     final trainingBlockWithOnlyPersonalRecords = trainingBlock.getWithOnlyPersonalRecords();
@@ -131,7 +132,7 @@ class TrainingBlocksService {
     final trainingBlockDocumentRef = trainingBlocksRepository.getDocumentRef(null);
     var newTrainingBlock = trainingBlockWithOnlyPersonalRecords.toDbModel().copyWith(
           id: trainingBlockDocumentRef.id,
-          name: '${trainingBlock.name} copy',
+          name: trainingBlockName,
           startedAt: startedAt,
           exerciseDaysOrdering: {},
           exercisesCollapsedIncludingIndex: -1,

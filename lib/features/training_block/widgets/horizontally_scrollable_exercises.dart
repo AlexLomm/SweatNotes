@@ -214,9 +214,9 @@ class CollapsedExerciseColumns extends ConsumerWidget {
                 depth: 0,
                 text: Intl.plural(
                   count,
-                  zero: '0 days',
-                  one: '1 day',
-                  other: '$count days',
+                  zero: '0 weeks',
+                  one: '1 week',
+                  other: '$count weeks',
                   args: [count],
                   desc: 'How many columns are collapsed',
                 ),

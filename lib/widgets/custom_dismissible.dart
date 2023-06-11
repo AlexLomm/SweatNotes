@@ -96,24 +96,23 @@ class _CustomDismissibleState extends State<CustomDismissible> {
 }
 
 class _Copy extends StatelessWidget {
-  const _Copy({
-    required bool isConfirmed,
-  }) : _isConfirmed = isConfirmed;
+  final bool isConfirmed;
 
-  final bool _isConfirmed;
+  const _Copy({
+    required this.isConfirmed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: Theme.of(context).colorScheme.secondaryContainer,
       ),
       child: Align(
-        alignment: Alignment.topLeft,
-        child: _PaddedIcon(
+        alignment: Alignment.centerLeft,
+        child: _IconWrapper(
           iconData: Icons.copy_outlined,
-          isConfirmed: _isConfirmed,
-          iconAlignment: Alignment.topLeft,
+          isConfirmed: isConfirmed,
         ),
       ),
     );
@@ -121,11 +120,11 @@ class _Copy extends StatelessWidget {
 }
 
 class _Archive extends StatelessWidget {
-  const _Archive({
-    required bool isConfirmed,
-  }) : _isConfirmed = isConfirmed;
+  final bool isConfirmed;
 
-  final bool _isConfirmed;
+  const _Archive({
+    required this.isConfirmed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -134,41 +133,36 @@ class _Archive extends StatelessWidget {
         color: Theme.of(context).colorScheme.tertiaryContainer,
       ),
       child: Align(
-        alignment: Alignment.topRight,
-        child: _PaddedIcon(
+        alignment: Alignment.centerRight,
+        child: _IconWrapper(
           iconData: Icons.archive_outlined,
-          isConfirmed: _isConfirmed,
-          iconAlignment: Alignment.topRight,
+          isConfirmed: isConfirmed,
         ),
       ),
     );
   }
 }
 
-class _PaddedIcon extends StatelessWidget {
+class _IconWrapper extends StatelessWidget {
   final IconData iconData;
   final bool isConfirmed;
-  final Alignment iconAlignment;
 
-  const _PaddedIcon({
+  const _IconWrapper({
     required this.iconData,
     required this.isConfirmed,
-    required this.iconAlignment,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: iconAlignment == Alignment.topRight
-          ? const EdgeInsets.only(top: 18.0, right: 18.0)
-          : const EdgeInsets.only(top: 18.0, left: 18.0),
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
       child: SizedBox(
         width: 24.0,
         height: 24.0,
         child: Center(
           child: Icon(
             iconData,
-            color: Theme.of(context).colorScheme.tertiary,
+            color: Theme.of(context).colorScheme.onSurface,
             size: isConfirmed ? 24.0 : 8.0,
           ),
         ),

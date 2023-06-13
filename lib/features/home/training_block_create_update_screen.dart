@@ -48,7 +48,9 @@ class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdate
   Widget build(BuildContext context) {
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
 
-    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlock!.dbModel.id));
+    final data = widget.trainingBlock == null
+        ? const AsyncData(null)
+        : ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlock!.dbModel.id));
 
     return Layout(
       onGoBackButtonTap: () => context.pop(),

@@ -6,8 +6,8 @@ part of 'exercise_day.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ExerciseDay _$$_ExerciseDayFromJson(Map<String, dynamic> json) =>
-    _$_ExerciseDay(
+_$ExerciseDayImpl _$$ExerciseDayImplFromJson(Map<String, dynamic> json) =>
+    _$ExerciseDayImpl(
       pseudoId: json['pseudoId'] as String,
       name: json['name'] as String,
       weekDay: json['weekDay'] as int?,
@@ -19,7 +19,7 @@ _$_ExerciseDay _$$_ExerciseDayFromJson(Map<String, dynamic> json) =>
               const {},
     );
 
-Map<String, dynamic> _$$_ExerciseDayToJson(_$_ExerciseDay instance) =>
+Map<String, dynamic> _$$ExerciseDayImplToJson(_$ExerciseDayImpl instance) =>
     <String, dynamic>{
       'pseudoId': instance.pseudoId,
       'name': instance.name,

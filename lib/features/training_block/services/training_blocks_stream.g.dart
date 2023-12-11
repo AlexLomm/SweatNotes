@@ -7,7 +7,7 @@ part of 'training_blocks_stream.dart';
 // **************************************************************************
 
 String _$trainingBlocksStreamHash() =>
-    r'e469c526addfb12553f43b5d8acf1a6a9ce9bfa5';
+    r'7ecb856447227eafe5155ad8a272cf8d2e84d0bb';
 
 /// See also [trainingBlocksStream].
 @ProviderFor(trainingBlocksStream)
@@ -24,4 +24,5 @@ final trainingBlocksStreamProvider =
 
 typedef TrainingBlocksStreamRef
     = AutoDisposeStreamProviderRef<List<TrainingBlockClient>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

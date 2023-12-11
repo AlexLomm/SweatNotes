@@ -48,12 +48,17 @@ abstract class $TrainingBlockCopyWith<$Res> {
       _$TrainingBlockCopyWithImpl<$Res, TrainingBlock>;
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false)
-          String id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          Timestamp? archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          Timestamp? startedAt,
+      {@JsonKey(includeToJson: false) String id,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      Timestamp? archivedAt,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      Timestamp? startedAt,
       Map<String, int> exerciseDaysOrdering,
       int exercisesCollapsedIncludingIndex,
       String name,
@@ -115,20 +120,25 @@ class _$TrainingBlockCopyWithImpl<$Res, $Val extends TrainingBlock>
 }
 
 /// @nodoc
-abstract class _$$_TrainingBlockCopyWith<$Res>
+abstract class _$$TrainingBlockImplCopyWith<$Res>
     implements $TrainingBlockCopyWith<$Res> {
-  factory _$$_TrainingBlockCopyWith(
-          _$_TrainingBlock value, $Res Function(_$_TrainingBlock) then) =
-      __$$_TrainingBlockCopyWithImpl<$Res>;
+  factory _$$TrainingBlockImplCopyWith(
+          _$TrainingBlockImpl value, $Res Function(_$TrainingBlockImpl) then) =
+      __$$TrainingBlockImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false)
-          String id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          Timestamp? archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          Timestamp? startedAt,
+      {@JsonKey(includeToJson: false) String id,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      Timestamp? archivedAt,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      Timestamp? startedAt,
       Map<String, int> exerciseDaysOrdering,
       int exercisesCollapsedIncludingIndex,
       String name,
@@ -136,11 +146,11 @@ abstract class _$$_TrainingBlockCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_TrainingBlockCopyWithImpl<$Res>
-    extends _$TrainingBlockCopyWithImpl<$Res, _$_TrainingBlock>
-    implements _$$_TrainingBlockCopyWith<$Res> {
-  __$$_TrainingBlockCopyWithImpl(
-      _$_TrainingBlock _value, $Res Function(_$_TrainingBlock) _then)
+class __$$TrainingBlockImplCopyWithImpl<$Res>
+    extends _$TrainingBlockCopyWithImpl<$Res, _$TrainingBlockImpl>
+    implements _$$TrainingBlockImplCopyWith<$Res> {
+  __$$TrainingBlockImplCopyWithImpl(
+      _$TrainingBlockImpl _value, $Res Function(_$TrainingBlockImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -154,7 +164,7 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
     Object? name = null,
     Object? exerciseDays = null,
   }) {
-    return _then(_$_TrainingBlock(
+    return _then(_$TrainingBlockImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -189,14 +199,21 @@ class __$$_TrainingBlockCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
-  const _$_TrainingBlock(
-      {@JsonKey(includeToJson: false)
-          required this.id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          this.archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          this.startedAt,
+class _$TrainingBlockImpl
+    with DiagnosticableTreeMixin
+    implements _TrainingBlock {
+  const _$TrainingBlockImpl(
+      {@JsonKey(includeToJson: false) required this.id,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      this.archivedAt,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      this.startedAt,
       final Map<String, int> exerciseDaysOrdering = const {},
       this.exercisesCollapsedIncludingIndex = -1,
       required this.name,
@@ -204,8 +221,8 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
       : _exerciseDaysOrdering = exerciseDaysOrdering,
         _exerciseDays = exerciseDays;
 
-  factory _$_TrainingBlock.fromJson(Map<String, dynamic> json) =>
-      _$$_TrainingBlockFromJson(json);
+  factory _$TrainingBlockImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TrainingBlockImplFromJson(json);
 
   @override
   @JsonKey(includeToJson: false)
@@ -265,12 +282,12 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TrainingBlockCopyWith<_$_TrainingBlock> get copyWith =>
-      __$$_TrainingBlockCopyWithImpl<_$_TrainingBlock>(this, _$identity);
+  _$$TrainingBlockImplCopyWith<_$TrainingBlockImpl> get copyWith =>
+      __$$TrainingBlockImplCopyWithImpl<_$TrainingBlockImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TrainingBlockToJson(
+    return _$$TrainingBlockImplToJson(
       this,
     );
   }
@@ -278,19 +295,24 @@ class _$_TrainingBlock with DiagnosticableTreeMixin implements _TrainingBlock {
 
 abstract class _TrainingBlock implements TrainingBlock {
   const factory _TrainingBlock(
-      {@JsonKey(includeToJson: false)
-          required final String id,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          final Timestamp? archivedAt,
-      @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null)
-          final Timestamp? startedAt,
+      {@JsonKey(includeToJson: false) required final String id,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      final Timestamp? archivedAt,
+      @JsonKey(
+          fromJson: timestampFromJson,
+          toJson: timestampToJson,
+          defaultValue: null)
+      final Timestamp? startedAt,
       final Map<String, int> exerciseDaysOrdering,
       final int exercisesCollapsedIncludingIndex,
       required final String name,
-      final List<ExerciseDay> exerciseDays}) = _$_TrainingBlock;
+      final List<ExerciseDay> exerciseDays}) = _$TrainingBlockImpl;
 
   factory _TrainingBlock.fromJson(Map<String, dynamic> json) =
-      _$_TrainingBlock.fromJson;
+      _$TrainingBlockImpl.fromJson;
 
   @override
   @JsonKey(includeToJson: false)
@@ -313,6 +335,6 @@ abstract class _TrainingBlock implements TrainingBlock {
   List<ExerciseDay> get exerciseDays;
   @override
   @JsonKey(ignore: true)
-  _$$_TrainingBlockCopyWith<_$_TrainingBlock> get copyWith =>
+  _$$TrainingBlockImplCopyWith<_$TrainingBlockImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

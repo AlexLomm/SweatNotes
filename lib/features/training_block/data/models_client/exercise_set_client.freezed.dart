@@ -143,11 +143,11 @@ class _$ExerciseSetClientCopyWithImpl<$Res, $Val extends ExerciseSetClient>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseSetClientCopyWith<$Res>
+abstract class _$$ExerciseSetClientImplCopyWith<$Res>
     implements $ExerciseSetClientCopyWith<$Res> {
-  factory _$$_ExerciseSetClientCopyWith(_$_ExerciseSetClient value,
-          $Res Function(_$_ExerciseSetClient) then) =
-      __$$_ExerciseSetClientCopyWithImpl<$Res>;
+  factory _$$ExerciseSetClientImplCopyWith(_$ExerciseSetClientImpl value,
+          $Res Function(_$ExerciseSetClientImpl) then) =
+      __$$ExerciseSetClientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -168,11 +168,11 @@ abstract class _$$_ExerciseSetClientCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExerciseSetClientCopyWithImpl<$Res>
-    extends _$ExerciseSetClientCopyWithImpl<$Res, _$_ExerciseSetClient>
-    implements _$$_ExerciseSetClientCopyWith<$Res> {
-  __$$_ExerciseSetClientCopyWithImpl(
-      _$_ExerciseSetClient _value, $Res Function(_$_ExerciseSetClient) _then)
+class __$$ExerciseSetClientImplCopyWithImpl<$Res>
+    extends _$ExerciseSetClientCopyWithImpl<$Res, _$ExerciseSetClientImpl>
+    implements _$$ExerciseSetClientImplCopyWith<$Res> {
+  __$$ExerciseSetClientImplCopyWithImpl(_$ExerciseSetClientImpl _value,
+      $Res Function(_$ExerciseSetClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -188,7 +188,7 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
     Object? predictedReps = null,
     Object? predictedLoad = null,
   }) {
-    return _then(_$_ExerciseSetClient(
+    return _then(_$ExerciseSetClientImpl(
       dbModel: freezed == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
@@ -231,9 +231,9 @@ class __$$_ExerciseSetClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExerciseSetClient extends _ExerciseSetClient
+class _$ExerciseSetClientImpl extends _ExerciseSetClient
     with DiagnosticableTreeMixin {
-  _$_ExerciseSetClient(
+  _$ExerciseSetClientImpl(
       {required this.dbModel,
       required this.previousPersonalRecord,
       this.progressFactor,
@@ -291,8 +291,8 @@ class _$_ExerciseSetClient extends _ExerciseSetClient
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseSetClientCopyWith<_$_ExerciseSetClient> get copyWith =>
-      __$$_ExerciseSetClientCopyWithImpl<_$_ExerciseSetClient>(
+  _$$ExerciseSetClientImplCopyWith<_$ExerciseSetClientImpl> get copyWith =>
+      __$$ExerciseSetClientImplCopyWithImpl<_$ExerciseSetClientImpl>(
           this, _$identity);
 }
 
@@ -306,7 +306,7 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
       required final double load,
       required final bool isFiller,
       final int predictedReps,
-      final double predictedLoad}) = _$_ExerciseSetClient;
+      final double predictedLoad}) = _$ExerciseSetClientImpl;
   _ExerciseSetClient._() : super._();
 
   @override
@@ -329,6 +329,6 @@ abstract class _ExerciseSetClient extends ExerciseSetClient {
   double get predictedLoad;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseSetClientCopyWith<_$_ExerciseSetClient> get copyWith =>
+  _$$ExerciseSetClientImplCopyWith<_$ExerciseSetClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

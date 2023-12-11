@@ -68,22 +68,22 @@ class _$ExerciseSetCopyWithImpl<$Res, $Val extends ExerciseSet>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseSetCopyWith<$Res>
+abstract class _$$ExerciseSetImplCopyWith<$Res>
     implements $ExerciseSetCopyWith<$Res> {
-  factory _$$_ExerciseSetCopyWith(
-          _$_ExerciseSet value, $Res Function(_$_ExerciseSet) then) =
-      __$$_ExerciseSetCopyWithImpl<$Res>;
+  factory _$$ExerciseSetImplCopyWith(
+          _$ExerciseSetImpl value, $Res Function(_$ExerciseSetImpl) then) =
+      __$$ExerciseSetImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({double load, int reps});
 }
 
 /// @nodoc
-class __$$_ExerciseSetCopyWithImpl<$Res>
-    extends _$ExerciseSetCopyWithImpl<$Res, _$_ExerciseSet>
-    implements _$$_ExerciseSetCopyWith<$Res> {
-  __$$_ExerciseSetCopyWithImpl(
-      _$_ExerciseSet _value, $Res Function(_$_ExerciseSet) _then)
+class __$$ExerciseSetImplCopyWithImpl<$Res>
+    extends _$ExerciseSetCopyWithImpl<$Res, _$ExerciseSetImpl>
+    implements _$$ExerciseSetImplCopyWith<$Res> {
+  __$$ExerciseSetImplCopyWithImpl(
+      _$ExerciseSetImpl _value, $Res Function(_$ExerciseSetImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_ExerciseSetCopyWithImpl<$Res>
     Object? load = null,
     Object? reps = null,
   }) {
-    return _then(_$_ExerciseSet(
+    return _then(_$ExerciseSetImpl(
       load: null == load
           ? _value.load
           : load // ignore: cast_nullable_to_non_nullable
@@ -107,11 +107,11 @@ class __$$_ExerciseSetCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
-  const _$_ExerciseSet({this.load = 0.0, this.reps = 0});
+class _$ExerciseSetImpl with DiagnosticableTreeMixin implements _ExerciseSet {
+  const _$ExerciseSetImpl({this.load = 0.0, this.reps = 0});
 
-  factory _$_ExerciseSet.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseSetFromJson(json);
+  factory _$ExerciseSetImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExerciseSetImplFromJson(json);
 
   @override
   @JsonKey()
@@ -137,12 +137,12 @@ class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseSetCopyWith<_$_ExerciseSet> get copyWith =>
-      __$$_ExerciseSetCopyWithImpl<_$_ExerciseSet>(this, _$identity);
+  _$$ExerciseSetImplCopyWith<_$ExerciseSetImpl> get copyWith =>
+      __$$ExerciseSetImplCopyWithImpl<_$ExerciseSetImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExerciseSetToJson(
+    return _$$ExerciseSetImplToJson(
       this,
     );
   }
@@ -150,10 +150,10 @@ class _$_ExerciseSet with DiagnosticableTreeMixin implements _ExerciseSet {
 
 abstract class _ExerciseSet implements ExerciseSet {
   const factory _ExerciseSet({final double load, final int reps}) =
-      _$_ExerciseSet;
+      _$ExerciseSetImpl;
 
   factory _ExerciseSet.fromJson(Map<String, dynamic> json) =
-      _$_ExerciseSet.fromJson;
+      _$ExerciseSetImpl.fromJson;
 
   @override
   double get load;
@@ -161,6 +161,6 @@ abstract class _ExerciseSet implements ExerciseSet {
   int get reps;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseSetCopyWith<_$_ExerciseSet> get copyWith =>
+  _$$ExerciseSetImplCopyWith<_$ExerciseSetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

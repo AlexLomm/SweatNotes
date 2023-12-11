@@ -6,7 +6,7 @@ part of 'router.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'fc33bb2d9163d5309717ebb2412a6e54bc22f38c';
+String _$goRouterHash() => r'52f0249290cee1243bd59e6cca499bf849fc23b3';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)
@@ -37,4 +37,5 @@ final routeObserverProvider =
 
 typedef RouteObserverRef
     = AutoDisposeProviderRef<RouteObserver<ModalRoute<void>>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

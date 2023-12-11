@@ -103,11 +103,11 @@ class _$ExerciseTypeClientCopyWithImpl<$Res, $Val extends ExerciseTypeClient>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseTypeClientCopyWith<$Res>
+abstract class _$$ExerciseTypeClientImplCopyWith<$Res>
     implements $ExerciseTypeClientCopyWith<$Res> {
-  factory _$$_ExerciseTypeClientCopyWith(_$_ExerciseTypeClient value,
-          $Res Function(_$_ExerciseTypeClient) then) =
-      __$$_ExerciseTypeClientCopyWithImpl<$Res>;
+  factory _$$ExerciseTypeClientImplCopyWith(_$ExerciseTypeClientImpl value,
+          $Res Function(_$ExerciseTypeClientImpl) then) =
+      __$$ExerciseTypeClientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -123,11 +123,11 @@ abstract class _$$_ExerciseTypeClientCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExerciseTypeClientCopyWithImpl<$Res>
-    extends _$ExerciseTypeClientCopyWithImpl<$Res, _$_ExerciseTypeClient>
-    implements _$$_ExerciseTypeClientCopyWith<$Res> {
-  __$$_ExerciseTypeClientCopyWithImpl(
-      _$_ExerciseTypeClient _value, $Res Function(_$_ExerciseTypeClient) _then)
+class __$$ExerciseTypeClientImplCopyWithImpl<$Res>
+    extends _$ExerciseTypeClientCopyWithImpl<$Res, _$ExerciseTypeClientImpl>
+    implements _$$ExerciseTypeClientImplCopyWith<$Res> {
+  __$$ExerciseTypeClientImplCopyWithImpl(_$ExerciseTypeClientImpl _value,
+      $Res Function(_$ExerciseTypeClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -140,7 +140,7 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
     Object? notes = null,
     Object? exercises = null,
   }) {
-    return _then(_$_ExerciseTypeClient(
+    return _then(_$ExerciseTypeClientImpl(
       dbModel: null == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
@@ -171,9 +171,9 @@ class __$$_ExerciseTypeClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExerciseTypeClient extends _ExerciseTypeClient
+class _$ExerciseTypeClientImpl extends _ExerciseTypeClient
     with DiagnosticableTreeMixin {
-  const _$_ExerciseTypeClient(
+  const _$ExerciseTypeClientImpl(
       {required this.dbModel,
       this.archivedAt,
       required this.name,
@@ -222,19 +222,20 @@ class _$_ExerciseTypeClient extends _ExerciseTypeClient
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseTypeClientCopyWith<_$_ExerciseTypeClient> get copyWith =>
-      __$$_ExerciseTypeClientCopyWithImpl<_$_ExerciseTypeClient>(
+  _$$ExerciseTypeClientImplCopyWith<_$ExerciseTypeClientImpl> get copyWith =>
+      __$$ExerciseTypeClientImplCopyWithImpl<_$ExerciseTypeClientImpl>(
           this, _$identity);
 }
 
 abstract class _ExerciseTypeClient extends ExerciseTypeClient {
   const factory _ExerciseTypeClient(
-      {required final ExerciseType dbModel,
-      final Timestamp? archivedAt,
-      required final String name,
-      required final String unit,
-      required final String notes,
-      required final List<ExerciseClient> exercises}) = _$_ExerciseTypeClient;
+          {required final ExerciseType dbModel,
+          final Timestamp? archivedAt,
+          required final String name,
+          required final String unit,
+          required final String notes,
+          required final List<ExerciseClient> exercises}) =
+      _$ExerciseTypeClientImpl;
   const _ExerciseTypeClient._() : super._();
 
   @override
@@ -251,6 +252,6 @@ abstract class _ExerciseTypeClient extends ExerciseTypeClient {
   List<ExerciseClient> get exercises;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseTypeClientCopyWith<_$_ExerciseTypeClient> get copyWith =>
+  _$$ExerciseTypeClientImplCopyWith<_$ExerciseTypeClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -7,7 +7,7 @@ part of 'training_block_details_stream.dart';
 // **************************************************************************
 
 String _$trainingBlockDetailsStreamHash() =>
-    r'29767176b688d4bfb182a71c5c039e68fa94188a';
+    r'522c31ff4b82a5a5d6d61985f63efeb82ae85aea';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,9 +30,6 @@ class _SystemHash {
   }
 }
 
-typedef TrainingBlockDetailsStreamRef
-    = AutoDisposeStreamProviderRef<TrainingBlockClient?>;
-
 /// See also [trainingBlockDetailsStream].
 @ProviderFor(trainingBlockDetailsStream)
 const trainingBlockDetailsStreamProvider = TrainingBlockDetailsStreamFamily();
@@ -45,10 +42,12 @@ class TrainingBlockDetailsStreamFamily
 
   /// See also [trainingBlockDetailsStream].
   TrainingBlockDetailsStreamProvider call(
-    String trainingBlockId,
-  ) {
+    String trainingBlockId, {
+    required bool includeArchived,
+  }) {
     return TrainingBlockDetailsStreamProvider(
       trainingBlockId,
+      includeArchived: includeArchived,
     );
   }
 
@@ -58,6 +57,7 @@ class TrainingBlockDetailsStreamFamily
   ) {
     return call(
       provider.trainingBlockId,
+      includeArchived: provider.includeArchived,
     );
   }
 
@@ -81,11 +81,13 @@ class TrainingBlockDetailsStreamProvider
     extends AutoDisposeStreamProvider<TrainingBlockClient?> {
   /// See also [trainingBlockDetailsStream].
   TrainingBlockDetailsStreamProvider(
-    this.trainingBlockId,
-  ) : super.internal(
+    String trainingBlockId, {
+    required bool includeArchived,
+  }) : this._internal(
           (ref) => trainingBlockDetailsStream(
-            ref,
+            ref as TrainingBlockDetailsStreamRef,
             trainingBlockId,
+            includeArchived: includeArchived,
           ),
           from: trainingBlockDetailsStreamProvider,
           name: r'trainingBlockDetailsStreamProvider',
@@ -96,22 +98,87 @@ class TrainingBlockDetailsStreamProvider
           dependencies: TrainingBlockDetailsStreamFamily._dependencies,
           allTransitiveDependencies:
               TrainingBlockDetailsStreamFamily._allTransitiveDependencies,
+          trainingBlockId: trainingBlockId,
+          includeArchived: includeArchived,
         );
 
+  TrainingBlockDetailsStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.trainingBlockId,
+    required this.includeArchived,
+  }) : super.internal();
+
   final String trainingBlockId;
+  final bool includeArchived;
+
+  @override
+  Override overrideWith(
+    Stream<TrainingBlockClient?> Function(
+            TrainingBlockDetailsStreamRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TrainingBlockDetailsStreamProvider._internal(
+        (ref) => create(ref as TrainingBlockDetailsStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        trainingBlockId: trainingBlockId,
+        includeArchived: includeArchived,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<TrainingBlockClient?> createElement() {
+    return _TrainingBlockDetailsStreamProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
     return other is TrainingBlockDetailsStreamProvider &&
-        other.trainingBlockId == trainingBlockId;
+        other.trainingBlockId == trainingBlockId &&
+        other.includeArchived == includeArchived;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, trainingBlockId.hashCode);
+    hash = _SystemHash.combine(hash, includeArchived.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+mixin TrainingBlockDetailsStreamRef
+    on AutoDisposeStreamProviderRef<TrainingBlockClient?> {
+  /// The parameter `trainingBlockId` of this provider.
+  String get trainingBlockId;
+
+  /// The parameter `includeArchived` of this provider.
+  bool get includeArchived;
+}
+
+class _TrainingBlockDetailsStreamProviderElement
+    extends AutoDisposeStreamProviderElement<TrainingBlockClient?>
+    with TrainingBlockDetailsStreamRef {
+  _TrainingBlockDetailsStreamProviderElement(super.provider);
+
+  @override
+  String get trainingBlockId =>
+      (origin as TrainingBlockDetailsStreamProvider).trainingBlockId;
+  @override
+  bool get includeArchived =>
+      (origin as TrainingBlockDetailsStreamProvider).includeArchived;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

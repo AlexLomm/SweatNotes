@@ -93,11 +93,11 @@ class _$ExerciseClientCopyWithImpl<$Res, $Val extends ExerciseClient>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseClientCopyWith<$Res>
+abstract class _$$ExerciseClientImplCopyWith<$Res>
     implements $ExerciseClientCopyWith<$Res> {
-  factory _$$_ExerciseClientCopyWith(
-          _$_ExerciseClient value, $Res Function(_$_ExerciseClient) then) =
-      __$$_ExerciseClientCopyWithImpl<$Res>;
+  factory _$$ExerciseClientImplCopyWith(_$ExerciseClientImpl value,
+          $Res Function(_$ExerciseClientImpl) then) =
+      __$$ExerciseClientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -111,11 +111,11 @@ abstract class _$$_ExerciseClientCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExerciseClientCopyWithImpl<$Res>
-    extends _$ExerciseClientCopyWithImpl<$Res, _$_ExerciseClient>
-    implements _$$_ExerciseClientCopyWith<$Res> {
-  __$$_ExerciseClientCopyWithImpl(
-      _$_ExerciseClient _value, $Res Function(_$_ExerciseClient) _then)
+class __$$ExerciseClientImplCopyWithImpl<$Res>
+    extends _$ExerciseClientCopyWithImpl<$Res, _$ExerciseClientImpl>
+    implements _$$ExerciseClientImplCopyWith<$Res> {
+  __$$ExerciseClientImplCopyWithImpl(
+      _$ExerciseClientImpl _value, $Res Function(_$ExerciseClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -126,7 +126,7 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
     Object? reactionScore = freezed,
     Object? sets = null,
   }) {
-    return _then(_$_ExerciseClient(
+    return _then(_$ExerciseClientImpl(
       dbModel: freezed == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
@@ -149,8 +149,9 @@ class __$$_ExerciseClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
-  const _$_ExerciseClient(
+class _$ExerciseClientImpl extends _ExerciseClient
+    with DiagnosticableTreeMixin {
+  const _$ExerciseClientImpl(
       {this.dbModel,
       required this.isFiller,
       required this.reactionScore,
@@ -185,8 +186,9 @@ class _$_ExerciseClient extends _ExerciseClient with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseClientCopyWith<_$_ExerciseClient> get copyWith =>
-      __$$_ExerciseClientCopyWithImpl<_$_ExerciseClient>(this, _$identity);
+  _$$ExerciseClientImplCopyWith<_$ExerciseClientImpl> get copyWith =>
+      __$$ExerciseClientImplCopyWithImpl<_$ExerciseClientImpl>(
+          this, _$identity);
 }
 
 abstract class _ExerciseClient extends ExerciseClient {
@@ -194,7 +196,7 @@ abstract class _ExerciseClient extends ExerciseClient {
       {final Exercise? dbModel,
       required final bool isFiller,
       required final int? reactionScore,
-      required final List<ExerciseSetClient> sets}) = _$_ExerciseClient;
+      required final List<ExerciseSetClient> sets}) = _$ExerciseClientImpl;
   const _ExerciseClient._() : super._();
 
   @override
@@ -207,6 +209,6 @@ abstract class _ExerciseClient extends ExerciseClient {
   List<ExerciseSetClient> get sets;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseClientCopyWith<_$_ExerciseClient> get copyWith =>
+  _$$ExerciseClientImplCopyWith<_$ExerciseClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

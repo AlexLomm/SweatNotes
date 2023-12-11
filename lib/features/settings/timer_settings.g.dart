@@ -6,15 +6,15 @@ part of 'timer_settings.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TimerSettingsState _$$_TimerSettingsStateFromJson(
+_$TimerSettingsStateImpl _$$TimerSettingsStateImplFromJson(
         Map<String, dynamic> json) =>
-    _$_TimerSettingsState(
+    _$TimerSettingsStateImpl(
       initialSeconds: json['initialSeconds'] as int? ?? 60,
       isMuted: json['isMuted'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$_TimerSettingsStateToJson(
-        _$_TimerSettingsState instance) =>
+Map<String, dynamic> _$$TimerSettingsStateImplToJson(
+        _$TimerSettingsStateImpl instance) =>
     <String, dynamic>{
       'initialSeconds': instance.initialSeconds,
       'isMuted': instance.isMuted,
@@ -40,4 +40,5 @@ final timerSettingsProvider =
 );
 
 typedef _$TimerSettings = AutoDisposeNotifier<TimerSettingsState>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

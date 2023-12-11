@@ -37,8 +37,9 @@ abstract class $ExerciseCopyWith<$Res> {
       _$ExerciseCopyWithImpl<$Res, Exercise>;
   @useResult
   $Res call(
-      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
-          int? reactionScore,
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+          'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+      int? reactionScore,
       List<ExerciseSet> sets});
 }
 
@@ -72,24 +73,26 @@ class _$ExerciseCopyWithImpl<$Res, $Val extends Exercise>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseCopyWith<$Res> implements $ExerciseCopyWith<$Res> {
-  factory _$$_ExerciseCopyWith(
-          _$_Exercise value, $Res Function(_$_Exercise) then) =
-      __$$_ExerciseCopyWithImpl<$Res>;
+abstract class _$$ExerciseImplCopyWith<$Res>
+    implements $ExerciseCopyWith<$Res> {
+  factory _$$ExerciseImplCopyWith(
+          _$ExerciseImpl value, $Res Function(_$ExerciseImpl) then) =
+      __$$ExerciseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
-          int? reactionScore,
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+          'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+      int? reactionScore,
       List<ExerciseSet> sets});
 }
 
 /// @nodoc
-class __$$_ExerciseCopyWithImpl<$Res>
-    extends _$ExerciseCopyWithImpl<$Res, _$_Exercise>
-    implements _$$_ExerciseCopyWith<$Res> {
-  __$$_ExerciseCopyWithImpl(
-      _$_Exercise _value, $Res Function(_$_Exercise) _then)
+class __$$ExerciseImplCopyWithImpl<$Res>
+    extends _$ExerciseCopyWithImpl<$Res, _$ExerciseImpl>
+    implements _$$ExerciseImplCopyWith<$Res> {
+  __$$ExerciseImplCopyWithImpl(
+      _$ExerciseImpl _value, $Res Function(_$ExerciseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -98,7 +101,7 @@ class __$$_ExerciseCopyWithImpl<$Res>
     Object? reactionScore = freezed,
     Object? sets = null,
   }) {
-    return _then(_$_Exercise(
+    return _then(_$ExerciseImpl(
       reactionScore: freezed == reactionScore
           ? _value.reactionScore
           : reactionScore // ignore: cast_nullable_to_non_nullable
@@ -113,16 +116,17 @@ class __$$_ExerciseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
-  const _$_Exercise(
-      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
-          this.reactionScore,
+class _$ExerciseImpl extends _Exercise with DiagnosticableTreeMixin {
+  const _$ExerciseImpl(
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+          'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+      this.reactionScore,
       final List<ExerciseSet> sets = const []})
       : _sets = sets,
         super._();
 
-  factory _$_Exercise.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseFromJson(json);
+  factory _$ExerciseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExerciseImplFromJson(json);
 
   @override
   @Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
@@ -154,12 +158,12 @@ class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseCopyWith<_$_Exercise> get copyWith =>
-      __$$_ExerciseCopyWithImpl<_$_Exercise>(this, _$identity);
+  _$$ExerciseImplCopyWith<_$ExerciseImpl> get copyWith =>
+      __$$ExerciseImplCopyWithImpl<_$ExerciseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExerciseToJson(
+    return _$$ExerciseImplToJson(
       this,
     );
   }
@@ -167,12 +171,14 @@ class _$_Exercise extends _Exercise with DiagnosticableTreeMixin {
 
 abstract class _Exercise extends Exercise {
   const factory _Exercise(
-      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)', 'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
-          final int? reactionScore,
-      final List<ExerciseSet> sets}) = _$_Exercise;
+      {@Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
+          'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)')
+      final int? reactionScore,
+      final List<ExerciseSet> sets}) = _$ExerciseImpl;
   const _Exercise._() : super._();
 
-  factory _Exercise.fromJson(Map<String, dynamic> json) = _$_Exercise.fromJson;
+  factory _Exercise.fromJson(Map<String, dynamic> json) =
+      _$ExerciseImpl.fromJson;
 
   @override
   @Assert('reactionScore == null || [-5, 0, 5].contains(reactionScore)',
@@ -182,6 +188,6 @@ abstract class _Exercise extends Exercise {
   List<ExerciseSet> get sets;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseCopyWith<_$_Exercise> get copyWith =>
+  _$$ExerciseImplCopyWith<_$ExerciseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

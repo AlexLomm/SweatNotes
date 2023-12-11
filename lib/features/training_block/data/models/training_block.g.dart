@@ -6,8 +6,8 @@ part of 'training_block.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
-    _$_TrainingBlock(
+_$TrainingBlockImpl _$$TrainingBlockImplFromJson(Map<String, dynamic> json) =>
+    _$TrainingBlockImpl(
       id: json['id'] as String,
       archivedAt: timestampFromJson(json['archivedAt'] as int?),
       startedAt: timestampFromJson(json['startedAt'] as int?),
@@ -25,7 +25,7 @@ _$_TrainingBlock _$$_TrainingBlockFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$_TrainingBlockToJson(_$_TrainingBlock instance) =>
+Map<String, dynamic> _$$TrainingBlockImplToJson(_$TrainingBlockImpl instance) =>
     <String, dynamic>{
       'archivedAt': timestampToJson(instance.archivedAt),
       'startedAt': timestampToJson(instance.startedAt),

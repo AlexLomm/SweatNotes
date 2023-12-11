@@ -45,10 +45,11 @@ abstract class $ExerciseDayCopyWith<$Res> {
   $Res call(
       {String pseudoId,
       String name,
-      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
-          int? weekDay,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+          'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+      int? weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          Timestamp? archivedAt,
+      Timestamp? archivedAt,
       Map<String, int> exerciseTypesOrdering});
 }
 
@@ -97,29 +98,30 @@ class _$ExerciseDayCopyWithImpl<$Res, $Val extends ExerciseDay>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseDayCopyWith<$Res>
+abstract class _$$ExerciseDayImplCopyWith<$Res>
     implements $ExerciseDayCopyWith<$Res> {
-  factory _$$_ExerciseDayCopyWith(
-          _$_ExerciseDay value, $Res Function(_$_ExerciseDay) then) =
-      __$$_ExerciseDayCopyWithImpl<$Res>;
+  factory _$$ExerciseDayImplCopyWith(
+          _$ExerciseDayImpl value, $Res Function(_$ExerciseDayImpl) then) =
+      __$$ExerciseDayImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String pseudoId,
       String name,
-      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
-          int? weekDay,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+          'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+      int? weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          Timestamp? archivedAt,
+      Timestamp? archivedAt,
       Map<String, int> exerciseTypesOrdering});
 }
 
 /// @nodoc
-class __$$_ExerciseDayCopyWithImpl<$Res>
-    extends _$ExerciseDayCopyWithImpl<$Res, _$_ExerciseDay>
-    implements _$$_ExerciseDayCopyWith<$Res> {
-  __$$_ExerciseDayCopyWithImpl(
-      _$_ExerciseDay _value, $Res Function(_$_ExerciseDay) _then)
+class __$$ExerciseDayImplCopyWithImpl<$Res>
+    extends _$ExerciseDayCopyWithImpl<$Res, _$ExerciseDayImpl>
+    implements _$$ExerciseDayImplCopyWith<$Res> {
+  __$$ExerciseDayImplCopyWithImpl(
+      _$ExerciseDayImpl _value, $Res Function(_$ExerciseDayImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -131,7 +133,7 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
     Object? archivedAt = freezed,
     Object? exerciseTypesOrdering = null,
   }) {
-    return _then(_$_ExerciseDay(
+    return _then(_$ExerciseDayImpl(
       pseudoId: null == pseudoId
           ? _value.pseudoId
           : pseudoId // ignore: cast_nullable_to_non_nullable
@@ -158,20 +160,21 @@ class __$$_ExerciseDayCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
-  const _$_ExerciseDay(
+class _$ExerciseDayImpl extends _ExerciseDay with DiagnosticableTreeMixin {
+  const _$ExerciseDayImpl(
       {required this.pseudoId,
       required this.name,
-      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
-          required this.weekDay,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+          'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+      required this.weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          this.archivedAt,
+      this.archivedAt,
       final Map<String, int> exerciseTypesOrdering = const {}})
       : _exerciseTypesOrdering = exerciseTypesOrdering,
         super._();
 
-  factory _$_ExerciseDay.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseDayFromJson(json);
+  factory _$ExerciseDayImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExerciseDayImplFromJson(json);
 
   @override
   final String pseudoId;
@@ -215,12 +218,12 @@ class _$_ExerciseDay extends _ExerciseDay with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseDayCopyWith<_$_ExerciseDay> get copyWith =>
-      __$$_ExerciseDayCopyWithImpl<_$_ExerciseDay>(this, _$identity);
+  _$$ExerciseDayImplCopyWith<_$ExerciseDayImpl> get copyWith =>
+      __$$ExerciseDayImplCopyWithImpl<_$ExerciseDayImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExerciseDayToJson(
+    return _$$ExerciseDayImplToJson(
       this,
     );
   }
@@ -230,15 +233,16 @@ abstract class _ExerciseDay extends ExerciseDay {
   const factory _ExerciseDay(
       {required final String pseudoId,
       required final String name,
-      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)', 'weekDay must either be `null` or a valid DateTime.<weekDay> day')
-          required final int? weekDay,
+      @Assert('weekDay == null || [1, 2, 3, 4, 5, 6, 7].contains(weekDay)',
+          'weekDay must either be `null` or a valid DateTime.<weekDay> day')
+      required final int? weekDay,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          final Timestamp? archivedAt,
-      final Map<String, int> exerciseTypesOrdering}) = _$_ExerciseDay;
+      final Timestamp? archivedAt,
+      final Map<String, int> exerciseTypesOrdering}) = _$ExerciseDayImpl;
   const _ExerciseDay._() : super._();
 
   factory _ExerciseDay.fromJson(Map<String, dynamic> json) =
-      _$_ExerciseDay.fromJson;
+      _$ExerciseDayImpl.fromJson;
 
   @override
   String get pseudoId;
@@ -255,6 +259,6 @@ abstract class _ExerciseDay extends ExerciseDay {
   Map<String, int> get exerciseTypesOrdering;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseDayCopyWith<_$_ExerciseDay> get copyWith =>
+  _$$ExerciseDayImplCopyWith<_$ExerciseDayImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

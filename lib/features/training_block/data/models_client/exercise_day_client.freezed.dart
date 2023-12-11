@@ -97,11 +97,11 @@ class _$ExerciseDayClientCopyWithImpl<$Res, $Val extends ExerciseDayClient>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseDayClientCopyWith<$Res>
+abstract class _$$ExerciseDayClientImplCopyWith<$Res>
     implements $ExerciseDayClientCopyWith<$Res> {
-  factory _$$_ExerciseDayClientCopyWith(_$_ExerciseDayClient value,
-          $Res Function(_$_ExerciseDayClient) then) =
-      __$$_ExerciseDayClientCopyWithImpl<$Res>;
+  factory _$$ExerciseDayClientImplCopyWith(_$ExerciseDayClientImpl value,
+          $Res Function(_$ExerciseDayClientImpl) then) =
+      __$$ExerciseDayClientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -116,11 +116,11 @@ abstract class _$$_ExerciseDayClientCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExerciseDayClientCopyWithImpl<$Res>
-    extends _$ExerciseDayClientCopyWithImpl<$Res, _$_ExerciseDayClient>
-    implements _$$_ExerciseDayClientCopyWith<$Res> {
-  __$$_ExerciseDayClientCopyWithImpl(
-      _$_ExerciseDayClient _value, $Res Function(_$_ExerciseDayClient) _then)
+class __$$ExerciseDayClientImplCopyWithImpl<$Res>
+    extends _$ExerciseDayClientCopyWithImpl<$Res, _$ExerciseDayClientImpl>
+    implements _$$ExerciseDayClientImplCopyWith<$Res> {
+  __$$ExerciseDayClientImplCopyWithImpl(_$ExerciseDayClientImpl _value,
+      $Res Function(_$ExerciseDayClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -132,7 +132,7 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
     Object? name = null,
     Object? exerciseTypes = null,
   }) {
-    return _then(_$_ExerciseDayClient(
+    return _then(_$ExerciseDayClientImpl(
       dbModel: null == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
@@ -159,9 +159,9 @@ class __$$_ExerciseDayClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExerciseDayClient extends _ExerciseDayClient
+class _$ExerciseDayClientImpl extends _ExerciseDayClient
     with DiagnosticableTreeMixin {
-  const _$_ExerciseDayClient(
+  const _$ExerciseDayClientImpl(
       {required this.dbModel,
       required final List<DateTime> dates,
       this.archivedAt,
@@ -213,8 +213,8 @@ class _$_ExerciseDayClient extends _ExerciseDayClient
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseDayClientCopyWith<_$_ExerciseDayClient> get copyWith =>
-      __$$_ExerciseDayClientCopyWithImpl<_$_ExerciseDayClient>(
+  _$$ExerciseDayClientImplCopyWith<_$ExerciseDayClientImpl> get copyWith =>
+      __$$ExerciseDayClientImplCopyWithImpl<_$ExerciseDayClientImpl>(
           this, _$identity);
 }
 
@@ -225,7 +225,7 @@ abstract class _ExerciseDayClient extends ExerciseDayClient {
           final Timestamp? archivedAt,
           required final String name,
           required final List<ExerciseTypeClient> exerciseTypes}) =
-      _$_ExerciseDayClient;
+      _$ExerciseDayClientImpl;
   const _ExerciseDayClient._() : super._();
 
   @override
@@ -240,6 +240,6 @@ abstract class _ExerciseDayClient extends ExerciseDayClient {
   List<ExerciseTypeClient> get exerciseTypes;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseDayClientCopyWith<_$_ExerciseDayClient> get copyWith =>
+  _$$ExerciseDayClientImplCopyWith<_$ExerciseDayClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -6,8 +6,8 @@ part of 'exercise_type.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
-    _$_ExerciseType(
+_$ExerciseTypeImpl _$$ExerciseTypeImplFromJson(Map<String, dynamic> json) =>
+    _$ExerciseTypeImpl(
       id: json['id'] as String,
       archivedAt: timestampFromJson(json['archivedAt'] as int?),
       trainingBlockId: json['trainingBlockId'] as String,
@@ -20,7 +20,7 @@ _$_ExerciseType _$$_ExerciseTypeFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$_ExerciseTypeToJson(_$_ExerciseType instance) =>
+Map<String, dynamic> _$$ExerciseTypeImplToJson(_$ExerciseTypeImpl instance) =>
     <String, dynamic>{
       'archivedAt': timestampToJson(instance.archivedAt),
       'trainingBlockId': instance.trainingBlockId,

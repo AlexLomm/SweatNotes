@@ -43,10 +43,9 @@ abstract class $ExerciseTypeCopyWith<$Res> {
       _$ExerciseTypeCopyWithImpl<$Res, ExerciseType>;
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false)
-          String id,
+      {@JsonKey(includeToJson: false) String id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          Timestamp? archivedAt,
+      Timestamp? archivedAt,
       String trainingBlockId,
       String name,
       String unit,
@@ -109,18 +108,17 @@ class _$ExerciseTypeCopyWithImpl<$Res, $Val extends ExerciseType>
 }
 
 /// @nodoc
-abstract class _$$_ExerciseTypeCopyWith<$Res>
+abstract class _$$ExerciseTypeImplCopyWith<$Res>
     implements $ExerciseTypeCopyWith<$Res> {
-  factory _$$_ExerciseTypeCopyWith(
-          _$_ExerciseType value, $Res Function(_$_ExerciseType) then) =
-      __$$_ExerciseTypeCopyWithImpl<$Res>;
+  factory _$$ExerciseTypeImplCopyWith(
+          _$ExerciseTypeImpl value, $Res Function(_$ExerciseTypeImpl) then) =
+      __$$ExerciseTypeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(includeToJson: false)
-          String id,
+      {@JsonKey(includeToJson: false) String id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          Timestamp? archivedAt,
+      Timestamp? archivedAt,
       String trainingBlockId,
       String name,
       String unit,
@@ -129,11 +127,11 @@ abstract class _$$_ExerciseTypeCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ExerciseTypeCopyWithImpl<$Res>
-    extends _$ExerciseTypeCopyWithImpl<$Res, _$_ExerciseType>
-    implements _$$_ExerciseTypeCopyWith<$Res> {
-  __$$_ExerciseTypeCopyWithImpl(
-      _$_ExerciseType _value, $Res Function(_$_ExerciseType) _then)
+class __$$ExerciseTypeImplCopyWithImpl<$Res>
+    extends _$ExerciseTypeCopyWithImpl<$Res, _$ExerciseTypeImpl>
+    implements _$$ExerciseTypeImplCopyWith<$Res> {
+  __$$ExerciseTypeImplCopyWithImpl(
+      _$ExerciseTypeImpl _value, $Res Function(_$ExerciseTypeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -147,7 +145,7 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
     Object? notes = null,
     Object? exercises = null,
   }) {
-    return _then(_$_ExerciseType(
+    return _then(_$ExerciseTypeImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -182,12 +180,11 @@ class __$$_ExerciseTypeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
-  const _$_ExerciseType(
-      {@JsonKey(includeToJson: false)
-          required this.id,
+class _$ExerciseTypeImpl with DiagnosticableTreeMixin implements _ExerciseType {
+  const _$ExerciseTypeImpl(
+      {@JsonKey(includeToJson: false) required this.id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          this.archivedAt,
+      this.archivedAt,
       required this.trainingBlockId,
       required this.name,
       required this.unit,
@@ -195,8 +192,8 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
       final List<Exercise> exercises = const []})
       : _exercises = exercises;
 
-  factory _$_ExerciseType.fromJson(Map<String, dynamic> json) =>
-      _$$_ExerciseTypeFromJson(json);
+  factory _$ExerciseTypeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExerciseTypeImplFromJson(json);
 
   @override
   @JsonKey(includeToJson: false)
@@ -243,12 +240,12 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExerciseTypeCopyWith<_$_ExerciseType> get copyWith =>
-      __$$_ExerciseTypeCopyWithImpl<_$_ExerciseType>(this, _$identity);
+  _$$ExerciseTypeImplCopyWith<_$ExerciseTypeImpl> get copyWith =>
+      __$$ExerciseTypeImplCopyWithImpl<_$ExerciseTypeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExerciseTypeToJson(
+    return _$$ExerciseTypeImplToJson(
       this,
     );
   }
@@ -256,18 +253,17 @@ class _$_ExerciseType with DiagnosticableTreeMixin implements _ExerciseType {
 
 abstract class _ExerciseType implements ExerciseType {
   const factory _ExerciseType(
-      {@JsonKey(includeToJson: false)
-          required final String id,
+      {@JsonKey(includeToJson: false) required final String id,
       @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
-          final Timestamp? archivedAt,
+      final Timestamp? archivedAt,
       required final String trainingBlockId,
       required final String name,
       required final String unit,
       required final String notes,
-      final List<Exercise> exercises}) = _$_ExerciseType;
+      final List<Exercise> exercises}) = _$ExerciseTypeImpl;
 
   factory _ExerciseType.fromJson(Map<String, dynamic> json) =
-      _$_ExerciseType.fromJson;
+      _$ExerciseTypeImpl.fromJson;
 
   @override
   @JsonKey(includeToJson: false)
@@ -287,6 +283,6 @@ abstract class _ExerciseType implements ExerciseType {
   List<Exercise> get exercises;
   @override
   @JsonKey(ignore: true)
-  _$$_ExerciseTypeCopyWith<_$_ExerciseType> get copyWith =>
+  _$$ExerciseTypeImplCopyWith<_$ExerciseTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

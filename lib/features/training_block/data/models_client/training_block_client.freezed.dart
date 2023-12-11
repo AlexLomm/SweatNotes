@@ -105,11 +105,11 @@ class _$TrainingBlockClientCopyWithImpl<$Res, $Val extends TrainingBlockClient>
 }
 
 /// @nodoc
-abstract class _$$_TrainingBlockClientCopyWith<$Res>
+abstract class _$$TrainingBlockClientImplCopyWith<$Res>
     implements $TrainingBlockClientCopyWith<$Res> {
-  factory _$$_TrainingBlockClientCopyWith(_$_TrainingBlockClient value,
-          $Res Function(_$_TrainingBlockClient) then) =
-      __$$_TrainingBlockClientCopyWithImpl<$Res>;
+  factory _$$TrainingBlockClientImplCopyWith(_$TrainingBlockClientImpl value,
+          $Res Function(_$TrainingBlockClientImpl) then) =
+      __$$TrainingBlockClientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -125,11 +125,11 @@ abstract class _$$_TrainingBlockClientCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_TrainingBlockClientCopyWithImpl<$Res>
-    extends _$TrainingBlockClientCopyWithImpl<$Res, _$_TrainingBlockClient>
-    implements _$$_TrainingBlockClientCopyWith<$Res> {
-  __$$_TrainingBlockClientCopyWithImpl(_$_TrainingBlockClient _value,
-      $Res Function(_$_TrainingBlockClient) _then)
+class __$$TrainingBlockClientImplCopyWithImpl<$Res>
+    extends _$TrainingBlockClientCopyWithImpl<$Res, _$TrainingBlockClientImpl>
+    implements _$$TrainingBlockClientImplCopyWith<$Res> {
+  __$$TrainingBlockClientImplCopyWithImpl(_$TrainingBlockClientImpl _value,
+      $Res Function(_$TrainingBlockClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -142,7 +142,7 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
     Object? exercisesCollapsedIncludingIndex = null,
     Object? exerciseDays = null,
   }) {
-    return _then(_$_TrainingBlockClient(
+    return _then(_$TrainingBlockClientImpl(
       dbModel: null == dbModel
           ? _value.dbModel
           : dbModel // ignore: cast_nullable_to_non_nullable
@@ -173,9 +173,9 @@ class __$$_TrainingBlockClientCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_TrainingBlockClient extends _TrainingBlockClient
+class _$TrainingBlockClientImpl extends _TrainingBlockClient
     with DiagnosticableTreeMixin {
-  const _$_TrainingBlockClient(
+  const _$TrainingBlockClientImpl(
       {required this.dbModel,
       this.archivedAt,
       this.startedAt,
@@ -225,8 +225,8 @@ class _$_TrainingBlockClient extends _TrainingBlockClient
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TrainingBlockClientCopyWith<_$_TrainingBlockClient> get copyWith =>
-      __$$_TrainingBlockClientCopyWithImpl<_$_TrainingBlockClient>(
+  _$$TrainingBlockClientImplCopyWith<_$TrainingBlockClientImpl> get copyWith =>
+      __$$TrainingBlockClientImplCopyWithImpl<_$TrainingBlockClientImpl>(
           this, _$identity);
 }
 
@@ -238,7 +238,7 @@ abstract class _TrainingBlockClient extends TrainingBlockClient {
           required final String name,
           required final int exercisesCollapsedIncludingIndex,
           required final List<ExerciseDayClient> exerciseDays}) =
-      _$_TrainingBlockClient;
+      _$TrainingBlockClientImpl;
   const _TrainingBlockClient._() : super._();
 
   @override
@@ -255,6 +255,6 @@ abstract class _TrainingBlockClient extends TrainingBlockClient {
   List<ExerciseDayClient> get exerciseDays;
   @override
   @JsonKey(ignore: true)
-  _$$_TrainingBlockClientCopyWith<_$_TrainingBlockClient> get copyWith =>
+  _$$TrainingBlockClientImplCopyWith<_$TrainingBlockClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

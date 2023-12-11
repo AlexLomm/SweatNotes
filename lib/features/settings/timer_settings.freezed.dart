@@ -68,22 +68,22 @@ class _$TimerSettingsStateCopyWithImpl<$Res, $Val extends TimerSettingsState>
 }
 
 /// @nodoc
-abstract class _$$_TimerSettingsStateCopyWith<$Res>
+abstract class _$$TimerSettingsStateImplCopyWith<$Res>
     implements $TimerSettingsStateCopyWith<$Res> {
-  factory _$$_TimerSettingsStateCopyWith(_$_TimerSettingsState value,
-          $Res Function(_$_TimerSettingsState) then) =
-      __$$_TimerSettingsStateCopyWithImpl<$Res>;
+  factory _$$TimerSettingsStateImplCopyWith(_$TimerSettingsStateImpl value,
+          $Res Function(_$TimerSettingsStateImpl) then) =
+      __$$TimerSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int initialSeconds, bool isMuted});
 }
 
 /// @nodoc
-class __$$_TimerSettingsStateCopyWithImpl<$Res>
-    extends _$TimerSettingsStateCopyWithImpl<$Res, _$_TimerSettingsState>
-    implements _$$_TimerSettingsStateCopyWith<$Res> {
-  __$$_TimerSettingsStateCopyWithImpl(
-      _$_TimerSettingsState _value, $Res Function(_$_TimerSettingsState) _then)
+class __$$TimerSettingsStateImplCopyWithImpl<$Res>
+    extends _$TimerSettingsStateCopyWithImpl<$Res, _$TimerSettingsStateImpl>
+    implements _$$TimerSettingsStateImplCopyWith<$Res> {
+  __$$TimerSettingsStateImplCopyWithImpl(_$TimerSettingsStateImpl _value,
+      $Res Function(_$TimerSettingsStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_TimerSettingsStateCopyWithImpl<$Res>
     Object? initialSeconds = null,
     Object? isMuted = null,
   }) {
-    return _then(_$_TimerSettingsState(
+    return _then(_$TimerSettingsStateImpl(
       initialSeconds: null == initialSeconds
           ? _value.initialSeconds
           : initialSeconds // ignore: cast_nullable_to_non_nullable
@@ -107,13 +107,13 @@ class __$$_TimerSettingsStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TimerSettingsState
+class _$TimerSettingsStateImpl
     with DiagnosticableTreeMixin
     implements _TimerSettingsState {
-  _$_TimerSettingsState({this.initialSeconds = 60, this.isMuted = false});
+  _$TimerSettingsStateImpl({this.initialSeconds = 60, this.isMuted = false});
 
-  factory _$_TimerSettingsState.fromJson(Map<String, dynamic> json) =>
-      _$$_TimerSettingsStateFromJson(json);
+  factory _$TimerSettingsStateImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TimerSettingsStateImplFromJson(json);
 
   @override
   @JsonKey()
@@ -140,7 +140,7 @@ class _$_TimerSettingsState
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TimerSettingsState &&
+            other is _$TimerSettingsStateImpl &&
             (identical(other.initialSeconds, initialSeconds) ||
                 other.initialSeconds == initialSeconds) &&
             (identical(other.isMuted, isMuted) || other.isMuted == isMuted));
@@ -153,13 +153,13 @@ class _$_TimerSettingsState
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TimerSettingsStateCopyWith<_$_TimerSettingsState> get copyWith =>
-      __$$_TimerSettingsStateCopyWithImpl<_$_TimerSettingsState>(
+  _$$TimerSettingsStateImplCopyWith<_$TimerSettingsStateImpl> get copyWith =>
+      __$$TimerSettingsStateImplCopyWithImpl<_$TimerSettingsStateImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TimerSettingsStateToJson(
+    return _$$TimerSettingsStateImplToJson(
       this,
     );
   }
@@ -167,10 +167,10 @@ class _$_TimerSettingsState
 
 abstract class _TimerSettingsState implements TimerSettingsState {
   factory _TimerSettingsState({final int initialSeconds, final bool isMuted}) =
-      _$_TimerSettingsState;
+      _$TimerSettingsStateImpl;
 
   factory _TimerSettingsState.fromJson(Map<String, dynamic> json) =
-      _$_TimerSettingsState.fromJson;
+      _$TimerSettingsStateImpl.fromJson;
 
   @override
   int get initialSeconds;
@@ -178,6 +178,6 @@ abstract class _TimerSettingsState implements TimerSettingsState {
   bool get isMuted;
   @override
   @JsonKey(ignore: true)
-  _$$_TimerSettingsStateCopyWith<_$_TimerSettingsState> get copyWith =>
+  _$$TimerSettingsStateImplCopyWith<_$TimerSettingsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

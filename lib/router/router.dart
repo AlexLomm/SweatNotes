@@ -51,7 +51,7 @@ GoRouter goRouter(GoRouterRef ref) {
 
       // Always check state.subloc before returning a non-null route
       // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/redirection.dart#L78
-      final isOnOneOfAuthPages = state.subloc.startsWith('/auth');
+      final isOnOneOfAuthPages = state.fullPath?.startsWith('/auth') == true;
 
       if (isLoggedIn && isOnOneOfAuthPages) {
         return '/';
@@ -140,7 +140,7 @@ GoRouter goRouter(GoRouterRef ref) {
             name: RouteNames.trainingBlock,
             path: ':trainingBlockId',
             builder: (_, routerState) => TrainingBlockScreen(
-              trainingBlockId: routerState.params['trainingBlockId'] ?? '',
+              trainingBlockId: routerState.pathParameters['trainingBlockId'] ?? '',
             ),
           ),
         ],

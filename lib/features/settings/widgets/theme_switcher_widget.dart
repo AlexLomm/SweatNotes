@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme_switcher.dart';
 
 class ThemeSwitcherWidget extends ConsumerWidget {
-  const ThemeSwitcherWidget({Key? key}) : super(key: key);
+  const ThemeSwitcherWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,13 +69,13 @@ class CapsuleButton extends StatelessWidget {
   bool get _isRight => placement == CapsuleButtonPlacement.right;
 
   const CapsuleButton({
-    Key? key,
+    super.key,
     required this.isSelected,
     required this.label,
     required this.placement,
     required this.onPressed,
     required this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

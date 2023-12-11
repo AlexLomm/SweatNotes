@@ -17,7 +17,7 @@ class CustomDismissible extends StatefulWidget {
   final bool isArchivable;
 
   const CustomDismissible({
-    Key? key,
+    super.key,
     this.isEnabled = true,
     required this.id,
     required this.borderRadius,
@@ -26,7 +26,7 @@ class CustomDismissible extends StatefulWidget {
     this.confirmDismiss,
     this.onUpdate,
     this.isArchivable = false,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomDismissible> createState() => _CustomDismissibleState();

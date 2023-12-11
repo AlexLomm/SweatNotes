@@ -8,7 +8,7 @@ import '../../training_block/widget_params.dart';
 import '../seed_color_switcher.dart';
 
 class ColorSwitcherWidget extends ConsumerWidget {
-  const ColorSwitcherWidget({Key? key}) : super(key: key);
+  const ColorSwitcherWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,11 +41,10 @@ class _RainbowCircle extends StatefulWidget {
   final ValueChanged<Color> onColorChanged;
 
   const _RainbowCircle({
-    Key? key,
     required this.color,
     required this.isSelected,
     required this.onColorChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<_RainbowCircle> createState() => _RainbowCircleState();
@@ -153,11 +152,10 @@ class _ColorCircle extends StatelessWidget {
   final VoidCallback onTap;
 
   const _ColorCircle({
-    Key? key,
     required this.color,
     required this.isSelected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

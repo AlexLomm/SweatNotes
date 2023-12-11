@@ -8,12 +8,12 @@ class RegularTextField extends StatelessWidget {
   final int? maxLength;
 
   const RegularTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     required this.hintText,
     this.maxLength,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

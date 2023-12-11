@@ -9,12 +9,12 @@ class TimerPlayPauseButton extends StatelessWidget {
   final VoidCallback? onTapPause;
 
   const TimerPlayPauseButton({
-    Key? key,
+    super.key,
     this.isDisabled = false,
     required this.isPlaying,
     required this.onTapPlay,
     required this.onTapPause,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

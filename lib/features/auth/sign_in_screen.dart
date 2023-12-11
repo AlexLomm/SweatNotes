@@ -11,7 +11,7 @@ import '../../shared/widgets/regular_text_field.dart';
 import 'services/auth_service.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {
-  const LogInScreen({Key? key}) : super(key: key);
+  const LogInScreen({super.key});
 
   @override
   LogInScreenState createState() => LogInScreenState();
@@ -167,12 +167,11 @@ class _MaterialButtonWrapper extends StatelessWidget {
   final EdgeInsets margin;
 
   const _MaterialButtonWrapper({
-    Key? key,
     this.isLoading = false,
     this.onTap,
     required this.child,
     required this.margin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +189,7 @@ class _MaterialButtonWrapper extends StatelessWidget {
 }
 
 class _FadedDividerHorizontal extends StatelessWidget {
-  const _FadedDividerHorizontal({Key? key}) : super(key: key);
+  const _FadedDividerHorizontal();
 
   @override
   Widget build(BuildContext context) {

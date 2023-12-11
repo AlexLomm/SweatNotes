@@ -19,11 +19,11 @@ class HorizontallyScrollableExercises extends ConsumerStatefulWidget {
   final ExerciseDayClient exerciseDay;
 
   const HorizontallyScrollableExercises({
-    Key? key,
+    super.key,
     this.scrollController,
     required this.trainingBlock,
     required this.exerciseDay,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<HorizontallyScrollableExercises> createState() => _HorizontallyScrollableExercisesState();
@@ -166,11 +166,11 @@ class CollapsedExerciseColumns extends ConsumerWidget {
   final TrainingBlockClient trainingBlock;
 
   const CollapsedExerciseColumns({
-    Key? key,
+    super.key,
     required this.count,
     required this.exerciseTypesCount,
     required this.trainingBlock,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -238,14 +238,13 @@ class Stick extends ConsumerWidget {
   final String? text;
 
   const Stick({
-    Key? key,
+    super.key,
     required this.height,
     required this.scale,
     required this.opacity,
     required this.depth,
     this.text,
-  })  : assert(scale >= 0 && scale <= 1.0),
-        super(key: key);
+  })  : assert(scale >= 0 && scale <= 1.0);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -298,10 +297,10 @@ class AddExerciseColumnButton extends ConsumerWidget {
   final int exerciseTypesCount;
 
   const AddExerciseColumnButton({
-    Key? key,
+    super.key,
     required this.exerciseType,
     required this.exerciseTypesCount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -336,12 +335,12 @@ class ExercisesColumn extends ConsumerWidget {
   final int horizontalIndex;
 
   const ExercisesColumn({
-    Key? key,
+    super.key,
     required this.hasCollapseButton,
     required this.trainingBlock,
     required this.exerciseDayClient,
     required this.horizontalIndex,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -385,13 +384,13 @@ class ExerciseColumnLabel extends ConsumerWidget {
   final void Function() onCollapse;
 
   const ExerciseColumnLabel({
-    Key? key,
+    super.key,
     required this.hasCollapseButton,
     required this.areDatesEmpty,
     required this.text,
     required this.exerciseTypes,
     required this.onCollapse,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

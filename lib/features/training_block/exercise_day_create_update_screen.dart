@@ -8,6 +8,7 @@ import '../../router/router.dart';
 import '../../shared/widgets/regular_text_field.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
+import '../settings/show_archived_switcher.dart';
 import 'services/exercise_days_service.dart';
 import 'services/training_block_details_stream.dart';
 
@@ -16,10 +17,10 @@ class ExerciseDayCreateUpdateScreen extends ConsumerStatefulWidget {
   final ExerciseDayClient? exerciseDay;
 
   const ExerciseDayCreateUpdateScreen({
-    Key? key,
+    super.key,
     required this.trainingBlockId,
     this.exerciseDay,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _ExerciseDayCreateUpdateScreen();
@@ -42,7 +43,9 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
   @override
   Widget build(BuildContext context) {
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
-    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
+
+    final showArchived = ref.watch(showArchivedSwitcherProvider);
+    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId, includeArchived: showArchived));
 
     return Layout(
       onGoBackButtonTap: () => context.pop(),

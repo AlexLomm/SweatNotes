@@ -14,10 +14,10 @@ class ExerciseDayWidget extends ConsumerStatefulWidget {
   final ExerciseDayClient exerciseDay;
 
   const ExerciseDayWidget({
-    Key? key,
+    super.key,
     required this.trainingBlock,
     required this.exerciseDay,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _ExerciseDayState();

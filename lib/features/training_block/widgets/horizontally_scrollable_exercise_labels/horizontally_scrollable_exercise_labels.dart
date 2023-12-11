@@ -24,11 +24,11 @@ class HorizontallyScrollableExerciseLabels extends ConsumerStatefulWidget {
   final TrainingBlockClient trainingBlock;
 
   const HorizontallyScrollableExerciseLabels({
-    Key? key,
+    super.key,
     required this.exerciseDay,
     // TODO: provide via riverpod?
     required this.trainingBlock,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _HorizontallyScrollableExerciseLabelsState();
@@ -168,7 +168,6 @@ class _Background extends ConsumerWidget {
   final DismissDirectionCallback onDismissed;
 
   const _Background({
-    Key? key,
     required this.id,
     required this.height,
     required this.width,
@@ -176,7 +175,7 @@ class _Background extends ConsumerWidget {
     required this.borderRadius,
     required this.onUpdate,
     required this.onDismissed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -217,10 +216,9 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
   final ExerciseDayClient exerciseDay;
 
   const _TextEditorSingleLineAndWheelWrapper({
-    Key? key,
     required this.trainingBlock,
     required this.exerciseDay,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

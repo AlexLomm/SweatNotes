@@ -9,12 +9,12 @@ class DateField extends StatefulWidget {
   final DateTime selectedDate;
 
   const DateField({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.hintText,
     this.onDateSelected,
     required this.selectedDate,
-  }) : super(key: key);
+  });
 
   @override
   State<DateField> createState() => _DateFieldState();

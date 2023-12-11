@@ -11,12 +11,12 @@ class TextEditorSingleLine extends StatefulWidget {
   final String hintText;
 
   const TextEditorSingleLine({
-    Key? key,
+    super.key,
     this.maxLength,
     required this.value,
     this.hintText = 'Enter text',
     required this.onSubmitted,
-  }) : super(key: key);
+  });
 
   @override
   State<TextEditorSingleLine> createState() => _TextEditorSingleLineState();

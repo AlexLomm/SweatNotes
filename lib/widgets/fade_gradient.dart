@@ -8,11 +8,11 @@ class FadeGradient extends StatelessWidget {
   final FadeGradientDirection direction;
 
   const FadeGradient({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     required this.direction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

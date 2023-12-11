@@ -9,10 +9,10 @@ class TimerDisplay extends StatelessWidget {
   final VoidCallback? onTap;
 
   const TimerDisplay({
-    Key? key,
+    super.key,
     this.onTap,
     required this.seconds,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

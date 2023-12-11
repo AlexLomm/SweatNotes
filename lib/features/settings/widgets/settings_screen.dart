@@ -14,7 +14,7 @@ import '../../auth/services/auth_service.dart';
 import '../../auth/services/user.dart';
 
 class SettingsScreen extends ConsumerWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -182,10 +182,9 @@ class _DeleteAccountAlertDialog extends StatelessWidget {
   final void Function() onConfirm;
 
   const _DeleteAccountAlertDialog({
-    Key? key,
     required this.onCancel,
     required this.onConfirm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +219,7 @@ class _DeleteAccountAlertDialog extends StatelessWidget {
 }
 
 class _UserAvatarWithInfo extends ConsumerWidget {
-  const _UserAvatarWithInfo({Key? key}) : super(key: key);
+  const _UserAvatarWithInfo();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -246,7 +245,7 @@ class _UserAvatarWithInfo extends ConsumerWidget {
 }
 
 class _Avatar extends StatelessWidget {
-  const _Avatar({Key? key}) : super(key: key);
+  const _Avatar();
 
   @override
   Widget build(BuildContext context) {

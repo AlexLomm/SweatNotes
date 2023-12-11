@@ -12,14 +12,14 @@ class LoadSelector extends StatefulWidget {
   final int stepsCountSecond;
 
   const LoadSelector({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChange,
     required this.stepFirst,
     required this.stepsCountFirst,
     required this.stepSecond,
     required this.stepsCountSecond,
-  }) : super(key: key);
+  });
 
   @override
   State<LoadSelector> createState() => _LoadSelectorState();

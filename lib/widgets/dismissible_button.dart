@@ -15,7 +15,7 @@ class DismissibleButton extends StatelessWidget {
   final bool isArchivable;
 
   const DismissibleButton({
-    Key? key,
+    super.key,
     required this.id,
     required this.label,
     required this.onPressed,
@@ -25,7 +25,7 @@ class DismissibleButton extends StatelessWidget {
     this.textColor,
     this.backgroundColor,
     this.isArchivable = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

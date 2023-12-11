@@ -28,7 +28,7 @@ class ExpandableTimer extends ConsumerStatefulWidget {
   static const animationCurve = Cubic(0.9, 0.03, 0.69, 0.22);
   static const timerNotificationId = 0;
 
-  const ExpandableTimer({Key? key}) : super(key: key);
+  const ExpandableTimer({super.key});
 
   @override
   ConsumerState createState() => _ExpandableTimerState();

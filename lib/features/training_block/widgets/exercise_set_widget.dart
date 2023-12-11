@@ -26,12 +26,12 @@ class ExerciseSetWidget extends ConsumerWidget {
   final VoidCallback? onTap;
 
   const ExerciseSetWidget({
-    Key? key,
+    super.key,
     this.isSingle = false,
     this.isRightmost = false,
     required this.exerciseSet,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,12 +89,11 @@ class _RepsText extends StatelessWidget {
   bool get _shouldShowPredictedReps => exerciseSet.reps == 0;
 
   const _RepsText({
-    Key? key,
     required this.exerciseSet,
     required this.textColor,
     required this.labelSmallTheme,
     required this.labelLargeTheme,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +118,11 @@ class _LoadText extends ConsumerWidget {
   bool get _shouldShowPredictedLoad => exerciseSet.load == 0;
 
   const _LoadText({
-    Key? key,
     required this.exerciseSet,
     required this.textColor,
     required this.labelSmallTheme,
     required this.labelLargeTheme,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -179,14 +177,13 @@ class _Cell extends ConsumerWidget {
   final bool isPersonalRecord;
 
   const _Cell({
-    Key? key,
     required this.exerciseSet,
     required this.isSingle,
     required this.isRightmost,
     required this.isBottomCell,
     required this.child,
     this.isPersonalRecord = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

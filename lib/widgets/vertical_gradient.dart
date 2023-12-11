@@ -7,10 +7,10 @@ class VerticalGradient extends StatelessWidget {
   final Widget? child;
 
   const VerticalGradient({
-    Key? key,
+    super.key,
     this.height,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

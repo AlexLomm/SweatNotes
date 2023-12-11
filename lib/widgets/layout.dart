@@ -145,10 +145,9 @@ class _ConfettiWidgetConfigured extends StatelessWidget {
   final double blastDirection;
 
   const _ConfettiWidgetConfigured({
-    Key? key,
     required this.confettiController,
     required this.blastDirection,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -20,13 +20,13 @@ class ButtonDropdownMenu extends StatefulWidget {
   final Function(ButtonDropdownMenuItem)? onSelect;
 
   const ButtonDropdownMenu({
-    Key? key,
+    super.key,
     required this.icon,
     required this.items,
     required this.animationDuration,
     required this.animationCurve,
     this.onSelect,
-  }) : super(key: key);
+  });
 
   @override
   State<ButtonDropdownMenu> createState() => _ButtonDropdownMenuState();

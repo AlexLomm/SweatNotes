@@ -13,10 +13,10 @@ class ReactionMenu extends ConsumerStatefulWidget {
   final Function(int? value) onSelect;
 
   const ReactionMenu({
-    Key? key,
+    super.key,
     this.selectedReaction,
     required this.onSelect,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _ReactionMenuState();

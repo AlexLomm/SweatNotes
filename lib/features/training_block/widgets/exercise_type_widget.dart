@@ -25,12 +25,12 @@ class ExerciseTypeWidget extends ConsumerWidget {
   final ExerciseTypeClient exerciseType;
 
   const ExerciseTypeWidget({
-    Key? key,
+    super.key,
     required this.index,
     required this.trainingBlock,
     required this.exerciseDays,
     required this.exerciseType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -215,9 +215,8 @@ class _TextEditorMultiLineWrapper extends ConsumerWidget {
   final ExerciseTypeClient exerciseType;
 
   const _TextEditorMultiLineWrapper({
-    Key? key,
     required this.exerciseType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -239,9 +238,8 @@ class _TextEditorSingleLineAndWheelWrapper extends ConsumerWidget {
   final ExerciseTypeClient exerciseType;
 
   const _TextEditorSingleLineAndWheelWrapper({
-    Key? key,
     required this.exerciseType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -271,10 +269,9 @@ class _ExerciseTypeName extends ConsumerWidget {
   final String name;
 
   const _ExerciseTypeName({
-    Key? key,
     required this.width,
     required this.name,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

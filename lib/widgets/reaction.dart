@@ -9,12 +9,11 @@ class Reaction extends ConsumerWidget {
   final int? value;
 
   Reaction({
-    Key? key,
+    super.key,
     this.isSelected = false,
     this.isCancelState = false,
     required this.value,
-  })  : assert(value == null || [-5, 0, 5].contains(value)),
-        super(key: key);
+  })  : assert(value == null || [-5, 0, 5].contains(value));
 
   // account for the issues regarding centering of emojis on iOS
   // see: https://github.com/flutter/flutter/issues/119623
@@ -58,7 +57,7 @@ class Reaction extends ConsumerWidget {
 }
 
 class EmojiGood extends ConsumerWidget {
-  const EmojiGood({Key? key}) : super(key: key);
+  const EmojiGood({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,7 +77,7 @@ class EmojiGood extends ConsumerWidget {
 }
 
 class EmojiNeutral extends ConsumerWidget {
-  const EmojiNeutral({Key? key}) : super(key: key);
+  const EmojiNeutral({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -98,7 +97,7 @@ class EmojiNeutral extends ConsumerWidget {
 }
 
 class EmojiBad extends ConsumerWidget {
-  const EmojiBad({Key? key}) : super(key: key);
+  const EmojiBad({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -118,7 +117,7 @@ class EmojiBad extends ConsumerWidget {
 }
 
 class EmojiNone extends ConsumerWidget {
-  const EmojiNone({Key? key}) : super(key: key);
+  const EmojiNone({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -138,7 +137,7 @@ class EmojiNone extends ConsumerWidget {
 }
 
 class EmojiCancel extends ConsumerWidget {
-  const EmojiCancel({Key? key}) : super(key: key);
+  const EmojiCancel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

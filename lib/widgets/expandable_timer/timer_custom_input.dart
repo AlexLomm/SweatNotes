@@ -11,11 +11,11 @@ class TimerCustomInput extends StatefulWidget {
   final Function(int value) onChange;
 
   const TimerCustomInput({
-    Key? key,
+    super.key,
     required this.isActive,
     this.initialValue = 0,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   State<TimerCustomInput> createState() => _TimerCustomInputState();

@@ -7,12 +7,12 @@ class TextArea extends StatelessWidget {
   final String hintText;
 
   const TextArea({
-    Key? key,
+    super.key,
     this.autofocus = false,
     required this.controller,
     this.maxLength,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

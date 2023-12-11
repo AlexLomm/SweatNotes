@@ -9,12 +9,12 @@ class RepsSelector extends StatelessWidget {
   final int stepsCount;
 
   const RepsSelector({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChange,
     required this.step,
     required this.stepsCount,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

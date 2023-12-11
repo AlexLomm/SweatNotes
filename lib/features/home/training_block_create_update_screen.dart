@@ -16,10 +16,10 @@ class TrainingBlockCreateUpdateScreen extends ConsumerStatefulWidget {
   final bool isCopy;
 
   const TrainingBlockCreateUpdateScreen({
-    Key? key,
+    super.key,
     this.trainingBlock,
     this.isCopy = false,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _TrainingBlockCreateScreen();

@@ -14,7 +14,7 @@ import '../training_block/services/training_blocks_service.dart';
 import '../training_block/services/training_blocks_stream.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   ConsumerState createState() => _HomeScreenState();

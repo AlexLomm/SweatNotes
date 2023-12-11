@@ -19,7 +19,7 @@ class Ribbon extends StatelessWidget {
   final Widget child;
 
   const Ribbon({
-    Key? key,
+    super.key,
     required this.nearLength,
     required this.farLength,
     required this.title,
@@ -28,7 +28,7 @@ class Ribbon extends StatelessWidget {
     this.location = RibbonLocation.topStart,
     this.boxShadow,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

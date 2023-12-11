@@ -7,10 +7,10 @@ class ExerciseDayIconWrapper extends StatelessWidget {
   final double? width;
 
   const ExerciseDayIconWrapper({
-    Key? key,
+    super.key,
     required this.icon,
     this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -15,7 +15,7 @@ class TextEditorSingleLineAndWheel extends StatefulWidget {
   final String buttonLabel;
 
   const TextEditorSingleLineAndWheel({
-    Key? key,
+    super.key,
     this.maxLength,
     required this.value,
     required this.unit,
@@ -23,7 +23,7 @@ class TextEditorSingleLineAndWheel extends StatefulWidget {
     required this.onSubmitted,
     required this.options,
     required this.buttonLabel,
-  }) : super(key: key);
+  });
 
   @override
   State<TextEditorSingleLineAndWheel> createState() => _TextEditorSingleLineAndWheelState();

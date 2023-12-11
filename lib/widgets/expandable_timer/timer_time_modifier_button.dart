@@ -8,10 +8,10 @@ class TimerTimeModifierButton extends StatelessWidget {
   final VoidCallback? onTap;
 
   const TimerTimeModifierButton({
-    Key? key,
+    super.key,
     required this.text,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

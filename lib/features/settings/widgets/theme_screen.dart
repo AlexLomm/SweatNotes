@@ -7,7 +7,7 @@ import 'color_switcher_widget.dart';
 import 'theme_switcher_widget.dart';
 
 class ThemeScreen extends StatelessWidget {
-  const ThemeScreen({Key? key}) : super(key: key);
+  const ThemeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +18,9 @@ class ThemeScreen extends StatelessWidget {
         'Theme',
         style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
-      child: Column(
+      child: const Column(
         // crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
+        children: [
           ThemeSwitcherWidget(),
           SizedBox(height: 52.0),
           ColorSwitcherWidget(),

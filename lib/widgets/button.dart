@@ -11,7 +11,7 @@ class Button extends StatelessWidget {
   final void Function()? onPressed;
 
   const Button({
-    Key? key,
+    super.key,
     this.label,
     this.borderRadius = 100,
     this.padding = const EdgeInsets.symmetric(vertical: 12),
@@ -20,7 +20,7 @@ class Button extends StatelessWidget {
     this.child,
     this.onPressed,
     this.isLoading = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

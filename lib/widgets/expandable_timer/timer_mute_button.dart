@@ -7,10 +7,10 @@ class TimerMuteButton extends StatelessWidget {
   final bool isMuted;
 
   const TimerMuteButton({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.isMuted,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -14,11 +14,11 @@ class TappableArrow extends ConsumerWidget {
   final void Function() onTap;
 
   const TappableArrow({
-    Key? key,
+    super.key,
     required this.direction,
     required this.isDisabled,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

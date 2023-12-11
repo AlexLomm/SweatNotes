@@ -16,10 +16,10 @@ class ExerciseWidget extends ConsumerWidget {
   final ExerciseClient exercise;
 
   const ExerciseWidget({
-    Key? key,
+    super.key,
     required this.exerciseType,
     required this.exercise,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

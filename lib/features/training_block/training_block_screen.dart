@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
+import 'package:sweatnotes/features/settings/show_archived_switcher.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../router/router.dart';
@@ -29,9 +30,9 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
   final String trainingBlockId;
 
   const TrainingBlockScreen({
-    Key? key,
+    super.key,
     required this.trainingBlockId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _TrainingBlockScreenState();
@@ -84,7 +85,9 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   @override
   Widget build(BuildContext context) {
     final authService = ref.watch(authServiceProvider);
-    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId));
+    final showArchivedSwitcher = ref.watch(showArchivedSwitcherProvider);
+    final data =
+        ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId, includeArchived: showArchivedSwitcher));
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
 
     return data.when(
@@ -124,7 +127,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
 class Matrix extends ConsumerStatefulWidget {
   final TrainingBlockClient trainingBlock;
 
-  const Matrix({Key? key, required this.trainingBlock}) : super(key: key);
+  const Matrix({super.key, required this.trainingBlock});
 
   @override
   ConsumerState<Matrix> createState() => _MatrixState();
@@ -135,6 +138,7 @@ class _MatrixState extends ConsumerState<Matrix> {
   late LinkedScrollControllerGroup _horizontalScrollControllersGroup;
   final Map<String, ScrollController> _horizontalScrollControllersMap = {};
   double _horizontalScrollOffset = 0;
+  bool showArchived = false;
 
   @override
   void initState() {
@@ -328,11 +332,30 @@ class _MatrixState extends ConsumerState<Matrix> {
                   ),
                 ],
               ),
-              secondChild: IconButton(
-                icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
-                tooltip: 'Turn off edit mode',
-                splashRadius: 20,
-                onPressed: () => editModeSwitcher.toggle(),
+              secondChild: Row(
+                children: [
+                  Text(
+                    'Archived',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                  const SizedBox(width: 8),
+                  Switch(
+                    value: showArchived,
+                    onChanged: (bool value) {
+                      setState(() {
+                        showArchived = value;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
+                    tooltip: 'Turn off edit mode',
+                    splashRadius: 20,
+                    onPressed: () => editModeSwitcher.toggle(),
+                  ),
+                ],
               ),
             ),
           ],
@@ -383,11 +406,11 @@ class OnOffText extends StatelessWidget {
   final TextStyle? textStyle;
 
   const OnOffText({
-    Key? key,
+    super.key,
     required this.title,
     required this.isEnabled,
     required this.textStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

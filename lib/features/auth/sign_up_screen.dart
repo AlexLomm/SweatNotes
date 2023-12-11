@@ -12,8 +12,8 @@ import 'services/auth_service.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ConsumerState createState() => _SignUpScreenState();

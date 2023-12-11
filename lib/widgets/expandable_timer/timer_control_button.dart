@@ -10,13 +10,13 @@ class TimerControlButton extends StatelessWidget {
   final VoidCallback? onTap;
 
   const TimerControlButton({
-    Key? key,
+    super.key,
     this.isPlaceholder = false,
     required this.dimension,
     this.icon,
     this.color,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

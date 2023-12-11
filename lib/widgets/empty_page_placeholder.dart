@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 class EmptyPagePlaceholder extends StatelessWidget {
-  const EmptyPagePlaceholder({Key? key}) : super(key: key);
+  const EmptyPagePlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {

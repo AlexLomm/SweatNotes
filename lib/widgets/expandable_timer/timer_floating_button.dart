@@ -15,13 +15,13 @@ class TimerFloatingButton extends StatelessWidget {
   final double progressOpacity;
 
   const TimerFloatingButton({
-    Key? key,
+    super.key,
     this.onTap,
     this.isPlaceholder = false,
     this.seconds,
     required this.progress,
     required this.progressOpacity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

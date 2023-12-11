@@ -6,9 +6,9 @@ class VerticalDividerWithGradient extends StatelessWidget {
   final double? height;
 
   const VerticalDividerWithGradient({
-    Key? key,
+    super.key,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

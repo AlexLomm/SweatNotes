@@ -13,11 +13,11 @@ class ExerciseSetEditor extends StatefulWidget {
   final Function({required int reps, required double load}) onChange;
 
   const ExerciseSetEditor({
-    Key? key,
+    super.key,
     required this.reps,
     required this.load,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   State<ExerciseSetEditor> createState() => _ExerciseSetEditorState();

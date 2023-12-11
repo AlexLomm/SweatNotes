@@ -10,12 +10,12 @@ class IgnorePointerInEditMode extends ConsumerWidget {
   final Widget child;
 
   const IgnorePointerInEditMode({
-    Key? key,
+    super.key,
     this.ignoreWhenEditMode = false,
     this.behavior,
     this.onTap,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -12,12 +12,12 @@ class TextEditorMultiLine extends StatefulWidget {
   final String hintText;
 
   const TextEditorMultiLine({
-    Key? key,
+    super.key,
     this.maxLength,
     required this.value,
     this.hintText = 'Enter text',
     required this.onSubmitted,
-  }) : super(key: key);
+  });
 
   @override
   State<TextEditorMultiLine> createState() => _TextEditorMultiLineState();

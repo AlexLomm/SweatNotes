@@ -17,10 +17,8 @@ import '../data/training_blocks_repository.dart';
 part 'training_block_details_stream.g.dart';
 
 @riverpod
-Stream<TrainingBlockClient?> trainingBlockDetailsStream(
-  TrainingBlockDetailsStreamRef ref,
-  String trainingBlockId,
-) async* {
+Stream<TrainingBlockClient?> trainingBlockDetailsStream(TrainingBlockDetailsStreamRef ref, String trainingBlockId,
+    {required bool includeArchived}) async* {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
 
@@ -32,7 +30,7 @@ Stream<TrainingBlockClient?> trainingBlockDetailsStream(
 
   final Stream<List<ExerciseType>> exerciseTypesStream = exerciseTypesRepository
       //
-      .getQueryByTrainingBlockId(trainingBlockId)
+      .getQueryByTrainingBlockId(trainingBlockId, includeArchived: includeArchived)
       .snapshots()
       .map<List<ExerciseType>>((event) => event.docs.map((e) => e.data()).toList());
 

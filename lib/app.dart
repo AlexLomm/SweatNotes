@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'features/auth/services/user.dart';
+import 'features/settings/edit_mode_switcher.dart';
+import 'features/settings/show_archived_exercise_types_switcher.dart';
 import 'router/router.dart';
 import 'shared/services/firebase.dart';
 import 'theme.dart';
@@ -33,6 +35,15 @@ class App extends ConsumerWidget {
       (_, user) => user.whenData((value) async {
         if (value != null) await analytics.setUserId(id: value.uid);
       }),
+    );
+
+    ref.listen(
+      editModeSwitcherProvider,
+      (_, isEditMode) {
+        if (isEditMode) return;
+
+        ref.read(showArchivedExerciseTypesSwitcherProvider.notifier).toggle(show: false);
+      },
     );
 
     return MaterialApp.router(

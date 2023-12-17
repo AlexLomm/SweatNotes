@@ -10,6 +10,7 @@ import '../../../../widgets/custom_dismissible.dart';
 import '../../../../widgets/rounded_icon_button.dart';
 import '../../../../widgets/text_editor_single_line_and_wheel.dart';
 import '../../../settings/edit_mode_switcher.dart';
+import '../../../settings/show_archived_exercise_types_switcher.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_types_service.dart';
@@ -47,14 +48,12 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
     final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
+    final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
 
-    final heightWithButton = widgetParams.getExerciseLabelsHeightWithButton(
-      widget.exerciseDay.exerciseTypes.length,
-    );
+    final count = widget.exerciseDay.exerciseTypes.where((et) => showArchived ? true : et.archivedAt == null).length;
 
-    final heightWithoutButton = widgetParams.getExerciseLabelsHeight(
-      widget.exerciseDay.exerciseTypes.length,
-    );
+    final heightWithButton = widgetParams.getExerciseLabelsHeightWithButton(count);
+    final heightWithoutButton = widgetParams.getExerciseLabelsHeight(count);
 
     return Container(
       margin: EdgeInsets.only(

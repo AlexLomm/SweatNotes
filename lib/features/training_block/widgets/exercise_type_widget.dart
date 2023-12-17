@@ -51,8 +51,11 @@ class ExerciseTypeWidget extends ConsumerWidget {
     final toExerciseDay = exerciseDays.where((e) => e != fromExerciseDay).toList();
 
     return CustomDismissible(
-      id: exerciseType.dbModel.id,
-      isEnabled: isEditMode,
+      // change the id when showing archived vs unarchived stuff. The reason we need this is
+      // that in the archived mode the archived exercise type would re-appear instantly and
+      // because of that CustomDismissible would throw an error thinking that the archival didn't occur
+      id: "${exerciseType.dbModel.id}${exerciseType.dbModel.archivedAt == null ? '' : '-archived'}",
+      isEnabled: isEditMode && exerciseType.archivedAt == null,
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(widgetParams.borderRadius),
         bottomRight: Radius.circular(widgetParams.borderRadius),
@@ -73,7 +76,9 @@ class ExerciseTypeWidget extends ConsumerWidget {
       child: Material(
         elevation: 2,
         shape: const RoundedRectangleBorder(),
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: exerciseType.archivedAt == null
+            ? Theme.of(context).colorScheme.surfaceVariant
+            : Theme.of(context).colorScheme.onTertiary.withOpacity(0.67),
         child: AnimatedContainer(
           duration: WidgetParams.animationDuration,
           curve: WidgetParams.animationCurve,
@@ -123,35 +128,38 @@ class ExerciseTypeWidget extends ConsumerWidget {
                   duration: WidgetParams.animationDuration,
                   curve: WidgetParams.animationCurve,
                   opacity: isEditMode ? 1 : 0,
-                  child: IgnorePointerInEditMode(
-                    child: AnimatedContainer(
-                      duration: WidgetParams.animationDuration,
-                      curve: WidgetParams.animationCurve,
-                      child: ButtonDropdownMenu(
-                        icon: Icons.keyboard_arrow_down,
-                        animationDuration: WidgetParams.animationDuration,
-                        animationCurve: WidgetParams.animationCurve,
-                        items: toExerciseDay
-                            .map(
-                              (exerciseDay) => ButtonDropdownMenuItem(
-                                onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
-                                  trainingBlock: trainingBlock,
-                                  fromExerciseDay: fromExerciseDay,
-                                  toExerciseDay: exerciseDay,
-                                  exerciseTypeId: exerciseType.dbModel.id,
-                                ),
-                                child: Text(
-                                  exerciseDay.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
+                  child: AnimatedContainer(
+                    duration: WidgetParams.animationDuration,
+                    curve: WidgetParams.animationCurve,
+                    child: exerciseType.archivedAt == null
+                        ? ButtonDropdownMenu(
+                            icon: Icons.keyboard_arrow_down,
+                            animationDuration: WidgetParams.animationDuration,
+                            animationCurve: WidgetParams.animationCurve,
+                            items: toExerciseDay
+                                .map(
+                                  (exerciseDay) => ButtonDropdownMenuItem(
+                                    onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
+                                      trainingBlock: trainingBlock,
+                                      fromExerciseDay: fromExerciseDay,
+                                      toExerciseDay: exerciseDay,
+                                      exerciseTypeId: exerciseType.dbModel.id,
+                                    ),
+                                    child: Text(
+                                      exerciseDay.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          )
+                        : IconButton(
+                            onPressed: () => exerciseTypeService.archive(exerciseType, false),
+                            icon: const Icon(Icons.unarchive_outlined),
+                          ),
                   ),
                 ),
               ),

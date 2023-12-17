@@ -121,4 +121,10 @@ class ExerciseDayClient with _$ExerciseDayClient {
       exerciseTypes: exerciseTypes.map((e) => e.getWithOnlyPersonalRecords()).toList(),
     );
   }
+
+  ExerciseDayClient getWithExerciseTypesArchived(bool archived) {
+    return copyWith(
+      exerciseTypes: exerciseTypes.where((e) => archived ? true : e.archivedAt == null).toList(),
+    );
+  }
 }

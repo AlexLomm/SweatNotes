@@ -25,7 +25,13 @@ class IgnorePointerInEditMode extends ConsumerWidget {
 
     return IgnorePointer(
       ignoring: ignoring,
-      child: onTap == null ? child : GestureDetector(behavior: behavior, onTap: onTap, child: child),
+      child: onTap == null
+          ? child
+          : GestureDetector(
+              behavior: behavior,
+              onTap: onTap,
+              child: child,
+            ),
     );
   }
 }

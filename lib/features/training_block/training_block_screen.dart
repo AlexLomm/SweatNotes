@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
-import 'package:sweatnotes/features/settings/show_archived_switcher.dart';
+import 'package:sweatnotes/features/settings/show_archived_exercise_types_switcher.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../router/router.dart';
@@ -85,9 +85,7 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   @override
   Widget build(BuildContext context) {
     final authService = ref.watch(authServiceProvider);
-    final showArchivedSwitcher = ref.watch(showArchivedSwitcherProvider);
-    final data =
-        ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId, includeArchived: showArchivedSwitcher));
+    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId, includeArchived: true));
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
 
     return data.when(
@@ -138,7 +136,6 @@ class _MatrixState extends ConsumerState<Matrix> {
   late LinkedScrollControllerGroup _horizontalScrollControllersGroup;
   final Map<String, ScrollController> _horizontalScrollControllersMap = {};
   double _horizontalScrollOffset = 0;
-  bool showArchived = false;
 
   @override
   void initState() {
@@ -214,6 +211,8 @@ class _MatrixState extends ConsumerState<Matrix> {
     final isExerciseReactionsEnabled = ref.watch(exerciseReactionsSwitcherProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
+    final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
+    final showArchivedNotifier = ref.watch(showArchivedExerciseTypesSwitcherProvider.notifier);
 
     final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
           color: Theme.of(context).colorScheme.onSurface,
@@ -280,15 +279,36 @@ class _MatrixState extends ConsumerState<Matrix> {
                         ),
               ),
             ),
-            AnimatedOpacity(
-              opacity: isEditMode ? 0 : 1,
+            AnimatedCrossFade(
+              alignment: Alignment.center,
+              crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
               duration: WidgetParams.animationDuration,
-              curve: WidgetParams.animationCurve,
-              child: IconButton(
-                icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
-                tooltip: 'Turn on edit mode',
+              firstCurve: WidgetParams.animationCurve,
+              secondCurve: WidgetParams.animationCurve,
+              firstChild: AnimatedOpacity(
+                opacity: isEditMode ? 0 : 1,
+                duration: WidgetParams.animationDuration,
+                curve: WidgetParams.animationCurve,
+                child: IconButton(
+                  icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
+                  tooltip: 'Turn on edit mode',
+                  splashRadius: 20,
+                  onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+                ),
+              ),
+              secondChild: IconButton(
+                tooltip: showArchived ? "Don't show archived exercises" : 'Show archived exercises',
                 splashRadius: 20,
-                onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+                icon: AnimatedCrossFade(
+                  alignment: Alignment.center,
+                  crossFadeState: showArchived ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  duration: WidgetParams.animationDuration,
+                  firstCurve: WidgetParams.animationCurve,
+                  secondCurve: WidgetParams.animationCurve,
+                  firstChild: Icon(color: Theme.of(context).colorScheme.primary, Icons.unarchive_outlined),
+                  secondChild: Icon(color: Theme.of(context).colorScheme.tertiary, Icons.cancel_outlined),
+                ),
+                onPressed: showArchivedNotifier.toggle,
               ),
             ),
             AnimatedCrossFade(
@@ -332,30 +352,11 @@ class _MatrixState extends ConsumerState<Matrix> {
                   ),
                 ],
               ),
-              secondChild: Row(
-                children: [
-                  Text(
-                    'Archived',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                  ),
-                  const SizedBox(width: 8),
-                  Switch(
-                    value: showArchived,
-                    onChanged: (bool value) {
-                      setState(() {
-                        showArchived = value;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
-                    tooltip: 'Turn off edit mode',
-                    splashRadius: 20,
-                    onPressed: () => editModeSwitcher.toggle(),
-                  ),
-                ],
+              secondChild: IconButton(
+                icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
+                tooltip: 'Turn off edit mode',
+                splashRadius: 20,
+                onPressed: editModeSwitcher.toggle,
               ),
             ),
           ],

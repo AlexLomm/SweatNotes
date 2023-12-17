@@ -104,11 +104,7 @@ class WidgetParams {
   double get exerciseLabelsListPaddingRight => 4.0;
 
   double getExercisesHeight(int exerciseTypesCount) {
-    final count = max(1, exerciseTypesCount);
-
-    return count * (exerciseTypeHeight + exerciseTypesVerticalSpacing) +
-        additionalBottomSpacing +
-        _exercisesMarginBottomLast;
+    return getExerciseLabelsHeight(exerciseTypesCount) - additionalBottomSpacing;
   }
 
   double get _exercisesMarginBottomLast {

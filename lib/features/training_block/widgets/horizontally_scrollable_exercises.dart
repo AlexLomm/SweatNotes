@@ -6,6 +6,7 @@ import 'package:sweatnotes/features/training_block/data/models_client/training_b
 import 'package:sweatnotes/features/training_block/services/training_blocks_service.dart';
 
 import '../../settings/edit_mode_switcher.dart';
+import '../../settings/show_archived_exercise_types_switcher.dart';
 import '../data/models_client/exercise_type_client.dart';
 import '../widget_params.dart';
 import '../data/models_client/exercise_day_client.dart';
@@ -63,10 +64,9 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
   Widget build(BuildContext context) {
     final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
+    final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
 
-    final List<ExerciseTypeClient> exerciseTypes =
-        widget.exerciseDay.exerciseTypes.isEmpty ? [] : widget.exerciseDay.exerciseTypes;
-
+    final exerciseTypes = widget.exerciseDay.getWithExerciseTypesArchived(showArchived).exerciseTypes;
     final exerciseTypesCount = exerciseTypes.length;
 
     int numberOfColumnsPerExerciseType = 0;
@@ -77,6 +77,8 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
     final areColumnsCollapsed = widget.trainingBlock.exercisesCollapsedIncludingIndex > -1;
     final collapsedColumnsCount = widget.trainingBlock.exercisesCollapsedIncludingIndex + 1;
 
+    final height = widgetParams.getExercisesHeight(exerciseTypesCount);
+
     return AnimatedOpacity(
       opacity: isEditMode ? 0.32 : 1.0,
       duration: WidgetParams.animationDuration,
@@ -86,7 +88,7 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
         child: AnimatedContainer(
           duration: WidgetParams.animationDuration,
           curve: WidgetParams.animationCurve,
-          height: widgetParams.getExercisesHeight(exerciseTypesCount),
+          height: height,
           margin: EdgeInsets.only(
             left: widgetParams.exercisesMarginLeft,
           ),
@@ -131,6 +133,22 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
                 );
               }
 
+              final exercisesColumn = ExercisesColumn(
+                hasCollapseButton: adjustedHorizontalIndex != adjustedNumberOfColumnsPerExerciseType - 1,
+                trainingBlock: widget.trainingBlock,
+                exerciseDayClient: widget.exerciseDay,
+                horizontalIndex: adjustedHorizontalIndex + collapsedColumnsCount,
+              );
+
+              // ClipRect + SingleChildScrollView ensure that there is no RenderFlex
+              // overflow error thrown when animating in the archived exercises
+              final clippedExerciseColumn = ClipRect(
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: exercisesColumn,
+                ),
+              );
+
               // the alignment is needed to prevent the underlying container
               // from being stretched to the `exerciseWithMargin` width (and
               // thereby losing border radius on the right) instead of being
@@ -145,11 +163,11 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
                     )
                   : Align(
                       alignment: Alignment.topLeft,
-                      child: ExercisesColumn(
-                        hasCollapseButton: adjustedHorizontalIndex != adjustedNumberOfColumnsPerExerciseType - 1,
-                        trainingBlock: widget.trainingBlock,
-                        exerciseDayClient: widget.exerciseDay,
-                        horizontalIndex: adjustedHorizontalIndex + collapsedColumnsCount,
+                      child: AnimatedContainer(
+                        duration: WidgetParams.animationDuration,
+                        curve: WidgetParams.animationCurve,
+                        height: height,
+                        child: showArchived ? clippedExerciseColumn : exercisesColumn,
                       ),
                     );
             },
@@ -244,7 +262,7 @@ class Stick extends ConsumerWidget {
     required this.opacity,
     required this.depth,
     this.text,
-  })  : assert(scale >= 0 && scale <= 1.0);
+  }) : assert(scale >= 0 && scale <= 1.0);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -346,6 +364,9 @@ class ExercisesColumn extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final widgetParams = ref.watch(widgetParamsProvider);
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
+    final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
+
+    final exerciseTypes = exerciseDayClient.getWithExerciseTypesArchived(showArchived).exerciseTypes;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,7 +381,7 @@ class ExercisesColumn extends ConsumerWidget {
             index: horizontalIndex,
           ),
         ),
-        for (var verticalIndex = 0; verticalIndex < exerciseDayClient.exerciseTypes.length; verticalIndex++)
+        for (var verticalIndex = 0; verticalIndex < exerciseTypes.length; verticalIndex++)
           Container(
             margin: EdgeInsets.only(
               right: widgetParams.exercisesSideSpacing,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../settings/show_archived_exercise_types_switcher.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
@@ -46,13 +47,16 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
   Widget build(BuildContext context) {
     final widgetParams = ref.watch(widgetParamsProvider);
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
+    final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
+
+    final exerciseTypes = _exerciseDayClientCached.getWithExerciseTypesArchived(showArchived).exerciseTypes;
 
     return AnimatedContainer(
       duration: WidgetParams.animationDuration,
       curve: WidgetParams.animationCurve,
       margin: EdgeInsets.only(top: widgetParams.exerciseDayTitleHeight),
       width: widgetParams.exerciseTypeWidth,
-      height: widgetParams.getExerciseTypesListHeight(_exerciseDayClientCached.exerciseTypes.length),
+      height: widgetParams.getExerciseTypesListHeight(exerciseTypes.length),
       child: Theme(
         // this is needed to remove the bottom margin when reordering the items
         // @see https://github.com/flutter/flutter/issues/63527#issuecomment-852740201
@@ -68,11 +72,9 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
               widget.exerciseDay.dbModel.pseudoId,
             );
 
-            final exerciseTypesCount = _exerciseDayClientCached.exerciseTypes.length;
-
             // these two lines are workarounds for ReorderableListView problems
             // @see https://stackoverflow.com/a/54164333/4241959
-            if (toIndex > exerciseTypesCount) toIndex = exerciseTypesCount;
+            if (toIndex > exerciseTypes.length) toIndex = exerciseTypes.length;
             if (fromIndex < toIndex) toIndex--;
 
             final backup = _exerciseDayClientCached;
@@ -97,7 +99,7 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
             }
           },
           children: [
-            for (final entry in _exerciseDayClientCached.exerciseTypes.asMap().entries)
+            for (final entry in exerciseTypes.asMap().entries)
               Container(
                 key: Key(entry.value.dbModel.id),
                 margin: EdgeInsets.only(

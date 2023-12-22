@@ -31,9 +31,11 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
     final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    final indexOfExerciseDay = widget.trainingBlock.indexOfExerciseDayByPseudoId(widget.exerciseDay.dbModel.pseudoId);
+    final indexOfExerciseDay = widget.trainingBlock
+        .indexOfExerciseDayByPseudoId(widget.exerciseDay.dbModel.pseudoId);
     final isFirst = indexOfExerciseDay == 0;
-    final isLast = indexOfExerciseDay == widget.trainingBlock.exerciseDays.length - 1;
+    final isLast =
+        indexOfExerciseDay == widget.trainingBlock.exerciseDays.length - 1;
 
     return Align(
       alignment: Alignment.topLeft,
@@ -82,7 +84,10 @@ class _ExerciseDayState extends ConsumerState<ExerciseDayWidget> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurfaceVariant
+                        .withOpacity(isEditMode ? 1.0 : 0.0),
                     width: 1.0,
                   ),
                 ),

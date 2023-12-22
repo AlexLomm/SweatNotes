@@ -26,7 +26,8 @@ FirebaseAnalytics analytics(AnalyticsRef ref) {
   return FirebaseAnalytics.instance;
 }
 
-final _analyticsObserver = FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
+final _analyticsObserver =
+    FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
 
 @riverpod
 FirebaseAnalyticsObserver analyticsObserver(AnalyticsObserverRef ref) {

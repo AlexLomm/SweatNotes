@@ -2,11 +2,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../shared/services/firebase.dart';
 
-part 'show_archived_exercise_types_switcher.g.dart';
+part 'show_archived_training_blocks_switcher.g.dart';
 
 @riverpod
-class ShowArchivedExerciseTypesSwitcher
-    extends _$ShowArchivedExerciseTypesSwitcher {
+class ShowArchivedTrainingBlocksSwitcher
+    extends _$ShowArchivedTrainingBlocksSwitcher {
   @override
   bool build() {
     return false;
@@ -20,8 +20,8 @@ class ShowArchivedExerciseTypesSwitcher
     state = newState;
 
     analytics.logEvent(
-      name: 'show_archived_exercise_types',
-      parameters: {'show_archived_exercise_types': newState.toString()},
+      name: 'show_archived_training_blocks',
+      parameters: {'show_archived_training_blocks': newState.toString()},
     );
   }
 }

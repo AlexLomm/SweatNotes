@@ -97,8 +97,10 @@ class _RepsText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reps = _shouldShowPredictedReps ? exerciseSet.predictedReps : exerciseSet.reps;
-    final color = _shouldShowPredictedReps ? textColor.withOpacity(0.32) : textColor;
+    final reps =
+        _shouldShowPredictedReps ? exerciseSet.predictedReps : exerciseSet.reps;
+    final color =
+        _shouldShowPredictedReps ? textColor.withOpacity(0.32) : textColor;
 
     return AutoSizeText(
       '$reps',
@@ -127,8 +129,10 @@ class _LoadText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isCompactMode = ref.watch(widgetParamsProvider).isCompactMode;
-    final load = _shouldShowPredictedLoad ? exerciseSet.predictedLoad : exerciseSet.load;
-    final color = _shouldShowPredictedLoad ? textColor.withOpacity(0.32) : textColor;
+    final load =
+        _shouldShowPredictedLoad ? exerciseSet.predictedLoad : exerciseSet.load;
+    final color =
+        _shouldShowPredictedLoad ? textColor.withOpacity(0.32) : textColor;
 
     const maxLines = 1;
     final minFontSize = labelSmallTheme.fontSize!;

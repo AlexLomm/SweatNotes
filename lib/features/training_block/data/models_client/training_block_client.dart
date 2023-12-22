@@ -13,8 +13,9 @@ part 'training_block_client.freezed.dart';
 class TrainingBlockClient with _$TrainingBlockClient {
   const TrainingBlockClient._();
 
-  get startedAtFormatted =>
-      startedAt == null ? 'No start date' : DateFormat.yMMMMd('en_US').format(startedAt!.toDate());
+  get startedAtFormatted => startedAt == null
+      ? 'No start date'
+      : DateFormat.yMMMMd('en_US').format(startedAt!.toDate());
 
   const factory TrainingBlockClient({
     required TrainingBlock dbModel,
@@ -28,7 +29,8 @@ class TrainingBlockClient with _$TrainingBlockClient {
   TrainingBlock toDbModel() {
     // toDbModel is generating a new pseudoId for each exercise day so it's
     // crucial for these same pseudoIds to be used in the `exerciseDaysOrdering` map
-    final exerciseDayDbModels = exerciseDays.map<ExerciseDay>((e) => e.toDbModel()).toList();
+    final exerciseDayDbModels =
+        exerciseDays.map<ExerciseDay>((e) => e.toDbModel()).toList();
 
     return dbModel.copyWith(
       archivedAt: archivedAt,
@@ -36,7 +38,9 @@ class TrainingBlockClient with _$TrainingBlockClient {
       name: name,
       exercisesCollapsedIncludingIndex: exercisesCollapsedIncludingIndex,
       exerciseDays: exerciseDayDbModels,
-      exerciseDaysOrdering: exerciseDayDbModels.asMap().map((key, value) => MapEntry(value.pseudoId, key)),
+      exerciseDaysOrdering: exerciseDayDbModels
+          .asMap()
+          .map((key, value) => MapEntry(value.pseudoId, key)),
     );
   }
 
@@ -79,15 +83,21 @@ class TrainingBlockClient with _$TrainingBlockClient {
   }
 
   int indexOfExerciseDayByPseudoId(String pseudoId) {
-    final index = exerciseDays.indexWhere((e) => e.dbModel.pseudoId == pseudoId);
+    final index =
+        exerciseDays.indexWhere((e) => e.dbModel.pseudoId == pseudoId);
 
     if (index == -1) throw Exception('Exercise day not found');
 
     return index;
   }
 
-  TrainingBlockClient archiveExerciseDay(ExerciseDayClient exerciseDayClient, bool archive) {
-    final index = indexOfExerciseDayByPseudoId(exerciseDayClient.dbModel.pseudoId);
+  TrainingBlockClient archiveExerciseDay(
+    ExerciseDayClient exerciseDayClient,
+    bool archive,
+  ) {
+    final index = indexOfExerciseDayByPseudoId(
+      exerciseDayClient.dbModel.pseudoId,
+    );
 
     final exerciseDaysUpdated = [...exerciseDays];
 
@@ -102,7 +112,8 @@ class TrainingBlockClient with _$TrainingBlockClient {
 
   TrainingBlockClient getWithOnlyPersonalRecords() {
     return copyWith(
-      exerciseDays: exerciseDays.map((e) => e.getWithOnlyPersonalRecords()).toList(),
+      exerciseDays:
+          exerciseDays.map((e) => e.getWithOnlyPersonalRecords()).toList(),
     );
   }
 }

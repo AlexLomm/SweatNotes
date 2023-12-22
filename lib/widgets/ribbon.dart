@@ -108,7 +108,10 @@ class _RibbonPainter extends CustomPainter {
 
     TextSpan span = TextSpan(style: titleStyle, text: title);
 
-    textPainter = TextPainter(text: span, textAlign: TextAlign.center, textDirection: TextDirection.ltr);
+    textPainter = TextPainter(
+        text: span,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr);
     textPainter.layout();
 
     paintRibbon = Paint()
@@ -205,7 +208,8 @@ class _RibbonPainter extends CustomPainter {
             vec.add(Offset(size.width, nearLength));
           } else {
             path.lineTo(size.width - (farLength - size.height), size.height);
-            vec.add(Offset(size.width - (farLength - size.height), size.height));
+            vec.add(
+                Offset(size.width - (farLength - size.height), size.height));
             if (nearLength <= size.height) {
               path.lineTo(size.width, size.height);
               vec.add(Offset(size.width, size.height));
@@ -213,7 +217,8 @@ class _RibbonPainter extends CustomPainter {
               vec.add(Offset(size.width, nearLength));
             } else {
               path.lineTo(size.width - (nearLength - size.height), size.height);
-              vec.add(Offset(size.width - (nearLength - size.height), size.height));
+              vec.add(
+                  Offset(size.width - (nearLength - size.height), size.height));
             }
           }
           break;

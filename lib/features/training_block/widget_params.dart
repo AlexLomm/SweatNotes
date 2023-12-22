@@ -27,7 +27,9 @@ class WidgetParams {
   double get exerciseTypeHeight => isCompactMode ? 72.0 : 80.0;
 
   double get exerciseTypeLabelWidth {
-    return exerciseTypeWidth - 2 * exerciseTypeDragHandleWidth - exerciseTypePaddingLeft;
+    return exerciseTypeWidth -
+        2 * exerciseTypeDragHandleWidth -
+        exerciseTypePaddingLeft;
   }
 
   double get exerciseTypeWidth {
@@ -65,7 +67,8 @@ class WidgetParams {
   double getExerciseTypesListHeight(int exerciseTypesCount) {
     if (exerciseTypesCount == 0) return 0;
 
-    return (exerciseTypeHeight) * exerciseTypesCount + exerciseTypesVerticalSpacing * (exerciseTypesCount - 1);
+    return (exerciseTypeHeight) * exerciseTypesCount +
+        exerciseTypesVerticalSpacing * (exerciseTypesCount - 1);
   }
 
   double getExerciseLabelsHeightWithButton(int exerciseTypesCount) {
@@ -95,7 +98,8 @@ class WidgetParams {
         exerciseTypeDragHandleWidth;
   }
 
-  double get exerciseLabelsListWidth => exerciseTypeWidth - _exerciseLabelsListRightInsetSize;
+  double get exerciseLabelsListWidth =>
+      exerciseTypeWidth - _exerciseLabelsListRightInsetSize;
 
   double get _exerciseLabelsListRightInsetSize => 18.0;
 
@@ -104,7 +108,8 @@ class WidgetParams {
   double get exerciseLabelsListPaddingRight => 4.0;
 
   double getExercisesHeight(int exerciseTypesCount) {
-    return getExerciseLabelsHeight(exerciseTypesCount) - additionalBottomSpacing;
+    return getExerciseLabelsHeight(exerciseTypesCount) -
+        additionalBottomSpacing;
   }
 
   double get _exercisesMarginBottomLast {
@@ -123,11 +128,13 @@ class WidgetParams {
 
   double get exercisesMarginBottom => 44.0;
 
-  double get exercisesMarginLeft => exerciseTypeWidth - exercisesScrollInwardsDepth + exercisesSideSpacing;
+  double get exercisesMarginLeft =>
+      exerciseTypeWidth - exercisesScrollInwardsDepth + exercisesSideSpacing;
 
   double get exercisesSideSpacing => isCompactMode ? 4.0 : 8.0;
 
-  double get exercisesScrollInwardsDepth => _exerciseLabelsListRightInsetSize + exercisesSideSpacing + 8.0;
+  double get exercisesScrollInwardsDepth =>
+      _exerciseLabelsListRightInsetSize + exercisesSideSpacing + 8.0;
 
   double get exercisesMarginBottomNotLast => exerciseTypesVerticalSpacing;
 }

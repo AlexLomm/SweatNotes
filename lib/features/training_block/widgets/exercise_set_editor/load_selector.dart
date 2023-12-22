@@ -33,7 +33,10 @@ class _LoadSelectorState extends State<LoadSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface);
+    final textTheme = Theme.of(context)
+        .textTheme
+        .bodyLarge
+        ?.copyWith(color: Theme.of(context).colorScheme.onSurface);
 
     return Column(children: [
       Text('Load', style: textTheme),

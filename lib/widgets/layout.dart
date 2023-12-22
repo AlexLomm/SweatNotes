@@ -50,7 +50,8 @@ class _LayoutState extends ConsumerState<Layout> {
   void initState() {
     super.initState();
 
-    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 3));
   }
 
   @override
@@ -87,7 +88,8 @@ class _LayoutState extends ConsumerState<Layout> {
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                       centerTitle: widget.centerTitle,
-                      title: widget.appBarTitle ?? SvgPicture.asset(height: 48, 'assets/logo.svg'),
+                      title: widget.appBarTitle ??
+                          SvgPicture.asset(height: 48, 'assets/logo.svg'),
                       leading: leadingOrGoBackButton,
                       actions: widget.actions,
                     )
@@ -97,13 +99,16 @@ class _LayoutState extends ConsumerState<Layout> {
                 data: Theme.of(context).copyWith(
                   // style the auto-updater dialog
                   dialogTheme: DialogTheme(
-                    titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                    contentTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                    titleTextStyle:
+                        Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                    contentTextStyle:
+                        Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0)),
                   ),
                 ),
                 child: UpgradeAlert(
@@ -111,7 +116,9 @@ class _LayoutState extends ConsumerState<Layout> {
                     bottom: false,
                     child: Container(
                       padding: widget.padding,
-                      child: widget.isScrollable ? SingleChildScrollView(child: widget.child) : widget.child,
+                      child: widget.isScrollable
+                          ? SingleChildScrollView(child: widget.child)
+                          : widget.child,
                     ),
                   ),
                 ),

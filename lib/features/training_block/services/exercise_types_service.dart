@@ -42,10 +42,12 @@ class ExerciseTypesService {
   }) async {
     final batch = firestore.batch();
 
-    final exerciseDayIndex = trainingBlock.indexOfExerciseDayByPseudoId(exerciseDay.dbModel.pseudoId);
+    final exerciseDayIndex = trainingBlock
+        .indexOfExerciseDayByPseudoId(exerciseDay.dbModel.pseudoId);
 
     final newExerciseTypeRef = exerciseTypesRepository.collectionRef.doc();
-    final trainingBlockRef = trainingBlocksRepository.getDocumentRef(trainingBlock.dbModel.id);
+    final trainingBlockRef =
+        trainingBlocksRepository.getDocumentRef(trainingBlock.dbModel.id);
 
     final dbModel = ExerciseType(
       id: newExerciseTypeRef.id,
@@ -71,24 +73,38 @@ class ExerciseTypesService {
     batch.set(newExerciseTypeRef, dbModel);
     batch.update(
       trainingBlockRef,
-      trainingBlocksRepository.toFirestore(updatedTrainingBlock.toDbModel(), null),
+      trainingBlocksRepository.toFirestore(
+        updatedTrainingBlock.toDbModel(),
+        null,
+      ),
     );
 
     return batch.commit();
   }
 
-  Future<void> updateNotes(ExerciseTypeClient exerciseTypeClient, String notes) async {
-    return exerciseTypesRepository.update(exerciseTypeClient.copyWith(notes: notes).toDbModel());
+  Future<void> updateNotes(
+    ExerciseTypeClient exerciseTypeClient,
+    String notes,
+  ) async {
+    return exerciseTypesRepository.update(
+      exerciseTypeClient.copyWith(notes: notes).toDbModel(),
+    );
   }
 
-  Future<void> archive(ExerciseTypeClient exerciseTypeClient, bool archive) async {
-    return exerciseTypesRepository.update(exerciseTypeClient.archive(archive).toDbModel());
+  Future<void> archive(
+    ExerciseTypeClient exerciseTypeClient,
+    bool archive,
+  ) async {
+    return exerciseTypesRepository.update(
+      exerciseTypeClient.archive(archive).toDbModel(),
+    );
   }
 }
 
 @riverpod
 ExerciseTypesService exerciseTypesService(ExerciseTypesServiceRef ref) {
-  final TrainingBlocksRepository trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
+  final TrainingBlocksRepository trainingBlocksRepository =
+      ref.watch(trainingBlocksRepositoryProvider);
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
   final firestore = ref.watch(firestoreProvider);
 

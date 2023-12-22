@@ -16,7 +16,9 @@ class EditModeSwitcher extends _$EditModeSwitcher {
 
     state = newState;
 
-    analytics.logEvent(name: 'toggle_edit_mode', parameters: {'edit_mode': newState.toString()});
+    analytics.logEvent(
+        name: 'toggle_edit_mode',
+        parameters: {'edit_mode': newState.toString()});
   }
 
   void disable() {
@@ -26,6 +28,8 @@ class EditModeSwitcher extends _$EditModeSwitcher {
 
     state = newState;
 
-    analytics.logEvent(name: 'toggle_edit_mode', parameters: {'edit_mode': newState.toString()});
+    analytics.logEvent(
+        name: 'toggle_edit_mode',
+        parameters: {'edit_mode': newState.toString()});
   }
 }

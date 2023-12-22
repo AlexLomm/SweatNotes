@@ -38,7 +38,10 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
 
     final authService = ref.watch(authServiceProvider);
 
-    final safeAreaHeight = mq.size.height - mq.padding.top - mq.padding.bottom - mq.viewInsets.bottom;
+    final safeAreaHeight = mq.size.height -
+        mq.padding.top -
+        mq.padding.bottom -
+        mq.viewInsets.bottom;
 
     return Layout(
       isAppBarVisible: false,
@@ -137,18 +140,15 @@ class LogInScreenState extends ConsumerState<LogInScreen> {
                 Container(
                   margin: const EdgeInsets.only(right: 8.0),
                   child: Text('Not a member?',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant)),
                 ),
                 TextButton(
                   onPressed: () => context.goNamed(RouteNames.signUp),
                   child: Text('Sign up',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(color: Theme.of(context).colorScheme.primary)),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.primary)),
                 ),
               ],
             ),
@@ -182,7 +182,10 @@ class _MaterialButtonWrapper extends StatelessWidget {
         shape: const CircleBorder(),
         color: Theme.of(context).colorScheme.secondaryContainer,
         padding: const EdgeInsets.all(12.0),
-        child: isLoading ? CircularProgressIndicator(color: Theme.of(context).colorScheme.onSecondaryContainer) : child,
+        child: isLoading
+            ? CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.onSecondaryContainer)
+            : child,
       ),
     );
   }

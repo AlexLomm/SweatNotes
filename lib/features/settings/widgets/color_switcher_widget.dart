@@ -85,9 +85,10 @@ class _RainbowCircleState extends State<_RainbowCircle> {
                 paletteType: PaletteType.hueWheel,
                 pickerColor: widget.color,
                 onColorChanged: (color) => setState(() => _color = color),
-                labelTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                labelTextStyle:
+                    Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
               ),
               const SizedBox(height: 24.0),
               Row(
@@ -95,7 +96,9 @@ class _RainbowCircleState extends State<_RainbowCircle> {
                   Expanded(
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.primary),
+                      style: TextButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.primary),
                       child: const Text('Cancel'),
                     ),
                   ),
@@ -107,7 +110,9 @@ class _RainbowCircleState extends State<_RainbowCircle> {
                         Navigator.of(context).pop();
                       },
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      child: Text('Set', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+                      child: Text('Set',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary)),
                     ),
                   ),
                 ],
@@ -121,13 +126,16 @@ class _RainbowCircleState extends State<_RainbowCircle> {
         curve: WidgetParams.animationCurve,
         width: 40,
         height: 40,
-        decoration: widget.isSelected ? rainbowBoxDecoration : const BoxDecoration(shape: BoxShape.circle),
+        decoration: widget.isSelected
+            ? rainbowBoxDecoration
+            : const BoxDecoration(shape: BoxShape.circle),
         child: Center(
           child: Container(
             width: 36.0,
             height: 36.0,
             decoration: rainbowBoxDecoration.copyWith(
-              border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.background, width: 2),
             ),
             child: Center(
               child: Container(
@@ -175,7 +183,8 @@ class _ColorCircle extends StatelessWidget {
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
-            border: Border.all(color: Theme.of(context).colorScheme.background, width: 2),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.background, width: 2),
           ),
           child: MaterialButton(
             color: color,

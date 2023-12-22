@@ -41,10 +41,14 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await FirebaseAppCheck.instance.activate(
-    appleProvider: kAppCheckEnabled ? AppleProvider.appAttestWithDeviceCheckFallback : AppleProvider.debug,
+    appleProvider: kAppCheckEnabled
+        ? AppleProvider.appAttestWithDeviceCheckFallback
+        : AppleProvider.debug,
   );
 
-  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(kCrashlyticsEnabled);
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    kCrashlyticsEnabled,
+  );
   FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(kAnalyticsEnabled);
 
   // catch errors that happen outside of the Flutter context

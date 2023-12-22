@@ -38,7 +38,8 @@ class TrainingBlockScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _TrainingBlockScreenState();
 }
 
-class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with RouteAware {
+class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
+    with RouteAware {
   late RouteObserver _routeObserver;
 
   @override
@@ -63,7 +64,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   void didPush() {
     final prefs = ref.read(prefsProvider);
 
-    final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final routeArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String trainingBlockId = routeArgs['trainingBlockId'];
 
     prefs.setString('initialLocation', '/$trainingBlockId');
@@ -85,19 +87,23 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen> with 
   @override
   Widget build(BuildContext context) {
     final authService = ref.watch(authServiceProvider);
-    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId, includeArchived: true));
+    final data = ref.watch(trainingBlockDetailsStreamProvider(
+        widget.trainingBlockId,
+        includeArchived: true));
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
 
     return data.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (Object error, StackTrace stackTrace) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => authService.signOut());
+        WidgetsBinding.instance
+            .addPostFrameCallback((_) => authService.signOut());
 
         return Center(child: Text(error.toString()));
       },
       data: (trainingBlock) {
         if (trainingBlock == null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => context.goNamed(RouteNames.home));
+          WidgetsBinding.instance
+              .addPostFrameCallback((_) => context.goNamed(RouteNames.home));
 
           return const Center(child: CircularProgressIndicator());
         }
@@ -155,7 +161,8 @@ class _MatrixState extends ConsumerState<Matrix> {
       });
 
     for (final pseudoId in _nonEmptyDayPseudoIds) {
-      _horizontalScrollControllersMap[pseudoId] = _horizontalScrollControllersGroup.addAndGet();
+      _horizontalScrollControllersMap[pseudoId] =
+          _horizontalScrollControllersGroup.addAndGet();
     }
   }
 
@@ -164,19 +171,25 @@ class _MatrixState extends ConsumerState<Matrix> {
     super.didUpdateWidget(oldWidget);
 
     final setOfNonEmptyDayPseudoIds = _nonEmptyDayPseudoIds;
-    final setOfScrollAttachedDayPseudoIds = _horizontalScrollControllersMap.keys.toSet();
+    final setOfScrollAttachedDayPseudoIds =
+        _horizontalScrollControllersMap.keys.toSet();
 
-    if (setEquals(setOfNonEmptyDayPseudoIds, setOfScrollAttachedDayPseudoIds)) return;
+    if (setEquals(setOfNonEmptyDayPseudoIds, setOfScrollAttachedDayPseudoIds)) {
+      return;
+    }
 
     // remove controllers that are no longer needed (for example, if an exercise day was archived)
-    for (final pseudoId in setOfScrollAttachedDayPseudoIds.difference(setOfNonEmptyDayPseudoIds)) {
+    for (final pseudoId in setOfScrollAttachedDayPseudoIds
+        .difference(setOfNonEmptyDayPseudoIds)) {
       _horizontalScrollControllersMap[pseudoId]!.dispose();
       _horizontalScrollControllersMap.remove(pseudoId);
     }
 
     // add controllers for new exercise days
-    for (final pseudoId in setOfNonEmptyDayPseudoIds.difference(setOfScrollAttachedDayPseudoIds)) {
-      _horizontalScrollControllersMap[pseudoId] = _horizontalScrollControllersGroup.addAndGet();
+    for (final pseudoId in setOfNonEmptyDayPseudoIds
+        .difference(setOfScrollAttachedDayPseudoIds)) {
+      _horizontalScrollControllersMap[pseudoId] =
+          _horizontalScrollControllersGroup.addAndGet();
     }
   }
 
@@ -203,16 +216,19 @@ class _MatrixState extends ConsumerState<Matrix> {
   @override
   Widget build(BuildContext context) {
     final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
-    final exerciseReactionsSwitcher = ref.watch(exerciseReactionsSwitcherProvider.notifier);
+    final exerciseReactionsSwitcher =
+        ref.watch(exerciseReactionsSwitcherProvider.notifier);
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
     final isTimerEnabledSwitcher = ref.watch(timerSwitcherProvider.notifier);
 
     final isCompactMode = ref.watch(compactModeSwitcherProvider);
-    final isExerciseReactionsEnabled = ref.watch(exerciseReactionsSwitcherProvider);
+    final isExerciseReactionsEnabled =
+        ref.watch(exerciseReactionsSwitcherProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
-    final showArchivedNotifier = ref.watch(showArchivedExerciseTypesSwitcherProvider.notifier);
+    final showArchivedNotifier =
+        ref.watch(showArchivedExerciseTypesSwitcherProvider.notifier);
 
     final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
           color: Theme.of(context).colorScheme.onSurface,
@@ -237,7 +253,10 @@ class _MatrixState extends ConsumerState<Matrix> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurfaceVariant
+                        .withOpacity(isEditMode ? 1.0 : 0.0),
                     width: 1,
                   ),
                 ),
@@ -253,7 +272,10 @@ class _MatrixState extends ConsumerState<Matrix> {
                   widget.trainingBlock.name,
                   softWrap: false,
                   maxLines: 1,
-                  minFontSize: ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) * 0.9).roundToDouble(),
+                  minFontSize:
+                      ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) *
+                              0.9)
+                          .roundToDouble(),
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,
@@ -268,7 +290,10 @@ class _MatrixState extends ConsumerState<Matrix> {
               duration: WidgetParams.animationDuration,
               curve: WidgetParams.animationCurve,
               child: IconButton(
-                icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSurface),
+                icon: Icon(
+                  Icons.add,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 tooltip: 'Add new entry',
                 splashRadius: 20,
                 onPressed: isEditMode
@@ -281,7 +306,9 @@ class _MatrixState extends ConsumerState<Matrix> {
             ),
             AnimatedCrossFade(
               alignment: Alignment.center,
-              crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              crossFadeState: isEditMode
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
               duration: WidgetParams.animationDuration,
               firstCurve: WidgetParams.animationCurve,
               secondCurve: WidgetParams.animationCurve,
@@ -290,30 +317,43 @@ class _MatrixState extends ConsumerState<Matrix> {
                 duration: WidgetParams.animationDuration,
                 curve: WidgetParams.animationCurve,
                 child: IconButton(
-                  icon: Icon(Icons.edit_outlined, color: Theme.of(context).colorScheme.onSurface),
+                  icon: Icon(
+                    Icons.edit_outlined,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   tooltip: 'Turn on edit mode',
                   splashRadius: 20,
-                  onPressed: () => isEditMode ? null : editModeSwitcher.toggle(),
+                  onPressed: () =>
+                      isEditMode ? null : editModeSwitcher.toggle(),
                 ),
               ),
               secondChild: IconButton(
-                tooltip: showArchived ? "Don't show archived exercises" : 'Show archived exercises',
+                tooltip: showArchived
+                    ? "Don't show archived exercises"
+                    : 'Show archived exercises',
                 splashRadius: 20,
                 icon: AnimatedCrossFade(
                   alignment: Alignment.center,
-                  crossFadeState: showArchived ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                  crossFadeState: showArchived
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
                   duration: WidgetParams.animationDuration,
                   firstCurve: WidgetParams.animationCurve,
                   secondCurve: WidgetParams.animationCurve,
-                  firstChild: Icon(color: Theme.of(context).colorScheme.primary, Icons.unarchive_outlined),
-                  secondChild: Icon(color: Theme.of(context).colorScheme.tertiary, Icons.cancel_outlined),
+                  firstChild: const Icon(Icons.unarchive_outlined),
+                  secondChild: Icon(
+                    Icons.cancel_outlined,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
                 ),
                 onPressed: showArchivedNotifier.toggle,
               ),
             ),
             AnimatedCrossFade(
               alignment: Alignment.center,
-              crossFadeState: isEditMode ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              crossFadeState: isEditMode
+                  ? CrossFadeState.showSecond
+                  : CrossFadeState.showFirst,
               duration: WidgetParams.animationDuration,
               firstCurve: WidgetParams.animationCurve,
               secondCurve: WidgetParams.animationCurve,
@@ -353,7 +393,8 @@ class _MatrixState extends ConsumerState<Matrix> {
                 ],
               ),
               secondChild: IconButton(
-                icon: Icon(Icons.check, color: Theme.of(context).colorScheme.primary),
+                icon: Icon(Icons.check,
+                    color: Theme.of(context).colorScheme.primary),
                 tooltip: 'Turn off edit mode',
                 splashRadius: 20,
                 onPressed: editModeSwitcher.toggle,
@@ -361,9 +402,11 @@ class _MatrixState extends ConsumerState<Matrix> {
             ),
           ],
         ),
-        if (widget.trainingBlock.exerciseDays.isNotEmpty) const SliverPadding(padding: EdgeInsets.only(top: 24)),
+        if (widget.trainingBlock.exerciseDays.isNotEmpty)
+          const SliverPadding(padding: EdgeInsets.only(top: 24)),
         widget.trainingBlock.exerciseDays.isEmpty
-            ? const SliverToBoxAdapter(child: Center(child: EmptyPagePlaceholder()))
+            ? const SliverToBoxAdapter(
+                child: Center(child: EmptyPagePlaceholder()))
             : SliverList(
                 delegate: SliverChildBuilderDelegate(
                   childCount: widget.trainingBlock.exerciseDays.length,
@@ -379,7 +422,8 @@ class _MatrixState extends ConsumerState<Matrix> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: HorizontallyScrollableExercises(
-                            scrollController: _horizontalScrollControllersMap[exerciseDay.dbModel.pseudoId],
+                            scrollController: _horizontalScrollControllersMap[
+                                exerciseDay.dbModel.pseudoId],
                             trainingBlock: widget.trainingBlock,
                             exerciseDay: exerciseDay,
                           ),
@@ -415,9 +459,12 @@ class OnOffText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final menuItemSubTextTheme = Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: isEnabled ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
-        );
+    final menuItemSubTextTheme =
+        Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: isEnabled
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurface,
+            );
 
     return RichText(
       softWrap: false,
@@ -429,7 +476,8 @@ class OnOffText extends StatelessWidget {
             child: Container(
               margin: const EdgeInsets.only(left: 24.0),
               padding: const EdgeInsets.only(bottom: 1.0),
-              child: Text(isEnabled ? 'On' : 'Off', style: menuItemSubTextTheme),
+              child:
+                  Text(isEnabled ? 'On' : 'Off', style: menuItemSubTextTheme),
             ),
           ),
         ],

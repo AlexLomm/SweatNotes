@@ -78,7 +78,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   ? () async {
                       setState(() => _isLoading = true);
 
-                      await authService.sendPasswordResetEmail(_emailController.text);
+                      await authService
+                          .sendPasswordResetEmail(_emailController.text);
 
                       if (mounted) setState(() => _isLoading = false);
                     }

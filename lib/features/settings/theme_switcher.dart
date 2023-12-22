@@ -18,9 +18,12 @@ class ThemeSwitcher extends _$ThemeSwitcher {
     final themeMode = prefs.getString(key) ?? 'system';
 
     if (themeMode == 'system') {
-      final platformBrightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
+      final platformBrightness =
+          SchedulerBinding.instance.platformDispatcher.platformBrightness;
 
-      return platformBrightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+      return platformBrightness == Brightness.dark
+          ? ThemeMode.dark
+          : ThemeMode.light;
     }
 
     if (themeMode == 'light') {
@@ -40,6 +43,7 @@ class ThemeSwitcher extends _$ThemeSwitcher {
 
     prefs.setString(key, themeModeString);
 
-    analytics.logEvent(name: 'set_theme_mode', parameters: {'theme_mode': themeModeString});
+    analytics.logEvent(
+        name: 'set_theme_mode', parameters: {'theme_mode': themeModeString});
   }
 }

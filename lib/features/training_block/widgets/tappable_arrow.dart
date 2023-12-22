@@ -40,7 +40,9 @@ class TappableArrow extends ConsumerWidget {
           duration: WidgetParams.animationDuration,
           curve: WidgetParams.animationCurve,
           child: Icon(
-            direction == TappableArrowDirection.up ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+            direction == TappableArrowDirection.up
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down,
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),

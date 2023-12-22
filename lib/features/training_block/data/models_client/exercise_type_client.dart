@@ -28,7 +28,9 @@ class ExerciseTypeClient with _$ExerciseTypeClient {
       unit: unit,
       notes: notes,
       archivedAt: archivedAt,
-      exercises: _exercisesWithNoTrailingFillers.map<Exercise>((e) => e.toDbModel()).toList(),
+      exercises: _exercisesWithNoTrailingFillers
+          .map<Exercise>((e) => e.toDbModel())
+          .toList(),
     );
   }
 

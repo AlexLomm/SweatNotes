@@ -17,7 +17,8 @@ class TimerSettingsState with _$TimerSettingsState {
     @Default(false) bool isMuted,
   }) = _TimerSettingsState;
 
-  factory TimerSettingsState.fromJson(Map<String, Object?> json) => _$TimerSettingsStateFromJson(json);
+  factory TimerSettingsState.fromJson(Map<String, Object?> json) =>
+      _$TimerSettingsStateFromJson(json);
 }
 
 @riverpod
@@ -54,7 +55,9 @@ class TimerSettings extends _$TimerSettings {
     final prefs = ref.watch(prefsProvider);
 
     final modifiedInitialSeconds = state.initialSeconds + value;
-    final updatedInitialSeconds = modifiedInitialSeconds > maxSeconds ? maxSeconds : modifiedInitialSeconds;
+    final updatedInitialSeconds = modifiedInitialSeconds > maxSeconds
+        ? maxSeconds
+        : modifiedInitialSeconds;
 
     state = state.copyWith(initialSeconds: updatedInitialSeconds);
 
@@ -69,7 +72,9 @@ class TimerSettings extends _$TimerSettings {
     final prefs = ref.watch(prefsProvider);
 
     final modifiedInitialSeconds = state.initialSeconds - value;
-    final updatedInitialSeconds = modifiedInitialSeconds < minSeconds ? minSeconds : modifiedInitialSeconds;
+    final updatedInitialSeconds = modifiedInitialSeconds < minSeconds
+        ? minSeconds
+        : modifiedInitialSeconds;
 
     state = state.copyWith(initialSeconds: updatedInitialSeconds);
 

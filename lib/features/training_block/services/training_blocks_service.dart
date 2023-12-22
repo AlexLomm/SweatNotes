@@ -62,10 +62,14 @@ class TrainingBlocksService {
     required int index,
   }) {
     assert(trainingBlock.exerciseDays.isNotEmpty);
-    assert(index >= 0 && index < trainingBlock.exerciseDays[0].exerciseTypes[0].exercises.length);
+    assert(index >= 0 &&
+        index <
+            trainingBlock.exerciseDays[0].exerciseTypes[0].exercises.length);
 
     return trainingBlocksRepository.update(
-      trainingBlock.copyWith(exercisesCollapsedIncludingIndex: index).toDbModel(),
+      trainingBlock
+          .copyWith(exercisesCollapsedIncludingIndex: index)
+          .toDbModel(),
     );
   }
 
@@ -97,7 +101,8 @@ class TrainingBlocksService {
   }) {
     final batch = firestore.batch();
 
-    final updatedTrainingBlockDbModel = trainingBlock.archiveExerciseDay(exerciseDay, archive).toDbModel();
+    final updatedTrainingBlockDbModel =
+        trainingBlock.archiveExerciseDay(exerciseDay, archive).toDbModel();
 
     batch.update(
       trainingBlocksRepository.getDocumentRef(updatedTrainingBlockDbModel.id),
@@ -105,7 +110,8 @@ class TrainingBlocksService {
     );
 
     for (final exerciseType in exerciseDay.exerciseTypes) {
-      final updatedExerciseTypeDbModel = exerciseType.archive(archive).toDbModel();
+      final updatedExerciseTypeDbModel =
+          exerciseType.archive(archive).toDbModel();
 
       batch.update(
         exerciseTypesRepository.getDocumentRef(updatedExerciseTypeDbModel.id),
@@ -117,7 +123,10 @@ class TrainingBlocksService {
   }
 
   Future<void> archive(TrainingBlockClient trainingBlock, bool archive) {
-    return trainingBlocksRepository.update(trainingBlock.archive(archive).toDbModel());
+    return trainingBlocksRepository.archive(
+      trainingBlock.dbModel.id,
+      archive,
+    );
   }
 
   Future<void> copyWithPersonalRecords(
@@ -125,22 +134,26 @@ class TrainingBlocksService {
     required String trainingBlockName,
     required Timestamp startedAt,
   }) async {
-    final trainingBlockWithOnlyPersonalRecords = trainingBlock.getWithOnlyPersonalRecords();
+    final trainingBlockWithOnlyPersonalRecords =
+        trainingBlock.getWithOnlyPersonalRecords();
 
     final batch = firestore.batch();
 
-    final trainingBlockDocumentRef = trainingBlocksRepository.getDocumentRef(null);
-    var newTrainingBlock = trainingBlockWithOnlyPersonalRecords.toDbModel().copyWith(
-          id: trainingBlockDocumentRef.id,
-          name: trainingBlockName,
-          startedAt: startedAt,
-          exerciseDaysOrdering: {},
-          exercisesCollapsedIncludingIndex: -1,
-          exerciseDays: [],
-        );
+    final trainingBlockDocumentRef =
+        trainingBlocksRepository.getDocumentRef(null);
+    var newTrainingBlock =
+        trainingBlockWithOnlyPersonalRecords.toDbModel().copyWith(
+              id: trainingBlockDocumentRef.id,
+              name: trainingBlockName,
+              startedAt: startedAt,
+              exerciseDaysOrdering: {},
+              exercisesCollapsedIncludingIndex: -1,
+              exerciseDays: [],
+            );
 
     final Map<String, int> exerciseDaysOrdering = {};
-    for (final exerciseDay in trainingBlockWithOnlyPersonalRecords.exerciseDays) {
+    for (final exerciseDay
+        in trainingBlockWithOnlyPersonalRecords.exerciseDays) {
       final clonedExerciseDayPseudoId = generateHash();
       final clonedExerciseDay = exerciseDay.toDbModel().copyWith(
         pseudoId: clonedExerciseDayPseudoId,
@@ -148,21 +161,26 @@ class TrainingBlocksService {
         exerciseTypesOrdering: {},
       );
 
-      exerciseDaysOrdering[clonedExerciseDayPseudoId] =
-          trainingBlock.dbModel.exerciseDaysOrdering[exerciseDay.dbModel.pseudoId] ?? 0;
+      exerciseDaysOrdering[clonedExerciseDayPseudoId] = trainingBlock
+              .dbModel.exerciseDaysOrdering[exerciseDay.dbModel.pseudoId] ??
+          0;
 
       final Map<String, int> exerciseTypesOrdering = {};
       for (final exerciseType in exerciseDay.exerciseTypes) {
-        final exerciseTypeDocumentRef = exerciseTypesRepository.getDocumentRef(null);
+        final exerciseTypeDocumentRef =
+            exerciseTypesRepository.getDocumentRef(null);
         final newExerciseType = exerciseType.toDbModel().copyWith(
               id: exerciseTypeDocumentRef.id,
               trainingBlockId: trainingBlockDocumentRef.id,
             );
 
-        assert(exerciseDay.dbModel.exerciseTypesOrdering[exerciseType.dbModel.id] != null);
+        assert(exerciseDay
+                .dbModel.exerciseTypesOrdering[exerciseType.dbModel.id] !=
+            null);
 
-        exerciseTypesOrdering[exerciseTypeDocumentRef.id] =
-            exerciseDay.dbModel.exerciseTypesOrdering[exerciseType.dbModel.id] ?? 0;
+        exerciseTypesOrdering[exerciseTypeDocumentRef.id] = exerciseDay
+                .dbModel.exerciseTypesOrdering[exerciseType.dbModel.id] ??
+            0;
 
         batch.set<ExerciseType>(
           exerciseTypeDocumentRef,

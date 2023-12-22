@@ -154,8 +154,8 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final FlexibleSpaceBarSettings settings =
-            context.dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>()!;
+        final FlexibleSpaceBarSettings settings = context
+            .dependOnInheritedWidgetOfExactType<FlexibleSpaceBarSettings>()!;
 
         final List<Widget> children = <Widget>[];
 
@@ -163,7 +163,10 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
 
         // 0.0 -> Expanded
         // 1.0 -> Collapsed to toolbar
-        final double t = clampDouble(1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent, 0.0, 1.0);
+        final double t = clampDouble(
+            1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent,
+            0.0,
+            1.0);
 
         // background
         if (widget.background != null) {
@@ -172,12 +175,14 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
           assert(fadeStart <= fadeEnd);
           // If the min and max extent are the same, the app bar cannot collapse
           // and the content should be visible, so opacity = 1.
-          final double opacity =
-              settings.maxExtent == settings.minExtent ? 1.0 : 1.0 - Interval(fadeStart, fadeEnd).transform(t);
+          final double opacity = settings.maxExtent == settings.minExtent
+              ? 1.0
+              : 1.0 - Interval(fadeStart, fadeEnd).transform(t);
           double height = settings.maxExtent;
 
           // StretchMode.zoomBackground
-          if (widget.stretchModes.contains(StretchMode.zoomBackground) && constraints.maxHeight > height) {
+          if (widget.stretchModes.contains(StretchMode.zoomBackground) &&
+              constraints.maxHeight > height) {
             height = constraints.maxHeight;
           }
           children.add(Positioned(
@@ -195,8 +200,10 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
           ));
 
           // StretchMode.blurBackground
-          if (widget.stretchModes.contains(StretchMode.blurBackground) && constraints.maxHeight > settings.maxExtent) {
-            final double blurAmount = (constraints.maxHeight - settings.maxExtent) / 10;
+          if (widget.stretchModes.contains(StretchMode.blurBackground) &&
+              constraints.maxHeight > settings.maxExtent) {
+            final double blurAmount =
+                (constraints.maxHeight - settings.maxExtent) / 10;
             children.add(Positioned.fill(
               child: BackdropFilter(
                 filter: ImageFilter.blur(
@@ -233,8 +240,11 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
           }
 
           // StretchMode.fadeTitle
-          if (widget.stretchModes.contains(StretchMode.fadeTitle) && constraints.maxHeight > settings.maxExtent) {
-            final double stretchOpacity = 1 - clampDouble((constraints.maxHeight - settings.maxExtent) / 100, 0.0, 1.0);
+          if (widget.stretchModes.contains(StretchMode.fadeTitle) &&
+              constraints.maxHeight > settings.maxExtent) {
+            final double stretchOpacity = 1 -
+                clampDouble((constraints.maxHeight - settings.maxExtent) / 100,
+                    0.0, 1.0);
             title = Opacity(
               opacity: stretchOpacity,
               child: title,
@@ -244,16 +254,23 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
           final double opacity = settings.toolbarOpacity;
           if (opacity > 0.0) {
             TextStyle titleStyle = theme.primaryTextTheme.titleLarge!;
-            titleStyle = titleStyle.copyWith(color: titleStyle.color!.withOpacity(opacity));
+            titleStyle = titleStyle.copyWith(
+                color: titleStyle.color!.withOpacity(opacity));
             final bool effectiveCenterTitle = _getEffectiveCenterTitle(theme);
             final EdgeInsetsGeometry padding = widget.titlePadding ??
                 EdgeInsetsDirectional.only(
-                  start: effectiveCenterTitle ? 0.0 : Tween<double>(begin: 16.0, end: 72.0).transform(t),
+                  start: effectiveCenterTitle
+                      ? 0.0
+                      : Tween<double>(begin: 16.0, end: 72.0).transform(t),
                   bottom: Tween<double>(begin: 16.0, end: 14.0).transform(t),
                 );
-            final double scaleValue = Tween<double>(begin: widget.expandedTitleScale, end: 1.0).transform(t);
-            final Matrix4 scaleTransform = Matrix4.identity()..scale(scaleValue, scaleValue, 1.0);
-            final Alignment titleAlignment = _getTitleAlignment(effectiveCenterTitle);
+            final double scaleValue =
+                Tween<double>(begin: widget.expandedTitleScale, end: 1.0)
+                    .transform(t);
+            final Matrix4 scaleTransform = Matrix4.identity()
+              ..scale(scaleValue, scaleValue, 1.0);
+            final Alignment titleAlignment =
+                _getTitleAlignment(effectiveCenterTitle);
 
             children.add(Container(
               padding: padding,
@@ -265,7 +282,8 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
                   child: DefaultTextStyle(
                     style: titleStyle,
                     child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
+                      builder:
+                          (BuildContext context, BoxConstraints constraints) {
                         return Container(
                           width: constraints.maxWidth / scaleValue,
                           alignment: titleAlignment,

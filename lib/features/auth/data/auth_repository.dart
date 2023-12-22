@@ -29,7 +29,8 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    return _auth.createUserWithEmailAndPassword(email: email, password: password);
+    return _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
   }
 
   Future<void> sendPasswordResetEmail({required String email}) {

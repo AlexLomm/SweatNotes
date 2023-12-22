@@ -32,8 +32,11 @@ class _PasswordFieldState extends State<PasswordField> {
       decoration: InputDecoration(
         filled: true,
         suffixIcon: IconButton(
-          icon: Icon(_isPasswordVisible ? Icons.visibility_off_outlined : Icons.visibility_outlined),
-          onPressed: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
+          icon: Icon(_isPasswordVisible
+              ? Icons.visibility_off_outlined
+              : Icons.visibility_outlined),
+          onPressed: () =>
+              setState(() => _isPasswordVisible = !_isPasswordVisible),
         ),
         fillColor: Theme.of(context).colorScheme.surfaceVariant,
         labelText: widget.labelText,

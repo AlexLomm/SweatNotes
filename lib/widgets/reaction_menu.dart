@@ -22,7 +22,8 @@ class ReactionMenu extends ConsumerStatefulWidget {
   ConsumerState createState() => _ReactionMenuState();
 }
 
-class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerProviderStateMixin {
+class _ReactionMenuState extends ConsumerState<ReactionMenu>
+    with SingleTickerProviderStateMixin {
   int? selectedReaction;
 
   late GlobalKey _key;
@@ -189,11 +190,16 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
         const containerHeightBase = 110.0;
         const containerWidthBase = 75.0;
 
-        final containerHeight = widgetParams.isCompactMode ? containerHeightBase : 1.25 * containerHeightBase;
-        final containerWidth = widgetParams.isCompactMode ? containerWidthBase : 1.25 * containerWidthBase;
+        final containerHeight = widgetParams.isCompactMode
+            ? containerHeightBase
+            : 1.25 * containerHeightBase;
+        final containerWidth = widgetParams.isCompactMode
+            ? containerWidthBase
+            : 1.25 * containerWidthBase;
 
         return Positioned(
-          top: _buttonPosition.dy + _buttonSize.height / 2 - containerHeight / 2,
+          top:
+              _buttonPosition.dy + _buttonSize.height / 2 - containerHeight / 2,
           left: _buttonPosition.dx + _buttonSize.width - containerWidth,
           child: AnimatedBuilder(
             animation: _animationController,
@@ -212,7 +218,8 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
                             widgetParams.reactionCircleSize / 2,
                             widgetParams.reactionCircleSize / 2,
                           ),
-                          transform: Matrix4.identity()..scale(1.0 * _expandAnimation.value),
+                          transform: Matrix4.identity()
+                            ..scale(1.0 * _expandAnimation.value),
                           child: GestureDetector(
                             onTap: () => _closeMenu(giveHapticFeedback: true),
                             child: Opacity(
@@ -231,7 +238,10 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
                           ),
                           transform: Matrix4.identity()
                             ..scale(1.25 * _expandAnimation.value)
-                            ..translate(-0.16 * containerWidth * _expandAnimation.value, -0.25 * containerHeight, 0),
+                            ..translate(
+                                -0.16 * containerWidth * _expandAnimation.value,
+                                -0.25 * containerHeight,
+                                0),
                           child: GestureDetector(
                             onTap: () => _selectReaction(5),
                             child: Reaction(
@@ -250,7 +260,10 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
                           ),
                           transform: Matrix4.identity()
                             ..scale(1.25 * _expandAnimation.value)
-                            ..translate(-0.4 * containerWidth * _expandAnimation.value, 0, 0),
+                            ..translate(
+                                -0.4 * containerWidth * _expandAnimation.value,
+                                0,
+                                0),
                           child: GestureDetector(
                             onTap: () => _selectReaction(0),
                             child: Reaction(
@@ -269,7 +282,10 @@ class _ReactionMenuState extends ConsumerState<ReactionMenu> with SingleTickerPr
                           ),
                           transform: Matrix4.identity()
                             ..scale(1.25 * _expandAnimation.value)
-                            ..translate(-0.16 * containerWidth * _expandAnimation.value, 0.25 * containerHeight, 0),
+                            ..translate(
+                                -0.16 * containerWidth * _expandAnimation.value,
+                                0.25 * containerHeight,
+                                0),
                           child: GestureDetector(
                             onTap: () => _selectReaction(-5),
                             child: Reaction(

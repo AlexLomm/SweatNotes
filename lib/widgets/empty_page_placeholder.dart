@@ -14,7 +14,9 @@ class EmptyPagePlaceholder extends StatelessWidget {
       width: mq.size.width * 0.75,
       child: RiveAnimation.asset(
         alignment: Alignment.center,
-        isDark ? 'assets/rive/empty-state-dark.riv' : 'assets/rive/empty-state-light.riv',
+        isDark
+            ? 'assets/rive/empty-state-dark.riv'
+            : 'assets/rive/empty-state-light.riv',
       ),
     );
   }

@@ -65,7 +65,8 @@ class _TimerCustomInputState extends State<TimerCustomInput> {
                 3.0,
               ),
             ),
-        textTheme: Theme.of(context).textTheme.copyWith(titleLarge: titleLargeTheme),
+        textTheme:
+            Theme.of(context).textTheme.copyWith(titleLarge: titleLargeTheme),
       ),
       child: SizedBox(
         width: TimerCustomInput.width,

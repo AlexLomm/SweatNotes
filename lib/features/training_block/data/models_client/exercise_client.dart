@@ -36,7 +36,7 @@ class ExerciseClient with _$ExerciseClient {
     final sets = _setsWithNoTrailingFillers
         .map<ExerciseSet>(
           (ExerciseSetClient set) => set.toDbModel(),
-    )
+        )
         .toList();
 
     if (isFiller || dbModel == null) {

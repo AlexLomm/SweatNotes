@@ -127,7 +127,8 @@ ThemeData theme(ThemeRef ref) {
   final isLight = themeMode == ThemeMode.light;
 
   final colorScheme = isLight ? colorSchemeLight : colorSchemeDark;
-  final systemOverlayStyle = isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
+  final systemOverlayStyle =
+      isLight ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light;
 
   return ThemeData(
     useMaterial3: true,
@@ -140,7 +141,8 @@ ThemeData theme(ThemeRef ref) {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: colorScheme.inverseSurface,
-      contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),
+      contentTextStyle:
+          textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),
     ),
     appBarTheme: AppBarTheme(
       systemOverlayStyle: systemOverlayStyle,

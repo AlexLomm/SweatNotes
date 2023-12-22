@@ -14,13 +14,22 @@ part 'training_block.g.dart';
 class TrainingBlock with _$TrainingBlock {
   const factory TrainingBlock({
     @JsonKey(includeToJson: false) required String id,
-    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null) Timestamp? archivedAt,
-    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson, defaultValue: null) Timestamp? startedAt,
+    @JsonKey(
+        fromJson: timestampFromJson,
+        toJson: timestampToJson,
+        defaultValue: null)
+    Timestamp? archivedAt,
+    @JsonKey(
+        fromJson: timestampFromJson,
+        toJson: timestampToJson,
+        defaultValue: null)
+    Timestamp? startedAt,
     @Default({}) Map<String, int> exerciseDaysOrdering,
     @Default(-1) int exercisesCollapsedIncludingIndex,
     required String name,
     @Default([]) List<ExerciseDay> exerciseDays,
   }) = _TrainingBlock;
 
-  factory TrainingBlock.fromJson(Map<String, Object?> json) => _$TrainingBlockFromJson(json);
+  factory TrainingBlock.fromJson(Map<String, Object?> json) =>
+      _$TrainingBlockFromJson(json);
 }

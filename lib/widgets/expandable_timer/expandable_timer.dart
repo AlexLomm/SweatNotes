@@ -71,12 +71,15 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
   get _isTimerReset => _timerController.status == AnimationStatus.dismissed;
 
-  get _isTimerFinished => _timerController.status == AnimationStatus.completed || _timerCountdownAnimation.value <= 0;
+  get _isTimerFinished =>
+      _timerController.status == AnimationStatus.completed ||
+      _timerCountdownAnimation.value <= 0;
 
   get _areIncrementButtonsEnabled => !_isCustomInputMode && _isTimerReset;
 
   get _shouldShowTimerPermissionsWarning =>
-      _notificationPermissionStatus != null && _notificationPermissionStatus != PermissionStatus.granted;
+      _notificationPermissionStatus != null &&
+      _notificationPermissionStatus != PermissionStatus.granted;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -86,11 +89,13 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
     if (state == AppLifecycleState.paused) {
       final duration = _timerController.duration ?? Duration.zero;
-      final elapsedDuration = _timerController.lastElapsedDuration ?? Duration.zero;
+      final elapsedDuration =
+          _timerController.lastElapsedDuration ?? Duration.zero;
 
       final remainingDuration = duration - elapsedDuration;
 
-      if (remainingDuration == _timerController.duration || remainingDuration == Duration.zero) return;
+      if (remainingDuration == _timerController.duration ||
+          remainingDuration == Duration.zero) return;
 
       _showTimerFinishedNotification(
         showAfter: remainingDuration,
@@ -115,7 +120,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
         if (status == AnimationStatus.dismissed) _removeOverlays();
       });
 
-    _timerProgressBorderOpacityAnimation = Tween<double>(begin: 1.0, end: 0).animate(
+    _timerProgressBorderOpacityAnimation =
+        Tween<double>(begin: 1.0, end: 0).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: const Interval(
@@ -154,7 +160,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
         if (status == AnimationStatus.completed) _resetTimer();
       });
 
-    _timerCountdownAnimation = IntTween(begin: timerSettings.initialSeconds, end: 0).animate(
+    _timerCountdownAnimation =
+        IntTween(begin: timerSettings.initialSeconds, end: 0).animate(
       CurvedAnimation(
         parent: _timerController,
         curve: Curves.linear,
@@ -230,7 +237,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
     if (status == PermissionStatus.denied) {
       final isGranted = await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
             alert: true,
             sound: true,
@@ -253,7 +261,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (context, child) => !_animationController.isAnimating && _isDismissed
+      builder: (context, child) => !_animationController.isAnimating &&
+              _isDismissed
           ? AnimatedBuilder(
               animation: _timerController,
               builder: (context, child) => TimerFloatingButton(
@@ -282,10 +291,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
             builder: (context, child) {
               return Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .background
-                      .withOpacity(0.38 * _containerExpandAnimation.value.clamp(0, 1)),
+                  color: Theme.of(context).colorScheme.background.withOpacity(
+                      0.38 * _containerExpandAnimation.value.clamp(0, 1)),
                 ),
                 child: Listener(
                   behavior: HitTestBehavior.opaque,
@@ -305,7 +312,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
         final mq = MediaQuery.of(context);
 
         const containerHeightBase = 224.0;
-        final containerWidthBase = min(400.0, max(288.0, mq.size.width - 2 * 16.0));
+        final containerWidthBase =
+            min(400.0, max(288.0, mq.size.width - 2 * 16.0));
 
         return Positioned(
           top: _buttonPosition.dy + _buttonSize.height - containerHeightBase,
@@ -329,9 +337,13 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                         ),
                         child: SizedBox(
                           height: TimerFloatingButton.height +
-                              ((containerHeightBase - TimerFloatingButton.height) * _containerExpandAnimation.value),
+                              ((containerHeightBase -
+                                      TimerFloatingButton.height) *
+                                  _containerExpandAnimation.value),
                           width: TimerFloatingButton.width +
-                              ((containerWidthBase - TimerFloatingButton.width) * _containerExpandAnimation.value),
+                              ((containerWidthBase -
+                                      TimerFloatingButton.width) *
+                                  _containerExpandAnimation.value),
                           child: child,
                         ),
                       ),
@@ -352,7 +364,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                             children: [
                               TimerTimeModifierButton(
                                 text: '-15',
-                                onTap: _areIncrementButtonsEnabled ? _decrementTimer : null,
+                                onTap: _areIncrementButtonsEnabled
+                                    ? _decrementTimer
+                                    : null,
                               ),
                               AnimatedBuilder(
                                 animation: _timerController,
@@ -360,11 +374,13 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                   duration: WidgetParams.animationDuration,
                                   firstCurve: WidgetParams.animationCurve,
                                   secondCurve: WidgetParams.animationCurve,
-                                  crossFadeState:
-                                      _isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                  crossFadeState: _isCustomInputMode
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
                                   firstChild: TimerCustomInput(
                                     isActive: _isCustomInputMode,
-                                    initialValue: _timerCountdownAnimation.value,
+                                    initialValue:
+                                        _timerCountdownAnimation.value,
                                     onChange: _setInitialSecondsTo,
                                   ),
                                   secondChild: TimerDisplay(
@@ -375,7 +391,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                               ),
                               TimerTimeModifierButton(
                                 text: '+15',
-                                onTap: _areIncrementButtonsEnabled ? _incrementTimer : null,
+                                onTap: _areIncrementButtonsEnabled
+                                    ? _incrementTimer
+                                    : null,
                               )
                             ],
                           ),
@@ -390,7 +408,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                           duration: WidgetParams.animationDuration,
                           firstCurve: WidgetParams.animationCurve,
                           secondCurve: WidgetParams.animationCurve,
-                          crossFadeState: _isCustomInputMode ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                          crossFadeState: _isCustomInputMode
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
                           firstChild: Padding(
                             padding: const EdgeInsets.only(
                               bottom: 8.0,
@@ -406,8 +426,13 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                   onPressed: _switchToNormalInputMode,
                                   child: Text(
                                     'Done',
-                                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                          color: Theme.of(context).colorScheme.onPrimary,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                         ),
                                   ),
                                 ),
@@ -426,7 +451,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                   onTap: _toggleTimerIsMuted,
                                 ),
                                 Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: TimerPlayPauseButton(
                                     isPlaying: _isTimerPlaying,
                                     isDisabled: _isTimerFinished,
@@ -446,12 +472,16 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Opacity(
-                        opacity: 1.0 - _containerExpandAnimation.value.clamp(0, 1.0),
+                        opacity:
+                            1.0 - _containerExpandAnimation.value.clamp(0, 1.0),
                         child: TimerFloatingButton(
                           isPlaceholder: true,
-                          seconds: _isTimerReset ? null : _timerCountdownAnimation.value,
+                          seconds: _isTimerReset
+                              ? null
+                              : _timerCountdownAnimation.value,
                           progress: _timerProgressAnimation.value,
-                          progressOpacity: _timerProgressBorderOpacityAnimation.value,
+                          progressOpacity:
+                              _timerProgressBorderOpacityAnimation.value,
                         ),
                       ),
                     ),
@@ -463,7 +493,9 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Opacity(
-                              opacity: !_shouldShowTimerPermissionsWarning ? 0.0 : 1.0,
+                              opacity: !_shouldShowTimerPermissionsWarning
+                                  ? 0.0
+                                  : 1.0,
                               child: IgnorePointer(
                                 ignoring: !_shouldShowTimerPermissionsWarning,
                                 child: Container(
@@ -474,83 +506,142 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
                                     padding: const EdgeInsets.all(16.0),
                                     triggerMode: TooltipTriggerMode.tap,
                                     decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.surface,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                     richMessage: TextSpan(children: [
                                       TextSpan(
                                         text:
                                             "Please enable notifications to receive a reminder when\nthe timer is done. Otherwise, the timer won't work when\nthe app is closed.\n\n",
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                       ),
                                       TextSpan(
-                                        text: 'To enable notifications navigate to\n',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        text:
+                                            'To enable notifications navigate to\n',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                       ),
                                       TextSpan(
-                                        text: '"Settings > Notifications > SweatNotes"\n',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        text:
+                                            '"Settings > Notifications > SweatNotes"\n',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                              fontFamily:
+                                                  GoogleFonts.robotoMono()
+                                                      .fontFamily,
                                             ),
                                       ),
                                       TextSpan(
                                         text: 'and enable the ',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                       ),
                                       TextSpan(
                                         text: '"Immediate Delivery" ',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                              fontFamily:
+                                                  GoogleFonts.robotoMono()
+                                                      .fontFamily,
                                             ),
                                       ),
                                       TextSpan(
                                         text: 'option.\n\n',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                       ),
                                       TextSpan(
                                         text: 'Please also make sure that ',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                       ),
                                       TextSpan(
-                                        text: '"Time Sensitive\nNotifications" and "Sounds" ',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        text:
+                                            '"Time Sensitive\nNotifications" and "Sounds" ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: GoogleFonts.robotoMono().fontFamily,
+                                              fontFamily:
+                                                  GoogleFonts.robotoMono()
+                                                      .fontFamily,
                                             ),
                                       ),
                                       TextSpan(
                                         text: 'options are checked.',
-                                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                              color: Theme.of(context).colorScheme.onSurface,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
                                       ),
                                     ]),
                                     child: Icon(
                                       Icons.warning_amber_rounded,
-                                      color: Theme.of(context).colorScheme.error,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurface),
-                              onPressed: () => _closeMenu(giveHapticFeedback: true),
+                              icon: Icon(Icons.close,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                              onPressed: () =>
+                                  _closeMenu(giveHapticFeedback: true),
                             ),
                           ],
                         ),
@@ -583,7 +674,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   void _pauseTimer() {
     ref.read(analyticsProvider).logEvent(name: 'timer_stop', parameters: {
       'timer_duration_seconds': _timerController.duration?.inSeconds ?? -1,
-      'notification_permission_status': _notificationPermissionStatus.toString(),
+      'notification_permission_status':
+          _notificationPermissionStatus.toString(),
     });
 
     _timerController.stop();
@@ -594,7 +686,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   Future<void> _startTimer() async {
     ref.read(analyticsProvider).logEvent(name: 'timer_start', parameters: {
       'timer_duration_seconds': _timerController.duration?.inSeconds ?? -1,
-      'notification_permission_status': _notificationPermissionStatus.toString(),
+      'notification_permission_status':
+          _notificationPermissionStatus.toString(),
     });
 
     if (_isTimerReset) {
@@ -615,7 +708,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
     const delta = 15;
 
-    final updatedSeconds = timerSettingsNotifier.incrementInitialSecondsBy(delta);
+    final updatedSeconds =
+        timerSettingsNotifier.incrementInitialSecondsBy(delta);
 
     return _resetTimerTo(updatedSeconds);
   }
@@ -627,7 +721,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
 
     const delta = 15;
 
-    final updatedSeconds = timerSettingsNotifier.decrementInitialSecondsBy(delta);
+    final updatedSeconds =
+        timerSettingsNotifier.decrementInitialSecondsBy(delta);
 
     return _resetTimerTo(updatedSeconds);
   }
@@ -679,7 +774,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     // in the foreground) or by the Timer.periodic (when the app is in the background)
     required bool isDrivenByTimerController,
   }) {
-    final isMidPointFeedbackEnabled = timerDurationInSeconds > 10 && secondsLeft < timerDurationInSeconds / 2;
+    final isMidPointFeedbackEnabled =
+        timerDurationInSeconds > 10 && secondsLeft < timerDurationInSeconds / 2;
     const isLastSecondsFeedbackEnabled = true;
 
     if (!_isTimerPastMidPoint && isMidPointFeedbackEnabled) {
@@ -702,7 +798,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     // the animation finishes when the app is in the background (minimized) and is brought
     // back into the foreground
     if (isLastSecondsFeedbackEnabled && secondsLeft < 1) {
-      if (isDrivenByTimerController && _timerController.status == AnimationStatus.completed) return;
+      if (isDrivenByTimerController &&
+          _timerController.status == AnimationStatus.completed) return;
 
       _signal(
         isDrivenByTimerController: isDrivenByTimerController,
@@ -733,9 +830,10 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
   }
 
   void _toggleTimerIsMuted(bool isMuted) {
-    ref.read(analyticsProvider).logEvent(name: 'timer_toggle_mute', parameters: {
-      'is_muted': isMuted,
-    });
+    ref.read(analyticsProvider).logEvent(
+      name: 'timer_toggle_mute',
+      parameters: {'is_muted': isMuted},
+    );
 
     final audio = ref.read(audioTimerProvider);
     final timerSettings = ref.read(timerSettingsProvider.notifier);
@@ -779,11 +877,13 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
       '',
       timezone.TZDateTime.now(timezone.local).add(showAfter),
       notificationDetails,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
   Future<void> _cancelTimerFinishedNotification() {
-    return flutterLocalNotificationsPlugin.cancel(ExpandableTimer.timerNotificationId);
+    return flutterLocalNotificationsPlugin
+        .cancel(ExpandableTimer.timerNotificationId);
   }
 }

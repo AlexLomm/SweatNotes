@@ -40,7 +40,8 @@ class AuthService {
       _showError(e.message);
     } catch (e) {
       // "reason" will append the word "thrown" in the Crashlytics console
-      crashlytics.recordError(e, StackTrace.current, reason: 'when logging in with apple');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when logging in with apple');
 
       _showError(e.toString());
     }
@@ -57,7 +58,8 @@ class AuthService {
       _showError(e.message);
     } catch (e) {
       // "reason" will append the word "thrown" in the Crashlytics console
-      crashlytics.recordError(e, StackTrace.current, reason: 'when logging in with google');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when logging in with google');
 
       _showError(e.toString());
     }
@@ -80,7 +82,8 @@ class AuthService {
       _showError(e.message);
     } catch (e) {
       // "reason" will append the word "thrown" in the Crashlytics console
-      crashlytics.recordError(e, StackTrace.current, reason: 'when logging in with email and password');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when logging in with email and password');
 
       _showError(e.toString());
     }
@@ -108,7 +111,8 @@ class AuthService {
       _showError(e.message);
     } catch (e) {
       // "reason" will append the word "thrown" in the Crashlytics console
-      crashlytics.recordError(e, StackTrace.current, reason: 'when signing up with email, password and display name');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when signing up with email, password and display name');
 
       _showError(e.toString());
     }
@@ -124,7 +128,8 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
-      crashlytics.recordError(e, StackTrace.current, reason: 'when sending password reset email');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when sending password reset email');
 
       _showError(e.toString());
     }
@@ -140,7 +145,8 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
-      crashlytics.recordError(e, StackTrace.current, reason: 'when logging out');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when logging out');
 
       _showError(e.toString());
     }
@@ -154,13 +160,16 @@ class AuthService {
 
       goRouter.goNamed(RouteNames.logIn);
 
-      messenger?.showSnackBar(const SnackBar(content: Text('Account deleted successfully!')));
+      messenger?.showSnackBar(
+          const SnackBar(content: Text('Account deleted successfully!')));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'requires-recent-login') {
         await signOut();
 
         messenger?.showSnackBar(
-          const SnackBar(content: Text('For your security please log in and try deactivating again!')),
+          const SnackBar(
+              content: Text(
+                  'For your security please log in and try deactivating again!')),
         );
 
         return;
@@ -168,7 +177,8 @@ class AuthService {
 
       _showError(e.message);
     } catch (e) {
-      crashlytics.recordError(e, StackTrace.current, reason: 'when deactivating account');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when deactivating account');
 
       _showError(e.toString());
     }
@@ -183,18 +193,21 @@ class AuthService {
       goRouter.goNamed(RouteNames.settings);
 
       messenger?.clearSnackBars();
-      messenger?.showSnackBar(const SnackBar(content: Text('Display name updated successfully!')));
+      messenger?.showSnackBar(
+          const SnackBar(content: Text('Display name updated successfully!')));
     } on FirebaseAuthException catch (e) {
       _showError(e.message);
     } catch (e) {
-      crashlytics.recordError(e, StackTrace.current, reason: 'when updating display name');
+      crashlytics.recordError(e, StackTrace.current,
+          reason: 'when updating display name');
 
       _showError(e.toString());
     }
   }
 
   void _showError(String? error) {
-    const defaultErrorMessage = 'Something went wrong.. Please try again later.';
+    const defaultErrorMessage =
+        'Something went wrong.. Please try again later.';
 
     error ??= defaultErrorMessage;
 

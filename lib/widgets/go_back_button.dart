@@ -8,7 +8,10 @@ class GoBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
+      icon: Icon(
+        Icons.arrow_back,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
       tooltip: 'Navigate back',
       splashRadius: 20,
       onPressed: onPressed,

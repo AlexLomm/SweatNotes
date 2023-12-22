@@ -32,7 +32,8 @@ class ButtonDropdownMenu extends StatefulWidget {
   State<ButtonDropdownMenu> createState() => _ButtonDropdownMenuState();
 }
 
-class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTickerProviderStateMixin {
+class _ButtonDropdownMenuState extends State<ButtonDropdownMenu>
+    with SingleTickerProviderStateMixin {
   late GlobalKey _key;
   late Offset _buttonPosition;
   late Size _buttonSize;
@@ -156,7 +157,10 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
       builder: (context) {
         return Positioned(
           top: _buttonPosition.dy + _buttonSize.height,
-          left: _buttonPosition.dx + _buttonSize.width - ButtonDropdownMenu.menuWidth - 8.0,
+          left: _buttonPosition.dx +
+              _buttonSize.width -
+              ButtonDropdownMenu.menuWidth -
+              8.0,
           width: ButtonDropdownMenu.menuWidth,
           child: AnimatedBuilder(
             animation: _animationController,
@@ -185,7 +189,10 @@ class _ButtonDropdownMenuState extends State<ButtonDropdownMenu> with SingleTick
                           child: SizedBox(
                             width: ButtonDropdownMenu.menuWidth,
                             height: 40.0,
-                            child: Align(alignment: Alignment.centerLeft, child: item.child),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: item.child,
+                            ),
                           ),
                         );
                       }).toList(),

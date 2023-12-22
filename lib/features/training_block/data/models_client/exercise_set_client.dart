@@ -9,7 +9,8 @@ part 'exercise_set_client.freezed.dart';
 class ExerciseSetClient with _$ExerciseSetClient {
   ExerciseSetClient._();
 
-  bool get isPersonalRecord => (compareProgress(previousPersonalRecord) ?? 0) > 0;
+  bool get isPersonalRecord =>
+      (compareProgress(previousPersonalRecord) ?? 0) > 0;
 
   factory ExerciseSetClient({
     required ExerciseSet? dbModel,

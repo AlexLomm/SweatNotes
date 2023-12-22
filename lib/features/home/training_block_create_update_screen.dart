@@ -25,7 +25,8 @@ class TrainingBlockCreateUpdateScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _TrainingBlockCreateScreen();
 }
 
-class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdateScreen> with RouteAware {
+class _TrainingBlockCreateScreen
+    extends ConsumerState<TrainingBlockCreateUpdateScreen> with RouteAware {
   final _trainingBlockNameController = TextEditingController();
   late DateTime _selectedDate;
 
@@ -40,7 +41,8 @@ class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdate
       _selectedDate = DateTime.now();
     } else {
       _trainingBlockNameController.text = widget.trainingBlock?.name ?? '';
-      _selectedDate = widget.trainingBlock?.startedAt?.toDate() ?? DateTime.now();
+      _selectedDate =
+          widget.trainingBlock?.startedAt?.toDate() ?? DateTime.now();
     }
   }
 
@@ -50,7 +52,10 @@ class _TrainingBlockCreateScreen extends ConsumerState<TrainingBlockCreateUpdate
 
     final data = widget.trainingBlock == null
         ? const AsyncData(null)
-        : ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlock!.dbModel.id));
+        : ref.watch(trainingBlockDetailsStreamProvider(
+            widget.trainingBlock!.dbModel.id,
+            includeArchived: true,
+          ));
 
     return Layout(
       onGoBackButtonTap: () => context.pop(),

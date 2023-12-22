@@ -26,7 +26,8 @@ class ExerciseDayCreateUpdateScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _ExerciseDayCreateUpdateScreen();
 }
 
-class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpdateScreen> with RouteAware {
+class _ExerciseDayCreateUpdateScreen
+    extends ConsumerState<ExerciseDayCreateUpdateScreen> with RouteAware {
   final _exerciseDayNameController = TextEditingController();
   late int? _selectedWeekDay;
 
@@ -45,7 +46,10 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
 
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
-    final data = ref.watch(trainingBlockDetailsStreamProvider(widget.trainingBlockId, includeArchived: showArchived));
+    final data = ref.watch(trainingBlockDetailsStreamProvider(
+      widget.trainingBlockId,
+      includeArchived: showArchived,
+    ));
 
     return Layout(
       onGoBackButtonTap: () => context.pop(),
@@ -53,7 +57,8 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
         padding: const EdgeInsets.all(24.0),
         child: data.when(
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (Object error, StackTrace stackTrace) => Center(child: Text(error.toString())),
+          error: (Object error, StackTrace stackTrace) =>
+              Center(child: Text(error.toString())),
           data: (trainingBlock) {
             final isStartDateSettable = trainingBlock?.startedAt == null;
 
@@ -78,8 +83,12 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
                       contentTextStyle: Theme.of(context)
                           .textTheme
                           .bodyMedium
-                          ?.copyWith(color: Theme.of(context).colorScheme.onTertiaryContainer),
-                      backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                          ?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer),
+                      backgroundColor:
+                          Theme.of(context).colorScheme.tertiaryContainer,
                       forceActionsBelow: true,
                       actions: [
                         TextButton(
@@ -116,11 +125,15 @@ class _ExerciseDayCreateUpdateScreen extends ConsumerState<ExerciseDayCreateUpda
                           value: weekDays[i].item1,
                           child: Text(
                             weekDays[i].item2,
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withOpacity(isStartDateSettable ? 0.67 : 1.0)),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withOpacity(
+                                            isStartDateSettable ? 0.67 : 1.0,
+                                          ),
+                                    ),
                           ),
                         );
                       },

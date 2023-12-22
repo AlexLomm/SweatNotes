@@ -71,9 +71,13 @@ class ExerciseDayClient with _$ExerciseDayClient {
   }) {
     if (from == to) return this;
 
-    if (from < 0 || from >= exerciseTypes.length) throw Exception('Invalid from index $from');
+    if (from < 0 || from >= exerciseTypes.length) {
+      throw Exception('Invalid from index $from');
+    }
 
-    if (to < 0 || to >= exerciseTypes.length) throw Exception('Invalid to index $to');
+    if (to < 0 || to >= exerciseTypes.length) {
+      throw Exception('Invalid to index $to');
+    }
 
     final newList = [...exerciseTypes];
 
@@ -97,7 +101,8 @@ class ExerciseDayClient with _$ExerciseDayClient {
   }
 
   ExerciseDayClient removeExerciseTypeById(String id) {
-    return copyWith(exerciseTypes: exerciseTypes.where((e) => e.dbModel.id != id).toList());
+    return copyWith(
+        exerciseTypes: exerciseTypes.where((e) => e.dbModel.id != id).toList());
   }
 
   ExerciseDayClient prependExerciseType(ExerciseTypeClient exerciseTypeClient) {
@@ -118,13 +123,16 @@ class ExerciseDayClient with _$ExerciseDayClient {
 
   ExerciseDayClient getWithOnlyPersonalRecords() {
     return copyWith(
-      exerciseTypes: exerciseTypes.map((e) => e.getWithOnlyPersonalRecords()).toList(),
+      exerciseTypes:
+          exerciseTypes.map((e) => e.getWithOnlyPersonalRecords()).toList(),
     );
   }
 
   ExerciseDayClient getWithExerciseTypesArchived(bool archived) {
     return copyWith(
-      exerciseTypes: exerciseTypes.where((e) => archived ? true : e.archivedAt == null).toList(),
+      exerciseTypes: exerciseTypes
+          .where((e) => archived ? true : e.archivedAt == null)
+          .toList(),
     );
   }
 }

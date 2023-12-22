@@ -48,7 +48,8 @@ class ExerciseTypeWidget extends ConsumerWidget {
           .contains(exerciseType.dbModel.id),
     );
 
-    final toExerciseDay = exerciseDays.where((e) => e != fromExerciseDay).toList();
+    final toExerciseDay =
+        exerciseDays.where((e) => e != fromExerciseDay).toList();
 
     return CustomDismissible(
       // change the id when showing archived vs unarchived stuff. The reason we need this is
@@ -107,13 +108,16 @@ class ExerciseTypeWidget extends ConsumerWidget {
                 child: AnimatedContainer(
                   duration: WidgetParams.animationDuration,
                   curve: WidgetParams.animationCurve,
-                  margin: EdgeInsets.only(left: widgetParams.exerciseTypeDragHandleWidth),
+                  margin: EdgeInsets.only(
+                      left: widgetParams.exerciseTypeDragHandleWidth),
                   child: IgnorePointerInEditMode(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => CustomBottomSheet(
-                      height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                      height: CustomBottomSheet.allSpacing +
+                          TextEditorSingleLineAndWheel.height,
                       title: 'Edit exercise type',
-                      child: _TextEditorSingleLineAndWheelWrapper(exerciseType: exerciseType),
+                      child: _TextEditorSingleLineAndWheelWrapper(
+                          exerciseType: exerciseType),
                     ).show(context),
                     child: _ExerciseTypeName(
                       width: widgetParams.exerciseTypeLabelWidth,
@@ -139,7 +143,8 @@ class ExerciseTypeWidget extends ConsumerWidget {
                             items: toExerciseDay
                                 .map(
                                   (exerciseDay) => ButtonDropdownMenuItem(
-                                    onTap: () => exerciseDaysService.moveExerciseTypeIntoAnotherExerciseDay(
+                                    onTap: () => exerciseDaysService
+                                        .moveExerciseTypeIntoAnotherExerciseDay(
                                       trainingBlock: trainingBlock,
                                       fromExerciseDay: fromExerciseDay,
                                       toExerciseDay: exerciseDay,
@@ -150,14 +155,20 @@ class ExerciseTypeWidget extends ConsumerWidget {
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyLarge
-                                          ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                                          ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface),
                                     ),
                                   ),
                                 )
                                 .toList(),
                           )
                         : IconButton(
-                            onPressed: () => exerciseTypeService.archive(exerciseType, false),
+                            onPressed: () => exerciseTypeService.archive(
+                              exerciseType,
+                              false,
+                            ),
                             icon: const Icon(Icons.unarchive_outlined),
                           ),
                   ),
@@ -188,19 +199,27 @@ class ExerciseTypeWidget extends ConsumerWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall
-                                  ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.48)),
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant
+                                          .withOpacity(0.48)),
                             ),
                           ),
                           GestureDetector(
                             onTap: () => CustomBottomSheet(
                               height: 324,
                               title: 'Add notes',
-                              child: _TextEditorMultiLineWrapper(exerciseType: exerciseType),
+                              child: _TextEditorMultiLineWrapper(
+                                  exerciseType: exerciseType),
                             ).show(context),
                             child: Icon(
                               Icons.edit_note,
                               color: exerciseType.notes.isEmpty
-                                  ? Theme.of(context).colorScheme.outline.withOpacity(0.72)
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .outline
+                                      .withOpacity(0.72)
                                   : Theme.of(context).colorScheme.tertiary,
                               size: 18,
                             ),
@@ -301,7 +320,10 @@ class _ExerciseTypeName extends ConsumerWidget {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(isEditMode ? 1.0 : 0.0),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurfaceVariant
+                      .withOpacity(isEditMode ? 1.0 : 0.0),
                   width: 1,
                 ),
               ),

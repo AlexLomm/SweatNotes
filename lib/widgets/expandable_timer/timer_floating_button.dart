@@ -53,7 +53,10 @@ class TimerFloatingButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16.0),
                 border: ProgressBorder.all(
                   width: 2,
-                  color: Theme.of(context).colorScheme.primary.withOpacity(progressOpacity),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(progressOpacity),
                   progress: progress,
                 ),
               ),

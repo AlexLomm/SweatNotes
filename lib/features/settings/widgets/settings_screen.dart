@@ -36,7 +36,10 @@ class SettingsScreen extends ConsumerWidget {
       leading: GoBackButton(onPressed: () => context.pop()),
       appBarTitle: Text(
         'Settings',
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       child: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -50,7 +53,8 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: textColor,
                 id: '/settings/account',
                 label: 'Account',
-                right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
+                right: Icon(Icons.keyboard_arrow_right,
+                    color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => context.push('/settings/account'),
               ),
               // DismissibleButton(
@@ -64,7 +68,8 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: textColor,
                 id: '/settings/theme',
                 label: 'Theme',
-                right: Icon(Icons.keyboard_arrow_right, color: Theme.of(context).colorScheme.onSurface),
+                right: Icon(Icons.keyboard_arrow_right,
+                    color: Theme.of(context).colorScheme.onSurface),
                 onPressed: () => context.push('/settings/theme'),
               ),
               DismissibleButton(
@@ -72,24 +77,30 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: textColor,
                 id: 'https://sweatnotes.com/support',
                 label: 'Support',
-                right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () => urlLauncher.launch('https://sweatnotes.com/support'),
+                right: Icon(Icons.open_in_new,
+                    color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () =>
+                    urlLauncher.launch('https://sweatnotes.com/support'),
               ),
               DismissibleButton(
                 backgroundColor: backgroundColor,
                 textColor: textColor,
                 id: 'https://sweatnotes.com/privacy-policy',
                 label: 'Privacy Policy',
-                right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () => urlLauncher.launch('https://sweatnotes.com/privacy-policy'),
+                right: Icon(Icons.open_in_new,
+                    color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () =>
+                    urlLauncher.launch('https://sweatnotes.com/privacy-policy'),
               ),
               DismissibleButton(
                 backgroundColor: backgroundColor,
                 textColor: textColor,
                 id: 'https://sweatnotes.com/terms-of-service',
                 label: 'Terms of Service',
-                right: Icon(Icons.open_in_new, color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () => urlLauncher.launch('https://sweatnotes.com/terms-of-service'),
+                right: Icon(Icons.open_in_new,
+                    color: Theme.of(context).colorScheme.onSurface),
+                onPressed: () => urlLauncher
+                    .launch('https://sweatnotes.com/terms-of-service'),
               ),
               // DismissibleButton(
               //   id: '/settings/contact-us-on-discord',
@@ -102,7 +113,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SliverFillRemaining(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -116,7 +128,8 @@ class SettingsScreen extends ConsumerWidget {
                             // the `value.version == value.buildNumber` is needed because when the
                             // build number is not specified, the version is used as the build number
                             // @see https://github.com/fluttercommunity/plus_plugins/issues/1644
-                            final versionString = kReleaseMode || value.version == value.buildNumber
+                            final versionString = kReleaseMode ||
+                                    value.version == value.buildNumber
                                 ? value.version
                                 : '${value.version}+${value.buildNumber}';
 
@@ -128,7 +141,10 @@ class SettingsScreen extends ConsumerWidget {
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium
-                            ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                            ?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
                       ),
                       Row(
                         children: [
@@ -145,7 +161,9 @@ class SettingsScreen extends ConsumerWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelLarge
-                                  ?.copyWith(color: Theme.of(context).colorScheme.error),
+                                  ?.copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.error),
                             ),
                           ),
                           const SizedBox(width: 16.0),
@@ -153,13 +171,18 @@ class SettingsScreen extends ConsumerWidget {
                             width: 96.0,
                             child: Button(
                               onPressed: authService.signOut,
-                              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer,
                               child: Text(
                                 'Log out',
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelLarge
-                                    ?.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer),
                               ),
                             ),
                           )
@@ -192,25 +215,37 @@ class _DeleteAccountAlertDialog extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       title: Text(
         'Danger!',
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context)
+            .textTheme
+            .headlineSmall
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       content: Text(
         'Are you sure you want to delete your account? This action cannot be undone.',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       actions: [
         TextButton(
           onPressed: onCancel,
           child: Text(
             'Cancel',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(color: Theme.of(context).colorScheme.primary),
           ),
         ),
         TextButton(
           onPressed: onConfirm,
           child: Text(
             'Confirm',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(color: Theme.of(context).colorScheme.error),
           ),
         ),
       ],
@@ -231,11 +266,17 @@ class _UserAvatarWithInfo extends ConsumerWidget {
         leading: const _Avatar(),
         title: Text(
           firebaseAuth.currentUser?.displayName ?? '',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
         subtitle: Text(
           firebaseAuth.currentUser?.email ?? '',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       ),
       error: (error, _) => Text(error.toString()),

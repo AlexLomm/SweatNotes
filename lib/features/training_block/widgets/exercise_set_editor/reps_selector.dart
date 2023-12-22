@@ -18,7 +18,10 @@ class RepsSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface);
+    final textTheme = Theme.of(context)
+        .textTheme
+        .bodyLarge
+        ?.copyWith(color: Theme.of(context).colorScheme.onSurface);
 
     return Column(
       children: [

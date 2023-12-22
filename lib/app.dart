@@ -11,7 +11,8 @@ import 'theme.dart';
 
 part 'app.g.dart';
 
-final GlobalKey<ScaffoldMessengerState> _snackBarKey = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> _snackBarKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -42,7 +43,9 @@ class App extends ConsumerWidget {
       (_, isEditMode) {
         if (isEditMode) return;
 
-        ref.read(showArchivedExerciseTypesSwitcherProvider.notifier).toggle(show: false);
+        ref
+            .read(showArchivedExerciseTypesSwitcherProvider.notifier)
+            .toggle(show: false);
       },
     );
 

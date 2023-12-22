@@ -12,5 +12,6 @@ class ExerciseSet with _$ExerciseSet {
     @Default(0) int reps,
   }) = _ExerciseSet;
 
-  factory ExerciseSet.fromJson(Map<String, Object?> json) => _$ExerciseSetFromJson(json);
+  factory ExerciseSet.fromJson(Map<String, Object?> json) =>
+      _$ExerciseSetFromJson(json);
 }

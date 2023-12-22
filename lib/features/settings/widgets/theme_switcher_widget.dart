@@ -117,10 +117,8 @@ class CapsuleButton extends StatelessWidget {
                 ),
               Text(
                 label,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge
-                    ?.copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondaryContainer),
               ),
             ],
           ),

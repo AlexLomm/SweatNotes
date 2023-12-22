@@ -29,6 +29,9 @@ class DismissibleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       margin: const EdgeInsets.only(bottom: 8.0),
@@ -41,7 +44,7 @@ class DismissibleButton extends StatelessWidget {
         onDismissed: onDismissed ?? (_) {},
         child: Button(
           borderRadius: 0,
-          backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primaryContainer,
+          backgroundColor: backgroundColor ?? cs.primaryContainer,
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
             horizontal: 24.0,
@@ -53,9 +56,9 @@ class DismissibleButton extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: textColor ?? Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
+                style: tt.titleLarge?.copyWith(
+                  color: textColor ?? cs.onPrimaryContainer,
+                ),
               ),
               if (right != null) right!,
             ],

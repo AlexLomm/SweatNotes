@@ -34,7 +34,8 @@ class ExercisesService {
       throw Exception('Exercise not found in exercise type');
     }
 
-    final updatedSet = exercise.sets[exerciseSetIndex].copyWith(reps: reps, load: load);
+    final updatedSet =
+        exercise.sets[exerciseSetIndex].copyWith(reps: reps, load: load);
 
     final updatedExercise = exercise.updateSet(
       index: exerciseSetIndex,
@@ -94,5 +95,6 @@ ExercisesService exercisesService(ExercisesServiceRef ref) {
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
   final analytics = ref.watch(analyticsProvider);
 
-  return ExercisesService(exerciseTypesRepository, confettiController, analytics);
+  return ExercisesService(
+      exerciseTypesRepository, confettiController, analytics);
 }

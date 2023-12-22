@@ -8,14 +8,18 @@ import '../data/training_blocks_repository.dart';
 part 'training_blocks_stream.g.dart';
 
 @riverpod
-Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef ref) async* {
+Stream<List<TrainingBlockClient>> trainingBlocksStream(
+  TrainingBlocksStreamRef ref, {
+  required bool includeArchived,
+}) async* {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
 
-  final Stream<List<TrainingBlockClient>> trainingBlockStream = trainingBlocksRepository
-      //
-      .queryRef
-      .snapshots()
-      .map<List<TrainingBlock>>(
+  final Stream<List<TrainingBlockClient>> trainingBlockStream =
+      trainingBlocksRepository
+          //
+          .getTrainingBlocksQueryRef(includeArchived: includeArchived)
+          .snapshots()
+          .map<List<TrainingBlock>>(
     (event) {
       final trainingBlocks = event.docs.map((doc) => doc.data()).toList();
 
@@ -25,8 +29,8 @@ Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef r
       //   2. might avoid hotspot-related issues, see:
       //      https://cloud.google.com/firestore/docs/best-practices#hotspots
       trainingBlocks.sort((a, b) {
-        final timestampA = a.startedAt ?? Timestamp.fromMicrosecondsSinceEpoch(0);
-        final timestampB = b.startedAt ?? Timestamp.fromMicrosecondsSinceEpoch(0);
+        final timestampA = a.startedAt ?? Timestamp(0, 0);
+        final timestampB = b.startedAt ?? Timestamp(0, 0);
 
         return timestampB.compareTo(timestampA);
       });
@@ -34,15 +38,17 @@ Stream<List<TrainingBlockClient>> trainingBlocksStream(TrainingBlocksStreamRef r
       return trainingBlocks;
     },
   ).map(
-    (trainingBlocks) => trainingBlocks
+    (List<TrainingBlock> trainingBlocks) => trainingBlocks
         .map(
           (trainingBlock) => TrainingBlockClient(
             dbModel: trainingBlock,
             archivedAt: trainingBlock.archivedAt,
             startedAt: trainingBlock.startedAt,
             name: trainingBlock.name,
+            // TODO: inconsistency between client and db model
             exerciseDays: [],
-            exercisesCollapsedIncludingIndex: trainingBlock.exercisesCollapsedIncludingIndex,
+            exercisesCollapsedIncludingIndex:
+                trainingBlock.exercisesCollapsedIncludingIndex,
           ),
         )
         .toList(),

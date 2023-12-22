@@ -24,16 +24,19 @@ class ExerciseWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final widgetParams = ref.watch(widgetParamsProvider);
-    final isExerciseReactionsEnabled = ref.watch(exerciseReactionsSwitcherProvider);
+    final isExerciseReactionsEnabled =
+        ref.watch(exerciseReactionsSwitcherProvider);
 
-    final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final routeArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     final String trainingBlockId = routeArgs['trainingBlockId'];
 
     assert(trainingBlockId.isNotEmpty);
 
     final exercisesService = ref.watch(exercisesServiceProvider);
 
-    final allExerciseSetsWidth = widgetParams.exerciseSetWidth * exercise.sets.length;
+    final allExerciseSetsWidth =
+        widgetParams.exerciseSetWidth * exercise.sets.length;
     final exerciseReactionsAddedWidth = widgetParams.reactionCircleSize / 2;
 
     return SizedBox(
@@ -50,14 +53,17 @@ class ExerciseWidget extends ConsumerWidget {
               width: allExerciseSetsWidth,
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+                borderRadius: BorderRadius.all(
+                    Radius.circular(widgetParams.borderRadius)),
               ),
               child: Row(
                 children: exercise.sets.asMap().entries.map((entry) {
                   final set = entry.value;
 
-                  final repsInitial = set.reps == 0 ? set.predictedReps : set.reps;
-                  final loadInitial = set.load == 0 ? set.predictedLoad : set.load;
+                  final repsInitial =
+                      set.reps == 0 ? set.predictedReps : set.reps;
+                  final loadInitial =
+                      set.load == 0 ? set.predictedLoad : set.load;
 
                   return ExerciseSetWidget(
                     key: UniqueKey(),

@@ -44,7 +44,9 @@ GoRouter goRouter(GoRouterRef ref) {
   final analyticsObserver = ref.read(analyticsObserverProvider);
 
   return GoRouter(
-    observers: kAnalyticsEnabled ? [routeObserver, analyticsObserver] : [routeObserver],
+    observers: kAnalyticsEnabled
+        ? [routeObserver, analyticsObserver]
+        : [routeObserver],
     initialLocation: prefs.getString('initialLocation') ?? '/auth',
     redirect: (context, state) {
       final isLoggedIn = firebaseAuth.currentUser != null;
@@ -112,9 +114,10 @@ GoRouter goRouter(GoRouterRef ref) {
             name: RouteNames.trainingBlockCreateUpdate,
             path: 'training-block-create-update',
             builder: (_, routerState) {
-              final tuple = routerState.extra is Tuple2<TrainingBlockClient, bool>
-                  ? routerState.extra as Tuple2<TrainingBlockClient, bool>
-                  : null;
+              final tuple =
+                  routerState.extra is Tuple2<TrainingBlockClient, bool>
+                      ? routerState.extra as Tuple2<TrainingBlockClient, bool>
+                      : null;
 
               return TrainingBlockCreateUpdateScreen(
                 trainingBlock: tuple?.item1,
@@ -128,7 +131,8 @@ GoRouter goRouter(GoRouterRef ref) {
             builder: (_, routerState) {
               assert(routerState.extra is Tuple2<String, ExerciseDayClient?>);
 
-              final tuple = routerState.extra as Tuple2<String, ExerciseDayClient?>;
+              final tuple =
+                  routerState.extra as Tuple2<String, ExerciseDayClient?>;
 
               return ExerciseDayCreateUpdateScreen(
                 trainingBlockId: tuple.item1,
@@ -140,7 +144,8 @@ GoRouter goRouter(GoRouterRef ref) {
             name: RouteNames.trainingBlock,
             path: ':trainingBlockId',
             builder: (_, routerState) => TrainingBlockScreen(
-              trainingBlockId: routerState.pathParameters['trainingBlockId'] ?? '',
+              trainingBlockId:
+                  routerState.pathParameters['trainingBlockId'] ?? '',
             ),
           ),
         ],

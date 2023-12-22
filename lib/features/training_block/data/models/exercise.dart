@@ -16,12 +16,12 @@ class Exercise with _$Exercise {
       'reactionScore == null || [-5, 0, 5].contains(reactionScore)',
       'Invalid `reactionScore`, must be in [-5, 0, 5] (or null)',
     )
-        int? reactionScore,
-    @Default([])
-        List<ExerciseSet> sets,
+    int? reactionScore,
+    @Default([]) List<ExerciseSet> sets,
   }) = _Exercise;
 
   factory Exercise.empty() => const Exercise(reactionScore: null, sets: []);
 
-  factory Exercise.fromJson(Map<String, Object?> json) => _$ExerciseFromJson(json);
+  factory Exercise.fromJson(Map<String, Object?> json) =>
+      _$ExerciseFromJson(json);
 }

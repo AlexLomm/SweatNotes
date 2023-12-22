@@ -13,7 +13,7 @@ class Reaction extends ConsumerWidget {
     this.isSelected = false,
     this.isCancelState = false,
     required this.value,
-  })  : assert(value == null || [-5, 0, 5].contains(value));
+  }) : assert(value == null || [-5, 0, 5].contains(value));
 
   // account for the issues regarding centering of emojis on iOS
   // see: https://github.com/flutter/flutter/issues/119623
@@ -64,7 +64,9 @@ class EmojiGood extends ConsumerWidget {
     final widgetParams = ref.watch(widgetParamsProvider);
 
     return Transform.translate(
-      offset: widgetParams.isCompactMode ? const Offset(1.35, 0.0) : const Offset(0.5, -0.5),
+      offset: widgetParams.isCompactMode
+          ? const Offset(1.35, 0.0)
+          : const Offset(0.5, -0.5),
       child: Text(
         '🤩',
         textAlign: TextAlign.center,
@@ -84,7 +86,9 @@ class EmojiNeutral extends ConsumerWidget {
     final widgetParams = ref.watch(widgetParamsProvider);
 
     return Transform.translate(
-      offset: widgetParams.isCompactMode ? const Offset(1.4, -0.75) : const Offset(0.5, -1.0),
+      offset: widgetParams.isCompactMode
+          ? const Offset(1.4, -0.75)
+          : const Offset(0.5, -1.0),
       child: Text(
         '😐',
         textAlign: TextAlign.center,
@@ -104,7 +108,9 @@ class EmojiBad extends ConsumerWidget {
     final widgetParams = ref.watch(widgetParamsProvider);
 
     return Transform.translate(
-      offset: widgetParams.isCompactMode ? const Offset(1.0, -0.5) : const Offset(0.0, -0.5),
+      offset: widgetParams.isCompactMode
+          ? const Offset(1.0, -0.5)
+          : const Offset(0.0, -0.5),
       child: Text(
         '🤮',
         textAlign: TextAlign.center,
@@ -124,7 +130,9 @@ class EmojiNone extends ConsumerWidget {
     final widgetParams = ref.watch(widgetParamsProvider);
 
     return Transform.translate(
-      offset: widgetParams.isCompactMode ? const Offset(2.0, -1.0) : const Offset(0.4, -1.3),
+      offset: widgetParams.isCompactMode
+          ? const Offset(2.0, -1.0)
+          : const Offset(0.4, -1.3),
       child: Text(
         '🫥',
         textAlign: TextAlign.center,
@@ -144,7 +152,9 @@ class EmojiCancel extends ConsumerWidget {
     final widgetParams = ref.watch(widgetParamsProvider);
 
     return Transform.translate(
-      offset: widgetParams.isCompactMode ? const Offset(0.0, 0.0) : const Offset(0.0, 0.0),
+      offset: widgetParams.isCompactMode
+          ? const Offset(0.0, 0.0)
+          : const Offset(0.0, 0.0),
       child: Text(
         '✕',
         textAlign: TextAlign.center,

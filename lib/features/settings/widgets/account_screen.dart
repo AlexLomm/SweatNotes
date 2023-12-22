@@ -47,7 +47,10 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       leading: GoBackButton(onPressed: () => context.pop()),
       appBarTitle: Text(
         'Account',
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge
+            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -63,7 +66,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 onPressed: () async {
                   setState(() => _isLoading = true);
 
-                  await authService.updateDisplayName(_displayNameController.text);
+                  await authService
+                      .updateDisplayName(_displayNameController.text);
 
                   if (mounted) setState(() => _isLoading = false);
                 },

@@ -14,7 +14,8 @@ part 'exercise_type.g.dart';
 class ExerciseType with _$ExerciseType {
   const factory ExerciseType({
     @JsonKey(includeToJson: false) required String id,
-    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? archivedAt,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson)
+    Timestamp? archivedAt,
     required String trainingBlockId,
     required String name,
     required String unit,
@@ -22,5 +23,6 @@ class ExerciseType with _$ExerciseType {
     @Default([]) List<Exercise> exercises,
   }) = _ExerciseType;
 
-  factory ExerciseType.fromJson(Map<String, Object?> json) => _$ExerciseTypeFromJson(json);
+  factory ExerciseType.fromJson(Map<String, Object?> json) =>
+      _$ExerciseTypeFromJson(json);
 }

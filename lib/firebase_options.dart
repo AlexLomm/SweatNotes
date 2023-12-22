@@ -58,7 +58,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '763329225930',
     projectId: 'sweatnotes-sn',
     storageBucket: 'sweatnotes-sn.appspot.com',
-    iosClientId: '763329225930-lgnrk0l8mbnvhb281u05t79h001mquen.apps.googleusercontent.com',
+    iosClientId:
+        '763329225930-lgnrk0l8mbnvhb281u05t79h001mquen.apps.googleusercontent.com',
     iosBundleId: 'com.sweatnotes.sweatnotes',
   );
 }

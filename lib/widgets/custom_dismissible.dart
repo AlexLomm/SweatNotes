@@ -52,7 +52,10 @@ class _CustomDismissibleState extends State<CustomDismissible> {
       //
       // Also, the timer takes `timeDilation` into consideration in order
       // for it to work seamlessly with the debugger "Slow Animations" mode
-      _timerToReset = Timer(WidgetParams.animationDuration * timeDilation, () => setState(() => _counter++));
+      _timerToReset = Timer(
+        WidgetParams.animationDuration * timeDilation,
+        () => setState(() => _counter++),
+      );
     }
   }
 

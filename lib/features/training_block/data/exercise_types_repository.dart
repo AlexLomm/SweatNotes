@@ -27,14 +27,18 @@ class ExerciseTypesRepository {
     return collectionRef.doc(id);
   }
 
-  Query<ExerciseType> getQueryByTrainingBlockId(String trainingBlockId, {required bool includeArchived}) {
+  Query<ExerciseType> getQueryByTrainingBlockId(String trainingBlockId,
+      {required bool includeArchived}) {
     return includeArchived
         ? collectionRef.where('trainingBlockId', isEqualTo: trainingBlockId)
-        : collectionRef.where('archivedAt', isNull: true).where('trainingBlockId', isEqualTo: trainingBlockId);
+        : collectionRef
+            .where('archivedAt', isNull: true)
+            .where('trainingBlockId', isEqualTo: trainingBlockId);
   }
 
   Future<void> update(ExerciseType exerciseType) async {
-    return getDocumentRef(exerciseType.id).update(_toFirestore(exerciseType, null));
+    return getDocumentRef(exerciseType.id)
+        .update(_toFirestore(exerciseType, null));
   }
 
   ExerciseType _fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc, _) {
@@ -49,7 +53,8 @@ class ExerciseTypesRepository {
     return ExerciseType.fromJson(data);
   }
 
-  Map<String, dynamic> _toFirestore(ExerciseType exerciseType, _) => exerciseType.toJson();
+  Map<String, dynamic> _toFirestore(ExerciseType exerciseType, _) =>
+      exerciseType.toJson();
 }
 
 @riverpod

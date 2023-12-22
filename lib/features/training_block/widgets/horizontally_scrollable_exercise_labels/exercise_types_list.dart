@@ -49,7 +49,9 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
     final exerciseDaysService = ref.watch(exerciseDaysServiceProvider);
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
 
-    final exerciseTypes = _exerciseDayClientCached.getWithExerciseTypesArchived(showArchived).exerciseTypes;
+    final exerciseTypes = _exerciseDayClientCached
+        .getWithExerciseTypesArchived(showArchived)
+        .exerciseTypes;
 
     return AnimatedContainer(
       duration: WidgetParams.animationDuration,
@@ -68,7 +70,8 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
         child: ReorderableListView(
           physics: const NeverScrollableScrollPhysics(),
           onReorder: (int fromIndex, int toIndex) async {
-            final exerciseDayIndex = widget.trainingBlock.indexOfExerciseDayByPseudoId(
+            final exerciseDayIndex =
+                widget.trainingBlock.indexOfExerciseDayByPseudoId(
               widget.exerciseDay.dbModel.pseudoId,
             );
 
@@ -81,7 +84,8 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
 
             // optimistically update the UI
             setState(() {
-              _exerciseDayClientCached = _exerciseDayClientCached.reorderExerciseType(
+              _exerciseDayClientCached =
+                  _exerciseDayClientCached.reorderExerciseType(
                 from: fromIndex,
                 to: toIndex,
               );

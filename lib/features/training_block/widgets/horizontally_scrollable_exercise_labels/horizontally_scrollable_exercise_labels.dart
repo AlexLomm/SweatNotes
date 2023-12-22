@@ -35,7 +35,8 @@ class HorizontallyScrollableExerciseLabels extends ConsumerStatefulWidget {
   ConsumerState createState() => _HorizontallyScrollableExerciseLabelsState();
 }
 
-class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<HorizontallyScrollableExerciseLabels> {
+class _HorizontallyScrollableExerciseLabelsState
+    extends ConsumerState<HorizontallyScrollableExerciseLabels> {
   double _dismissProgress = 0;
 
   @override
@@ -50,9 +51,12 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
 
-    final count = widget.exerciseDay.exerciseTypes.where((et) => showArchived ? true : et.archivedAt == null).length;
+    final count = widget.exerciseDay.exerciseTypes
+        .where((et) => showArchived ? true : et.archivedAt == null)
+        .length;
 
-    final heightWithButton = widgetParams.getExerciseLabelsHeightWithButton(count);
+    final heightWithButton =
+        widgetParams.getExerciseLabelsHeightWithButton(count);
     final heightWithoutButton = widgetParams.getExerciseLabelsHeight(count);
 
     return Container(
@@ -77,7 +81,8 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                       width: widgetParams.exerciseLabelsListWidth,
                       height: heightWithoutButton,
                       borderRadius: widgetParams.borderRadius,
-                      onUpdate: (details) => setState(() => _dismissProgress = details.progress),
+                      onUpdate: (details) =>
+                          setState(() => _dismissProgress = details.progress),
                       onDismissed: (_) {
                         trainingBlocksService.archiveExerciseDay(
                           trainingBlock: widget.trainingBlock,
@@ -88,10 +93,12 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                         messenger?.clearSnackBars();
                         messenger?.showSnackBar(
                           SnackBar(
-                            content: Text('Exercise day "${widget.exerciseDay.name}" archived'),
+                            content: Text(
+                                'Exercise day "${widget.exerciseDay.name}" archived'),
                             action: SnackBarAction(
                               label: 'Undo',
-                              onPressed: () => trainingBlocksService.archiveExerciseDay(
+                              onPressed: () =>
+                                  trainingBlocksService.archiveExerciseDay(
                                 trainingBlock: widget.trainingBlock,
                                 exerciseDay: widget.exerciseDay,
                                 archive: false,
@@ -103,7 +110,8 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                       child: IgnorePointerInEditMode(
                         onTap: () => context.pushNamed(
                           RouteNames.exerciseDayCreateUpdate,
-                          extra: Tuple2(widget.trainingBlock.dbModel.id, widget.exerciseDay),
+                          extra: Tuple2(widget.trainingBlock.dbModel.id,
+                              widget.exerciseDay),
                         ),
                         child: ExerciseDayWidget(
                           exerciseDay: widget.exerciseDay,
@@ -127,7 +135,8 @@ class _HorizontallyScrollableExerciseLabelsState extends ConsumerState<Horizonta
                         onPressed: isEditMode
                             ? null
                             : () => CustomBottomSheet(
-                                  height: CustomBottomSheet.allSpacing + TextEditorSingleLineAndWheel.height,
+                                  height: CustomBottomSheet.allSpacing +
+                                      TextEditorSingleLineAndWheel.height,
                                   title: 'Add exercise type',
                                   child: _TextEditorSingleLineAndWheelWrapper(
                                     trainingBlock: widget.trainingBlock,

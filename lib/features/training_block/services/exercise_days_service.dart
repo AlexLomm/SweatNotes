@@ -81,17 +81,23 @@ class ExerciseDaysService {
     required ExerciseDayClient toExerciseDay,
     required String exerciseTypeId,
   }) async {
-    final fromExerciseDayIndex = trainingBlock.exerciseDays.indexOf(fromExerciseDay);
-    final toExerciseDayIndex = trainingBlock.exerciseDays.indexOf(toExerciseDay);
+    final fromExerciseDayIndex =
+        trainingBlock.exerciseDays.indexOf(fromExerciseDay);
+    final toExerciseDayIndex =
+        trainingBlock.exerciseDays.indexOf(toExerciseDay);
 
     final exerciseType = fromExerciseDay.getExerciseTypeById(exerciseTypeId);
 
-    final updatedFromExerciseDay = fromExerciseDay.removeExerciseTypeById(exerciseTypeId);
-    final updatedToExerciseDay = toExerciseDay.prependExerciseType(exerciseType);
+    final updatedFromExerciseDay =
+        fromExerciseDay.removeExerciseTypeById(exerciseTypeId);
+    final updatedToExerciseDay =
+        toExerciseDay.prependExerciseType(exerciseType);
 
     final updatedTrainingBlock = trainingBlock
-        .updateExerciseDayAt(index: fromExerciseDayIndex, exerciseDay: updatedFromExerciseDay)
-        .updateExerciseDayAt(index: toExerciseDayIndex, exerciseDay: updatedToExerciseDay);
+        .updateExerciseDayAt(
+            index: fromExerciseDayIndex, exerciseDay: updatedFromExerciseDay)
+        .updateExerciseDayAt(
+            index: toExerciseDayIndex, exerciseDay: updatedToExerciseDay);
 
     return trainingBlocksRepository.update(updatedTrainingBlock.toDbModel());
   }

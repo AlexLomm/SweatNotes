@@ -27,10 +27,12 @@ class HorizontallyScrollableExercises extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<HorizontallyScrollableExercises> createState() => _HorizontallyScrollableExercisesState();
+  ConsumerState<HorizontallyScrollableExercises> createState() =>
+      _HorizontallyScrollableExercisesState();
 }
 
-class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallyScrollableExercises> {
+class _HorizontallyScrollableExercisesState
+    extends ConsumerState<HorizontallyScrollableExercises> {
   late String _key;
 
   int _counter = 0;
@@ -66,7 +68,9 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
 
-    final exerciseTypes = widget.exerciseDay.getWithExerciseTypesArchived(showArchived).exerciseTypes;
+    final exerciseTypes = widget.exerciseDay
+        .getWithExerciseTypesArchived(showArchived)
+        .exerciseTypes;
     final exerciseTypesCount = exerciseTypes.length;
 
     int numberOfColumnsPerExerciseType = 0;
@@ -74,8 +78,10 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
       numberOfColumnsPerExerciseType = exerciseTypes.first.exercises.length;
     }
 
-    final areColumnsCollapsed = widget.trainingBlock.exercisesCollapsedIncludingIndex > -1;
-    final collapsedColumnsCount = widget.trainingBlock.exercisesCollapsedIncludingIndex + 1;
+    final areColumnsCollapsed =
+        widget.trainingBlock.exercisesCollapsedIncludingIndex > -1;
+    final collapsedColumnsCount =
+        widget.trainingBlock.exercisesCollapsedIncludingIndex + 1;
 
     final height = widgetParams.getExercisesHeight(exerciseTypesCount);
 
@@ -134,10 +140,12 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
               }
 
               final exercisesColumn = ExercisesColumn(
-                hasCollapseButton: adjustedHorizontalIndex != adjustedNumberOfColumnsPerExerciseType - 1,
+                hasCollapseButton: adjustedHorizontalIndex !=
+                    adjustedNumberOfColumnsPerExerciseType - 1,
                 trainingBlock: widget.trainingBlock,
                 exerciseDayClient: widget.exerciseDay,
-                horizontalIndex: adjustedHorizontalIndex + collapsedColumnsCount,
+                horizontalIndex:
+                    adjustedHorizontalIndex + collapsedColumnsCount,
               );
 
               // ClipRect + SingleChildScrollView ensure that there is no RenderFlex
@@ -153,7 +161,9 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
               // from being stretched to the `exerciseWithMargin` width (and
               // thereby losing border radius on the right) instead of being
               // of the `exerciseWithoutMargin` width
-              return adjustedHorizontalIndex == adjustedNumberOfColumnsPerExerciseType && adjustedHorizontalIndex > 0
+              return adjustedHorizontalIndex ==
+                          adjustedNumberOfColumnsPerExerciseType &&
+                      adjustedHorizontalIndex > 0
                   ? Align(
                       alignment: Alignment.topLeft,
                       child: AddExerciseColumnButton(
@@ -167,7 +177,9 @@ class _HorizontallyScrollableExercisesState extends ConsumerState<HorizontallySc
                         duration: WidgetParams.animationDuration,
                         curve: WidgetParams.animationCurve,
                         height: height,
-                        child: showArchived ? clippedExerciseColumn : exercisesColumn,
+                        child: showArchived
+                            ? clippedExerciseColumn
+                            : exercisesColumn,
                       ),
                     );
             },
@@ -207,7 +219,8 @@ class CollapsedExerciseColumns extends ConsumerWidget {
               Align(
                 alignment: Alignment.topCenter,
                 child: Stick(
-                  height: widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
+                  height: widgetParams
+                      .getExerciseTypesListHeight(exerciseTypesCount),
                   scale: 0.9,
                   opacity: 0.5,
                   depth: 2,
@@ -217,7 +230,8 @@ class CollapsedExerciseColumns extends ConsumerWidget {
               Align(
                 alignment: Alignment.topCenter,
                 child: Stick(
-                  height: widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
+                  height: widgetParams
+                      .getExerciseTypesListHeight(exerciseTypesCount),
                   scale: 0.95,
                   opacity: 0.7,
                   depth: 1,
@@ -226,7 +240,8 @@ class CollapsedExerciseColumns extends ConsumerWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Stick(
-                height: widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
+                height:
+                    widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
                 scale: 1.0,
                 opacity: 1.0,
                 depth: 0,
@@ -277,7 +292,8 @@ class Stick extends ConsumerWidget {
             elevation: 1,
             surfaceTintColor: Theme.of(context).colorScheme.primary,
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+            borderRadius:
+                BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
             shadowColor: Colors.transparent,
             child: Container(
               width: 48,
@@ -295,8 +311,12 @@ class Stick extends ConsumerWidget {
                           child: AutoSizeText(
                             text!,
                             maxLines: 1,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                 ),
                           ),
                         ),
@@ -326,7 +346,8 @@ class AddExerciseColumnButton extends ConsumerWidget {
     final exercisesService = ref.watch(exercisesServiceProvider);
 
     return GestureDetector(
-      onTap: () => exercisesService.addEmptyExercise(exerciseType: exerciseType),
+      onTap: () =>
+          exercisesService.addEmptyExercise(exerciseType: exerciseType),
       child: Container(
         width: 48,
         height: widgetParams.getExerciseTypesListHeight(exerciseTypesCount),
@@ -335,7 +356,8 @@ class AddExerciseColumnButton extends ConsumerWidget {
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondaryContainer,
-          borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
         ),
         child: Icon(
           Icons.add,
@@ -366,7 +388,9 @@ class ExercisesColumn extends ConsumerWidget {
     final trainingBlocksService = ref.watch(trainingBlocksServiceProvider);
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
 
-    final exerciseTypes = exerciseDayClient.getWithExerciseTypesArchived(showArchived).exerciseTypes;
+    final exerciseTypes = exerciseDayClient
+        .getWithExerciseTypesArchived(showArchived)
+        .exerciseTypes;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -374,14 +398,18 @@ class ExercisesColumn extends ConsumerWidget {
         ExerciseColumnLabel(
           hasCollapseButton: hasCollapseButton,
           areDatesEmpty: exerciseDayClient.areDatesEmpty,
-          text: horizontalIndex == 0 ? 'Previous PRs' : exerciseDayClient.getFormattedDateAt(horizontalIndex - 1),
+          text: horizontalIndex == 0
+              ? 'Previous PRs'
+              : exerciseDayClient.getFormattedDateAt(horizontalIndex - 1),
           exerciseTypes: exerciseDayClient.exerciseTypes,
           onCollapse: () => trainingBlocksService.collapsePastExercisesAt(
             trainingBlock,
             index: horizontalIndex,
           ),
         ),
-        for (var verticalIndex = 0; verticalIndex < exerciseTypes.length; verticalIndex++)
+        for (var verticalIndex = 0;
+            verticalIndex < exerciseTypes.length;
+            verticalIndex++)
           Container(
             margin: EdgeInsets.only(
               right: widgetParams.exercisesSideSpacing,
@@ -389,7 +417,8 @@ class ExercisesColumn extends ConsumerWidget {
             ),
             child: ExerciseWidget(
               exerciseType: exerciseDayClient.exerciseTypes[verticalIndex],
-              exercise: exerciseDayClient.exerciseTypes[verticalIndex].exercises[horizontalIndex],
+              exercise: exerciseDayClient
+                  .exerciseTypes[verticalIndex].exercises[horizontalIndex],
             ),
           ),
       ],
@@ -417,21 +446,26 @@ class ExerciseColumnLabel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final widgetParams = ref.watch(widgetParamsProvider);
 
-    final labelWidth =
-        exerciseTypes.isEmpty ? 0.0 : exerciseTypes[0].exercises[0].sets.length * widgetParams.exerciseSetWidth;
+    final labelWidth = exerciseTypes.isEmpty
+        ? 0.0
+        : exerciseTypes[0].exercises[0].sets.length *
+            widgetParams.exerciseSetWidth;
 
     return AnimatedContainer(
       duration: WidgetParams.animationDuration,
       curve: WidgetParams.animationCurve,
       width: labelWidth,
-      height: widgetParams.exercisesTitleHeight - widgetParams.exercisesMarginBottomNotLast,
-      margin: EdgeInsets.only(bottom: widgetParams.exercisesMarginBottomNotLast),
+      height: widgetParams.exercisesTitleHeight -
+          widgetParams.exercisesMarginBottomNotLast,
+      margin:
+          EdgeInsets.only(bottom: widgetParams.exercisesMarginBottomNotLast),
       child: Material(
         elevation: 1.0,
         shadowColor: Colors.transparent,
         surfaceTintColor: Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+          borderRadius:
+              BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
         ),
         child: Container(
           padding: const EdgeInsets.only(left: 16.0),
@@ -448,23 +482,33 @@ class ExerciseColumnLabel extends ConsumerWidget {
                         triggerMode: TooltipTriggerMode.tap,
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.all(Radius.circular(widgetParams.borderRadius)),
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(widgetParams.borderRadius)),
                         ),
                         richMessage: TextSpan(
                           text: 'Set dates first by editing the exercise day!',
                           children: const [
                             TextSpan(text: '\n\n'),
-                            TextSpan(text: '1. Tap the pencil icon in the top right corner.\n'),
-                            TextSpan(text: '2. Click on the exercise day name.'),
+                            TextSpan(
+                                text:
+                                    '1. Tap the pencil icon in the top right corner.\n'),
+                            TextSpan(
+                                text: '2. Click on the exercise day name.'),
                           ],
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                         ),
                         child: AutoSizeText(
                           text,
                           maxLines: 1,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                         ),
@@ -472,7 +516,10 @@ class ExerciseColumnLabel extends ConsumerWidget {
                     : AutoSizeText(
                         text,
                         maxLines: 1,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
                               color: Theme.of(context).colorScheme.onSurface,
                             ),
                       ),

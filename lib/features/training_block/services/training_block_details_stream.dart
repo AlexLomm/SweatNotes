@@ -17,8 +17,11 @@ import '../data/training_blocks_repository.dart';
 part 'training_block_details_stream.g.dart';
 
 @riverpod
-Stream<TrainingBlockClient?> trainingBlockDetailsStream(TrainingBlockDetailsStreamRef ref, String trainingBlockId,
-    {required bool includeArchived}) async* {
+Stream<TrainingBlockClient?> trainingBlockDetailsStream(
+  TrainingBlockDetailsStreamRef ref,
+  String trainingBlockId, {
+  required bool includeArchived,
+}) async* {
   final trainingBlocksRepository = ref.watch(trainingBlocksRepositoryProvider);
   final exerciseTypesRepository = ref.watch(exerciseTypesRepositoryProvider);
 
@@ -30,11 +33,14 @@ Stream<TrainingBlockClient?> trainingBlockDetailsStream(TrainingBlockDetailsStre
 
   final Stream<List<ExerciseType>> exerciseTypesStream = exerciseTypesRepository
       //
-      .getQueryByTrainingBlockId(trainingBlockId, includeArchived: includeArchived)
+      .getQueryByTrainingBlockId(trainingBlockId,
+          includeArchived: includeArchived)
       .snapshots()
-      .map<List<ExerciseType>>((event) => event.docs.map((e) => e.data()).toList());
+      .map<List<ExerciseType>>(
+          (event) => event.docs.map((e) => e.data()).toList());
 
-  final combinedStream = Rx.combineLatest2<TrainingBlock?, List<ExerciseType>, TrainingBlockClient?>(
+  final combinedStream = Rx.combineLatest2<TrainingBlock?, List<ExerciseType>,
+      TrainingBlockClient?>(
     trainingBlockStream,
     exerciseTypesStream,
     (trainingBlock, exerciseTypes) {
@@ -66,7 +72,8 @@ TrainingBlockClient? _getNormalizedData(
       .fold<int>(2, max);
 
   final maxExerciseSetsCount = exerciseTypes
-      .expand((exerciseType) => exerciseType.exercises.map((exercise) => exercise.sets.length))
+      .expand((exerciseType) =>
+          exerciseType.exercises.map((exercise) => exercise.sets.length))
       .fold<int>(2, max);
 
   final List<ExerciseTypeClient> exerciseTypesClient = exerciseTypes
@@ -97,7 +104,8 @@ TrainingBlockClient? _getNormalizedData(
               // add filler sets
               ...List.generate(
                 maxExerciseSetsCount - exercise.sets.length + 1,
-                (index) => ExerciseSetClient.empty().copyWith(unit: exerciseType.unit),
+                (index) =>
+                    ExerciseSetClient.empty().copyWith(unit: exerciseType.unit),
               ),
             ].toList(),
           ),
@@ -108,7 +116,8 @@ TrainingBlockClient? _getNormalizedData(
           (index) => ExerciseClient.empty().copyWith(
             sets: List.generate(
               maxExerciseSetsCount + 1,
-              (index) => ExerciseSetClient.empty().copyWith(unit: exerciseType.unit),
+              (index) =>
+                  ExerciseSetClient.empty().copyWith(unit: exerciseType.unit),
             ),
           ),
         ),
@@ -136,7 +145,8 @@ TrainingBlockClient? _getNormalizedData(
       for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
         final nearestExerciseSet = nearestPopulatedExerciseSets[j];
 
-        final exerciseSetWithPreviousPr = exerciseType.exercises[i].sets[j].copyWith(
+        final exerciseSetWithPreviousPr =
+            exerciseType.exercises[i].sets[j].copyWith(
           previousPersonalRecord: personalRecords[j],
         );
 
@@ -145,9 +155,11 @@ TrainingBlockClient? _getNormalizedData(
 
         if (exerciseSetWithPreviousPr.isFiller) continue;
 
-        if (exerciseSetWithPreviousPr.reps == 0 || exerciseSetWithPreviousPr.load == 0) continue;
+        if (exerciseSetWithPreviousPr.reps == 0 ||
+            exerciseSetWithPreviousPr.load == 0) continue;
 
-        final progressAgainstNearestSet = exerciseSetWithPreviousPr.compareProgress(nearestExerciseSet);
+        final progressAgainstNearestSet =
+            exerciseSetWithPreviousPr.compareProgress(nearestExerciseSet);
 
         // add progress against nearest neighbour
         exerciseType.exercises[i].sets[j] = exerciseSetWithPreviousPr.copyWith(
@@ -156,7 +168,8 @@ TrainingBlockClient? _getNormalizedData(
 
         nearestPopulatedExerciseSets[j] = exerciseSetWithPreviousPr;
 
-        if (exerciseSetWithPreviousPr.isPersonalRecord) personalRecords[j] = exerciseSetWithPreviousPr;
+        if (exerciseSetWithPreviousPr.isPersonalRecord)
+          personalRecords[j] = exerciseSetWithPreviousPr;
       }
     }
 
@@ -192,8 +205,10 @@ TrainingBlockClient? _getNormalizedData(
     for (var i = 0; i < exerciseType.exercises.length; i++) {
       for (var j = 0; j < exerciseSetsPerExerciseCount; j++) {
         final currentExerciseSet = exerciseType.exercises[i].sets[j];
-        final neighboringExerciseSet = i > 0 ? exerciseType.exercises[i - 1].sets[j] : null;
-        final neighborSet = j > 0 ? exerciseType.exercises[i].sets[j - 1] : null;
+        final neighboringExerciseSet =
+            i > 0 ? exerciseType.exercises[i - 1].sets[j] : null;
+        final neighborSet =
+            j > 0 ? exerciseType.exercises[i].sets[j - 1] : null;
 
         exerciseType.exercises[i].sets[j] = currentExerciseSet.copyWith(
           predictedReps: [
@@ -218,15 +233,21 @@ TrainingBlockClient? _getNormalizedData(
     archivedAt: trainingBlock.archivedAt,
     startedAt: trainingBlock.startedAt,
     name: trainingBlock.name,
-    exercisesCollapsedIncludingIndex: trainingBlock.exercisesCollapsedIncludingIndex,
-    exerciseDays: trainingBlock.exerciseDays.where((exerciseDay) => exerciseDay.isNotArchived).map(
+    exercisesCollapsedIncludingIndex:
+        trainingBlock.exercisesCollapsedIncludingIndex,
+    exerciseDays: trainingBlock.exerciseDays
+        .where((exerciseDay) => exerciseDay.isNotArchived)
+        .map(
       (exerciseDay) {
         final exerciseTypes = exerciseTypesClient
-            .where((exerciseType) => exerciseDay.exerciseTypesOrdering.containsKey(exerciseType.dbModel.id))
+            .where((exerciseType) => exerciseDay.exerciseTypesOrdering
+                .containsKey(exerciseType.dbModel.id))
             .toList()
           ..sort((a, b) {
-            final orderingA = exerciseDay.exerciseTypesOrdering[a.dbModel.id] ?? double.maxFinite;
-            final orderingB = exerciseDay.exerciseTypesOrdering[b.dbModel.id] ?? double.maxFinite;
+            final orderingA = exerciseDay.exerciseTypesOrdering[a.dbModel.id] ??
+                double.maxFinite;
+            final orderingB = exerciseDay.exerciseTypesOrdering[b.dbModel.id] ??
+                double.maxFinite;
 
             return orderingA.compareTo(orderingB);
           });
@@ -235,8 +256,11 @@ TrainingBlockClient? _getNormalizedData(
         final startedAtDate = trainingBlock.startedAt?.toDate();
         final weekDay = exerciseDay.weekDay;
 
-        if (exerciseTypes.isNotEmpty && startedAtDate != null && weekDay != null) {
-          final daysDifference = (weekDay - startedAtDate.weekday) % DateTime.daysPerWeek;
+        if (exerciseTypes.isNotEmpty &&
+            startedAtDate != null &&
+            weekDay != null) {
+          final daysDifference =
+              (weekDay - startedAtDate.weekday) % DateTime.daysPerWeek;
           final firstDate = startedAtDate.add(Duration(days: daysDifference));
 
           // -1, because we don't want to include a date for the "Previous PRs" column
@@ -255,8 +279,12 @@ TrainingBlockClient? _getNormalizedData(
       },
     ).toList()
       ..sort((a, b) {
-        final orderingA = trainingBlock.exerciseDaysOrdering[a.dbModel.pseudoId] ?? double.maxFinite;
-        final orderingB = trainingBlock.exerciseDaysOrdering[b.dbModel.pseudoId] ?? double.maxFinite;
+        final orderingA =
+            trainingBlock.exerciseDaysOrdering[a.dbModel.pseudoId] ??
+                double.maxFinite;
+        final orderingB =
+            trainingBlock.exerciseDaysOrdering[b.dbModel.pseudoId] ??
+                double.maxFinite;
 
         return orderingA.compareTo(orderingB);
       }),

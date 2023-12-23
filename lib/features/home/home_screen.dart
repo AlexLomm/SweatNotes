@@ -9,6 +9,7 @@ import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/layout.dart';
 import '../auth/services/auth_service.dart';
 import '../settings/show_archived_training_blocks_switcher.dart';
+import '../training_block/data/models_client/training_block_client.dart';
 import '../training_block/services/training_blocks_stream.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -20,6 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
   late RouteObserver _routeObserver;
+  List<TrainingBlockClient>? _cachedTrainingBlocks;
 
   @override
   void didChangeDependencies() {
@@ -95,7 +97,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
         ),
       ],
       child: trainingBlocks.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () {
+          final data = _cachedTrainingBlocks;
+
+          return data == null
+              ? const Center(child: CircularProgressIndicator())
+              : _TrainingBlocks(data: data);
+        },
+        data: (data) {
+          _cachedTrainingBlocks = data;
+
+          return _TrainingBlocks(data: data);
+        },
         error: (error, stackTrace) {
           WidgetsBinding.instance.addPostFrameCallback(
             (_) => authService.signOut(),
@@ -103,30 +116,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
           return Center(child: Text(error.toString()));
         },
-        data: (data) => Builder(builder: (context) {
-          final appBarHeight = Scaffold.of(context).appBarMaxHeight ?? 0;
-          final safeAreaHeight = mq.size.height -
-              mq.padding.top -
-              mq.padding.bottom -
-              appBarHeight;
-
-          if (data.isEmpty) {
-            return const Center(child: EmptyPagePlaceholder());
-          }
-
-          return SizedBox(
-            height: safeAreaHeight,
-            width: mq.size.width,
-            child: ListView(children: [
-              for (final trainingBlock in data)
-                TrainingBlockButton(
-                  key: Key(trainingBlock.dbModel.id),
-                  trainingBlock: trainingBlock,
-                ),
-            ]),
-          );
-        }),
       ),
+    );
+  }
+}
+
+class _TrainingBlocks extends StatelessWidget {
+  final List<TrainingBlockClient> data;
+
+  const _TrainingBlocks({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        final mq = MediaQuery.of(context);
+
+        final appBarHeight = Scaffold.of(context).appBarMaxHeight ?? 0;
+        final safeAreaHeight =
+            mq.size.height - mq.padding.top - mq.padding.bottom - appBarHeight;
+
+        if (data.isEmpty) {
+          return const Center(child: EmptyPagePlaceholder());
+        }
+
+        return SizedBox(
+          height: safeAreaHeight,
+          width: mq.size.width,
+          child: ListView(children: [
+            for (final trainingBlock in data)
+              TrainingBlockButton(
+                key: Key(trainingBlock.dbModel.id),
+                trainingBlock: trainingBlock,
+              ),
+          ]),
+        );
+      },
     );
   }
 }

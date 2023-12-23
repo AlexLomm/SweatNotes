@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sweatnotes/shared/widgets/date_field.dart';
 
+import '../../shared/widgets/date_field.dart';
 import '../../shared/widgets/regular_text_field.dart';
 import '../../widgets/button.dart';
 import '../../widgets/layout.dart';
@@ -27,6 +27,8 @@ class TrainingBlockCreateUpdateScreen extends ConsumerStatefulWidget {
 
 class _TrainingBlockCreateScreen
     extends ConsumerState<TrainingBlockCreateUpdateScreen> with RouteAware {
+  bool _isButtonDisabled = true;
+
   final _trainingBlockNameController = TextEditingController();
   late DateTime _selectedDate;
 
@@ -44,6 +46,15 @@ class _TrainingBlockCreateScreen
       _selectedDate =
           widget.trainingBlock?.startedAt?.toDate() ?? DateTime.now();
     }
+
+    _updateIsButtonDisabled();
+    _trainingBlockNameController.addListener(_updateIsButtonDisabled);
+  }
+
+  _updateIsButtonDisabled() {
+    setState(
+      () => _isButtonDisabled = _trainingBlockNameController.text.isEmpty,
+    );
   }
 
   @override
@@ -81,40 +92,13 @@ class _TrainingBlockCreateScreen
               Button(
                 label: 'Create',
                 isLoading: _isLoading,
-                onPressed: () async {
-                  final pop = context.pop;
-
-                  setState(() => _isLoading = true);
-
-                  await trainingBlocksService.create(
-                    name: _trainingBlockNameController.text,
-                    startedAt: Timestamp.fromDate(_selectedDate),
-                  );
-
-                  setState(() => _isLoading = false);
-
-                  pop();
-                },
+                onPressed: _isButtonDisabled ? null : _create,
               ),
             if (widget.trainingBlock != null && !widget.isCopy)
               Button(
                 label: 'Update',
                 isLoading: _isLoading,
-                onPressed: () async {
-                  final pop = context.pop;
-
-                  setState(() => _isLoading = true);
-
-                  await trainingBlocksService.updateNameAndStartedAtDate(
-                    widget.trainingBlock!,
-                    name: _trainingBlockNameController.text,
-                    startedAt: Timestamp.fromDate(_selectedDate),
-                  );
-
-                  setState(() => _isLoading = false);
-
-                  pop();
-                },
+                onPressed: _isButtonDisabled ? null : _update,
               ),
             if (widget.trainingBlock != null && widget.isCopy)
               data.when(
@@ -123,26 +107,67 @@ class _TrainingBlockCreateScreen
                 data: (trainingBlockWithPersonalRecords) => Button(
                   label: 'Copy',
                   isLoading: _isLoading,
-                  onPressed: () async {
-                    final pop = context.pop;
-
-                    setState(() => _isLoading = true);
-
-                    await trainingBlocksService.copyWithPersonalRecords(
-                      trainingBlockWithPersonalRecords!,
-                      trainingBlockName: _trainingBlockNameController.text,
-                      startedAt: Timestamp.fromDate(_selectedDate),
-                    );
-
-                    setState(() => _isLoading = false);
-
-                    pop();
-                  },
+                  onPressed: _isButtonDisabled
+                      ? null
+                      : () => _copy(trainingBlockWithPersonalRecords!),
                 ),
               )
           ],
         ),
       ),
     );
+  }
+
+  _create() async {
+    final trainingBlocksService = ref.read(trainingBlocksServiceProvider);
+
+    final pop = context.pop;
+
+    setState(() => _isLoading = true);
+
+    await trainingBlocksService.create(
+      name: _trainingBlockNameController.text,
+      startedAt: Timestamp.fromDate(_selectedDate),
+    );
+
+    setState(() => _isLoading = false);
+
+    pop();
+  }
+
+  _update() async {
+    final trainingBlocksService = ref.read(trainingBlocksServiceProvider);
+
+    final pop = context.pop;
+
+    setState(() => _isLoading = true);
+
+    await trainingBlocksService.updateNameAndStartedAtDate(
+      widget.trainingBlock!,
+      name: _trainingBlockNameController.text,
+      startedAt: Timestamp.fromDate(_selectedDate),
+    );
+
+    setState(() => _isLoading = false);
+
+    pop();
+  }
+
+  _copy(TrainingBlockClient trainingBlockClient) async {
+    final trainingBlocksService = ref.read(trainingBlocksServiceProvider);
+
+    final pop = context.pop;
+
+    setState(() => _isLoading = true);
+
+    await trainingBlocksService.copyWithPersonalRecords(
+      trainingBlockClient,
+      trainingBlockName: _trainingBlockNameController.text,
+      startedAt: Timestamp.fromDate(_selectedDate),
+    );
+
+    setState(() => _isLoading = false);
+
+    pop();
   }
 }

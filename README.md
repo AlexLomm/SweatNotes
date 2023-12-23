@@ -15,14 +15,14 @@ optionally, `--export-on-exit` can be specified to export the data to the `seed`
 Instructions for releasing a new version of the app.
 
 1. Push the firestore rules to production (
-   see [Pushing firestore rules](#1.-pushing-firestore-rules)).
+   see [Pushing firestore rules](#1-pushing-firestore-rules)).
 2. Bump the version in `pubspec.yaml` and `ios/Runner/Info.plist` (
-   see [Bumping a version](#1.-bumping-a-version)).
-3. Build the app (see [Building the app](#2.-building-the-app)).
+   see [Bumping a version](#2-bumping-a-version)).
+3. Build the app (see [Building the app](#3-building-the-app)).
 4. Upload it with the Transporter app and create a release in appstoreconnect.apple.com (
-   see [Uploading the app](#3.-uploading-the-app)).
+   see [Uploading the app](#4-uploading-the-app)).
 5. Create a git tag named `vX.Y.Z+<build>` (where `X.Y.Z` is the version number and `<build>` is the
-   build number) and push it to the remote. (see [Creating a git tag](#4.-creating-a-git-tag)).
+   build number) and push it to the remote. (see [Creating a git tag](#5-creating-a-git-tag)).
 6. Create a new release on Github, and upload the built app to it.
 
 ### 1. Pushing firestore rules

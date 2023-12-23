@@ -38,9 +38,15 @@ class Button extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        textStyle: labelLarge?.copyWith(color: onPrimaryColor),
+        textStyle: labelLarge?.copyWith(
+          color: onPrimaryColor,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
-      child: child ?? Text(label ?? ''),
+      child: child ??
+          Row(children: [
+            Expanded(child: Text(label ?? '', softWrap: false)),
+          ]),
     );
   }
 }

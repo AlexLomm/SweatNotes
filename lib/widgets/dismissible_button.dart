@@ -54,10 +54,13 @@ class DismissibleButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                label,
-                style: tt.titleLarge?.copyWith(
-                  color: textColor ?? cs.onPrimaryContainer,
+              Expanded(
+                child: Text(
+                  label,
+                  style: tt.titleLarge?.copyWith(
+                    color: textColor ?? cs.onPrimaryContainer,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
               if (right != null) right!,

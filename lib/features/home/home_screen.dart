@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sweatnotes/features/home/training_block_button.dart';
 
@@ -65,6 +66,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
       trainingBlocksStreamProvider(includeArchived: showArchivedTrainingBlocks),
     );
 
+    // spinner is extracted, because when inlined inside the `loading`
+    // callback a weird dot is displayed instead of the spinner
+    //
+    // in order to reproduce this, inline the spinner and do a hard
+    // refresh of the app
+    const spinner = Column(children: [
+      Gap(64),
+      Center(child: Text('Loading...')),
+    ]);
+
     return Layout(
       leading: IconButton(
         icon: Icon(Icons.add, color: cs.onSurface),
@@ -100,9 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
         loading: () {
           final data = _cachedTrainingBlocks;
 
-          return data == null
-              ? const Center(child: CircularProgressIndicator())
-              : _TrainingBlocks(data: data);
+          return data == null ? spinner : _TrainingBlocks(data: data);
         },
         data: (data) {
           _cachedTrainingBlocks = data;

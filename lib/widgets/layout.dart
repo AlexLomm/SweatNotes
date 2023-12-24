@@ -62,11 +62,14 @@ class _LayoutState extends ConsumerState<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+
     final leadingOrGoBackButton = widget.leading ??
         IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Theme.of(context).colorScheme.onSurface,
+            color: cs.onSurface,
           ),
           tooltip: 'Navigate back',
           splashRadius: 20,
@@ -99,16 +102,15 @@ class _LayoutState extends ConsumerState<Layout> {
                 data: Theme.of(context).copyWith(
                   // style the auto-updater dialog
                   dialogTheme: DialogTheme(
-                    titleTextStyle:
-                        Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                    contentTextStyle:
-                        Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
+                    titleTextStyle: tt.titleLarge?.copyWith(
+                      color: cs.onSurface,
+                    ),
+                    contentTextStyle: tt.bodyMedium?.copyWith(
+                      color: cs.onSurface,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                   ),
                 ),
                 child: UpgradeAlert(

@@ -44,9 +44,18 @@ class Button extends StatelessWidget {
         ),
       ),
       child: child ??
-          Row(children: [
-            Expanded(child: Text(label ?? '', softWrap: false)),
-          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  label ?? '',
+                  softWrap: false,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
     );
   }
 }

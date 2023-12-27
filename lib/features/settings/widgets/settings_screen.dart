@@ -12,6 +12,7 @@ import '../../../widgets/go_back_button.dart';
 import '../../../widgets/layout.dart';
 import '../../auth/services/auth_service.dart';
 import '../../auth/services/user.dart';
+import '../tutorial_settings.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -21,6 +22,7 @@ class SettingsScreen extends ConsumerWidget {
     final authService = ref.watch(authServiceProvider);
     final packageInfo = ref.watch(packageInfoProvider);
     final urlLauncher = ref.watch(urlLauncherProvider);
+    final tutorialSettings = ref.watch(tutorialSettingsProvider.notifier);
 
     final backgroundColor = ElevationOverlay.applySurfaceTint(
       Theme.of(context).colorScheme.surface,
@@ -53,8 +55,10 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: textColor,
                 id: '/settings/account',
                 label: 'Account',
-                right: Icon(Icons.keyboard_arrow_right,
-                    color: Theme.of(context).colorScheme.onSurface),
+                right: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 onPressed: () => context.push('/settings/account'),
               ),
               // DismissibleButton(
@@ -68,8 +72,10 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: textColor,
                 id: '/settings/theme',
                 label: 'Theme',
-                right: Icon(Icons.keyboard_arrow_right,
-                    color: Theme.of(context).colorScheme.onSurface),
+                right: Icon(
+                  Icons.keyboard_arrow_right,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
                 onPressed: () => context.push('/settings/theme'),
               ),
               DismissibleButton(
@@ -77,30 +83,58 @@ class SettingsScreen extends ConsumerWidget {
                 textColor: textColor,
                 id: 'https://sweatnotes.com/support',
                 label: 'Support',
-                right: Icon(Icons.open_in_new,
-                    color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () =>
-                    urlLauncher.launch('https://sweatnotes.com/support'),
+                right: Icon(
+                  Icons.open_in_new,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                onPressed: () => urlLauncher.launch(
+                  'https://sweatnotes.com/support',
+                ),
               ),
               DismissibleButton(
                 backgroundColor: backgroundColor,
                 textColor: textColor,
                 id: 'https://sweatnotes.com/privacy-policy',
                 label: 'Privacy Policy',
-                right: Icon(Icons.open_in_new,
-                    color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () =>
-                    urlLauncher.launch('https://sweatnotes.com/privacy-policy'),
+                right: Icon(
+                  Icons.open_in_new,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                onPressed: () => urlLauncher.launch(
+                  'https://sweatnotes.com/privacy-policy',
+                ),
               ),
               DismissibleButton(
                 backgroundColor: backgroundColor,
                 textColor: textColor,
                 id: 'https://sweatnotes.com/terms-of-service',
                 label: 'Terms of Service',
-                right: Icon(Icons.open_in_new,
-                    color: Theme.of(context).colorScheme.onSurface),
-                onPressed: () => urlLauncher
-                    .launch('https://sweatnotes.com/terms-of-service'),
+                right: Icon(
+                  Icons.open_in_new,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                onPressed: () => urlLauncher.launch(
+                  'https://sweatnotes.com/terms-of-service',
+                ),
+              ),
+              DismissibleButton(
+                backgroundColor: backgroundColor,
+                textColor: textColor,
+                id: 'reset-tutorials',
+                label: 'Reset Tutorials',
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => _AreYouSureAlertDialog(
+                    title: 'Reset Tutorials',
+                    description: 'Reset tutorial tooltips.',
+                    onCancel: context.pop,
+                    onConfirm: () {
+                      context.pop();
+
+                      tutorialSettings.reset();
+                    },
+                  ),
+                ),
               ),
               // DismissibleButton(
               //   id: '/settings/contact-us-on-discord',
@@ -113,8 +147,10 @@ class SettingsScreen extends ConsumerWidget {
           ),
           SliverFillRemaining(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 50.0,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -138,22 +174,28 @@ class SettingsScreen extends ConsumerWidget {
                           error: (error, stackTrace) => '',
                           loading: () => '',
                         ),
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant),
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
+                                ),
                       ),
                       Row(
                         children: [
                           TextButton(
                             onPressed: () => showDialog(
                               context: context,
-                              builder: (context) => _DeleteAccountAlertDialog(
+                              builder: (context) => _AreYouSureAlertDialog(
+                                title: 'Danger!',
+                                description:
+                                    'Are you sure you want to delete your account? This action cannot be undone.',
                                 onCancel: context.pop,
-                                onConfirm: authService.deleteAccount,
+                                onConfirm: () async {
+                                  context.pop();
+
+                                  await authService.deleteAccount();
+                                },
                               ),
                             ),
                             child: Text(
@@ -162,8 +204,8 @@ class SettingsScreen extends ConsumerWidget {
                                   .textTheme
                                   .labelLarge
                                   ?.copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.error),
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
                             ),
                           ),
                           const SizedBox(width: 16.0),
@@ -200,52 +242,47 @@ class SettingsScreen extends ConsumerWidget {
   }
 }
 
-class _DeleteAccountAlertDialog extends StatelessWidget {
+class _AreYouSureAlertDialog extends StatelessWidget {
+  final String title;
+  final String description;
   final void Function() onCancel;
   final void Function() onConfirm;
 
-  const _DeleteAccountAlertDialog({
+  const _AreYouSureAlertDialog({
+    required this.title,
+    required this.description,
     required this.onCancel,
     required this.onConfirm,
   });
 
   @override
   Widget build(BuildContext context) {
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+
     return AlertDialog(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: cs.surface,
       title: Text(
-        'Danger!',
-        style: Theme.of(context)
-            .textTheme
-            .headlineSmall
-            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        title,
+        style: tt.headlineSmall?.copyWith(color: cs.onSurface),
       ),
       content: Text(
-        'Are you sure you want to delete your account? This action cannot be undone.',
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        description,
+        style: tt.bodyMedium?.copyWith(color: cs.onSurface),
       ),
       actions: [
         TextButton(
           onPressed: onCancel,
           child: Text(
             'Cancel',
-            style: Theme.of(context)
-                .textTheme
-                .labelLarge
-                ?.copyWith(color: Theme.of(context).colorScheme.primary),
+            style: tt.labelLarge?.copyWith(color: cs.primary),
           ),
         ),
         TextButton(
           onPressed: onConfirm,
           child: Text(
             'Confirm',
-            style: Theme.of(context)
-                .textTheme
-                .labelLarge
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
+            style: tt.labelLarge?.copyWith(color: cs.error),
           ),
         ),
       ],

@@ -12,6 +12,12 @@ class WidgetParams {
   static const Duration animationDuration = Duration(milliseconds: 300);
   static const Cubic animationCurve = Cubic(0.79, 0.14, 0.15, 0.86);
 
+  static const Duration tutorialBackdropAnimationDuration =
+      Duration(milliseconds: 1200);
+  static const Duration tutorialTooltipAnimationDuration =
+      Duration(milliseconds: 400);
+  static const Curve tutorialAnimationCurve = Curves.easeInSine;
+
   final bool isEditMode;
   final bool isCompactMode;
 

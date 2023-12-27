@@ -112,6 +112,7 @@ class TutorController {
   }
 
   void dispose() {
+    dismiss();
     _widgetsPlayController.close();
     isReady.dispose();
   }

@@ -44,6 +44,8 @@ class ThemeSwitcher extends _$ThemeSwitcher {
     prefs.setString(key, themeModeString);
 
     analytics.logEvent(
-        name: 'set_theme_mode', parameters: {'theme_mode': themeModeString});
+      name: 'set_theme_mode',
+      parameters: {'theme_mode': themeModeString},
+    );
   }
 }

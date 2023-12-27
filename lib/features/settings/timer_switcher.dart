@@ -27,7 +27,8 @@ class TimerSwitcher extends _$TimerSwitcher {
     prefs.setBool(key, newState);
 
     analytics.logEvent(
-        name: 'toggle_timer_enabled',
-        parameters: {'timer_enabled': newState.toString()});
+      name: 'toggle_timer_enabled',
+      parameters: {'timer_enabled': newState.toString()},
+    );
   }
 }

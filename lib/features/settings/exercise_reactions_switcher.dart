@@ -27,7 +27,8 @@ class ExerciseReactionsSwitcher extends _$ExerciseReactionsSwitcher {
     prefs.setBool(key, newState);
 
     analytics.logEvent(
-        name: 'toggle_exercise_reactions',
-        parameters: {'exercise_reactions': newState.toString()});
+      name: 'toggle_exercise_reactions',
+      parameters: {'exercise_reactions': newState.toString()},
+    );
   }
 }

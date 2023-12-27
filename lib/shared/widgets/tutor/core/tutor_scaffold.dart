@@ -1,95 +1,77 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sweatnotes/shared/widgets/tutor/constants/extensions.dart';
 
 import '../constants/enums.dart';
 import '../model/tutor_tooltip_model.dart';
+import 'tutor_controller_provider.dart';
 import 'tutor_controller.dart';
 
 class TutorScaffold extends StatefulWidget {
-  final TutorController controller;
-  final Widget Function(BuildContext context) builder;
-  final Color overlayColor;
-  final Future<bool> Function(int instantiatedWidgetLength)? startWhen;
+  final Widget child;
+  final Color backdropColor;
   final Duration tooltipAnimationDuration;
+  final Duration tooltipDelay;
   final Curve tooltipAnimationCurve;
-  final Widget? preferredOverlay;
+  final Widget Function(BuildContext context, TutorController controller)?
+      buildBackdrop;
 
   const TutorScaffold({
     super.key,
-    required this.controller,
-    required this.builder,
-    this.overlayColor = Colors.black54,
-    this.startWhen,
-    this.tooltipAnimationDuration = const Duration(milliseconds: 500),
-    this.tooltipAnimationCurve = Curves.decelerate,
-    this.preferredOverlay,
+    required this.child,
+    required this.backdropColor,
+    required this.tooltipAnimationDuration,
+    required this.tooltipDelay,
+    required this.tooltipAnimationCurve,
+    required this.buildBackdrop,
   });
 
-  static TutorScaffoldState of(BuildContext context) {
-    final TutorScaffoldState? result =
-        context.findAncestorStateOfType<TutorScaffoldState>();
-
-    if (result != null) return result;
-
-    throw FlutterError.fromParts(<DiagnosticsNode>[
-      ErrorSummary(
-        'OverlayTooltipScaffold.of() called with a context that does not contain a OverlayTooltipScaffold.',
-      ),
-      ErrorDescription(
-        'No OverlayTooltipScaffold ancestor could be found starting from the context that was passed to OverlayTooltipScaffold.of(). '
-        'This usually happens when the context provided is from the same StatefulWidget as that '
-        'whose build function actually creates the OverlayTooltipScaffold widget being sought.',
-      ),
-      context.describeElement('The context used was'),
-    ]);
-  }
-
   @override
-  State<TutorScaffold> createState() => TutorScaffoldState();
+  State<TutorScaffold> createState() => _TutorScaffoldState();
 }
 
-class TutorScaffoldState extends State<TutorScaffold> {
-  TutorController get controller => widget.controller;
+class _TutorScaffoldState extends State<TutorScaffold> {
+  Timer? timer;
 
-  void register(TutorTooltipModel model) {
-    widget.controller.register(model);
-  }
+  TutorController? _controller;
 
-  void unregister(TutorTooltipModel model) {
-    widget.controller.unregister(model);
-  }
+  get controller => _controller!;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    controller.isReady.addListener(() {
-      if (!controller.isReady.value) return;
+    if (_controller != TutorControllerProvider.of(context).controller) {
+      _controller?.dispose();
+      _controller = TutorControllerProvider.of(context).controller;
+    }
 
-      WidgetsBinding.instance.addPostFrameCallback(
-        (timeStamp) => controller.next(),
-      );
-    });
+    // controller.isReady.addListener(() {
+    //   if (!controller.isReady.value) return;
+    //
+    //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //     timer = Timer(widget.tooltipDelay, controller.next);
+    //   });
+    // });
   }
 
   @override
   void dispose() {
     controller.dispose();
+    timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Positioned.fill(child: Builder(builder: widget.builder)),
+          Positioned.fill(child: widget.child),
           StreamBuilder<TutorTooltipModel?>(
-            stream: widget.controller.widgetsPlayStream,
+            stream: controller.widgetsPlayStream,
             builder: (context, snapshot) {
               final data = snapshot.data;
 
@@ -104,26 +86,33 @@ class TutorScaffoldState extends State<TutorScaffold> {
               return Positioned.fill(
                 child: Stack(
                   children: [
-                    widget.preferredOverlay ??
-                        Container(
-                          height: double.infinity,
-                          width: double.infinity,
-                          color: widget.overlayColor,
+                    if (widget.buildBackdrop == null)
+                      Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: widget.backdropColor,
+                      )
+                    else
+                      Builder(
+                        builder: (context) => widget.buildBackdrop!(
+                          context,
+                          controller,
                         ),
+                      ),
                     TweenAnimationBuilder(
                       key: ValueKey(data.order),
                       tween: Tween<double>(begin: 0, end: 1),
                       duration: widget.tooltipAnimationDuration,
                       curve: widget.tooltipAnimationCurve,
                       builder: (_, double val, child) {
-                        val = min(val, 1);
-                        val = max(val, 0);
-
-                        return Opacity(opacity: val, child: child);
+                        return Opacity(
+                          opacity: val.clamp(0, 1),
+                          child: child,
+                        );
                       },
                       child: _TutorLayout(
                         model: data,
-                        controller: widget.controller,
+                        controller: controller,
                       ),
                     ),
                   ],

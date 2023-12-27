@@ -35,9 +35,6 @@ class TrainingBlocks extends ConsumerWidget {
         final tutorialSettingsNotifier =
             ref.watch(tutorialSettingsProvider.notifier);
 
-        print('==================================');
-        print(tutorialSettings.isTrainingBlockListSeen);
-
         return SizedBox(
           height: safeAreaHeight,
           width: mq.size.width,
@@ -49,10 +46,11 @@ class TrainingBlocks extends ConsumerWidget {
                     key: Key(entry.value.dbModel.id),
                     order: orderTrainingBlockList,
                     active: !tutorialSettings.isTrainingBlockListSeen,
-                    // TODO: fix, gets called prematurely
                     onClose: () {
                       tutorialSettingsNotifier.set((prevState) {
-                        return prevState.copyWith(isTrainingBlockListSeen: true);
+                        return prevState.copyWith(
+                          isTrainingBlockListSeen: true,
+                        );
                       });
                     },
                     buildTooltip: (controller, globalPaintBounds) {

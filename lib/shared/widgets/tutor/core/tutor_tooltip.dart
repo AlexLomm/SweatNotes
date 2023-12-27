@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../constants/enums.dart';
 import '../model/tutor_tooltip_model.dart';
 import 'tutor_controller.dart';
-import 'tutor_scaffold.dart';
+import 'tutor_controller_provider.dart';
 
 class TutorTooltip extends StatefulWidget {
   final bool active;
@@ -39,6 +39,23 @@ class _TutorTooltipState extends State<TutorTooltip> {
 
   late TutorTooltipModel _model;
 
+  late TutorController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _registerWidget();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _controller = TutorControllerProvider.of(context).controller;
+
+    _registerWidget();
+  }
+
   @override
   void didUpdateWidget(TutorTooltip oldWidget) {
     if (oldWidget.active != widget.active) {
@@ -49,14 +66,8 @@ class _TutorTooltipState extends State<TutorTooltip> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _registerWidget();
-  }
-
-  @override
   void dispose() {
-    _unRegisterWidget();
+    _controller.unregister(_model);
     super.dispose();
   }
 
@@ -75,7 +86,7 @@ class _TutorTooltipState extends State<TutorTooltip> {
       );
 
       try {
-        TutorScaffold.of(context).register(_model);
+        _controller.register(_model);
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -84,19 +95,13 @@ class _TutorTooltipState extends State<TutorTooltip> {
     });
   }
 
-  void _unRegisterWidget() {
-    TutorScaffold.of(context).unregister(_model);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final controller = TutorScaffold.of(context).controller;
-
     return Material(
       key: widgetKey,
       color: Colors.transparent,
       child: Builder(
-        builder: (BuildContext context) => widget.buildChild(controller),
+        builder: (BuildContext context) => widget.buildChild(_controller),
       ),
     );
   }

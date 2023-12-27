@@ -87,9 +87,12 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
   @override
   Widget build(BuildContext context) {
     final authService = ref.watch(authServiceProvider);
-    final data = ref.watch(trainingBlockDetailsStreamProvider(
+    final data = ref.watch(
+      trainingBlockDetailsStreamProvider(
         widget.trainingBlockId,
-        includeArchived: true));
+        includeArchived: true,
+      ),
+    );
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
 
     return data.when(
@@ -216,30 +219,36 @@ class _MatrixState extends ConsumerState<Matrix> {
   @override
   Widget build(BuildContext context) {
     final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
-    final exerciseReactionsSwitcher =
-        ref.watch(exerciseReactionsSwitcherProvider.notifier);
+    final exerciseReactionsSwitcher = ref.watch(
+      exerciseReactionsSwitcherProvider.notifier,
+    );
     final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
     final isTimerEnabledSwitcher = ref.watch(timerSwitcherProvider.notifier);
 
     final isCompactMode = ref.watch(compactModeSwitcherProvider);
-    final isExerciseReactionsEnabled =
-        ref.watch(exerciseReactionsSwitcherProvider);
+    final isExerciseReactionsEnabled = ref.watch(
+      exerciseReactionsSwitcherProvider,
+    );
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final isTimerEnabled = ref.watch(timerSwitcherProvider);
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
-    final showArchivedNotifier =
-        ref.watch(showArchivedExerciseTypesSwitcherProvider.notifier);
+    final showArchivedNotifier = ref.watch(
+      showArchivedExerciseTypesSwitcherProvider.notifier,
+    );
 
-    final menuItemTheme = Theme.of(context).textTheme.bodyLarge?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
-        );
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
+    final menuItemTheme = tt.bodyLarge?.copyWith(
+      color: Theme.of(context).colorScheme.onSurface,
+    );
 
     return CustomScrollView(
       controller: _verticalScrollController,
       slivers: <Widget>[
         SliverAppBar(
           expandedHeight: 152,
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: cs.background,
           shadowColor: Colors.transparent,
           centerTitle: false,
           pinned: true,
@@ -273,27 +282,23 @@ class _MatrixState extends ConsumerState<Matrix> {
                   softWrap: false,
                   maxLines: 1,
                   minFontSize:
-                      ((Theme.of(context).textTheme.titleLarge?.fontSize ?? 1) *
-                              0.9)
-                          .roundToDouble(),
+                      ((tt.titleLarge?.fontSize ?? 1) * 0.9).roundToDouble(),
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                  style: tt.titleLarge?.copyWith(
+                    color: cs.onSurface,
+                  ),
                 ),
               ),
             ),
           ),
           actions: [
+            // TODO: remove in favor of adding days during the training block creation
             AnimatedOpacity(
               opacity: isEditMode ? 0 : 1,
               duration: WidgetParams.animationDuration,
               curve: WidgetParams.animationCurve,
               child: IconButton(
-                icon: Icon(
-                  Icons.add,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+                icon: Icon(Icons.add, color: cs.onSurface),
                 tooltip: 'Add new entry',
                 splashRadius: 20,
                 onPressed: isEditMode
@@ -317,10 +322,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                 duration: WidgetParams.animationDuration,
                 curve: WidgetParams.animationCurve,
                 child: IconButton(
-                  icon: Icon(
-                    Icons.edit_outlined,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
+                  icon: Icon(Icons.edit_outlined, color: cs.onSurface),
                   tooltip: 'Turn on edit mode',
                   splashRadius: 20,
                   onPressed: () =>
@@ -341,10 +343,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                   firstCurve: WidgetParams.animationCurve,
                   secondCurve: WidgetParams.animationCurve,
                   firstChild: const Icon(Icons.unarchive_outlined),
-                  secondChild: Icon(
-                    Icons.cancel_outlined,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
+                  secondChild: Icon(Icons.cancel_outlined, color: cs.tertiary),
                 ),
                 onPressed: showArchivedNotifier.toggle,
               ),
@@ -368,7 +367,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                   ),
                   ButtonDropdownMenuItem(
                     onTap: compactModeSwitcher.toggle,
-                    child: OnOffText(
+                    child: _OnOffText(
                       title: 'Compact mode',
                       isEnabled: isCompactMode,
                       textStyle: menuItemTheme,
@@ -376,7 +375,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                   ),
                   ButtonDropdownMenuItem(
                     onTap: exerciseReactionsSwitcher.toggle,
-                    child: OnOffText(
+                    child: _OnOffText(
                       title: 'Ex. Reactions',
                       isEnabled: isExerciseReactionsEnabled,
                       textStyle: menuItemTheme,
@@ -384,7 +383,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                   ),
                   ButtonDropdownMenuItem(
                     onTap: isTimerEnabledSwitcher.toggle,
-                    child: OnOffText(
+                    child: _OnOffText(
                       title: 'Timer',
                       isEnabled: isTimerEnabled,
                       textStyle: menuItemTheme,
@@ -393,8 +392,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                 ],
               ),
               secondChild: IconButton(
-                icon: Icon(Icons.check,
-                    color: Theme.of(context).colorScheme.primary),
+                icon: Icon(Icons.check, color: cs.primary),
                 tooltip: 'Turn off edit mode',
                 splashRadius: 20,
                 onPressed: editModeSwitcher.toggle,
@@ -445,12 +443,12 @@ class _MatrixState extends ConsumerState<Matrix> {
   }
 }
 
-class OnOffText extends StatelessWidget {
+class _OnOffText extends StatelessWidget {
   final String title;
   final bool isEnabled;
   final TextStyle? textStyle;
 
-  const OnOffText({
+  const _OnOffText({
     super.key,
     required this.title,
     required this.isEnabled,
@@ -459,12 +457,12 @@ class OnOffText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final menuItemSubTextTheme =
-        Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: isEnabled
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface,
-            );
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+
+    final menuItemSubTextTheme = tt.labelSmall?.copyWith(
+      color: isEnabled ? cs.primary : cs.onSurface,
+    );
 
     return RichText(
       softWrap: false,

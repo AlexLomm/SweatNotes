@@ -22,6 +22,17 @@ import '../shared/services/shared_preferences.dart';
 
 part 'router.g.dart';
 
+extension GoRouterLocation on GoRouter {
+  String get location {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+
+    return matchList.uri.toString();
+  }
+}
+
 class RouteNames {
   static const home = 'home';
   static const logIn = 'log-in';

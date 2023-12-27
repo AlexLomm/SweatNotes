@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sweatnotes/shared/widgets/tutor/core/tutor.dart';
 
 import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
-import '../../shared/widgets/tutor/tutor_scaffold_wrapper.dart';
+import '../../shared/widgets/tutor/core/tutor_controller.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../../widgets/layout.dart';
 import '../auth/services/auth_service.dart';
@@ -37,6 +38,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
   bool hasAtLeastOneTrainingBlock = false;
 
+  final _controller = TutorController();
+
+  final isEnabled = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+
+    isEnabled.addListener(_playTutorial);
+    _controller.isReady.addListener(_playTutorial);
+  }
+
+  _playTutorial() {
+    if (!_controller.isReady.value || !isEnabled.value) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.next();
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -52,6 +75,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
     // deactivated widget's ancestor is unsafe" error
     _routeObserver.unsubscribe(this);
 
+    isEnabled.dispose();
+    _controller.dispose();
+
     super.dispose();
   }
 
@@ -60,6 +86,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
     final prefs = ref.read(prefsProvider);
 
     prefs.setString('initialLocation', '/');
+
+    _checkRoute();
+  }
+
+  @override
+  void didPushNext() {
+    _checkRoute();
+  }
+
+  @override
+  void didPop() {
+    _checkRoute();
+  }
+
+  @override
+  void didPopNext() {
+    _checkRoute();
+  }
+
+  // this check is needed to prevent the tutorial playing when the
+  // screen it's on is hidden (i.e home screen when on one of the
+  // descendant screens like settings, training block, etc.)
+  _checkRoute() {
+    isEnabled.value = GoRouter.of(context).location == '/';
   }
 
   @override
@@ -97,8 +147,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
             hasAtLeastOneTrainingBlock;
     final showSettingsTooltip = !tutorialSettings.isSettingsSeen;
 
-    return TutorScaffoldWrapper(
-      onTap: (controller) => controller.next(),
+    return Tutor(
+      controller: _controller,
       child: Layout(
         leading: TutorTooltip(
           order: orderCreateTrainingBlock,

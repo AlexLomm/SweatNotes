@@ -265,5 +265,32 @@ void main() {
 
       controller.next();
     });
+
+    test('should replace widgets with the same order', () {
+      final controller = TutorController();
+
+      final model1 = TutorTooltipModel(
+        widgetKey: GlobalKey(),
+        active: true,
+        buildChild: (controller) => Container(),
+        buildTooltip: (controller, rect) => Container(),
+        order: 1,
+      );
+
+      final model2 = TutorTooltipModel(
+        widgetKey: GlobalKey(),
+        active: true,
+        buildChild: (controller) => Container(),
+        buildTooltip: (controller, rect) => Container(),
+        order: 1,
+      );
+
+      controller.register(model1);
+      controller.register(model2);
+
+      expect(controller.hasTooltipsInQueue, true);
+      expectLater(controller.widgetsPlayStream, emits(model2));
+      controller.next();
+    });
   });
 }

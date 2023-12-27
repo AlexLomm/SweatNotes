@@ -60,10 +60,10 @@ class TutorController {
   }
 
   void register(TutorTooltipModel model) {
-    _addWidget(_allWidgets, model);
+    _addReplaceWidget(_allWidgets, model);
 
     if (model.active) {
-      _addWidget(_queue, model);
+      _addReplaceWidget(_queue, model);
     } else {
       _removeWidget(_queue, model);
     }
@@ -79,13 +79,13 @@ class TutorController {
     widgets.removeAt(index);
   }
 
-  void _addWidget(
+  void _addReplaceWidget(
     List<TutorTooltipModel> widgets,
     TutorTooltipModel model,
   ) {
     final index = _getIndexOf(widgets, model.order);
 
-    if (index > 0) {
+    if (index > -1) {
       // replace if found
       widgets[index] = model;
     } else {

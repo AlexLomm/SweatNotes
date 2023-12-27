@@ -149,10 +149,10 @@ class _TutorLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var topLeft = model.widgetKey.globalPaintBounds!.topLeft;
-    var bottomRight = model.widgetKey.globalPaintBounds!.bottomRight;
-
     return LayoutBuilder(builder: (context, size) {
+      var topLeft = model.widgetKey.globalPaintBounds!.topLeft;
+      var bottomRight = model.widgetKey.globalPaintBounds!.bottomRight;
+
       if (topLeft.dx < 0) {
         bottomRight = Offset(bottomRight.dx + (0 - topLeft.dx), bottomRight.dy);
         topLeft = Offset(0, topLeft.dy);

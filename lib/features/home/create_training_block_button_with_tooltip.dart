@@ -17,17 +17,15 @@ class CreateTrainingBlockButtonWithTooltip extends ConsumerWidget {
       tutorialSettingsProvider.notifier,
     );
 
-    final showCreateTrainingBlockTooltip = ref.watch(
-      tutorialSettingsProvider.select(
-        (s) => !s.isCreateTrainingBlockSeen,
-      ),
+    final shouldShowTooltip = !ref.watch(
+      tutorialSettingsProvider.select((s) => s.isCreateTrainingBlockSeen),
     );
 
     final cs = Theme.of(context).colorScheme;
 
     return TutorTooltip(
       order: orderCreateTrainingBlock,
-      active: showCreateTrainingBlockTooltip,
+      active: shouldShowTooltip,
       onClose: () => tutorialSettingsNotifier.set((prevState) {
         return prevState.copyWith(isCreateTrainingBlockSeen: true);
       }),

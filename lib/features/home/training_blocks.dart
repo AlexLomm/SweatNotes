@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/empty_page_placeholder.dart';
-import '../settings/tutorial_settings.dart';
 import '../training_block/data/models_client/training_block_client.dart';
 import 'training_block_button_with_tooltip.dart';
 
@@ -27,10 +26,6 @@ class TrainingBlocks extends ConsumerWidget {
         if (data.isEmpty) {
           return const Center(child: EmptyPagePlaceholder());
         }
-
-        final tutorialSettings = ref.watch(tutorialSettingsProvider);
-        final tutorialSettingsNotifier =
-            ref.watch(tutorialSettingsProvider.notifier);
 
         return SizedBox(
           height: safeAreaHeight,

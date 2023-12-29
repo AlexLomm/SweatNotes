@@ -16,15 +16,15 @@ class SettingsButtonWithTooltip extends ConsumerWidget {
     final tutorialSettingsNotifier = ref.watch(
       tutorialSettingsProvider.notifier,
     );
-    final showSettingsTooltip = ref.watch(
-      tutorialSettingsProvider.select((s) => !s.isSettingsSeen),
+    final shouldShowTooltip = !ref.watch(
+      tutorialSettingsProvider.select((s) => s.isSettingsSeen),
     );
 
     final cs = Theme.of(context).colorScheme;
 
     return TutorTooltip(
       order: orderSettings,
-      active: showSettingsTooltip,
+      active: shouldShowTooltip,
       onClose: () => tutorialSettingsNotifier.set((prevState) {
         return prevState.copyWith(isSettingsSeen: true);
       }),

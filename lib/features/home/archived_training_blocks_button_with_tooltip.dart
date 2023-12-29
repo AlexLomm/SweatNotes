@@ -24,21 +24,25 @@ class ArchivedTrainingBlocksButtonWithTooltip extends ConsumerWidget {
     final showArchivedTrainingBlocksSwitcher = ref.watch(
       showArchivedTrainingBlocksSwitcherProvider.notifier,
     );
-    final showArchivedTrainingBlocks = ref.watch(
+    final areArchivedTrainingBlocksShown = ref.watch(
       showArchivedTrainingBlocksSwitcherProvider,
     );
 
-    final showArchivedTrainingBlocksTooltip = ref.watch(
+    final isSeeArchivedTrainingBlocksSeen = ref.watch(
       tutorialSettingsProvider.select(
-        (s) => !s.isSeeArchivedTrainingBlocksSeen && hasAtLeastOneTrainingBlock,
+        (s) => s.isSeeArchivedTrainingBlocksSeen,
       ),
     );
+
+    final shouldShowTooltip = !isSeeArchivedTrainingBlocksSeen &&
+        !areArchivedTrainingBlocksShown &&
+        hasAtLeastOneTrainingBlock;
 
     final cs = Theme.of(context).colorScheme;
 
     return TutorTooltip(
       order: orderShowArchived,
-      active: showArchivedTrainingBlocksTooltip,
+      active: shouldShowTooltip,
       onClose: () => tutorialSettingsNotifier.set(
         (prevState) => prevState.copyWith(
           isSeeArchivedTrainingBlocksSeen: true,
@@ -48,10 +52,10 @@ class ArchivedTrainingBlocksButtonWithTooltip extends ConsumerWidget {
           const _TutorialTooltipSeeArchivedTrainingBlocks(),
       buildChild: (controller) => IconButton(
         icon: Icon(
-          showArchivedTrainingBlocks
+          areArchivedTrainingBlocksShown
               ? Icons.cancel_outlined
               : Icons.unarchive_outlined,
-          color: showArchivedTrainingBlocks ? cs.tertiary : cs.onSurface,
+          color: areArchivedTrainingBlocksShown ? cs.tertiary : cs.onSurface,
         ),
         tooltip: 'Archive',
         splashRadius: 20,

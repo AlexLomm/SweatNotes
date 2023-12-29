@@ -95,12 +95,9 @@ class _TutorTooltipState extends State<TutorTooltip> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return Builder(
       key: widgetKey,
-      color: Colors.transparent,
-      child: Builder(
-        builder: (BuildContext context) => widget.buildChild(_controller),
-      ),
+      builder: (BuildContext context) => widget.buildChild(_controller),
     );
   }
 }

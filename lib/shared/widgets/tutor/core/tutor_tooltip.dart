@@ -42,12 +42,6 @@ class _TutorTooltipState extends State<TutorTooltip> {
   late TutorController _controller;
 
   @override
-  void initState() {
-    super.initState();
-    _registerWidget();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
@@ -67,7 +61,7 @@ class _TutorTooltipState extends State<TutorTooltip> {
 
   @override
   void dispose() {
-    _controller.unregister(_model);
+    _unRegisterWidget();
     super.dispose();
   }
 
@@ -93,6 +87,10 @@ class _TutorTooltipState extends State<TutorTooltip> {
         }
       }
     });
+  }
+
+  void _unRegisterWidget() {
+    _controller.unregister(_model);
   }
 
   @override

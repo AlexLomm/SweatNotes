@@ -35,9 +35,9 @@ class TutorController {
       return;
     }
 
-    final widget = _queue.removeAt(0);
+    final model = _queue.removeAt(0);
 
-    _widgetsPlayController.sink.add(widget);
+    _widgetsPlayController.sink.add(model);
 
     _updateIsReady();
   }
@@ -53,25 +53,25 @@ class TutorController {
   }
 
   void unregister(TutorTooltipModel model) {
-    _removeWidget(_allWidgets, model);
-    _removeWidget(_queue, model);
+    _remove(_allWidgets, model);
+    _remove(_queue, model);
 
     _updateIsReady();
   }
 
   void register(TutorTooltipModel model) {
-    _addReplaceWidget(_allWidgets, model);
+    _addReplace(_allWidgets, model);
 
     if (model.active) {
-      _addReplaceWidget(_queue, model);
+      _addReplace(_queue, model);
     } else {
-      _removeWidget(_queue, model);
+      _remove(_queue, model);
     }
 
     _updateIsReady();
   }
 
-  void _removeWidget(List<TutorTooltipModel> widgets, TutorTooltipModel model) {
+  void _remove(List<TutorTooltipModel> widgets, TutorTooltipModel model) {
     final index = _getIndexOf(widgets, model.order);
 
     if (index < 0) return;
@@ -79,13 +79,19 @@ class TutorController {
     widgets.removeAt(index);
   }
 
-  void _addReplaceWidget(
+  void _addReplace(
     List<TutorTooltipModel> widgets,
     TutorTooltipModel model,
   ) {
     final index = _getIndexOf(widgets, model.order);
 
     if (index > -1) {
+      assert(
+        widgets[index].widgetKey == model.widgetKey,
+        'Seems like a different widget with the same order was already registered. '
+        'Please, make sure that the order is unique for each widget.',
+      );
+
       // replace if found
       widgets[index] = model;
     } else {

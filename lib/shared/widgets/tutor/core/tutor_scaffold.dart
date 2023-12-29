@@ -46,14 +46,6 @@ class _TutorScaffoldState extends State<TutorScaffold> {
       _controller?.dispose();
       _controller = TutorControllerProvider.of(context).controller;
     }
-
-    // controller.isReady.addListener(() {
-    //   if (!controller.isReady.value) return;
-    //
-    //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //     timer = Timer(widget.tooltipDelay, controller.next);
-    //   });
-    // });
   }
 
   @override
@@ -110,9 +102,31 @@ class _TutorScaffoldState extends State<TutorScaffold> {
                           child: child,
                         );
                       },
-                      child: _TutorLayout(
-                        model: data,
-                        controller: controller,
+                      // wrapping the sub-tree with a TutorControllerProvider is necessary to support nested TutorTooltips.
+                      // The reason is that we don't want the spawned TutorTooltips to re-register themselves with the
+                      // controller. Rather, we are "tricking" them into registering to an empty "shell" controller.
+                      //
+                      //  Root TutorControllerProvider
+                      //     │
+                      //     ├────  TutorTooltip (1)
+                      //     │        SomeWidget
+                      //     │          TutorTooltip (2)
+                      //     │            AnotherWidget
+                      //     │
+                      //     │     ┌───────────────────────┐
+                      //     ├──── │...                    │
+                      //     │     │  SomeWidget           │     Attempts to
+                      //           │    TutorTooltip (2) ◄─┼──── re-register
+                      //           │      AnotherWidget    │
+                      //           │                       │
+                      //           └───────────────────────┘
+                      //
+                      child: TutorControllerProvider(
+                        controller: TutorController(),
+                        child: _TutorLayout(
+                          model: data,
+                          controller: controller,
+                        ),
                       ),
                     ),
                   ],
@@ -139,8 +153,10 @@ class _TutorLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      var topLeft = model.widgetKey.globalPaintBounds!.topLeft;
-      var bottomRight = model.widgetKey.globalPaintBounds!.bottomRight;
+      final globalPaintBounds = model.widgetKey.globalPaintBounds!;
+
+      var topLeft = globalPaintBounds.topLeft;
+      var bottomRight = globalPaintBounds.bottomRight;
 
       if (topLeft.dx < 0) {
         bottomRight = Offset(bottomRight.dx + (0 - topLeft.dx), bottomRight.dy);

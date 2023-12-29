@@ -4,23 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sweatnotes/features/home/settings_button_with_tooltip.dart';
 import 'package:sweatnotes/features/training_block/widget_params.dart';
 import 'package:sweatnotes/shared/widgets/tutor/core/tutor.dart';
 
 import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
 import '../../shared/widgets/tutor/core/tutor_controller.dart';
-import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../../widgets/layout.dart';
 import '../auth/services/auth_service.dart';
 import '../settings/show_archived_training_blocks_switcher.dart';
 import '../settings/tutorial_settings.dart';
 import '../training_block/data/models_client/training_block_client.dart';
 import '../training_block/services/training_blocks_stream.dart';
+import 'archived_training_blocks_button_with_tooltip.dart';
+import 'create_training_block_button_with_tooltip.dart';
 import 'training_blocks.dart';
-import 'tutorial_tooltip_create_training_block.dart';
-import 'tutorial_tooltip_see_archived_training_blocks.dart';
-import 'tutorial_tooltip_see_settings.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -116,17 +115,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
     final tutorialSettings = ref.watch(tutorialSettingsProvider);
-    final tutorialSettingsNotifier =
-        ref.watch(tutorialSettingsProvider.notifier);
 
     final authService = ref.watch(authServiceProvider);
-    final showArchivedTrainingBlocksSwitcher =
-        ref.watch(showArchivedTrainingBlocksSwitcherProvider.notifier);
-    final showArchivedTrainingBlocks =
-        ref.watch(showArchivedTrainingBlocksSwitcherProvider);
+    final showArchivedTrainingBlocks = ref.watch(
+      showArchivedTrainingBlocksSwitcherProvider,
+    );
 
     final trainingBlocks = ref.watch(
       trainingBlocksStreamProvider(includeArchived: showArchivedTrainingBlocks),
@@ -142,91 +136,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
       Center(child: Text('Loading...')),
     ]);
 
-    final showCreateTrainingBlockTooltip =
-        !tutorialSettings.isCreateTrainingBlockSeen;
-    final showArchiveTrainingBlocksTooltip =
-        !tutorialSettings.isSeeArchivedTrainingBlocksSeen &&
-            hasAtLeastOneTrainingBlock;
-    final showSettingsTooltip = !tutorialSettings.isSettingsSeen;
-
     return Tutor(
       controller: _controller,
       child: Layout(
-        leading: TutorTooltip(
-          order: orderCreateTrainingBlock,
-          active: showCreateTrainingBlockTooltip,
-          onClose: () {
-            tutorialSettingsNotifier.set((prevState) {
-              return prevState.copyWith(isCreateTrainingBlockSeen: true);
-            });
-          },
-          buildTooltip: (_, __) => const TutorialTooltipCreateTrainingBlock(),
-          buildChild: (controller) => IconButton(
-            icon: Icon(Icons.add, color: cs.onSurface),
-            tooltip: 'Add new training block',
-            splashRadius: 20,
-            onPressed: () {
-              if (controller.isInProgress) {
-                controller.next();
-              } else {
-                context.pushNamed(RouteNames.trainingBlockCreateUpdate);
-              }
-            },
-          ),
-        ),
+        leading: const CreateTrainingBlockButtonWithTooltip(),
         actions: [
-          TutorTooltip(
-            order: orderShowArchived,
-            active: showArchiveTrainingBlocksTooltip,
-            onClose: () {
-              tutorialSettingsNotifier.set((prevState) {
-                return prevState.copyWith(
-                  isSeeArchivedTrainingBlocksSeen: true,
-                );
-              });
-            },
-            buildTooltip: (_, __) =>
-                const TutorialTooltipSeeArchivedTrainingBlocks(),
-            buildChild: (controller) => IconButton(
-              icon: Icon(
-                showArchivedTrainingBlocks
-                    ? Icons.cancel_outlined
-                    : Icons.unarchive_outlined,
-                color: showArchivedTrainingBlocks ? cs.tertiary : cs.onSurface,
-              ),
-              tooltip: 'Archive',
-              splashRadius: 20,
-              onPressed: () {
-                if (controller.isInProgress) {
-                  controller.next();
-                } else {
-                  showArchivedTrainingBlocksSwitcher.toggle();
-                }
-              },
-            ),
+          ArchivedTrainingBlocksButtonWithTooltip(
+            hasAtLeastOneTrainingBlock: hasAtLeastOneTrainingBlock,
           ),
-          TutorTooltip(
-            order: orderSettings,
-            active: showSettingsTooltip,
-            onClose: () {
-              tutorialSettingsNotifier.set((prevState) {
-                return prevState.copyWith(isSettingsSeen: true);
-              });
-            },
-            buildTooltip: (_, __) => const TutorialTooltipSeeSettings(),
-            buildChild: (controller) => IconButton(
-              icon: Icon(Icons.settings_outlined, color: cs.onSurface),
-              tooltip: 'Settings',
-              splashRadius: 20,
-              onPressed: () {
-                if (controller.isInProgress) {
-                  controller.next();
-                } else {
-                  context.pushNamed(RouteNames.settings);
-                }
-              },
-            ),
-          ),
+          const SettingsButtonWithTooltip()
         ],
         child: trainingBlocks.when(
           loading: () {

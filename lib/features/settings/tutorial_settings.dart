@@ -10,6 +10,16 @@ part 'tutorial_settings.freezed.dart';
 
 part 'tutorial_settings.g.dart';
 
+const int orderCreateTrainingBlock = 0;
+const int orderSettings = 1;
+const int orderTrainingBlockList = 2;
+const int orderShowArchived = 3;
+
+const int orderCreateExerciseDay = 10;
+const int orderExerciseDay = 11;
+const int orderCreateExerciseType = 12;
+const int orderExerciseType = 13;
+
 @freezed
 class TutorialSettingsState with _$TutorialSettingsState {
   factory TutorialSettingsState({
@@ -17,6 +27,10 @@ class TutorialSettingsState with _$TutorialSettingsState {
     @Default(false) bool isSeeArchivedTrainingBlocksSeen,
     @Default(false) bool isSettingsSeen,
     @Default(false) bool isTrainingBlockListSeen,
+    @Default(false) bool isCreateExerciseDaySeen,
+    @Default(false) bool isExerciseDaySeen,
+    @Default(false) bool isCreateExerciseTypeSeen,
+    @Default(false) bool isExerciseTypeSeen,
   }) = _TutorialSettingsState;
 
   factory TutorialSettingsState.fromJson(Map<String, Object?> json) =>

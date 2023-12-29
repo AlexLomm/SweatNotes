@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../settings/tutorial_settings.dart';
 import '../training_block/data/models_client/training_block_client.dart';
-import 'home_screen.dart';
-import 'training_block_button.dart';
-import 'tutorial_tooltip_training_block.dart';
+import 'training_block_button_with_tooltip.dart';
 
 class TrainingBlocks extends ConsumerWidget {
   final List<TrainingBlockClient> data;
@@ -41,33 +38,11 @@ class TrainingBlocks extends ConsumerWidget {
           child: ListView(
             children: [
               for (final entry in data.asMap().entries)
-                if (entry.key == 0)
-                  TutorTooltip(
-                    key: Key(entry.value.dbModel.id),
-                    order: orderTrainingBlockList,
-                    active: !tutorialSettings.isTrainingBlockListSeen,
-                    onClose: () {
-                      tutorialSettingsNotifier.set((prevState) {
-                        return prevState.copyWith(
-                          isTrainingBlockListSeen: true,
-                        );
-                      });
-                    },
-                    buildTooltip: (controller, globalPaintBounds) {
-                      return TutorialTooltipTrainingBlock(
-                        paintBounds: globalPaintBounds,
-                      );
-                    },
-                    buildChild: (controller) => TrainingBlockButton(
-                      key: Key(entry.value.dbModel.id),
-                      trainingBlock: entry.value,
-                    ),
-                  )
-                else
-                  TrainingBlockButton(
-                    key: Key(entry.value.dbModel.id),
-                    trainingBlock: entry.value,
-                  )
+                TrainingBlockButtonWithTooltip(
+                  key: ValueKey(entry.key),
+                  isTooltipEnabled: entry.key == 0,
+                  trainingBlock: entry.value,
+                ),
             ],
           ),
         );

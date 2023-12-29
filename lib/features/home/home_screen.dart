@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sweatnotes/features/training_block/widget_params.dart';
 import 'package:sweatnotes/shared/widgets/tutor/core/tutor.dart';
 
 import '../../router/router.dart';
@@ -19,12 +22,6 @@ import 'tutorial_tooltip_create_training_block.dart';
 import 'tutorial_tooltip_see_archived_training_blocks.dart';
 import 'tutorial_tooltip_see_settings.dart';
 
-const int orderCreateTrainingBlock = 0;
-const int orderSettings = 1;
-
-const int orderTrainingBlockList = 10;
-const int orderShowArchived = 11;
-
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -40,24 +37,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
 
   final _controller = TutorController();
 
-  final isEnabled = ValueNotifier<bool>(false);
+  final _areTutorialsEnabled = ValueNotifier<bool>(false);
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
 
-    isEnabled.addListener(_playTutorial);
+    _areTutorialsEnabled.addListener(_playTutorial);
     _controller.isReady.addListener(_playTutorial);
   }
 
   _playTutorial() {
-    if (!_controller.isReady.value || !isEnabled.value) {
+    if (!_controller.isReady.value || !_areTutorialsEnabled.value) {
       return;
     }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _controller.next();
+      _timer = Timer(
+        WidgetParams.tutorialTooltipAnimationDelayDuration,
+        _controller.next,
+      );
     });
+  }
+
+  @override
+  void dispose() {
+    // calling ref.read causes the "Looking up a
+    // deactivated widget's ancestor is unsafe" error
+    _routeObserver.unsubscribe(this);
+
+    _areTutorialsEnabled.dispose();
+    _controller.dispose();
+    _timer?.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -67,18 +81,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
     _routeObserver = ref.read(routeObserverProvider);
 
     _routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void dispose() {
-    // calling ref.read causes the "Looking up a
-    // deactivated widget's ancestor is unsafe" error
-    _routeObserver.unsubscribe(this);
-
-    isEnabled.dispose();
-    _controller.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -109,7 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
   // screen it's on is hidden (i.e home screen when on one of the
   // descendant screens like settings, training block, etc.)
   _checkRoute() {
-    isEnabled.value = GoRouter.of(context).location == '/';
+    _areTutorialsEnabled.value = GoRouter.of(context).location == '/';
   }
 
   @override

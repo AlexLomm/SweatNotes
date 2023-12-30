@@ -16,6 +16,8 @@ class WidgetParams {
       Duration(milliseconds: 1200);
   static const Duration tutorialTooltipAnimationDuration =
       Duration(milliseconds: 400);
+  static const Duration tutorialTooltipAnimationDelayDuration =
+      Duration(milliseconds: 800);
   static const Curve tutorialAnimationCurve = Curves.easeInSine;
 
   final bool isEditMode;

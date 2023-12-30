@@ -27,6 +27,8 @@ mixin _$TutorialSettingsState {
   bool get isSettingsSeen => throw _privateConstructorUsedError;
   bool get isTrainingBlockListSeen => throw _privateConstructorUsedError;
   bool get isCreateExerciseDaySeen => throw _privateConstructorUsedError;
+  bool get isEditModeSeen => throw _privateConstructorUsedError;
+  bool get isMoreOptionsMenuSeen => throw _privateConstructorUsedError;
   bool get isExerciseDaySeen => throw _privateConstructorUsedError;
   bool get isCreateExerciseTypeSeen => throw _privateConstructorUsedError;
   bool get isExerciseTypeSeen => throw _privateConstructorUsedError;
@@ -49,6 +51,8 @@ abstract class $TutorialSettingsStateCopyWith<$Res> {
       bool isSettingsSeen,
       bool isTrainingBlockListSeen,
       bool isCreateExerciseDaySeen,
+      bool isEditModeSeen,
+      bool isMoreOptionsMenuSeen,
       bool isExerciseDaySeen,
       bool isCreateExerciseTypeSeen,
       bool isExerciseTypeSeen});
@@ -73,6 +77,8 @@ class _$TutorialSettingsStateCopyWithImpl<$Res,
     Object? isSettingsSeen = null,
     Object? isTrainingBlockListSeen = null,
     Object? isCreateExerciseDaySeen = null,
+    Object? isEditModeSeen = null,
+    Object? isMoreOptionsMenuSeen = null,
     Object? isExerciseDaySeen = null,
     Object? isCreateExerciseTypeSeen = null,
     Object? isExerciseTypeSeen = null,
@@ -97,6 +103,14 @@ class _$TutorialSettingsStateCopyWithImpl<$Res,
       isCreateExerciseDaySeen: null == isCreateExerciseDaySeen
           ? _value.isCreateExerciseDaySeen
           : isCreateExerciseDaySeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isEditModeSeen: null == isEditModeSeen
+          ? _value.isEditModeSeen
+          : isEditModeSeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isMoreOptionsMenuSeen: null == isMoreOptionsMenuSeen
+          ? _value.isMoreOptionsMenuSeen
+          : isMoreOptionsMenuSeen // ignore: cast_nullable_to_non_nullable
               as bool,
       isExerciseDaySeen: null == isExerciseDaySeen
           ? _value.isExerciseDaySeen
@@ -129,6 +143,8 @@ abstract class _$$TutorialSettingsStateImplCopyWith<$Res>
       bool isSettingsSeen,
       bool isTrainingBlockListSeen,
       bool isCreateExerciseDaySeen,
+      bool isEditModeSeen,
+      bool isMoreOptionsMenuSeen,
       bool isExerciseDaySeen,
       bool isCreateExerciseTypeSeen,
       bool isExerciseTypeSeen});
@@ -151,6 +167,8 @@ class __$$TutorialSettingsStateImplCopyWithImpl<$Res>
     Object? isSettingsSeen = null,
     Object? isTrainingBlockListSeen = null,
     Object? isCreateExerciseDaySeen = null,
+    Object? isEditModeSeen = null,
+    Object? isMoreOptionsMenuSeen = null,
     Object? isExerciseDaySeen = null,
     Object? isCreateExerciseTypeSeen = null,
     Object? isExerciseTypeSeen = null,
@@ -175,6 +193,14 @@ class __$$TutorialSettingsStateImplCopyWithImpl<$Res>
       isCreateExerciseDaySeen: null == isCreateExerciseDaySeen
           ? _value.isCreateExerciseDaySeen
           : isCreateExerciseDaySeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isEditModeSeen: null == isEditModeSeen
+          ? _value.isEditModeSeen
+          : isEditModeSeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isMoreOptionsMenuSeen: null == isMoreOptionsMenuSeen
+          ? _value.isMoreOptionsMenuSeen
+          : isMoreOptionsMenuSeen // ignore: cast_nullable_to_non_nullable
               as bool,
       isExerciseDaySeen: null == isExerciseDaySeen
           ? _value.isExerciseDaySeen
@@ -203,6 +229,8 @@ class _$TutorialSettingsStateImpl
       this.isSettingsSeen = false,
       this.isTrainingBlockListSeen = false,
       this.isCreateExerciseDaySeen = false,
+      this.isEditModeSeen = false,
+      this.isMoreOptionsMenuSeen = false,
       this.isExerciseDaySeen = false,
       this.isCreateExerciseTypeSeen = false,
       this.isExerciseTypeSeen = false});
@@ -227,6 +255,12 @@ class _$TutorialSettingsStateImpl
   final bool isCreateExerciseDaySeen;
   @override
   @JsonKey()
+  final bool isEditModeSeen;
+  @override
+  @JsonKey()
+  final bool isMoreOptionsMenuSeen;
+  @override
+  @JsonKey()
   final bool isExerciseDaySeen;
   @override
   @JsonKey()
@@ -237,7 +271,7 @@ class _$TutorialSettingsStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TutorialSettingsState(isCreateTrainingBlockSeen: $isCreateTrainingBlockSeen, isSeeArchivedTrainingBlocksSeen: $isSeeArchivedTrainingBlocksSeen, isSettingsSeen: $isSettingsSeen, isTrainingBlockListSeen: $isTrainingBlockListSeen, isCreateExerciseDaySeen: $isCreateExerciseDaySeen, isExerciseDaySeen: $isExerciseDaySeen, isCreateExerciseTypeSeen: $isCreateExerciseTypeSeen, isExerciseTypeSeen: $isExerciseTypeSeen)';
+    return 'TutorialSettingsState(isCreateTrainingBlockSeen: $isCreateTrainingBlockSeen, isSeeArchivedTrainingBlocksSeen: $isSeeArchivedTrainingBlocksSeen, isSettingsSeen: $isSettingsSeen, isTrainingBlockListSeen: $isTrainingBlockListSeen, isCreateExerciseDaySeen: $isCreateExerciseDaySeen, isEditModeSeen: $isEditModeSeen, isMoreOptionsMenuSeen: $isMoreOptionsMenuSeen, isExerciseDaySeen: $isExerciseDaySeen, isCreateExerciseTypeSeen: $isCreateExerciseTypeSeen, isExerciseTypeSeen: $isExerciseTypeSeen)';
   }
 
   @override
@@ -254,6 +288,8 @@ class _$TutorialSettingsStateImpl
           'isTrainingBlockListSeen', isTrainingBlockListSeen))
       ..add(DiagnosticsProperty(
           'isCreateExerciseDaySeen', isCreateExerciseDaySeen))
+      ..add(DiagnosticsProperty('isEditModeSeen', isEditModeSeen))
+      ..add(DiagnosticsProperty('isMoreOptionsMenuSeen', isMoreOptionsMenuSeen))
       ..add(DiagnosticsProperty('isExerciseDaySeen', isExerciseDaySeen))
       ..add(DiagnosticsProperty(
           'isCreateExerciseTypeSeen', isCreateExerciseTypeSeen))
@@ -280,6 +316,10 @@ class _$TutorialSettingsStateImpl
             (identical(
                     other.isCreateExerciseDaySeen, isCreateExerciseDaySeen) ||
                 other.isCreateExerciseDaySeen == isCreateExerciseDaySeen) &&
+            (identical(other.isEditModeSeen, isEditModeSeen) ||
+                other.isEditModeSeen == isEditModeSeen) &&
+            (identical(other.isMoreOptionsMenuSeen, isMoreOptionsMenuSeen) ||
+                other.isMoreOptionsMenuSeen == isMoreOptionsMenuSeen) &&
             (identical(other.isExerciseDaySeen, isExerciseDaySeen) ||
                 other.isExerciseDaySeen == isExerciseDaySeen) &&
             (identical(
@@ -298,6 +338,8 @@ class _$TutorialSettingsStateImpl
       isSettingsSeen,
       isTrainingBlockListSeen,
       isCreateExerciseDaySeen,
+      isEditModeSeen,
+      isMoreOptionsMenuSeen,
       isExerciseDaySeen,
       isCreateExerciseTypeSeen,
       isExerciseTypeSeen);
@@ -324,6 +366,8 @@ abstract class _TutorialSettingsState implements TutorialSettingsState {
       final bool isSettingsSeen,
       final bool isTrainingBlockListSeen,
       final bool isCreateExerciseDaySeen,
+      final bool isEditModeSeen,
+      final bool isMoreOptionsMenuSeen,
       final bool isExerciseDaySeen,
       final bool isCreateExerciseTypeSeen,
       final bool isExerciseTypeSeen}) = _$TutorialSettingsStateImpl;
@@ -341,6 +385,10 @@ abstract class _TutorialSettingsState implements TutorialSettingsState {
   bool get isTrainingBlockListSeen;
   @override
   bool get isCreateExerciseDaySeen;
+  @override
+  bool get isEditModeSeen;
+  @override
+  bool get isMoreOptionsMenuSeen;
   @override
   bool get isExerciseDaySeen;
   @override

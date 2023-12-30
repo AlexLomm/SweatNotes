@@ -18,6 +18,8 @@ _$TutorialSettingsStateImpl _$$TutorialSettingsStateImplFromJson(
           json['isTrainingBlockListSeen'] as bool? ?? false,
       isCreateExerciseDaySeen:
           json['isCreateExerciseDaySeen'] as bool? ?? false,
+      isEditModeSeen: json['isEditModeSeen'] as bool? ?? false,
+      isMoreOptionsMenuSeen: json['isMoreOptionsMenuSeen'] as bool? ?? false,
       isExerciseDaySeen: json['isExerciseDaySeen'] as bool? ?? false,
       isCreateExerciseTypeSeen:
           json['isCreateExerciseTypeSeen'] as bool? ?? false,
@@ -33,6 +35,8 @@ Map<String, dynamic> _$$TutorialSettingsStateImplToJson(
       'isSettingsSeen': instance.isSettingsSeen,
       'isTrainingBlockListSeen': instance.isTrainingBlockListSeen,
       'isCreateExerciseDaySeen': instance.isCreateExerciseDaySeen,
+      'isEditModeSeen': instance.isEditModeSeen,
+      'isMoreOptionsMenuSeen': instance.isMoreOptionsMenuSeen,
       'isExerciseDaySeen': instance.isExerciseDaySeen,
       'isCreateExerciseTypeSeen': instance.isCreateExerciseTypeSeen,
       'isExerciseTypeSeen': instance.isExerciseTypeSeen,

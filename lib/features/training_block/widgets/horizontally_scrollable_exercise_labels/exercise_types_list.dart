@@ -6,16 +6,18 @@ import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/exercise_days_service.dart';
 import '../../widget_params.dart';
-import '../exercise_type_widget.dart';
+import 'exercise_type_list_item_with_tooltip.dart';
 
 class ExerciseTypesList extends ConsumerStatefulWidget {
   final TrainingBlockClient trainingBlock;
   final ExerciseDayClient exerciseDay;
+  final bool isTutorialEnabled;
 
   const ExerciseTypesList({
     super.key,
     required this.trainingBlock,
     required this.exerciseDay,
+    required this.isTutorialEnabled,
   });
 
   @override
@@ -102,25 +104,23 @@ class _ExerciseTypesListState extends ConsumerState<ExerciseTypesList> {
               setState(() => _exerciseDayClientCached = backup);
             }
           },
-          children: [
-            for (final entry in exerciseTypes.asMap().entries)
-              Container(
-                key: Key(entry.value.dbModel.id),
-                margin: EdgeInsets.only(
-                  bottom: widgetParams.exerciseTypesVerticalSpacing,
-                ),
-                child: Theme(
+          children: exerciseTypes
+              .asMap()
+              .entries
+              .map(
+                (entry) => Theme(
+                  key: Key(entry.value.dbModel.id),
                   // this is needed to re-enable the canceled theming above
                   data: Theme.of(context),
-                  child: ExerciseTypeWidget(
+                  child: ExerciseTypeListItemWithTooltip(
+                    isTutorialEnabled: widget.isTutorialEnabled,
                     index: entry.key,
                     trainingBlock: widget.trainingBlock,
-                    exerciseDays: widget.trainingBlock.exerciseDays,
                     exerciseType: entry.value,
                   ),
                 ),
               )
-          ],
+              .toList(),
         ),
       ),
     );

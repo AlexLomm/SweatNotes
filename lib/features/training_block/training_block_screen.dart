@@ -1,27 +1,30 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
-import 'package:sweatnotes/features/settings/show_archived_exercise_types_switcher.dart';
+import 'package:sweatnotes/features/training_block/more_options_menu_with_tooltip.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
-import '../../widgets/button_dropdown_menu.dart';
+import '../../shared/widgets/tutor/core/tutor.dart';
+import '../../shared/widgets/tutor/core/tutor_controller.dart';
 import '../../widgets/empty_page_placeholder.dart';
 import '../../widgets/expandable_timer/expandable_timer.dart';
 import '../../widgets/go_back_button.dart';
 import '../../widgets/layout.dart';
 import '../auth/services/auth_service.dart';
-import '../settings/compact_mode_switcher.dart';
 import '../settings/edit_mode_switcher.dart';
-import '../settings/exercise_reactions_switcher.dart';
 import '../settings/timer_switcher.dart';
+import 'add_exercise_day_button_with_tooltip.dart';
 import 'custom_flexible_space_bar.dart';
 import 'data/models_client/training_block_client.dart';
 import 'services/training_block_details_stream.dart';
+import 'toggle_edit_mode_with_tooltip.dart';
 import 'widget_params.dart';
 import 'widgets/horizontally_scrollable_exercise_labels/horizontally_scrollable_exercise_labels.dart';
 import 'widgets/horizontally_scrollable_exercises.dart';
@@ -42,13 +45,31 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
     with RouteAware {
   late RouteObserver _routeObserver;
 
+  final TutorController _controller = TutorController();
+
+  final _areTutorialsEnabled = ValueNotifier<bool>(false);
+
+  Timer? _timer;
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
-    _routeObserver = ref.read(routeObserverProvider);
+    _areTutorialsEnabled.addListener(_playTutorial);
+    _controller.isReady.addListener(_playTutorial);
+  }
 
-    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  _playTutorial() {
+    if (!_controller.isReady.value || !_areTutorialsEnabled.value) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _timer = Timer(
+        WidgetParams.tutorialTooltipAnimationDelayDuration,
+        _controller.next,
+      );
+    });
   }
 
   @override
@@ -61,14 +82,26 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _routeObserver = ref.read(routeObserverProvider);
+
+    _routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
   void didPush() {
     final prefs = ref.read(prefsProvider);
 
-    final routeArgs =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    final String trainingBlockId = routeArgs['trainingBlockId'];
+    prefs.setString('initialLocation', _getLocation());
 
-    prefs.setString('initialLocation', '/$trainingBlockId');
+    _checkRoute();
+  }
+
+  @override
+  void didPushNext() {
+    _checkRoute();
   }
 
   @override
@@ -82,6 +115,30 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
     Future(() => editModeSwitcher.disable());
 
     prefs.setString('initialLocation', '/');
+
+    _checkRoute();
+  }
+
+  @override
+  void didPopNext() {
+    _checkRoute();
+  }
+
+  // this check is needed to prevent the tutorial playing when the
+  // screen it's on is hidden (i.e home screen when on one of the
+  // descendant screens like settings, training block, etc.)
+  _checkRoute() {
+    _areTutorialsEnabled.value =
+        GoRouter.of(context).location == _getLocation();
+  }
+
+  _getLocation() {
+    final routeArgs =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    final String trainingBlockId = routeArgs['trainingBlockId'];
+
+    return '/$trainingBlockId';
   }
 
   @override
@@ -111,20 +168,23 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
           return const Center(child: CircularProgressIndicator());
         }
 
-        return Layout(
-          isScrollable: false,
-          isAppBarVisible: false,
-          padding: EdgeInsets.zero,
-          floatingActionButton: IgnorePointer(
-            ignoring: !isTimerEnabled,
-            child: AnimatedOpacity(
-              duration: WidgetParams.animationDuration,
-              curve: WidgetParams.animationCurve,
-              opacity: isTimerEnabled ? 1 : 0,
-              child: const ExpandableTimer(),
+        return Tutor(
+          controller: _controller,
+          child: Layout(
+            isScrollable: false,
+            isAppBarVisible: false,
+            padding: EdgeInsets.zero,
+            floatingActionButton: IgnorePointer(
+              ignoring: !isTimerEnabled,
+              child: AnimatedOpacity(
+                duration: WidgetParams.animationDuration,
+                curve: WidgetParams.animationCurve,
+                opacity: isTimerEnabled ? 1 : 0,
+                child: const ExpandableTimer(),
+              ),
             ),
+            child: Matrix(trainingBlock: trainingBlock),
           ),
-          child: Matrix(trainingBlock: trainingBlock),
         );
       },
     );
@@ -218,30 +278,10 @@ class _MatrixState extends ConsumerState<Matrix> {
 
   @override
   Widget build(BuildContext context) {
-    final compactModeSwitcher = ref.watch(compactModeSwitcherProvider.notifier);
-    final exerciseReactionsSwitcher = ref.watch(
-      exerciseReactionsSwitcherProvider.notifier,
-    );
-    final editModeSwitcher = ref.watch(editModeSwitcherProvider.notifier);
-    final isTimerEnabledSwitcher = ref.watch(timerSwitcherProvider.notifier);
-
-    final isCompactMode = ref.watch(compactModeSwitcherProvider);
-    final isExerciseReactionsEnabled = ref.watch(
-      exerciseReactionsSwitcherProvider,
-    );
     final isEditMode = ref.watch(editModeSwitcherProvider);
-    final isTimerEnabled = ref.watch(timerSwitcherProvider);
-    final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
-    final showArchivedNotifier = ref.watch(
-      showArchivedExerciseTypesSwitcherProvider.notifier,
-    );
 
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
-
-    final menuItemTheme = tt.bodyLarge?.copyWith(
-      color: Theme.of(context).colorScheme.onSurface,
-    );
 
     return CustomScrollView(
       controller: _verticalScrollController,
@@ -293,118 +333,20 @@ class _MatrixState extends ConsumerState<Matrix> {
           ),
           actions: [
             // TODO: remove in favor of adding days during the training block creation
-            AnimatedOpacity(
-              opacity: isEditMode ? 0 : 1,
-              duration: WidgetParams.animationDuration,
-              curve: WidgetParams.animationCurve,
-              child: IconButton(
-                icon: Icon(Icons.add, color: cs.onSurface),
-                tooltip: 'Add new entry',
-                splashRadius: 20,
-                onPressed: isEditMode
-                    ? null
-                    : () => context.pushNamed(
-                          RouteNames.exerciseDayCreateUpdate,
-                          extra: Tuple2(widget.trainingBlock.dbModel.id, null),
-                        ),
-              ),
+            AddExerciseDayButtonWithTooltip(
+              isTooltipEnabled: false,
+              trainingBlock: widget.trainingBlock,
             ),
-            AnimatedCrossFade(
-              alignment: Alignment.center,
-              crossFadeState: isEditMode
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              duration: WidgetParams.animationDuration,
-              firstCurve: WidgetParams.animationCurve,
-              secondCurve: WidgetParams.animationCurve,
-              firstChild: AnimatedOpacity(
-                opacity: isEditMode ? 0 : 1,
-                duration: WidgetParams.animationDuration,
-                curve: WidgetParams.animationCurve,
-                child: IconButton(
-                  icon: Icon(Icons.edit_outlined, color: cs.onSurface),
-                  tooltip: 'Turn on edit mode',
-                  splashRadius: 20,
-                  onPressed: () =>
-                      isEditMode ? null : editModeSwitcher.toggle(),
-                ),
-              ),
-              secondChild: IconButton(
-                tooltip: showArchived
-                    ? "Don't show archived exercises"
-                    : 'Show archived exercises',
-                splashRadius: 20,
-                icon: AnimatedCrossFade(
-                  alignment: Alignment.center,
-                  crossFadeState: showArchived
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: WidgetParams.animationDuration,
-                  firstCurve: WidgetParams.animationCurve,
-                  secondCurve: WidgetParams.animationCurve,
-                  firstChild: const Icon(Icons.unarchive_outlined),
-                  secondChild: Icon(Icons.cancel_outlined, color: cs.tertiary),
-                ),
-                onPressed: showArchivedNotifier.toggle,
-              ),
-            ),
-            AnimatedCrossFade(
-              alignment: Alignment.center,
-              crossFadeState: isEditMode
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              duration: WidgetParams.animationDuration,
-              firstCurve: WidgetParams.animationCurve,
-              secondCurve: WidgetParams.animationCurve,
-              firstChild: ButtonDropdownMenu(
-                icon: Icons.more_vert,
-                animationDuration: WidgetParams.animationDuration,
-                animationCurve: WidgetParams.animationCurve,
-                items: [
-                  ButtonDropdownMenuItem(
-                    onTap: () => context.push('/settings'),
-                    child: Text('Settings', style: menuItemTheme),
-                  ),
-                  ButtonDropdownMenuItem(
-                    onTap: compactModeSwitcher.toggle,
-                    child: _OnOffText(
-                      title: 'Compact mode',
-                      isEnabled: isCompactMode,
-                      textStyle: menuItemTheme,
-                    ),
-                  ),
-                  ButtonDropdownMenuItem(
-                    onTap: exerciseReactionsSwitcher.toggle,
-                    child: _OnOffText(
-                      title: 'Ex. Reactions',
-                      isEnabled: isExerciseReactionsEnabled,
-                      textStyle: menuItemTheme,
-                    ),
-                  ),
-                  ButtonDropdownMenuItem(
-                    onTap: isTimerEnabledSwitcher.toggle,
-                    child: _OnOffText(
-                      title: 'Timer',
-                      isEnabled: isTimerEnabled,
-                      textStyle: menuItemTheme,
-                    ),
-                  ),
-                ],
-              ),
-              secondChild: IconButton(
-                icon: Icon(Icons.check, color: cs.primary),
-                tooltip: 'Turn off edit mode',
-                splashRadius: 20,
-                onPressed: editModeSwitcher.toggle,
-              ),
-            ),
+            const ToggleEditModeWithTooltip(isTooltipEnabled: false),
+            const MoreOptionsMenuWithTooltip(isTooltipEnabled: false),
           ],
         ),
         if (widget.trainingBlock.exerciseDays.isNotEmpty)
           const SliverPadding(padding: EdgeInsets.only(top: 24)),
         widget.trainingBlock.exerciseDays.isEmpty
             ? const SliverToBoxAdapter(
-                child: Center(child: EmptyPagePlaceholder()))
+                child: Center(child: EmptyPagePlaceholder()),
+              )
             : SliverList(
                 delegate: SliverChildBuilderDelegate(
                   childCount: widget.trainingBlock.exerciseDays.length,
@@ -429,6 +371,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: HorizontallyScrollableExerciseLabels(
+                            listIndex: i,
                             exerciseDay: exerciseDay,
                             trainingBlock: widget.trainingBlock,
                           ),
@@ -439,47 +382,6 @@ class _MatrixState extends ConsumerState<Matrix> {
                 ),
               ),
       ],
-    );
-  }
-}
-
-class _OnOffText extends StatelessWidget {
-  final String title;
-  final bool isEnabled;
-  final TextStyle? textStyle;
-
-  const _OnOffText({
-    super.key,
-    required this.title,
-    required this.isEnabled,
-    required this.textStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final tt = Theme.of(context).textTheme;
-    final cs = Theme.of(context).colorScheme;
-
-    final menuItemSubTextTheme = tt.labelSmall?.copyWith(
-      color: isEnabled ? cs.primary : cs.onSurface,
-    );
-
-    return RichText(
-      softWrap: false,
-      text: TextSpan(
-        text: title,
-        style: textStyle,
-        children: [
-          WidgetSpan(
-            child: Container(
-              margin: const EdgeInsets.only(left: 24.0),
-              padding: const EdgeInsets.only(bottom: 1.0),
-              child:
-                  Text(isEnabled ? 'On' : 'Off', style: menuItemSubTextTheme),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

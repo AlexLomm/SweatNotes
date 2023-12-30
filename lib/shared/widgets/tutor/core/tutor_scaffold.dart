@@ -188,7 +188,7 @@ class _TutorLayout extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Positioned(
-            top: topLeft.dy,
+            top: globalPaintBounds.top,
             left: topLeft.dx,
             bottom: size.maxHeight - bottomRight.dy,
             right: size.maxWidth - bottomRight.dx,

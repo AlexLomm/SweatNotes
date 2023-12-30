@@ -45,7 +45,11 @@ class _TutorTooltipState extends State<TutorTooltip> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _controller = TutorControllerProvider.of(context).controller;
+    final provider = TutorControllerProvider.of(context);
+
+    if (provider == null) return;
+
+    _controller = provider.controller;
 
     _registerWidget();
   }

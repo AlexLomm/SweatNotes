@@ -36,27 +36,33 @@ class _TutorScaffoldState extends State<TutorScaffold> {
 
   TutorController? _controller;
 
-  get controller => _controller!;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_controller != TutorControllerProvider.of(context).controller) {
+    final provider = TutorControllerProvider.of(context);
+
+    if (provider == null) return;
+
+    if (_controller != provider.controller) {
       _controller?.dispose();
-      _controller = TutorControllerProvider.of(context).controller;
+      _controller = provider.controller;
     }
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller?.dispose();
     timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = _controller;
+
+    if (controller == null) return Container();
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,

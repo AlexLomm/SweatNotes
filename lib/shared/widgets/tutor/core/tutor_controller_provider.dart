@@ -11,16 +11,20 @@ class TutorControllerProvider extends InheritedWidget {
     required super.child,
   });
 
-  static TutorControllerProvider of(BuildContext context) {
+  // returning nullable value is intentional. Otherwise asserting against null
+  // and forcing a non-nullable value causes an error when dragging and dropping
+  // in a ReorderableListView
+  static TutorControllerProvider? of(BuildContext context) {
     final TutorControllerProvider? result =
         context.dependOnInheritedWidgetOfExactType<TutorControllerProvider>();
 
-    assert(
-      result != null,
-      'TutorInherited.of() called with a context that does not contain TutorInherited.',
-    );
+    if (result == null) {
+      debugPrint(
+        'TutorControllerProvider.of() called with a context that does not contain TutorControllerProvider.',
+      );
+    }
 
-    return result!;
+    return result;
   }
 
   @override

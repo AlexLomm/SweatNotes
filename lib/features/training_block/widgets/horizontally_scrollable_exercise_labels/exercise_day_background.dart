@@ -6,6 +6,7 @@ import 'package:tuple/tuple.dart';
 import '../../../../app.dart';
 import '../../../../router/router.dart';
 import '../../../../widgets/custom_dismissible.dart';
+import '../../../settings/edit_mode_switcher.dart';
 import '../../data/models_client/exercise_day_client.dart';
 import '../../data/models_client/training_block_client.dart';
 import '../../services/training_blocks_service.dart';
@@ -104,6 +105,8 @@ class _Background extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
+
     return AnimatedContainer(
       duration: WidgetParams.animationDuration,
       curve: WidgetParams.animationCurve,
@@ -120,7 +123,7 @@ class _Background extends ConsumerWidget {
         ),
         child: CustomDismissible(
           id: id,
-          isEnabled: false,
+          isEnabled: isEditMode,
           onUpdate: onUpdate,
           onDismissed: onDismissed,
           borderRadius: BorderRadius.only(

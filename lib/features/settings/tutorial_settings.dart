@@ -24,6 +24,9 @@ const int orderCreateExerciseType = 400;
 const int orderExerciseType = 500;
 const int orderExercise = 600;
 
+const int orderArchiveExerciseDay = 700;
+const int orderArchiveExerciseType = 800;
+
 @freezed
 class TutorialSettingsState with _$TutorialSettingsState {
   factory TutorialSettingsState({
@@ -38,6 +41,8 @@ class TutorialSettingsState with _$TutorialSettingsState {
     @Default(false) bool isCreateExerciseTypeSeen,
     @Default(false) bool isExerciseTypeSeen,
     @Default(false) bool isExerciseSeen,
+    @Default(false) bool isArchiveExerciseDaySeen,
+    @Default(false) bool isArchiveExerciseTypeSeen,
   }) = _TutorialSettingsState;
 
   factory TutorialSettingsState.fromJson(Map<String, Object?> json) =>

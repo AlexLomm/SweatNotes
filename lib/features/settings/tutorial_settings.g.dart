@@ -25,6 +25,10 @@ _$TutorialSettingsStateImpl _$$TutorialSettingsStateImplFromJson(
           json['isCreateExerciseTypeSeen'] as bool? ?? false,
       isExerciseTypeSeen: json['isExerciseTypeSeen'] as bool? ?? false,
       isExerciseSeen: json['isExerciseSeen'] as bool? ?? false,
+      isArchiveExerciseDaySeen:
+          json['isArchiveExerciseDaySeen'] as bool? ?? false,
+      isArchiveExerciseTypeSeen:
+          json['isArchiveExerciseTypeSeen'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TutorialSettingsStateImplToJson(
@@ -42,13 +46,15 @@ Map<String, dynamic> _$$TutorialSettingsStateImplToJson(
       'isCreateExerciseTypeSeen': instance.isCreateExerciseTypeSeen,
       'isExerciseTypeSeen': instance.isExerciseTypeSeen,
       'isExerciseSeen': instance.isExerciseSeen,
+      'isArchiveExerciseDaySeen': instance.isArchiveExerciseDaySeen,
+      'isArchiveExerciseTypeSeen': instance.isArchiveExerciseTypeSeen,
     };
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tutorialSettingsHash() => r'd25edfc333321d2f2480cfe4e4e0b73e0f427486';
+String _$tutorialSettingsHash() => r'a2bba0f5bb52c3a578de25427298e5ff408d1a0d';
 
 /// See also [TutorialSettings].
 @ProviderFor(TutorialSettings)

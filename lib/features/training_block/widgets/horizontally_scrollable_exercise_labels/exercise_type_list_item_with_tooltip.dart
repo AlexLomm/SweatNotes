@@ -43,32 +43,91 @@ class ExerciseTypeListItemWithTooltip extends ConsumerWidget {
       tutorialSettingsProvider.select((s) => s.isExerciseTypeSeen),
     );
 
-    final showTooltip = !isEditMode && !isExerciseTypeSeen;
+    final showNonEditModeTooltip = !isEditMode && !isExerciseTypeSeen;
+
+    if (showNonEditModeTooltip) {
+      return TutorTooltip(
+        tooltipPosition: TooltipPosition.right,
+        key: Key(exerciseType.dbModel.id),
+        active: showNonEditModeTooltip,
+        order: orderExerciseType,
+        onClose: () => settingsNotifier.set(
+          (prevState) => prevState.copyWith(isExerciseTypeSeen: true),
+        ),
+        buildTooltip: (_, childSize) => _NonEditModeTooltip(
+          childSize: childSize,
+        ),
+        buildChild: (controller) => child,
+      );
+    }
+
+    final isArchiveExerciseTypeSeen = ref.watch(
+      tutorialSettingsProvider.select((s) => s.isArchiveExerciseTypeSeen),
+    );
+
+    final showEditModeTooltip = isEditMode && !isArchiveExerciseTypeSeen;
 
     return TutorTooltip(
+      tooltipPosition: TooltipPosition.top,
       key: Key(exerciseType.dbModel.id),
-      tooltipPosition: TooltipPosition.right,
-      active: showTooltip,
-      order: orderExerciseType,
+      active: showEditModeTooltip,
+      order: orderArchiveExerciseType,
       onClose: () => settingsNotifier.set(
-        (prevState) => prevState.copyWith(isExerciseTypeSeen: true),
+        (prevState) => prevState.copyWith(isArchiveExerciseTypeSeen: true),
       ),
-      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
+      buildTooltip: (_, childSize) => _EditModeTooltip(childSize: childSize),
       buildChild: (controller) => child,
     );
   }
 }
 
-class _Tooltip extends ConsumerWidget {
+class _EditModeTooltip extends StatelessWidget {
   final Size childSize;
 
-  const _Tooltip({
+  const _EditModeTooltip({
     super.key,
     required this.childSize,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: const Offset(
+        0,
+        -24,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(
+            width: 220,
+            child: Text(
+              'Swipe left the exercise to archive it',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontFamily: GoogleFonts.indieFlower().fontFamily,
+                fontWeight: FontWeight.w100,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NonEditModeTooltip extends StatelessWidget {
+  final Size childSize;
+
+  const _NonEditModeTooltip({
+    super.key,
+    required this.childSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Transform.translate(
       offset: const Offset(
         48,

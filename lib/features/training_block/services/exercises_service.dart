@@ -96,5 +96,8 @@ ExercisesService exercisesService(ExercisesServiceRef ref) {
   final analytics = ref.watch(analyticsProvider);
 
   return ExercisesService(
-      exerciseTypesRepository, confettiController, analytics);
+    exerciseTypesRepository,
+    confettiController,
+    analytics,
+  );
 }

@@ -3,16 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../settings/show_archived_training_blocks_switcher.dart';
 import '../settings/tutorial_settings.dart';
 
 class ArchivedTrainingBlocksButtonWithTooltip extends ConsumerWidget {
-  final bool hasAtLeastOneTrainingBlock;
+  final bool isTooltipEnabled;
 
   const ArchivedTrainingBlocksButtonWithTooltip({
     super.key,
-    required this.hasAtLeastOneTrainingBlock,
+    required this.isTooltipEnabled,
   });
 
   @override
@@ -28,28 +29,28 @@ class ArchivedTrainingBlocksButtonWithTooltip extends ConsumerWidget {
       showArchivedTrainingBlocksSwitcherProvider,
     );
 
-    final isSeeArchivedTrainingBlocksSeen = ref.watch(
+    final isArchivedTrainingBlocksButtonSeen = ref.watch(
       tutorialSettingsProvider.select(
-        (s) => s.isSeeArchivedTrainingBlocksSeen,
+        (s) => s.isArchivedTrainingBlocksButtonSeen,
       ),
     );
 
-    final shouldShowTooltip = !isSeeArchivedTrainingBlocksSeen &&
+    final shouldShowTooltip = !isArchivedTrainingBlocksButtonSeen &&
         !areArchivedTrainingBlocksShown &&
-        hasAtLeastOneTrainingBlock;
+        isTooltipEnabled;
 
     final cs = Theme.of(context).colorScheme;
 
     return TutorTooltip(
+      tooltipPosition: TooltipPosition.left,
       order: orderShowArchived,
       active: shouldShowTooltip,
       onClose: () => tutorialSettingsNotifier.set(
         (prevState) => prevState.copyWith(
-          isSeeArchivedTrainingBlocksSeen: true,
+          isArchivedTrainingBlocksButtonSeen: true,
         ),
       ),
-      buildTooltip: (_, __) =>
-          const _TutorialTooltipSeeArchivedTrainingBlocks(),
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (controller) => IconButton(
         icon: Icon(
           areArchivedTrainingBlocksShown
@@ -71,13 +72,21 @@ class ArchivedTrainingBlocksButtonWithTooltip extends ConsumerWidget {
   }
 }
 
-class _TutorialTooltipSeeArchivedTrainingBlocks extends StatelessWidget {
-  const _TutorialTooltipSeeArchivedTrainingBlocks({super.key});
+class _Tooltip extends StatelessWidget {
+  final Size childSize;
+
+  const _Tooltip({
+    super.key,
+    required this.childSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: const Offset(10, -30),
+      offset: Offset(
+        childSize.width + 15,
+        15,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,

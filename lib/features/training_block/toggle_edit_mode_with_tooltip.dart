@@ -5,48 +5,52 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../settings/show_archived_exercise_types_switcher.dart';
 import '../settings/tutorial_settings.dart';
 import 'toggle_edit_mode_button.dart';
 
 class ToggleEditModeWithTooltip extends ConsumerWidget {
-  final bool isTooltipEnabled;
+  final bool hasAtLeastOneExerciseDay;
 
   const ToggleEditModeWithTooltip({
     super.key,
-    required this.isTooltipEnabled,
+    required this.hasAtLeastOneExerciseDay,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const child = ToggleEditModeButton();
-
-    if (!isTooltipEnabled) return child;
-
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
     final isEditModeSeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isEditModeSeen),
     );
 
-    final shouldShowTooltip = !showArchived && !isEditModeSeen;
+    final shouldShowTooltip =
+        hasAtLeastOneExerciseDay && !showArchived && !isEditModeSeen;
 
     return TutorTooltip(
+      tooltipPosition: TooltipPosition.left,
       active: shouldShowTooltip,
       order: orderEditModeSwitcher,
-      buildTooltip: (_, __) => const _Tooltip(),
-      buildChild: (_) => child,
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
+      buildChild: (_) => const ToggleEditModeButton(),
     );
   }
 }
 
 class _Tooltip extends StatelessWidget {
-  const _Tooltip({super.key});
+  final Size childSize;
+
+  const _Tooltip({
+    super.key,
+    required this.childSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: const Offset(15, -75),
+      offset: Offset(childSize.width + 12, -25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,

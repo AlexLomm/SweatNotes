@@ -22,22 +22,22 @@ const int orderMoreOptionsMenu = 250;
 const int orderExerciseDay = 300;
 const int orderCreateExerciseType = 400;
 const int orderExerciseType = 500;
+const int orderExercise = 600;
 
 @freezed
 class TutorialSettingsState with _$TutorialSettingsState {
   factory TutorialSettingsState({
     @Default(false) bool isCreateTrainingBlockSeen,
-    @Default(false) bool isSeeArchivedTrainingBlocksSeen,
+    @Default(false) bool isArchivedTrainingBlocksButtonSeen,
     @Default(false) bool isSettingsSeen,
     @Default(false) bool isTrainingBlockListSeen,
-
     @Default(false) bool isCreateExerciseDaySeen,
     @Default(false) bool isEditModeSeen,
     @Default(false) bool isMoreOptionsMenuSeen,
-
     @Default(false) bool isExerciseDaySeen,
     @Default(false) bool isCreateExerciseTypeSeen,
     @Default(false) bool isExerciseTypeSeen,
+    @Default(false) bool isExerciseSeen,
   }) = _TutorialSettingsState;
 
   factory TutorialSettingsState.fromJson(Map<String, Object?> json) =>

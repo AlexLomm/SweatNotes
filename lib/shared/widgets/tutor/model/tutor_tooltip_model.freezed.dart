@@ -23,12 +23,10 @@ mixin _$TutorTooltipModel {
   bool get absorbPointer => throw _privateConstructorUsedError;
   Widget Function(TutorController) get buildChild =>
       throw _privateConstructorUsedError;
-  Widget Function(TutorController, Rect?) get buildTooltip =>
+  Widget Function(TutorController, Size) get buildTooltip =>
       throw _privateConstructorUsedError;
-  TooltipVerticalPosition get verticalPosition =>
-      throw _privateConstructorUsedError;
-  TooltipHorizontalPosition get horizontalPosition =>
-      throw _privateConstructorUsedError;
+  TooltipPosition get position => throw _privateConstructorUsedError;
+  TooltipAnchor get anchor => throw _privateConstructorUsedError;
   int get order => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -48,9 +46,9 @@ abstract class $TutorTooltipModelCopyWith<$Res> {
       dynamic Function()? onClose,
       bool absorbPointer,
       Widget Function(TutorController) buildChild,
-      Widget Function(TutorController, Rect?) buildTooltip,
-      TooltipVerticalPosition verticalPosition,
-      TooltipHorizontalPosition horizontalPosition,
+      Widget Function(TutorController, Size) buildTooltip,
+      TooltipPosition position,
+      TooltipAnchor anchor,
       int order});
 }
 
@@ -73,8 +71,8 @@ class _$TutorTooltipModelCopyWithImpl<$Res, $Val extends TutorTooltipModel>
     Object? absorbPointer = null,
     Object? buildChild = null,
     Object? buildTooltip = null,
-    Object? verticalPosition = null,
-    Object? horizontalPosition = null,
+    Object? position = null,
+    Object? anchor = null,
     Object? order = null,
   }) {
     return _then(_value.copyWith(
@@ -101,15 +99,15 @@ class _$TutorTooltipModelCopyWithImpl<$Res, $Val extends TutorTooltipModel>
       buildTooltip: null == buildTooltip
           ? _value.buildTooltip
           : buildTooltip // ignore: cast_nullable_to_non_nullable
-              as Widget Function(TutorController, Rect?),
-      verticalPosition: null == verticalPosition
-          ? _value.verticalPosition
-          : verticalPosition // ignore: cast_nullable_to_non_nullable
-              as TooltipVerticalPosition,
-      horizontalPosition: null == horizontalPosition
-          ? _value.horizontalPosition
-          : horizontalPosition // ignore: cast_nullable_to_non_nullable
-              as TooltipHorizontalPosition,
+              as Widget Function(TutorController, Size),
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as TooltipPosition,
+      anchor: null == anchor
+          ? _value.anchor
+          : anchor // ignore: cast_nullable_to_non_nullable
+              as TooltipAnchor,
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -132,9 +130,9 @@ abstract class _$$TutorTooltipModelImplCopyWith<$Res>
       dynamic Function()? onClose,
       bool absorbPointer,
       Widget Function(TutorController) buildChild,
-      Widget Function(TutorController, Rect?) buildTooltip,
-      TooltipVerticalPosition verticalPosition,
-      TooltipHorizontalPosition horizontalPosition,
+      Widget Function(TutorController, Size) buildTooltip,
+      TooltipPosition position,
+      TooltipAnchor anchor,
       int order});
 }
 
@@ -155,8 +153,8 @@ class __$$TutorTooltipModelImplCopyWithImpl<$Res>
     Object? absorbPointer = null,
     Object? buildChild = null,
     Object? buildTooltip = null,
-    Object? verticalPosition = null,
-    Object? horizontalPosition = null,
+    Object? position = null,
+    Object? anchor = null,
     Object? order = null,
   }) {
     return _then(_$TutorTooltipModelImpl(
@@ -183,15 +181,15 @@ class __$$TutorTooltipModelImplCopyWithImpl<$Res>
       buildTooltip: null == buildTooltip
           ? _value.buildTooltip
           : buildTooltip // ignore: cast_nullable_to_non_nullable
-              as Widget Function(TutorController, Rect?),
-      verticalPosition: null == verticalPosition
-          ? _value.verticalPosition
-          : verticalPosition // ignore: cast_nullable_to_non_nullable
-              as TooltipVerticalPosition,
-      horizontalPosition: null == horizontalPosition
-          ? _value.horizontalPosition
-          : horizontalPosition // ignore: cast_nullable_to_non_nullable
-              as TooltipHorizontalPosition,
+              as Widget Function(TutorController, Size),
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as TooltipPosition,
+      anchor: null == anchor
+          ? _value.anchor
+          : anchor // ignore: cast_nullable_to_non_nullable
+              as TooltipAnchor,
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -210,8 +208,8 @@ class _$TutorTooltipModelImpl extends _TutorTooltipModel {
       this.absorbPointer = false,
       required this.buildChild,
       required this.buildTooltip,
-      this.verticalPosition = TooltipVerticalPosition.bottom,
-      this.horizontalPosition = TooltipHorizontalPosition.withWidget,
+      this.position = TooltipPosition.bottom,
+      this.anchor = TooltipAnchor.withWidget,
       required this.order})
       : super._();
 
@@ -227,19 +225,19 @@ class _$TutorTooltipModelImpl extends _TutorTooltipModel {
   @override
   final Widget Function(TutorController) buildChild;
   @override
-  final Widget Function(TutorController, Rect?) buildTooltip;
+  final Widget Function(TutorController, Size) buildTooltip;
   @override
   @JsonKey()
-  final TooltipVerticalPosition verticalPosition;
+  final TooltipPosition position;
   @override
   @JsonKey()
-  final TooltipHorizontalPosition horizontalPosition;
+  final TooltipAnchor anchor;
   @override
   final int order;
 
   @override
   String toString() {
-    return 'TutorTooltipModel(widgetKey: $widgetKey, active: $active, onClose: $onClose, absorbPointer: $absorbPointer, buildChild: $buildChild, buildTooltip: $buildTooltip, verticalPosition: $verticalPosition, horizontalPosition: $horizontalPosition, order: $order)';
+    return 'TutorTooltipModel(widgetKey: $widgetKey, active: $active, onClose: $onClose, absorbPointer: $absorbPointer, buildChild: $buildChild, buildTooltip: $buildTooltip, position: $position, anchor: $anchor, order: $order)';
   }
 
   @override
@@ -257,25 +255,15 @@ class _$TutorTooltipModelImpl extends _TutorTooltipModel {
                 other.buildChild == buildChild) &&
             (identical(other.buildTooltip, buildTooltip) ||
                 other.buildTooltip == buildTooltip) &&
-            (identical(other.verticalPosition, verticalPosition) ||
-                other.verticalPosition == verticalPosition) &&
-            (identical(other.horizontalPosition, horizontalPosition) ||
-                other.horizontalPosition == horizontalPosition) &&
+            (identical(other.position, position) ||
+                other.position == position) &&
+            (identical(other.anchor, anchor) || other.anchor == anchor) &&
             (identical(other.order, order) || other.order == order));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      widgetKey,
-      active,
-      onClose,
-      absorbPointer,
-      buildChild,
-      buildTooltip,
-      verticalPosition,
-      horizontalPosition,
-      order);
+  int get hashCode => Object.hash(runtimeType, widgetKey, active, onClose,
+      absorbPointer, buildChild, buildTooltip, position, anchor, order);
 
   @JsonKey(ignore: true)
   @override
@@ -292,9 +280,9 @@ abstract class _TutorTooltipModel extends TutorTooltipModel {
       final dynamic Function()? onClose,
       final bool absorbPointer,
       required final Widget Function(TutorController) buildChild,
-      required final Widget Function(TutorController, Rect?) buildTooltip,
-      final TooltipVerticalPosition verticalPosition,
-      final TooltipHorizontalPosition horizontalPosition,
+      required final Widget Function(TutorController, Size) buildTooltip,
+      final TooltipPosition position,
+      final TooltipAnchor anchor,
       required final int order}) = _$TutorTooltipModelImpl;
   _TutorTooltipModel._() : super._();
 
@@ -309,11 +297,11 @@ abstract class _TutorTooltipModel extends TutorTooltipModel {
   @override
   Widget Function(TutorController) get buildChild;
   @override
-  Widget Function(TutorController, Rect?) get buildTooltip;
+  Widget Function(TutorController, Size) get buildTooltip;
   @override
-  TooltipVerticalPosition get verticalPosition;
+  TooltipPosition get position;
   @override
-  TooltipHorizontalPosition get horizontalPosition;
+  TooltipAnchor get anchor;
   @override
   int get order;
   @override

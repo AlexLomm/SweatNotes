@@ -78,6 +78,8 @@ class _TrainingBlockScreenState extends ConsumerState<TrainingBlockScreen>
     // deactivated widget's ancestor is unsafe" error
     _routeObserver.unsubscribe(this);
 
+    _timer?.cancel();
+
     super.dispose();
   }
 
@@ -332,13 +334,14 @@ class _MatrixState extends ConsumerState<Matrix> {
             ),
           ),
           actions: [
-            // TODO: remove in favor of adding days during the training block creation
             AddExerciseDayButtonWithTooltip(
-              isTooltipEnabled: false,
               trainingBlock: widget.trainingBlock,
             ),
-            const ToggleEditModeWithTooltip(isTooltipEnabled: false),
-            const MoreOptionsMenuWithTooltip(isTooltipEnabled: false),
+            ToggleEditModeWithTooltip(
+              hasAtLeastOneExerciseDay:
+                  widget.trainingBlock.exerciseDays.isNotEmpty,
+            ),
+            const MoreOptionsMenuWithTooltip(),
           ],
         ),
         if (widget.trainingBlock.exerciseDays.isNotEmpty)
@@ -362,6 +365,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: HorizontallyScrollableExercises(
+                            tooltipsEnabled: i == 0,
                             scrollController: _horizontalScrollControllersMap[
                                 exerciseDay.dbModel.pseudoId],
                             trainingBlock: widget.trainingBlock,
@@ -371,6 +375,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: HorizontallyScrollableExerciseLabels(
+                            tooltipsEnabled: i == 0,
                             listIndex: i,
                             exerciseDay: exerciseDay,
                             trainingBlock: widget.trainingBlock,

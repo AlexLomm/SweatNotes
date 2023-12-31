@@ -11,8 +11,8 @@ _$TutorialSettingsStateImpl _$$TutorialSettingsStateImplFromJson(
     _$TutorialSettingsStateImpl(
       isCreateTrainingBlockSeen:
           json['isCreateTrainingBlockSeen'] as bool? ?? false,
-      isSeeArchivedTrainingBlocksSeen:
-          json['isSeeArchivedTrainingBlocksSeen'] as bool? ?? false,
+      isArchivedTrainingBlocksButtonSeen:
+          json['isArchivedTrainingBlocksButtonSeen'] as bool? ?? false,
       isSettingsSeen: json['isSettingsSeen'] as bool? ?? false,
       isTrainingBlockListSeen:
           json['isTrainingBlockListSeen'] as bool? ?? false,
@@ -24,14 +24,15 @@ _$TutorialSettingsStateImpl _$$TutorialSettingsStateImplFromJson(
       isCreateExerciseTypeSeen:
           json['isCreateExerciseTypeSeen'] as bool? ?? false,
       isExerciseTypeSeen: json['isExerciseTypeSeen'] as bool? ?? false,
+      isExerciseSeen: json['isExerciseSeen'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TutorialSettingsStateImplToJson(
         _$TutorialSettingsStateImpl instance) =>
     <String, dynamic>{
       'isCreateTrainingBlockSeen': instance.isCreateTrainingBlockSeen,
-      'isSeeArchivedTrainingBlocksSeen':
-          instance.isSeeArchivedTrainingBlocksSeen,
+      'isArchivedTrainingBlocksButtonSeen':
+          instance.isArchivedTrainingBlocksButtonSeen,
       'isSettingsSeen': instance.isSettingsSeen,
       'isTrainingBlockListSeen': instance.isTrainingBlockListSeen,
       'isCreateExerciseDaySeen': instance.isCreateExerciseDaySeen,
@@ -40,6 +41,7 @@ Map<String, dynamic> _$$TutorialSettingsStateImplToJson(
       'isExerciseDaySeen': instance.isExerciseDaySeen,
       'isCreateExerciseTypeSeen': instance.isCreateExerciseTypeSeen,
       'isExerciseTypeSeen': instance.isExerciseTypeSeen,
+      'isExerciseSeen': instance.isExerciseSeen,
     };
 
 // **************************************************************************

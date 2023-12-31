@@ -22,7 +22,7 @@ TutorialSettingsState _$TutorialSettingsStateFromJson(
 /// @nodoc
 mixin _$TutorialSettingsState {
   bool get isCreateTrainingBlockSeen => throw _privateConstructorUsedError;
-  bool get isSeeArchivedTrainingBlocksSeen =>
+  bool get isArchivedTrainingBlocksButtonSeen =>
       throw _privateConstructorUsedError;
   bool get isSettingsSeen => throw _privateConstructorUsedError;
   bool get isTrainingBlockListSeen => throw _privateConstructorUsedError;
@@ -32,6 +32,7 @@ mixin _$TutorialSettingsState {
   bool get isExerciseDaySeen => throw _privateConstructorUsedError;
   bool get isCreateExerciseTypeSeen => throw _privateConstructorUsedError;
   bool get isExerciseTypeSeen => throw _privateConstructorUsedError;
+  bool get isExerciseSeen => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,7 @@ abstract class $TutorialSettingsStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isCreateTrainingBlockSeen,
-      bool isSeeArchivedTrainingBlocksSeen,
+      bool isArchivedTrainingBlocksButtonSeen,
       bool isSettingsSeen,
       bool isTrainingBlockListSeen,
       bool isCreateExerciseDaySeen,
@@ -55,7 +56,8 @@ abstract class $TutorialSettingsStateCopyWith<$Res> {
       bool isMoreOptionsMenuSeen,
       bool isExerciseDaySeen,
       bool isCreateExerciseTypeSeen,
-      bool isExerciseTypeSeen});
+      bool isExerciseTypeSeen,
+      bool isExerciseSeen});
 }
 
 /// @nodoc
@@ -73,7 +75,7 @@ class _$TutorialSettingsStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? isCreateTrainingBlockSeen = null,
-    Object? isSeeArchivedTrainingBlocksSeen = null,
+    Object? isArchivedTrainingBlocksButtonSeen = null,
     Object? isSettingsSeen = null,
     Object? isTrainingBlockListSeen = null,
     Object? isCreateExerciseDaySeen = null,
@@ -82,15 +84,17 @@ class _$TutorialSettingsStateCopyWithImpl<$Res,
     Object? isExerciseDaySeen = null,
     Object? isCreateExerciseTypeSeen = null,
     Object? isExerciseTypeSeen = null,
+    Object? isExerciseSeen = null,
   }) {
     return _then(_value.copyWith(
       isCreateTrainingBlockSeen: null == isCreateTrainingBlockSeen
           ? _value.isCreateTrainingBlockSeen
           : isCreateTrainingBlockSeen // ignore: cast_nullable_to_non_nullable
               as bool,
-      isSeeArchivedTrainingBlocksSeen: null == isSeeArchivedTrainingBlocksSeen
-          ? _value.isSeeArchivedTrainingBlocksSeen
-          : isSeeArchivedTrainingBlocksSeen // ignore: cast_nullable_to_non_nullable
+      isArchivedTrainingBlocksButtonSeen: null ==
+              isArchivedTrainingBlocksButtonSeen
+          ? _value.isArchivedTrainingBlocksButtonSeen
+          : isArchivedTrainingBlocksButtonSeen // ignore: cast_nullable_to_non_nullable
               as bool,
       isSettingsSeen: null == isSettingsSeen
           ? _value.isSettingsSeen
@@ -123,6 +127,10 @@ class _$TutorialSettingsStateCopyWithImpl<$Res,
       isExerciseTypeSeen: null == isExerciseTypeSeen
           ? _value.isExerciseTypeSeen
           : isExerciseTypeSeen // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isExerciseSeen: null == isExerciseSeen
+          ? _value.isExerciseSeen
+          : isExerciseSeen // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -139,7 +147,7 @@ abstract class _$$TutorialSettingsStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool isCreateTrainingBlockSeen,
-      bool isSeeArchivedTrainingBlocksSeen,
+      bool isArchivedTrainingBlocksButtonSeen,
       bool isSettingsSeen,
       bool isTrainingBlockListSeen,
       bool isCreateExerciseDaySeen,
@@ -147,7 +155,8 @@ abstract class _$$TutorialSettingsStateImplCopyWith<$Res>
       bool isMoreOptionsMenuSeen,
       bool isExerciseDaySeen,
       bool isCreateExerciseTypeSeen,
-      bool isExerciseTypeSeen});
+      bool isExerciseTypeSeen,
+      bool isExerciseSeen});
 }
 
 /// @nodoc
@@ -163,7 +172,7 @@ class __$$TutorialSettingsStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isCreateTrainingBlockSeen = null,
-    Object? isSeeArchivedTrainingBlocksSeen = null,
+    Object? isArchivedTrainingBlocksButtonSeen = null,
     Object? isSettingsSeen = null,
     Object? isTrainingBlockListSeen = null,
     Object? isCreateExerciseDaySeen = null,
@@ -172,15 +181,17 @@ class __$$TutorialSettingsStateImplCopyWithImpl<$Res>
     Object? isExerciseDaySeen = null,
     Object? isCreateExerciseTypeSeen = null,
     Object? isExerciseTypeSeen = null,
+    Object? isExerciseSeen = null,
   }) {
     return _then(_$TutorialSettingsStateImpl(
       isCreateTrainingBlockSeen: null == isCreateTrainingBlockSeen
           ? _value.isCreateTrainingBlockSeen
           : isCreateTrainingBlockSeen // ignore: cast_nullable_to_non_nullable
               as bool,
-      isSeeArchivedTrainingBlocksSeen: null == isSeeArchivedTrainingBlocksSeen
-          ? _value.isSeeArchivedTrainingBlocksSeen
-          : isSeeArchivedTrainingBlocksSeen // ignore: cast_nullable_to_non_nullable
+      isArchivedTrainingBlocksButtonSeen: null ==
+              isArchivedTrainingBlocksButtonSeen
+          ? _value.isArchivedTrainingBlocksButtonSeen
+          : isArchivedTrainingBlocksButtonSeen // ignore: cast_nullable_to_non_nullable
               as bool,
       isSettingsSeen: null == isSettingsSeen
           ? _value.isSettingsSeen
@@ -214,6 +225,10 @@ class __$$TutorialSettingsStateImplCopyWithImpl<$Res>
           ? _value.isExerciseTypeSeen
           : isExerciseTypeSeen // ignore: cast_nullable_to_non_nullable
               as bool,
+      isExerciseSeen: null == isExerciseSeen
+          ? _value.isExerciseSeen
+          : isExerciseSeen // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -225,7 +240,7 @@ class _$TutorialSettingsStateImpl
     implements _TutorialSettingsState {
   _$TutorialSettingsStateImpl(
       {this.isCreateTrainingBlockSeen = false,
-      this.isSeeArchivedTrainingBlocksSeen = false,
+      this.isArchivedTrainingBlocksButtonSeen = false,
       this.isSettingsSeen = false,
       this.isTrainingBlockListSeen = false,
       this.isCreateExerciseDaySeen = false,
@@ -233,7 +248,8 @@ class _$TutorialSettingsStateImpl
       this.isMoreOptionsMenuSeen = false,
       this.isExerciseDaySeen = false,
       this.isCreateExerciseTypeSeen = false,
-      this.isExerciseTypeSeen = false});
+      this.isExerciseTypeSeen = false,
+      this.isExerciseSeen = false});
 
   factory _$TutorialSettingsStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$TutorialSettingsStateImplFromJson(json);
@@ -243,7 +259,7 @@ class _$TutorialSettingsStateImpl
   final bool isCreateTrainingBlockSeen;
   @override
   @JsonKey()
-  final bool isSeeArchivedTrainingBlocksSeen;
+  final bool isArchivedTrainingBlocksButtonSeen;
   @override
   @JsonKey()
   final bool isSettingsSeen;
@@ -268,10 +284,13 @@ class _$TutorialSettingsStateImpl
   @override
   @JsonKey()
   final bool isExerciseTypeSeen;
+  @override
+  @JsonKey()
+  final bool isExerciseSeen;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TutorialSettingsState(isCreateTrainingBlockSeen: $isCreateTrainingBlockSeen, isSeeArchivedTrainingBlocksSeen: $isSeeArchivedTrainingBlocksSeen, isSettingsSeen: $isSettingsSeen, isTrainingBlockListSeen: $isTrainingBlockListSeen, isCreateExerciseDaySeen: $isCreateExerciseDaySeen, isEditModeSeen: $isEditModeSeen, isMoreOptionsMenuSeen: $isMoreOptionsMenuSeen, isExerciseDaySeen: $isExerciseDaySeen, isCreateExerciseTypeSeen: $isCreateExerciseTypeSeen, isExerciseTypeSeen: $isExerciseTypeSeen)';
+    return 'TutorialSettingsState(isCreateTrainingBlockSeen: $isCreateTrainingBlockSeen, isArchivedTrainingBlocksButtonSeen: $isArchivedTrainingBlocksButtonSeen, isSettingsSeen: $isSettingsSeen, isTrainingBlockListSeen: $isTrainingBlockListSeen, isCreateExerciseDaySeen: $isCreateExerciseDaySeen, isEditModeSeen: $isEditModeSeen, isMoreOptionsMenuSeen: $isMoreOptionsMenuSeen, isExerciseDaySeen: $isExerciseDaySeen, isCreateExerciseTypeSeen: $isCreateExerciseTypeSeen, isExerciseTypeSeen: $isExerciseTypeSeen, isExerciseSeen: $isExerciseSeen)';
   }
 
   @override
@@ -281,8 +300,8 @@ class _$TutorialSettingsStateImpl
       ..add(DiagnosticsProperty('type', 'TutorialSettingsState'))
       ..add(DiagnosticsProperty(
           'isCreateTrainingBlockSeen', isCreateTrainingBlockSeen))
-      ..add(DiagnosticsProperty(
-          'isSeeArchivedTrainingBlocksSeen', isSeeArchivedTrainingBlocksSeen))
+      ..add(DiagnosticsProperty('isArchivedTrainingBlocksButtonSeen',
+          isArchivedTrainingBlocksButtonSeen))
       ..add(DiagnosticsProperty('isSettingsSeen', isSettingsSeen))
       ..add(DiagnosticsProperty(
           'isTrainingBlockListSeen', isTrainingBlockListSeen))
@@ -293,7 +312,8 @@ class _$TutorialSettingsStateImpl
       ..add(DiagnosticsProperty('isExerciseDaySeen', isExerciseDaySeen))
       ..add(DiagnosticsProperty(
           'isCreateExerciseTypeSeen', isCreateExerciseTypeSeen))
-      ..add(DiagnosticsProperty('isExerciseTypeSeen', isExerciseTypeSeen));
+      ..add(DiagnosticsProperty('isExerciseTypeSeen', isExerciseTypeSeen))
+      ..add(DiagnosticsProperty('isExerciseSeen', isExerciseSeen));
   }
 
   @override
@@ -304,10 +324,10 @@ class _$TutorialSettingsStateImpl
             (identical(other.isCreateTrainingBlockSeen,
                     isCreateTrainingBlockSeen) ||
                 other.isCreateTrainingBlockSeen == isCreateTrainingBlockSeen) &&
-            (identical(other.isSeeArchivedTrainingBlocksSeen,
-                    isSeeArchivedTrainingBlocksSeen) ||
-                other.isSeeArchivedTrainingBlocksSeen ==
-                    isSeeArchivedTrainingBlocksSeen) &&
+            (identical(other.isArchivedTrainingBlocksButtonSeen,
+                    isArchivedTrainingBlocksButtonSeen) ||
+                other.isArchivedTrainingBlocksButtonSeen ==
+                    isArchivedTrainingBlocksButtonSeen) &&
             (identical(other.isSettingsSeen, isSettingsSeen) ||
                 other.isSettingsSeen == isSettingsSeen) &&
             (identical(
@@ -326,7 +346,9 @@ class _$TutorialSettingsStateImpl
                     other.isCreateExerciseTypeSeen, isCreateExerciseTypeSeen) ||
                 other.isCreateExerciseTypeSeen == isCreateExerciseTypeSeen) &&
             (identical(other.isExerciseTypeSeen, isExerciseTypeSeen) ||
-                other.isExerciseTypeSeen == isExerciseTypeSeen));
+                other.isExerciseTypeSeen == isExerciseTypeSeen) &&
+            (identical(other.isExerciseSeen, isExerciseSeen) ||
+                other.isExerciseSeen == isExerciseSeen));
   }
 
   @JsonKey(ignore: true)
@@ -334,7 +356,7 @@ class _$TutorialSettingsStateImpl
   int get hashCode => Object.hash(
       runtimeType,
       isCreateTrainingBlockSeen,
-      isSeeArchivedTrainingBlocksSeen,
+      isArchivedTrainingBlocksButtonSeen,
       isSettingsSeen,
       isTrainingBlockListSeen,
       isCreateExerciseDaySeen,
@@ -342,7 +364,8 @@ class _$TutorialSettingsStateImpl
       isMoreOptionsMenuSeen,
       isExerciseDaySeen,
       isCreateExerciseTypeSeen,
-      isExerciseTypeSeen);
+      isExerciseTypeSeen,
+      isExerciseSeen);
 
   @JsonKey(ignore: true)
   @override
@@ -362,7 +385,7 @@ class _$TutorialSettingsStateImpl
 abstract class _TutorialSettingsState implements TutorialSettingsState {
   factory _TutorialSettingsState(
       {final bool isCreateTrainingBlockSeen,
-      final bool isSeeArchivedTrainingBlocksSeen,
+      final bool isArchivedTrainingBlocksButtonSeen,
       final bool isSettingsSeen,
       final bool isTrainingBlockListSeen,
       final bool isCreateExerciseDaySeen,
@@ -370,7 +393,8 @@ abstract class _TutorialSettingsState implements TutorialSettingsState {
       final bool isMoreOptionsMenuSeen,
       final bool isExerciseDaySeen,
       final bool isCreateExerciseTypeSeen,
-      final bool isExerciseTypeSeen}) = _$TutorialSettingsStateImpl;
+      final bool isExerciseTypeSeen,
+      final bool isExerciseSeen}) = _$TutorialSettingsStateImpl;
 
   factory _TutorialSettingsState.fromJson(Map<String, dynamic> json) =
       _$TutorialSettingsStateImpl.fromJson;
@@ -378,7 +402,7 @@ abstract class _TutorialSettingsState implements TutorialSettingsState {
   @override
   bool get isCreateTrainingBlockSeen;
   @override
-  bool get isSeeArchivedTrainingBlocksSeen;
+  bool get isArchivedTrainingBlocksButtonSeen;
   @override
   bool get isSettingsSeen;
   @override
@@ -395,6 +419,8 @@ abstract class _TutorialSettingsState implements TutorialSettingsState {
   bool get isCreateExerciseTypeSeen;
   @override
   bool get isExerciseTypeSeen;
+  @override
+  bool get isExerciseSeen;
   @override
   @JsonKey(ignore: true)
   _$$TutorialSettingsStateImplCopyWith<_$TutorialSettingsStateImpl>

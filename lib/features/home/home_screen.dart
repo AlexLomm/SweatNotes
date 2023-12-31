@@ -142,7 +142,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with RouteAware {
         leading: const CreateTrainingBlockButtonWithTooltip(),
         actions: [
           ArchivedTrainingBlocksButtonWithTooltip(
-            hasAtLeastOneTrainingBlock: hasAtLeastOneTrainingBlock,
+            isTooltipEnabled: hasAtLeastOneTrainingBlock,
           ),
           const SettingsButtonWithTooltip()
         ],

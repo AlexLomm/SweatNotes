@@ -8,12 +8,14 @@ import '../../widget_params.dart';
 import 'exercise_day_widget_with_tooltip.dart';
 
 class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
+  final bool tooltipsEnabled;
   final int listIndex;
   final ExerciseDayClient exerciseDay;
   final TrainingBlockClient trainingBlock;
 
   const HorizontallyScrollableExerciseLabels({
     super.key,
+    required this.tooltipsEnabled,
     required this.listIndex,
     required this.exerciseDay,
     // TODO: provide via riverpod?
@@ -34,7 +36,7 @@ class HorizontallyScrollableExerciseLabels extends ConsumerWidget {
         bottom: widgetParams.exercisesMarginBottom,
       ),
       child: ExerciseDayWidgetWithTooltip(
-        isTooltipEnabled: listIndex == 0,
+        isTooltipEnabled: tooltipsEnabled,
         count: count,
         listIndex: listIndex,
         trainingBlock: trainingBlock,

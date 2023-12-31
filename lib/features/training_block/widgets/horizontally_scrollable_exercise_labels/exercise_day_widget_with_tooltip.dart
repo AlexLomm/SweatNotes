@@ -48,7 +48,7 @@ class ExerciseDayWidgetWithTooltip extends ConsumerWidget {
       (value) => value.isExerciseDaySeen,
     ));
 
-    final showTooltip = !isEditMode && !isExerciseDaySeen;
+    final showTooltip = !isEditMode || !isExerciseDaySeen;
 
     return TutorTooltip(
       active: showTooltip,
@@ -56,18 +56,18 @@ class ExerciseDayWidgetWithTooltip extends ConsumerWidget {
       onClose: () => tutorialSettingsNotifier.set(
         (prevState) => prevState.copyWith(isExerciseDaySeen: true),
       ),
-      buildTooltip: (_, rect) => _Tooltip(rect: rect),
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (_) => child,
     );
   }
 }
 
 class _Tooltip extends ConsumerWidget {
-  final Rect? rect;
+  final Size childSize;
 
   const _Tooltip({
     super.key,
-    required this.rect,
+    required this.childSize,
   });
 
   @override
@@ -77,7 +77,7 @@ class _Tooltip extends ConsumerWidget {
     return Transform.translate(
       offset: Offset(
         widgetParams.exerciseTypeWidth + 48,
-        -((rect?.height ?? 0) + (rect?.top ?? 0)) / 2,
+        -childSize.height / 2 - 100,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -144,18 +144,24 @@ class _ExerciseDayState extends ConsumerState<_ExerciseDay> {
             height: heightWithButton,
             child: Stack(
               children: [
-                ExerciseDayBackground(
-                  trainingBlock: widget.trainingBlock,
-                  exerciseDay: widget.exerciseDay,
-                  count: widget.count,
-                  onUpdate: (details) => setState(
-                    () => _dismissProgress = details.progress,
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: ExerciseDayBackground(
+                    trainingBlock: widget.trainingBlock,
+                    exerciseDay: widget.exerciseDay,
+                    count: widget.count,
+                    onUpdate: (details) => setState(
+                      () => _dismissProgress = details.progress,
+                    ),
                   ),
                 ),
-                AddExerciseTypeButtonWithTooltip(
-                  isTooltipEnabled: widget.listIndex == 0,
-                  trainingBlock: widget.trainingBlock,
-                  exerciseDay: widget.exerciseDay,
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AddExerciseTypeButtonWithTooltip(
+                    isTooltipEnabled: widget.listIndex == 0,
+                    trainingBlock: widget.trainingBlock,
+                    exerciseDay: widget.exerciseDay,
+                  ),
                 ),
               ],
             ),

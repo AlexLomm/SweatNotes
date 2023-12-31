@@ -16,11 +16,11 @@ class TutorTooltipModel with _$TutorTooltipModel {
     Function()? onClose,
     @Default(false) final bool absorbPointer,
     required final Widget Function(TutorController) buildChild,
-    required final Widget Function(TutorController, Rect?) buildTooltip,
-    @Default(TooltipVerticalPosition.bottom)
-    final TooltipVerticalPosition verticalPosition,
-    @Default(TooltipHorizontalPosition.withWidget)
-    final TooltipHorizontalPosition horizontalPosition,
+    required final Widget Function(TutorController, Size) buildTooltip,
+    @Default(TooltipPosition.bottom)
+    final TooltipPosition position,
+    @Default(TooltipAnchor.withWidget)
+    final TooltipAnchor anchor,
     required final int order,
   }) = _TutorTooltipModel;
 }

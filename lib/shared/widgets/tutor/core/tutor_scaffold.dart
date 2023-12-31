@@ -146,7 +146,7 @@ class _TutorScaffoldState extends State<TutorScaffold> {
   }
 }
 
-class _TutorLayout extends StatelessWidget {
+class _TutorLayout extends StatefulWidget {
   final TutorTooltipModel model;
   final TutorController controller;
 
@@ -157,117 +157,91 @@ class _TutorLayout extends StatelessWidget {
   });
 
   @override
+  State<_TutorLayout> createState() => _TutorLayoutState();
+}
+
+class _TutorLayoutState extends State<_TutorLayout> {
+  Size childSize = Size.zero;
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, size) {
-      final globalPaintBounds = model.widgetKey.globalPaintBounds!;
+      final globalPaintBounds = widget.model.widgetKey.globalPaintBounds!;
 
-      var topLeft = globalPaintBounds.topLeft;
-      var bottomRight = globalPaintBounds.bottomRight;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final newSize = widget.model.widgetKey.currentContext?.size;
 
-      if (topLeft.dx < 0) {
-        bottomRight = Offset(bottomRight.dx + (0 - topLeft.dx), bottomRight.dy);
-        topLeft = Offset(0, topLeft.dy);
+        if (newSize == null || newSize == childSize) return;
+
+        setState(() => childSize = newSize);
+      });
+
+      if (childSize == Size.zero) {
+        return const SizedBox.shrink();
       }
 
-      if (bottomRight.dx > size.maxWidth) {
-        topLeft = Offset(
-          topLeft.dx - (bottomRight.dx - size.maxWidth),
-          topLeft.dy,
-        );
-        bottomRight = Offset(size.maxWidth, bottomRight.dy);
-      }
+      final childPosition = Rect.fromLTRB(
+        globalPaintBounds.left,
+        globalPaintBounds.top,
+        size.maxWidth - globalPaintBounds.right,
+        size.maxHeight - globalPaintBounds.bottom,
+      );
 
-      if (topLeft.dy < 0) {
-        bottomRight = Offset(bottomRight.dx, bottomRight.dy + (0 - topLeft.dy));
-        topLeft = Offset(topLeft.dx, 0);
-      }
-
-      if (bottomRight.dy > size.maxHeight) {
-        topLeft = Offset(
-          topLeft.dx,
-          topLeft.dy - (bottomRight.dy - size.maxHeight),
-        );
-        bottomRight = Offset(bottomRight.dx, size.maxHeight);
-      }
+      final tooltip = widget.model.buildTooltip(
+        widget.controller,
+        childSize,
+      );
 
       return Stack(
         fit: StackFit.expand,
         children: [
           Positioned(
-            top: globalPaintBounds.top,
-            left: topLeft.dx,
-            bottom: size.maxHeight - bottomRight.dy,
-            right: size.maxWidth - bottomRight.dx,
+            top: childPosition.top,
+            left: childPosition.left,
+            bottom: childPosition.bottom,
+            right: childPosition.right,
             child: GestureDetector(
-              onTap: () => controller.next(),
-              child: AbsorbPointer(
-                absorbing: model.absorbPointer,
-                child: model.buildChild(controller),
+              onTap: widget.controller.next,
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: childSize.width,
+                  height: childSize.height,
+                  child: AbsorbPointer(
+                    absorbing: widget.model.absorbPointer,
+                    child: widget.model.buildChild(widget.controller),
+                  ),
+                ),
               ),
             ),
           ),
-          _buildToolTip(topLeft, bottomRight, size)
+          if (widget.model.position == TooltipPosition.top)
+            Positioned(
+              left: childPosition.left,
+              bottom: childPosition.bottom + childSize.height,
+              child: tooltip,
+            ),
+          if (widget.model.position == TooltipPosition.bottom)
+            Positioned(
+              left: childPosition.left,
+              top: childPosition.top + childSize.height,
+              child: tooltip,
+            ),
+          if (widget.model.position == TooltipPosition.left)
+            Positioned(
+              right: childPosition.right + childSize.width,
+              top: childPosition.top,
+              child: tooltip,
+            ),
+          if (widget.model.position == TooltipPosition.right)
+            Positioned(
+              left: childPosition.left + childSize.width,
+              top: childPosition.top,
+              child: tooltip,
+            ),
         ],
       );
     });
-  }
-
-  Widget _buildToolTip(
-    Offset topLeft,
-    Offset bottomRight,
-    BoxConstraints size,
-  ) {
-    bool isTop = model.verticalPosition == TooltipVerticalPosition.top;
-
-    bool alignLeft = topLeft.dx <= (size.maxWidth - bottomRight.dx);
-
-    final calculatedLeft = alignLeft ? topLeft.dx : null;
-    final calculatedRight = alignLeft ? null : size.maxWidth - bottomRight.dx;
-    final calculatedTop = isTop ? null : bottomRight.dy;
-    final calculatedBottom = isTop ? (size.maxHeight - topLeft.dy) : null;
-
-    if (model.horizontalPosition == TooltipHorizontalPosition.withWidget) {
-      return Positioned(
-        top: calculatedTop,
-        left: calculatedLeft,
-        right: calculatedRight,
-        bottom: calculatedBottom,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            model.buildTooltip(
-              controller,
-              model.widgetKey.globalPaintBounds,
-            ),
-          ],
-        ),
-      );
-    }
-
-    final child = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        model.buildTooltip(
-          controller,
-          model.widgetKey.globalPaintBounds,
-        ),
-      ],
-    );
-
-    return Positioned(
-      top: calculatedTop,
-      left: 0,
-      right: 0,
-      bottom: calculatedBottom,
-      child: model.horizontalPosition == TooltipHorizontalPosition.center
-          ? Center(child: child)
-          : Align(
-              alignment:
-                  model.horizontalPosition == TooltipHorizontalPosition.right
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-              child: child,
-            ),
-    );
   }
 }

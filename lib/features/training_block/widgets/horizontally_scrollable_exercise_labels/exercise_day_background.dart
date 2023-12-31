@@ -35,50 +35,47 @@ class ExerciseDayBackground extends ConsumerWidget {
 
     final heightWithoutButton = widgetParams.getExerciseLabelsHeight(count);
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: _Background(
-        id: exerciseDay.dbModel.pseudoId,
-        width: widgetParams.exerciseLabelsListWidth,
-        height: heightWithoutButton,
-        borderRadius: widgetParams.borderRadius,
-        onUpdate: onUpdate,
-        onDismissed: (_) {
-          trainingBlocksService.archiveExerciseDay(
-            trainingBlock: trainingBlock,
-            exerciseDay: exerciseDay,
-            archive: true,
-          );
+    return _Background(
+      id: exerciseDay.dbModel.pseudoId,
+      width: widgetParams.exerciseLabelsListWidth,
+      height: heightWithoutButton,
+      borderRadius: widgetParams.borderRadius,
+      onUpdate: onUpdate,
+      onDismissed: (_) {
+        trainingBlocksService.archiveExerciseDay(
+          trainingBlock: trainingBlock,
+          exerciseDay: exerciseDay,
+          archive: true,
+        );
 
-          messenger?.clearSnackBars();
-          messenger?.showSnackBar(
-            SnackBar(
-              content: Text(
-                'Exercise day "${exerciseDay.name}" archived',
-              ),
-              action: SnackBarAction(
-                label: 'Undo',
-                onPressed: () => trainingBlocksService.archiveExerciseDay(
-                  trainingBlock: trainingBlock,
-                  exerciseDay: exerciseDay,
-                  archive: false,
-                ),
+        messenger?.clearSnackBars();
+        messenger?.showSnackBar(
+          SnackBar(
+            content: Text(
+              'Exercise day "${exerciseDay.name}" archived',
+            ),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () => trainingBlocksService.archiveExerciseDay(
+                trainingBlock: trainingBlock,
+                exerciseDay: exerciseDay,
+                archive: false,
               ),
             ),
-          );
-        },
-        child: IgnorePointerInEditMode(
-          onTap: () => context.pushNamed(
-            RouteNames.exerciseDayCreateUpdate,
-            extra: Tuple2(
-              trainingBlock.dbModel.id,
-              exerciseDay,
-            ),
           ),
-          child: ExerciseDayWidget(
-            exerciseDay: exerciseDay,
-            trainingBlock: trainingBlock,
+        );
+      },
+      child: IgnorePointerInEditMode(
+        onTap: () => context.pushNamed(
+          RouteNames.exerciseDayCreateUpdate,
+          extra: Tuple2(
+            trainingBlock.dbModel.id,
+            exerciseDay,
           ),
+        ),
+        child: ExerciseDayWidget(
+          exerciseDay: exerciseDay,
+          trainingBlock: trainingBlock,
         ),
       ),
     );

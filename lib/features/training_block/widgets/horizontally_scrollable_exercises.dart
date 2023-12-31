@@ -4,23 +4,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/training_block_client.dart';
 import 'package:sweatnotes/features/training_block/services/training_blocks_service.dart';
+import 'package:sweatnotes/features/training_block/widgets/exercise_widget_with_tooltip.dart';
 
 import '../../settings/edit_mode_switcher.dart';
 import '../../settings/show_archived_exercise_types_switcher.dart';
 import '../data/models_client/exercise_type_client.dart';
 import '../widget_params.dart';
 import '../data/models_client/exercise_day_client.dart';
-import 'exercise_widget.dart';
 import '../services/exercises_service.dart';
 import 'ignore_pointer_edit_mode.dart';
 
 class HorizontallyScrollableExercises extends ConsumerStatefulWidget {
+  final bool tooltipsEnabled;
   final ScrollController? scrollController;
   final TrainingBlockClient trainingBlock;
   final ExerciseDayClient exerciseDay;
 
   const HorizontallyScrollableExercises({
     super.key,
+    required this.tooltipsEnabled,
     this.scrollController,
     required this.trainingBlock,
     required this.exerciseDay,
@@ -140,6 +142,8 @@ class _HorizontallyScrollableExercisesState
               }
 
               final exercisesColumn = ExercisesColumn(
+                enableTooltips:
+                    widget.tooltipsEnabled && adjustedHorizontalIndex == 0,
                 hasCollapseButton: adjustedHorizontalIndex !=
                     adjustedNumberOfColumnsPerExerciseType - 1,
                 trainingBlock: widget.trainingBlock,
@@ -369,6 +373,7 @@ class AddExerciseColumnButton extends ConsumerWidget {
 }
 
 class ExercisesColumn extends ConsumerWidget {
+  final bool enableTooltips;
   final bool hasCollapseButton;
   final TrainingBlockClient trainingBlock;
   final ExerciseDayClient exerciseDayClient;
@@ -376,6 +381,7 @@ class ExercisesColumn extends ConsumerWidget {
 
   const ExercisesColumn({
     super.key,
+    required this.enableTooltips,
     required this.hasCollapseButton,
     required this.trainingBlock,
     required this.exerciseDayClient,
@@ -411,11 +417,13 @@ class ExercisesColumn extends ConsumerWidget {
             verticalIndex < exerciseTypes.length;
             verticalIndex++)
           Container(
+            key: ValueKey(exerciseTypes[verticalIndex].dbModel.id),
             margin: EdgeInsets.only(
               right: widgetParams.exercisesSideSpacing,
               bottom: widgetParams.exercisesMarginBottomNotLast,
             ),
-            child: ExerciseWidget(
+            child: ExerciseWidgetWithTooltip(
+              isEnabled: enableTooltips && verticalIndex == 0,
               exerciseType: exerciseDayClient.exerciseTypes[verticalIndex],
               exercise: exerciseDayClient
                   .exerciseTypes[verticalIndex].exercises[horizontalIndex],

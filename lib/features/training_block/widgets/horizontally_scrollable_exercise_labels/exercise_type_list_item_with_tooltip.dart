@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/training_block_client.dart';
 
+import '../../../../shared/widgets/tutor/constants/enums.dart';
 import '../../../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../../../settings/edit_mode_switcher.dart';
 import '../../../settings/tutorial_settings.dart';
@@ -42,37 +43,36 @@ class ExerciseTypeListItemWithTooltip extends ConsumerWidget {
       tutorialSettingsProvider.select((s) => s.isExerciseTypeSeen),
     );
 
-    final showTooltip = !isEditMode && !isExerciseTypeSeen;
+    final showTooltip = !isEditMode || !isExerciseTypeSeen;
 
     return TutorTooltip(
       key: Key(exerciseType.dbModel.id),
+      tooltipPosition: TooltipPosition.right,
       active: showTooltip,
       order: orderExerciseType,
       onClose: () => settingsNotifier.set(
         (prevState) => prevState.copyWith(isExerciseTypeSeen: true),
       ),
-      buildTooltip: (_, rect) => _Tooltip(rect: rect),
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (controller) => child,
     );
   }
 }
 
 class _Tooltip extends ConsumerWidget {
-  final Rect? rect;
+  final Size childSize;
 
   const _Tooltip({
     super.key,
-    required this.rect,
+    required this.childSize,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final widgetParams = ref.watch(widgetParamsProvider);
-
     return Transform.translate(
-      offset: Offset(
-        widgetParams.exerciseTypeWidth + 48,
-        -((rect?.height ?? 0) + (rect?.top ?? 0)) / 2,
+      offset: const Offset(
+        48,
+        -75,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,

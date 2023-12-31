@@ -25,26 +25,23 @@ class AddExerciseTypeButton extends ConsumerWidget {
     final widgetParams = ref.watch(widgetParamsProvider);
     final isEditMode = ref.watch(editModeSwitcherProvider);
 
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: AnimatedOpacity(
-        opacity: isEditMode ? 0.0 : 1.0,
-        duration: WidgetParams.animationDuration,
-        curve: WidgetParams.animationCurve,
-        child: RoundedIconButton(
-          size: widgetParams.addExerciseButtonSize,
-          onPressed: isEditMode
-              ? null
-              : () => CustomBottomSheet(
-                    height: CustomBottomSheet.allSpacing +
-                        TextEditorSingleLineAndWheel.height,
-                    title: 'Add exercise type',
-                    child: _TextEditorSingleLineAndWheelWrapper(
-                      trainingBlock: trainingBlock,
-                      exerciseDay: exerciseDay,
-                    ),
-                  ).show(context),
-        ),
+    return AnimatedOpacity(
+      opacity: isEditMode ? 0.0 : 1.0,
+      duration: WidgetParams.animationDuration,
+      curve: WidgetParams.animationCurve,
+      child: RoundedIconButton(
+        size: widgetParams.addExerciseButtonSize,
+        onPressed: isEditMode
+            ? null
+            : () => CustomBottomSheet(
+                  height: CustomBottomSheet.allSpacing +
+                      TextEditorSingleLineAndWheel.height,
+                  title: 'Add exercise type',
+                  child: _TextEditorSingleLineAndWheelWrapper(
+                    trainingBlock: trainingBlock,
+                    exerciseDay: exerciseDay,
+                  ),
+                ).show(context),
       ),
     );
   }

@@ -5,18 +5,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TutorialTooltipTrainingBlock extends StatelessWidget {
-  final Rect? paintBounds;
+  final Size childSize;
 
   const TutorialTooltipTrainingBlock({
     super.key,
-    required this.paintBounds,
+    required this.childSize,
   });
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
 
-    final offsetFromTop = (paintBounds?.top ?? 0) + mq.padding.top;
+    final offsetFromTop = childSize.height;
 
     return Transform.translate(
       offset: Offset(
@@ -25,7 +25,7 @@ class TutorialTooltipTrainingBlock extends StatelessWidget {
       ),
       child: SizedBox(
         height: mq.size.height,
-        width: mq.size.width,
+        width: childSize.width,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -40,11 +40,11 @@ class TutorialTooltipTrainingBlock extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                   SizedBox(
-                    width: 125,
+                    width: 100,
                     child: Text(
-                      'Swipe left to archive',
+                      '1. Swipe left to archive',
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: 20.0,
                         fontFamily: GoogleFonts.indieFlower().fontFamily,
                         fontWeight: FontWeight.w100,
                         color: Colors.white,
@@ -58,7 +58,7 @@ class TutorialTooltipTrainingBlock extends StatelessWidget {
               top: offsetFromTop - 25,
               right: 0,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Transform.rotate(
                     angle: pi,
@@ -68,11 +68,12 @@ class TutorialTooltipTrainingBlock extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 125,
+                    width: 100,
                     child: Text(
-                      'Swipe right to copy',
+                      '3. Swipe right to copy',
+                      textAlign: TextAlign.right,
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: 20.0,
                         fontFamily: GoogleFonts.indieFlower().fontFamily,
                         fontWeight: FontWeight.w100,
                         color: Colors.white,
@@ -89,19 +90,19 @@ class TutorialTooltipTrainingBlock extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Transform.translate(
-                    offset: const Offset(-10, 0),
+                  Transform.rotate(
+                    angle: pi / 2,
                     child: SvgPicture.asset(
-                      'assets/tutorial-long-arrow-up.svg',
+                      'assets/tutorial-swipe-arrow-to-left.svg',
                       fit: BoxFit.contain,
                     ),
                   ),
                   SizedBox(
-                    width: 150,
+                    width: 140,
                     child: Text(
-                      'Tap to view the training block',
+                      '2. Tap to view the training plan',
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: 20.0,
                         fontFamily: GoogleFonts.indieFlower().fontFamily,
                         fontWeight: FontWeight.w100,
                         color: Colors.white,

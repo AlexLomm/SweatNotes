@@ -4,26 +4,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/training_block_client.dart';
 
+import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../settings/tutorial_settings.dart';
 import 'add_exercise_day_button.dart';
 
 class AddExerciseDayButtonWithTooltip extends ConsumerWidget {
-  final bool isTooltipEnabled;
   final TrainingBlockClient trainingBlock;
 
   const AddExerciseDayButtonWithTooltip({
     super.key,
-    required this.isTooltipEnabled,
     required this.trainingBlock,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final child = AddExerciseDayButton(trainingBlock: trainingBlock);
-
-    if (!isTooltipEnabled) return child;
-
     final isCreateExerciseDaySeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isCreateExerciseDaySeen),
     );
@@ -31,21 +26,27 @@ class AddExerciseDayButtonWithTooltip extends ConsumerWidget {
     final shouldShowTooltip = !isCreateExerciseDaySeen;
 
     return TutorTooltip(
+      tooltipPosition: TooltipPosition.left,
       active: shouldShowTooltip,
       order: orderCreateExerciseDay,
-      buildTooltip: (_, __) => const _Tooltip(),
-      buildChild: (_) => child,
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
+      buildChild: (_) => AddExerciseDayButton(trainingBlock: trainingBlock),
     );
   }
 }
 
 class _Tooltip extends StatelessWidget {
-  const _Tooltip({super.key});
+  final Size childSize;
+
+  const _Tooltip({
+    super.key,
+    required this.childSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: const Offset(12, -75),
+      offset: Offset(childSize.width + 12, -25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,

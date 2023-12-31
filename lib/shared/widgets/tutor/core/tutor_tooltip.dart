@@ -13,9 +13,9 @@ class TutorTooltip extends StatefulWidget {
   final bool absorbPointer;
   final int order;
   final Widget Function(TutorController) buildChild;
-  final Widget Function(TutorController, Rect?) buildTooltip;
-  final TooltipVerticalPosition tooltipVerticalPosition;
-  final TooltipHorizontalPosition tooltipHorizontalPosition;
+  final Widget Function(TutorController, Size) buildTooltip;
+  final TooltipPosition tooltipPosition;
+  final TooltipAnchor tooltipAnchor;
 
   const TutorTooltip({
     super.key,
@@ -26,8 +26,8 @@ class TutorTooltip extends StatefulWidget {
     required this.order,
     required this.buildChild,
     required this.buildTooltip,
-    this.tooltipVerticalPosition = TooltipVerticalPosition.bottom,
-    this.tooltipHorizontalPosition = TooltipHorizontalPosition.withWidget,
+    this.tooltipPosition = TooltipPosition.bottom,
+    this.tooltipAnchor = TooltipAnchor.withWidget,
   });
 
   @override
@@ -78,8 +78,8 @@ class _TutorTooltipState extends State<TutorTooltip> {
         absorbPointer: widget.absorbPointer,
         buildChild: widget.buildChild,
         buildTooltip: widget.buildTooltip,
-        verticalPosition: widget.tooltipVerticalPosition,
-        horizontalPosition: widget.tooltipHorizontalPosition,
+        position: widget.tooltipPosition,
+        anchor: widget.tooltipAnchor,
         order: widget.order,
       );
 

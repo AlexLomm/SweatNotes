@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../router/router.dart';
+import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../settings/tutorial_settings.dart';
 
@@ -23,35 +24,38 @@ class SettingsButtonWithTooltip extends ConsumerWidget {
     final cs = Theme.of(context).colorScheme;
 
     return TutorTooltip(
+      tooltipPosition: TooltipPosition.left,
       order: orderSettings,
       active: shouldShowTooltip,
       onClose: () => tutorialSettingsNotifier.set((prevState) {
         return prevState.copyWith(isSettingsSeen: true);
       }),
-      buildTooltip: (_, __) => const _TutorialTooltipSeeSettings(),
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (controller) => IconButton(
         icon: Icon(Icons.settings_outlined, color: cs.onSurface),
         tooltip: 'Settings',
         splashRadius: 20,
-        onPressed: () {
-          if (controller.isInProgress) {
-            controller.next();
-          } else {
-            context.pushNamed(RouteNames.settings);
-          }
-        },
+        onPressed: () => context.pushNamed(RouteNames.settings),
       ),
     );
   }
 }
 
-class _TutorialTooltipSeeSettings extends StatelessWidget {
-  const _TutorialTooltipSeeSettings({super.key});
+class _Tooltip extends StatelessWidget {
+  final Size childSize;
+
+  const _Tooltip({
+    super.key,
+    required this.childSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: const Offset(10, -30),
+      offset: Offset(
+        childSize.width + 5,
+        15,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,

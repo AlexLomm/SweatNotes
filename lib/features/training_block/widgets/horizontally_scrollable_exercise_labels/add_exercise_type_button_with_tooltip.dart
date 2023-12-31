@@ -45,49 +45,49 @@ class AddExerciseTypeButtonWithTooltip extends ConsumerWidget {
       ),
     );
 
-    final showTooltip = !isEditMode && !isCreateExerciseTypeSeen;
+    final showTooltip = !isEditMode || !isCreateExerciseTypeSeen;
 
     return TutorTooltip(
       active: showTooltip,
       order: orderCreateExerciseType,
-      tooltipVerticalPosition: TooltipVerticalPosition.top,
+      tooltipPosition: TooltipPosition.top,
       onClose: () => tutorialSettingsNotifier.set(
         (prevState) => prevState.copyWith(isCreateExerciseTypeSeen: true),
       ),
-      buildTooltip: (_, rect) => _Tooltip(rect: rect),
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (_) => child,
     );
   }
 }
 
 class _Tooltip extends StatelessWidget {
-  final Rect? rect;
+  final Size childSize;
 
   const _Tooltip({
     super.key,
-    required this.rect,
+    required this.childSize,
   });
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: Offset(8, (rect?.height ?? 0) + 18),
+      offset: Offset(
+        -3,
+        childSize.height + 20,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Transform.translate(
-            offset: const Offset(20, -5),
-            child: SizedBox(
-              width: 180,
-              child: Text(
-                'Tap to add a new exercise',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontFamily: GoogleFonts.indieFlower().fontFamily,
-                  fontWeight: FontWeight.w100,
-                  color: Colors.white,
-                ),
+          SizedBox(
+            width: 180,
+            child: Text(
+              'Tap to add a new exercise',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontFamily: GoogleFonts.indieFlower().fontFamily,
+                fontWeight: FontWeight.w100,
+                color: Colors.white,
               ),
             ),
           ),

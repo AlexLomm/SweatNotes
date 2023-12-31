@@ -3,48 +3,46 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
 import '../settings/edit_mode_switcher.dart';
 import '../settings/tutorial_settings.dart';
 import 'more_options_menu.dart';
 
 class MoreOptionsMenuWithTooltip extends ConsumerWidget {
-  final bool isTooltipEnabled;
-
-  const MoreOptionsMenuWithTooltip({
-    super.key,
-    required this.isTooltipEnabled,
-  });
+  const MoreOptionsMenuWithTooltip({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const child = MoreOptionsMenu();
-
-    if (!isTooltipEnabled) return child;
-
     final isEditMode = ref.watch(editModeSwitcherProvider);
     final isMoreOptionsMenuSeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isMoreOptionsMenuSeen),
     );
 
-    final showTooltip = !isEditMode && !isMoreOptionsMenuSeen;
+    final showTooltip = !isEditMode || !isMoreOptionsMenuSeen;
 
     return TutorTooltip(
+      tooltipPosition: TooltipPosition.left,
       active: showTooltip,
       order: orderMoreOptionsMenu,
-      buildTooltip: (_, __) => const _Tooltip(),
-      buildChild: (_) => child,
+      buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
+      buildChild: (_) => const MoreOptionsMenu(),
     );
   }
 }
 
 class _Tooltip extends StatelessWidget {
-  const _Tooltip({super.key});
+  final Size childSize;
+
+  const _Tooltip({
+    super.key,
+    required this.childSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Transform.translate(
-      offset: const Offset(12, -75),
+      offset: Offset(childSize.width + 12, -25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,

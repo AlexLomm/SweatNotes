@@ -48,7 +48,7 @@ class ExerciseDayWidgetWithTooltip extends ConsumerWidget {
       (value) => value.isExerciseDaySeen,
     ));
 
-    final showTooltip = !isEditMode || !isExerciseDaySeen;
+    final showTooltip = !isEditMode && !isExerciseDaySeen;
 
     return TutorTooltip(
       active: showTooltip,

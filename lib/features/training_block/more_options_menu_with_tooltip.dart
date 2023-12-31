@@ -19,7 +19,7 @@ class MoreOptionsMenuWithTooltip extends ConsumerWidget {
       tutorialSettingsProvider.select((s) => s.isMoreOptionsMenuSeen),
     );
 
-    final showTooltip = !isEditMode || !isMoreOptionsMenuSeen;
+    final showTooltip = !isEditMode && !isMoreOptionsMenuSeen;
 
     return TutorTooltip(
       tooltipPosition: TooltipPosition.left,

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
+import '../settings/edit_mode_switcher.dart';
 import '../settings/show_archived_exercise_types_switcher.dart';
 import '../settings/tutorial_settings.dart';
 import 'toggle_edit_mode_button.dart';
@@ -22,12 +23,15 @@ class ToggleEditModeWithTooltip extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final showArchived = ref.watch(showArchivedExerciseTypesSwitcherProvider);
+    final isEditMode = ref.watch(editModeSwitcherProvider);
     final isEditModeSeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isEditModeSeen),
     );
 
-    final shouldShowTooltip =
-        hasAtLeastOneExerciseDay && !showArchived && !isEditModeSeen;
+    final shouldShowTooltip = hasAtLeastOneExerciseDay &&
+        !isEditMode &&
+        !showArchived &&
+        !isEditModeSeen;
 
     return TutorTooltip(
       tooltipPosition: TooltipPosition.left,

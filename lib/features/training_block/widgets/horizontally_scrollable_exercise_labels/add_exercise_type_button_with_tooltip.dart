@@ -45,7 +45,7 @@ class AddExerciseTypeButtonWithTooltip extends ConsumerWidget {
       ),
     );
 
-    final showTooltip = !isEditMode || !isCreateExerciseTypeSeen;
+    final showTooltip = !isEditMode && !isCreateExerciseTypeSeen;
 
     return TutorTooltip(
       active: showTooltip,

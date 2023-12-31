@@ -43,7 +43,7 @@ class ExerciseTypeListItemWithTooltip extends ConsumerWidget {
       tutorialSettingsProvider.select((s) => s.isExerciseTypeSeen),
     );
 
-    final showTooltip = !isEditMode || !isExerciseTypeSeen;
+    final showTooltip = !isEditMode && !isExerciseTypeSeen;
 
     return TutorTooltip(
       key: Key(exerciseType.dbModel.id),

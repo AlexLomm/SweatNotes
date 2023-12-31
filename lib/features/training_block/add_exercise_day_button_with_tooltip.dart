@@ -6,6 +6,7 @@ import 'package:sweatnotes/features/training_block/data/models_client/training_b
 
 import '../../shared/widgets/tutor/constants/enums.dart';
 import '../../shared/widgets/tutor/core/tutor_tooltip.dart';
+import '../settings/edit_mode_switcher.dart';
 import '../settings/tutorial_settings.dart';
 import 'add_exercise_day_button.dart';
 
@@ -19,11 +20,12 @@ class AddExerciseDayButtonWithTooltip extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEditMode = ref.watch(editModeSwitcherProvider);
     final isCreateExerciseDaySeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isCreateExerciseDaySeen),
     );
 
-    final shouldShowTooltip = !isCreateExerciseDaySeen;
+    final shouldShowTooltip = !isEditMode && !isCreateExerciseDaySeen;
 
     return TutorTooltip(
       tooltipPosition: TooltipPosition.left,

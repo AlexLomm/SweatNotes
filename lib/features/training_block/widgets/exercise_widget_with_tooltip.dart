@@ -40,7 +40,7 @@ class ExerciseWidgetWithTooltip extends ConsumerWidget {
       tutorialSettingsProvider.select((s) => s.isExerciseSeen),
     );
 
-    final showTooltip = !isEditMode || !isExerciseSeen;
+    final showTooltip = !isEditMode && !isExerciseSeen;
 
     return TutorTooltip(
       active: showTooltip,

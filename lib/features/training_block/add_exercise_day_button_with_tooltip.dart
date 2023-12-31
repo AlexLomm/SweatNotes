@@ -24,6 +24,9 @@ class AddExerciseDayButtonWithTooltip extends ConsumerWidget {
     final isCreateExerciseDaySeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isCreateExerciseDaySeen),
     );
+    final tutorialSettingsNotifier = ref.watch(
+      tutorialSettingsProvider.notifier,
+    );
 
     final shouldShowTooltip = !isEditMode && !isCreateExerciseDaySeen;
 
@@ -31,6 +34,9 @@ class AddExerciseDayButtonWithTooltip extends ConsumerWidget {
       tooltipPosition: TooltipPosition.left,
       active: shouldShowTooltip,
       order: orderCreateExerciseDay,
+      onClose: () => tutorialSettingsNotifier.set(
+        (prevState) => prevState.copyWith(isCreateExerciseDaySeen: true),
+      ),
       buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (_) => AddExerciseDayButton(trainingBlock: trainingBlock),
     );

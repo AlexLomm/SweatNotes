@@ -27,6 +27,9 @@ class ToggleEditModeWithTooltip extends ConsumerWidget {
     final isEditModeSeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isEditModeSeen),
     );
+    final tutorialSettingsNotifier = ref.watch(
+      tutorialSettingsProvider.notifier,
+    );
 
     final shouldShowTooltip = hasAtLeastOneExerciseDay &&
         !isEditMode &&
@@ -37,6 +40,9 @@ class ToggleEditModeWithTooltip extends ConsumerWidget {
       tooltipPosition: TooltipPosition.left,
       active: shouldShowTooltip,
       order: orderEditModeSwitcher,
+      onClose: () => tutorialSettingsNotifier.set(
+        (prevState) => prevState.copyWith(isEditModeSeen: true),
+      ),
       buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (_) => const ToggleEditModeButton(),
     );

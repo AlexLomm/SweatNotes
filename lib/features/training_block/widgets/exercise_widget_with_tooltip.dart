@@ -39,12 +39,18 @@ class ExerciseWidgetWithTooltip extends ConsumerWidget {
     final isExerciseSeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isExerciseSeen),
     );
+    final tutorialSettingsNotifier = ref.watch(
+      tutorialSettingsProvider.notifier,
+    );
 
     final showTooltip = !isEditMode && !isExerciseSeen;
 
     return TutorTooltip(
       active: showTooltip,
       order: orderExercise,
+      onClose: () => tutorialSettingsNotifier.set(
+        (prevState) => prevState.copyWith(isExerciseSeen: true),
+      ),
       buildTooltip: (_, rect) => const _Tooltip(),
       // wrapping in ProviderScope is necessary, because the child depends on a service
       // that'll be outside of the scope of the parent TutorTooltip, hence it'll throw

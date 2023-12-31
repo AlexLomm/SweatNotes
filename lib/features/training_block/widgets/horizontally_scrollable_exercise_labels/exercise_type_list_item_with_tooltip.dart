@@ -103,7 +103,7 @@ class _EditModeTooltip extends StatelessWidget {
           SizedBox(
             width: 220,
             child: Text(
-              'Swipe left the exercise to archive it',
+              'Swipe left on the exercise to archive it',
               style: TextStyle(
                 fontSize: 24.0,
                 fontFamily: GoogleFonts.indieFlower().fontFamily,

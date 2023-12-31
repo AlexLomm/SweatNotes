@@ -18,6 +18,9 @@ class MoreOptionsMenuWithTooltip extends ConsumerWidget {
     final isMoreOptionsMenuSeen = ref.watch(
       tutorialSettingsProvider.select((s) => s.isMoreOptionsMenuSeen),
     );
+    final tutorialSettingsNotifier = ref.watch(
+      tutorialSettingsProvider.notifier,
+    );
 
     final showTooltip = !isEditMode && !isMoreOptionsMenuSeen;
 
@@ -25,6 +28,9 @@ class MoreOptionsMenuWithTooltip extends ConsumerWidget {
       tooltipPosition: TooltipPosition.left,
       active: showTooltip,
       order: orderMoreOptionsMenu,
+      onClose: () => tutorialSettingsNotifier.set(
+        (prevState) => prevState.copyWith(isMoreOptionsMenuSeen: true),
+      ),
       buildTooltip: (_, childSize) => _Tooltip(childSize: childSize),
       buildChild: (_) => const MoreOptionsMenu(),
     );

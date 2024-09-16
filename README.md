@@ -4,6 +4,10 @@ SweatNotes is a gym progress tracking app designed for efficiency and insight. T
 
 Download now from the [App Store](https://apps.apple.com/us/app/sweatnotes/id6446651996).
 
+Demo:
+
+https://github.com/user-attachments/assets/d4c39d36-5dd0-4403-888f-77ce18a87275
+
 ---
 
 ## Development Notes

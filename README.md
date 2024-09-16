@@ -1,8 +1,14 @@
 # SweatNotes
 
-SweatNotes Readme.
+SweatNotes is a gym progress tracking app designed for efficiency and insight. The goal is to allow you to log your workout progress quickly and easily track improvements over time. SweatNotes features color-coded grids to visualize your performance, highlighting sets where you've improved or underperformed compared to previous sessions. It also tracks rest times between sets, helping you optimize your workout routine. You can fully customize the app’s appearance, including color schemes and toggling emoji markers for exercises. An in-app tutorial provides guidance to help you get the most out of SweatNotes.
 
-To start local firebase emulators, run:
+Download now from the [App Store](https://apps.apple.com/us/app/sweatnotes/id6446651996).
+
+---
+
+## Development Notes
+
+### To start local firebase emulators, run:
 
    ```bash
    firebase emulators:start --import=./seed
@@ -10,7 +16,7 @@ To start local firebase emulators, run:
 
 optionally, `--export-on-exit` can be specified to export the data to the `seed` folder.
 
-## Releasing
+### Releasing
 
 Instructions for releasing a new version of the app.
 

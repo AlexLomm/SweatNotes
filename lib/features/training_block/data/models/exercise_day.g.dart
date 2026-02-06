@@ -10,11 +10,11 @@ _$ExerciseDayImpl _$$ExerciseDayImplFromJson(Map<String, dynamic> json) =>
     _$ExerciseDayImpl(
       pseudoId: json['pseudoId'] as String,
       name: json['name'] as String,
-      weekDay: json['weekDay'] as int?,
-      archivedAt: timestampFromJson(json['archivedAt'] as int?),
+      weekDay: (json['weekDay'] as num?)?.toInt(),
+      archivedAt: timestampFromJson((json['archivedAt'] as num?)?.toInt()),
       exerciseTypesOrdering:
           (json['exerciseTypesOrdering'] as Map<String, dynamic>?)?.map(
-                (k, e) => MapEntry(k, e as int),
+                (k, e) => MapEntry(k, (e as num).toInt()),
               ) ??
               const {},
     );

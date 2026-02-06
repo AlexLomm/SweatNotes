@@ -31,15 +31,17 @@ class _DateFieldState extends State<DateField> {
         hintText: widget.hintText,
         suffixIcon: const Icon(Icons.calendar_month),
       ),
-      dateTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-      onDateSelected: widget.onDateSelected,
-      initialDate: widget.selectedDate,
-      selectedDate: widget.selectedDate,
-      initialDatePickerMode: DatePickerMode.day,
+      onChanged: (value) {
+        if (value != null) widget.onDateSelected?.call(value);
+      },
+      value: widget.selectedDate,
       mode: DateTimeFieldPickerMode.date,
-      initialTimePickerEntryMode: TimePickerEntryMode.input,
+      materialDatePickerOptions: MaterialDatePickerOptions(
+        initialDatePickerMode: DatePickerMode.day,
+      ),
       dateFormat: DateFormat.yMMMMd('en_US'),
     );
   }

@@ -821,11 +821,11 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
     }
 
     if (isDrivenByTimerController && !_isTimerMuted && isLast) {
-      audio.item2.seek(Duration.zero);
-      audio.item2.play();
+      audio.$2.seek(Duration.zero);
+      audio.$2.play();
     } else if (isDrivenByTimerController && !_isTimerMuted) {
-      audio.item1.seek(Duration.zero);
-      audio.item1.play();
+      audio.$1.seek(Duration.zero);
+      audio.$1.play();
     }
   }
 
@@ -842,8 +842,8 @@ class _ExpandableTimerState extends ConsumerState<ExpandableTimer>
       // TODO: refactor seeking and playing into a single method
       HapticFeedback.heavyImpact();
     } else {
-      audio.item2.seek(Duration.zero);
-      audio.item2.play();
+      audio.$2.seek(Duration.zero);
+      audio.$2.play();
     }
 
     setState(() => _isTimerMuted = isMuted);

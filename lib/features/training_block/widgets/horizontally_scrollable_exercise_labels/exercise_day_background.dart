@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../../../app.dart';
 import '../../../../router/router.dart';
@@ -69,7 +68,7 @@ class ExerciseDayBackground extends ConsumerWidget {
       child: IgnorePointerInEditMode(
         onTap: () => context.pushNamed(
           RouteNames.exerciseDayCreateUpdate,
-          extra: Tuple2(
+          extra: (
             trainingBlock.dbModel.id,
             exerciseDay,
           ),

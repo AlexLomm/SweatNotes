@@ -9,7 +9,7 @@ part of 'timer_settings.dart';
 _$TimerSettingsStateImpl _$$TimerSettingsStateImplFromJson(
         Map<String, dynamic> json) =>
     _$TimerSettingsStateImpl(
-      initialSeconds: json['initialSeconds'] as int? ?? 60,
+      initialSeconds: (json['initialSeconds'] as num?)?.toInt() ?? 60,
       isMuted: json['isMuted'] as bool? ?? false,
     );
 

@@ -6,12 +6,12 @@ part of 'audio.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$audioTimerHash() => r'125d3a47902cb0173d4f7e423bebababae8d39ac';
+String _$audioTimerHash() => r'e9c42cab3ed5d463070de0f5670a850c1498ad92';
 
 /// See also [audioTimer].
 @ProviderFor(audioTimer)
 final audioTimerProvider =
-    AutoDisposeProvider<Tuple2<AudioPlayer, AudioPlayer>>.internal(
+    AutoDisposeProvider<(AudioPlayer, AudioPlayer)>.internal(
   audioTimer,
   name: r'audioTimerProvider',
   debugGetCreateSourceHash:
@@ -20,7 +20,6 @@ final audioTimerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef AudioTimerRef
-    = AutoDisposeProviderRef<Tuple2<AudioPlayer, AudioPlayer>>;
+typedef AudioTimerRef = AutoDisposeProviderRef<(AudioPlayer, AudioPlayer)>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

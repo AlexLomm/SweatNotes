@@ -19,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweatnotes/shared/services/audio.dart';
 import 'package:timezone/data/latest_all.dart' as timezone;
 import 'package:timezone/timezone.dart' as timezone;
-import 'package:tuple/tuple.dart';
 
 import 'app.dart';
 import 'env.dart';
@@ -137,7 +136,7 @@ Future<void> main() async {
       // override the unimplemented providers
       overrides: [
         prefsProvider.overrideWithValue(prefs),
-        audioTimerProvider.overrideWithValue(Tuple2(audioTimer0, audioTimer1)),
+        audioTimerProvider.overrideWithValue((audioTimer0, audioTimer1)),
         notificationsProvider.overrideWithValue(flutterLocalNotificationsPlugin)
       ],
       child: const App(),

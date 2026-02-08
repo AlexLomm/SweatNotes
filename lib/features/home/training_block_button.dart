@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/training_block_client.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../app.dart';
 import '../../router/router.dart';
@@ -86,7 +85,7 @@ class _TrainingBlockButtonState extends ConsumerState<TrainingBlockButton> {
 
             context.pushNamed(
               RouteNames.trainingBlockCreateUpdate,
-              extra: Tuple2(widget.trainingBlock, true),
+              extra: (widget.trainingBlock, true),
             );
 
             return false;

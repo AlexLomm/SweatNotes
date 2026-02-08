@@ -54,7 +54,7 @@ Map<String, dynamic> _$$TutorialSettingsStateImplToJson(
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tutorialSettingsHash() => r'a2bba0f5bb52c3a578de25427298e5ff408d1a0d';
+String _$tutorialSettingsHash() => r'ec82fbb6b597d543846567916fe8a2dd0cfff76f';
 
 /// See also [TutorialSettings].
 @ProviderFor(TutorialSettings)

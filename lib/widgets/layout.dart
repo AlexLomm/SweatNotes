@@ -101,7 +101,7 @@ class _LayoutState extends ConsumerState<Layout> {
               body: Theme(
                 data: Theme.of(context).copyWith(
                   // style the auto-updater dialog
-                  dialogTheme: DialogTheme(
+                  dialogTheme: DialogThemeData(
                     titleTextStyle: tt.titleLarge?.copyWith(
                       color: cs.onSurface,
                     ),

@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:sweatnotes/features/home/training_block_create_update_screen.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/exercise_day_client.dart';
 import 'package:sweatnotes/features/training_block/exercise_day_create_update_screen.dart';
-import 'package:tuple/tuple.dart';
 
 import '../features/settings/widgets/account_screen.dart';
 import '../features/settings/widgets/settings_screen.dart';
@@ -126,13 +125,13 @@ GoRouter goRouter(GoRouterRef ref) {
             path: 'training-block-create-update',
             builder: (_, routerState) {
               final tuple =
-                  routerState.extra is Tuple2<TrainingBlockClient, bool>
-                      ? routerState.extra as Tuple2<TrainingBlockClient, bool>
+                  routerState.extra is (TrainingBlockClient, bool)
+                      ? routerState.extra as (TrainingBlockClient, bool)
                       : null;
 
               return TrainingBlockCreateUpdateScreen(
-                trainingBlock: tuple?.item1,
-                isCopy: tuple?.item2 ?? false,
+                trainingBlock: tuple?.$1,
+                isCopy: tuple?.$2 ?? false,
               );
             },
           ),
@@ -140,14 +139,14 @@ GoRouter goRouter(GoRouterRef ref) {
             name: RouteNames.exerciseDayCreateUpdate,
             path: 'exercise-day-create-update',
             builder: (_, routerState) {
-              assert(routerState.extra is Tuple2<String, ExerciseDayClient?>);
+              assert(routerState.extra is (String, ExerciseDayClient?));
 
               final tuple =
-                  routerState.extra as Tuple2<String, ExerciseDayClient?>;
+                  routerState.extra as (String, ExerciseDayClient?);
 
               return ExerciseDayCreateUpdateScreen(
-                trainingBlockId: tuple.item1,
-                exerciseDay: tuple.item2,
+                trainingBlockId: tuple.$1,
+                exerciseDay: tuple.$2,
               );
             },
           ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/exercise_day_client.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../router/router.dart';
 import '../../shared/widgets/regular_text_field.dart';
@@ -94,7 +93,7 @@ class _ExerciseDayCreateUpdateScreen
                         TextButton(
                           onPressed: () => context.pushNamed(
                             RouteNames.trainingBlockCreateUpdate,
-                            extra: Tuple2(trainingBlock, false),
+                            extra: (trainingBlock, false),
                           ),
                           child: const Text('SET START DATE'),
                         ),
@@ -111,20 +110,20 @@ class _ExerciseDayCreateUpdateScreen
                     items: List.generate(
                       7,
                       (i) {
-                        const List<Tuple2<int, String>> weekDays = [
-                          Tuple2(1, 'Monday'),
-                          Tuple2(2, 'Tuesday'),
-                          Tuple2(3, 'Wednesday'),
-                          Tuple2(4, 'Thursday'),
-                          Tuple2(5, 'Friday'),
-                          Tuple2(6, 'Saturday'),
-                          Tuple2(7, 'Sunday'),
+                        const List<(int, String)> weekDays = [
+                          (1, 'Monday'),
+                          (2, 'Tuesday'),
+                          (3, 'Wednesday'),
+                          (4, 'Thursday'),
+                          (5, 'Friday'),
+                          (6, 'Saturday'),
+                          (7, 'Sunday'),
                         ];
 
                         return DropdownMenuItem<int>(
-                          value: weekDays[i].item1,
+                          value: weekDays[i].$1,
                           child: Text(
-                            weekDays[i].item2,
+                            weekDays[i].$2,
                             style:
                                 Theme.of(context).textTheme.bodyLarge?.copyWith(
                                       color: Theme.of(context)

@@ -8,7 +8,7 @@ part of 'exercise.dart';
 
 _$ExerciseImpl _$$ExerciseImplFromJson(Map<String, dynamic> json) =>
     _$ExerciseImpl(
-      reactionScore: json['reactionScore'] as int?,
+      reactionScore: (json['reactionScore'] as num?)?.toInt(),
       sets: (json['sets'] as List<dynamic>?)
               ?.map((e) => ExerciseSet.fromJson(e as Map<String, dynamic>))
               .toList() ??

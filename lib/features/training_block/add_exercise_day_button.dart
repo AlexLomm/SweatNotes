@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sweatnotes/features/settings/edit_mode_switcher.dart';
 import 'package:sweatnotes/features/training_block/data/models_client/training_block_client.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../router/router.dart';
 import 'widget_params.dart';
@@ -35,7 +34,7 @@ class AddExerciseDayButton extends ConsumerWidget {
             ? null
             : () => context.pushNamed(
                   RouteNames.exerciseDayCreateUpdate,
-                  extra: Tuple2(trainingBlock.dbModel.id, null),
+                  extra: (trainingBlock.dbModel.id, null),
                 ),
       ),
     );

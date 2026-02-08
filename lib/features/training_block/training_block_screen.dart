@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:sweatnotes/features/training_block/more_options_menu_with_tooltip.dart';
-import 'package:tuple/tuple.dart';
 
 import '../../router/router.dart';
 import '../../shared/services/shared_preferences.dart';
@@ -316,7 +315,7 @@ class _MatrixState extends ConsumerState<Matrix> {
                 onTap: isEditMode
                     ? () => context.pushNamed(
                           RouteNames.trainingBlockCreateUpdate,
-                          extra: Tuple2(widget.trainingBlock, false),
+                          extra: (widget.trainingBlock, false),
                         )
                     : null,
                 child: AutoSizeText(

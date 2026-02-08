@@ -9,7 +9,7 @@ part of 'exercise_type.dart';
 _$ExerciseTypeImpl _$$ExerciseTypeImplFromJson(Map<String, dynamic> json) =>
     _$ExerciseTypeImpl(
       id: json['id'] as String,
-      archivedAt: timestampFromJson(json['archivedAt'] as int?),
+      archivedAt: timestampFromJson((json['archivedAt'] as num?)?.toInt()),
       trainingBlockId: json['trainingBlockId'] as String,
       name: json['name'] as String,
       unit: json['unit'] as String,

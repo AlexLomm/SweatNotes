@@ -12,6 +12,17 @@ https://github.com/user-attachments/assets/d4c39d36-5dd0-4403-888f-77ce18a87275
 
 ## Development Notes
 
+This project uses [FVM](https://fvm.app/) (Flutter Version Management). Use `fvm` to run Flutter commands so they use the project's pinned version (see `.fvm/fvm_config.json`).
+
+Examples:
+
+```bash
+fvm flutter pub get
+fvm flutter run
+fvm flutter build ipa
+fvm flutter clean
+```
+
 ### To start local firebase emulators, run:
 
    ```bash
@@ -56,7 +67,7 @@ To bump a version, run the following command:
 to build the app, run the following command:
 
 ```bash
-flutter build ipa
+fvm flutter build ipa
 ```
 
 ### 4. Uploading the app
@@ -98,8 +109,8 @@ The configuration can be found in the `.github/workflows/backup.yml` file.
    issues:
 
     ```bash
-    flutter clean
-    flutter pub get
+    fvm flutter clean
+    fvm flutter pub get
     rm -rf Pods
     rm -rf ~/Library/Caches/CocoaPods
     arch -x86_64 pod update --repo-update
@@ -112,7 +123,7 @@ The configuration can be found in the `.github/workflows/backup.yml` file.
     sudo gem update cocoapods
     
     # Delete the build cache
-    flutter clean
+    fvm flutter clean
     
     # Delete `Podfile.lock`
     rm Podfile.lock
@@ -121,7 +132,7 @@ The configuration can be found in the `.github/workflows/backup.yml` file.
     rm -rf Pods/
     
     # Install the Flutter package dependencies
-    flutter pub get
+    fvm flutter pub get
     
     # Install the iOS pod dependencies
     arch -x86_64 pod install
